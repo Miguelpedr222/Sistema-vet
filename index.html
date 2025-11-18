@@ -633,67 +633,6 @@
             grid-column: 1 / -1;
         }
         
-        /* NOVOS ESTILOS PARA ESQUADRÃO */
-        .esquadrao-options {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 15px;
-        }
-        
-        .esquadrao-option {
-            flex: 1;
-            padding: 12px;
-            text-align: center;
-            border: 2px solid #ddd;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: all 0.3s;
-            font-weight: 600;
-        }
-        
-        .esquadrao-option:hover {
-            border-color: #2c7fb8;
-        }
-        
-        .esquadrao-option.selected {
-            background-color: #2c7fb8;
-            color: white;
-            border-color: #2c7fb8;
-        }
-        
-        .esquadrao-origem {
-            margin-top: 10px;
-            display: none;
-        }
-        
-        .esquadrao-origem label {
-            font-size: 12px;
-            color: #666;
-            margin-bottom: 5px;
-            display: block;
-        }
-        
-        .esquadrao-badge {
-            display: inline-block;
-            padding: 4px 8px;
-            border-radius: 4px;
-            font-size: 12px;
-            font-weight: 600;
-            color: white;
-        }
-        
-        .esquadrao-badge.hipo {
-            background-color: #e74c3c;
-        }
-        
-        .esquadrao-badge.dh {
-            background-color: #2ecc71;
-        }
-        
-        .esquadrao-badge.outro {
-            background-color: #f39c12;
-        }
-        
         /* MODAL DETALHES DO CAVALO */
         .modal {
             display: none;
@@ -978,28 +917,6 @@
             margin-top: 25px;
         }
         
-        /* HISTÓRICO MÉDICO COM DATAS */
-        .historico-item {
-            padding: 10px 0;
-            border-bottom: 1px solid #eee;
-        }
-        
-        .historico-item:last-child {
-            border-bottom: none;
-        }
-        
-        .historico-data {
-            font-weight: 600;
-            color: #2c7fb8;
-            margin-bottom: 5px;
-            font-size: 14px;
-        }
-        
-        .historico-descricao {
-            color: #666;
-            font-size: 14px;
-        }
-        
         @media (max-width: 768px) {
             .header {
                 flex-direction: column;
@@ -1044,10 +961,6 @@
             .welcome-user {
                 font-size: 1.8rem;
             }
-            
-            .esquadrao-options {
-                flex-direction: column;
-            }
         }
     </style>
 </head>
@@ -1081,9 +994,10 @@
                         <option value="">Selecione um administrador</option>
                         <option value="Maj. Cristovam">Maj. Cristovam</option>
                         <option value="Ten. Henrique">Ten. Henrique</option>
-                        <option value="Ten. Thayanne">Ten. Thayanne</option>
-                        <option value="Ten. Andressa">Ten. Andressa</option>
-                        <option value="Ten. Espinho">Ten. Espinho</option>
+                        <option value="Ten. Thayanne">Ten. Espinho</option>
+                        <option value="Ten. Andressa">Ten. Aragon</option>
+                        <option value="Ten. Espinho">Ten. Andressa Alves</option>
+                        <option value="Ten. Henrique">Ten. Thayanne Mara</option>
                     </select>
                 </div>
                 
@@ -1239,6 +1153,17 @@
                 
                 <div class="form-row">
                     <div class="form-group">
+                        <label for="horseBreed">Raça</label>
+                        <input type="text" id="horseBreed" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="horseAge">Idade</label>
+                        <input type="text" id="horseAge" required>
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
                         <label for="horseColor">Cor</label>
                         <input type="text" id="horseColor" required>
                     </div>
@@ -1253,16 +1178,8 @@
                 </div>
                 
                 <div class="form-group">
-                    <label>Esquadrão</label>
-                    <div class="esquadrao-options">
-                        <div class="esquadrao-option" data-value="Hipo">Hipo</div>
-                        <div class="esquadrao-option" data-value="DH">D.H</div>
-                        <div class="esquadrao-option" data-value="Outro">Outro</div>
-                    </div>
-                    <div class="esquadrao-origem" id="esquadraoOrigem">
-                        <label for="horseOrigem">Digite a origem do animal</label>
-                        <input type="text" id="horseOrigem">
-                    </div>
+                    <label for="horseOwner">Proprietário</label>
+                    <input type="text" id="horseOwner" required>
                 </div>
                 
                 <div class="form-group">
@@ -1332,15 +1249,12 @@
             { 
                 id: 1, 
                 name: "Gastador", 
+                breed: "Quarto de Milha", 
+                age: "7 anos", 
                 color: "Alazão", 
                 sex: "Macho", 
-                esquadrao: "Hipo",
-                origem: "",
-                history: [
-                    { date: "15/11/2025", description: "Pós cirúrgico. Última consulta" },
-                    { date: "10/11/2025", description: "Aplicação de vacina contra influenza" },
-                    { date: "05/11/2025", description: "Exame de sangue realizado - resultados normais" }
-                ],
+                owner: "Escola do exército", 
+                history: "Pós cirúrgico. Última consulta: 15/11/2025",
                 prescriptions: [
                     {
                         id: 1,
@@ -1388,14 +1302,12 @@
             { 
                 id: 2, 
                 name: "Afeição", 
+                breed: "Mangalarga", 
+                age: "5 anos", 
                 color: "Tordilho", 
                 sex: "Fêmea", 
-                esquadrao: "DH",
-                origem: "",
-                history: [
-                    { date: "20/11/2025", description: "Problema articular tratado. Controle semestral." },
-                    { date: "15/10/2025", description: "Aplicação de suplemento articular" }
-                ],
+                owner: "Escola de equitação", 
+                history: "Problema articular tratado em 2024. Controle semestral.",
                 prescriptions: [
                     {
                         id: 1,
@@ -1414,50 +1326,45 @@
             { 
                 id: 3, 
                 name: "Gallen", 
+                breed: "Crioulo", 
+                age: "10 anos", 
                 color: "Preto", 
                 sex: "Fêmea", 
-                esquadrao: "Outro",
-                origem: "Haras Real",
-                history: [
-                    { date: "18/11/2025", description: "Histórico de cólica. Dieta controlada." },
-                    { date: "10/11/2025", description: "Exame de rotina - resultados satisfatórios" }
-                ],
+                owner: "2rcg", 
+                history: "Histórico de cólica. Dieta controlada.",
                 prescriptions: []
             },
             { 
                 id: 4, 
                 name: "Janeiro", 
+                breed: "Puro Sangue Inglês", 
+                age: "4 anos", 
                 color: "Tordilho", 
                 sex: "Macho", 
-                esquadrao: "DH",
-                origem: "",
-                history: [
-                    { date: "22/11/2025", description: "Atleta em treinamento. Acompanhamento mensal." }
-                ],
+                owner: "Jóquei Clube", 
+                history: "Atleta em treinamento. Acompanhamento mensal.",
                 prescriptions: []
             },
             { 
                 id: 5, 
                 name: "Branca", 
+                breed: "Andaluz", 
+                age: "12 anos", 
                 color: "Branco", 
                 sex: "Fêmea", 
-                esquadrao: "Hipo",
-                origem: "",
-                history: [
-                    { date: "12/11/2025", description: "Parte do programa de equoterapia. Saúde excelente." }
-                ],
+                owner: "Centro Equestre", 
+                history: "Parte do programa de equoterapia. Saúde excelente.",
                 prescriptions: []
             },
             { 
                 id: 6, 
                 name: "Bruxo", 
+                breed: "Árabe", 
+                age: "8 anos", 
                 color: "Tordilho", 
                 sex: "Macho", 
-                esquadrao: "Outro",
-                origem: "Capitão Godoy",
-                history: [
-                    { date: "19/11/2025", description: "Problema respiratório controlado com medicação." }
-                ],
+                owner: "Capitão Godoy", 
+                history: "Problema respiratório controlado com medicação.",
                 prescriptions: []
             }
         ];
@@ -1499,10 +1406,6 @@
         const closeDetailModal = document.getElementById('closeDetailModal');
         const btnCloseDetail = document.getElementById('btnCloseDetail');
         const btnEditHorse = document.getElementById('btnEditHorse');
-        
-        // Esquadrão
-        const esquadraoOptions = document.querySelectorAll('.esquadrao-option');
-        const esquadraoOrigem = document.getElementById('esquadraoOrigem');
         
         let currentHorseId = null;
         let currentFilter = 'all';
@@ -1715,8 +1618,8 @@
             if (searchTerm) {
                 filteredHorses = filteredHorses.filter(horse => 
                     horse.name.toLowerCase().includes(searchTerm) ||
-                    horse.color.toLowerCase().includes(searchTerm) ||
-                    horse.esquadrao.toLowerCase().includes(searchTerm)
+                    horse.breed.toLowerCase().includes(searchTerm) ||
+                    horse.owner.toLowerCase().includes(searchTerm)
                 );
             }
             
@@ -1737,13 +1640,6 @@
             filteredHorses.forEach(horse => {
                 const horseCard = document.createElement('div');
                 horseCard.className = 'file-card';
-                
-                // Determinar a classe do badge baseado no esquadrão
-                let badgeClass = '';
-                if (horse.esquadrao === 'Hipo') badgeClass = 'hipo';
-                else if (horse.esquadrao === 'DH') badgeClass = 'dh';
-                else badgeClass = 'outro';
-                
                 horseCard.innerHTML = `
                     <h3 class="horse-name">
                         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -1752,13 +1648,11 @@
                         ${horse.name}
                     </h3>
                     <div class="horse-details">
+                        <div><strong>Raça:</strong> ${horse.breed}</div>
+                        <div><strong>Idade:</strong> ${horse.age}</div>
                         <div><strong>Cor:</strong> ${horse.color}</div>
                         <div><strong>Sexo:</strong> ${horse.sex}</div>
-                        <div><strong>Esquadrão:</strong> 
-                            <span class="esquadrao-badge ${badgeClass}">
-                                ${horse.esquadrao}${horse.origem ? ` (${horse.origem})` : ''}
-                            </span>
-                        </div>
+                        <div><strong>Proprietário:</strong> ${horse.owner}</div>
                     </div>
                     <div class="file-actions">
                         <button class="btn-small btn-edit" data-id="${horse.id}">
@@ -1821,12 +1715,6 @@
                 Detalhes - ${horse.name}
             `;
             
-            // Determinar a classe do badge baseado no esquadrão
-            let badgeClass = '';
-            if (horse.esquadrao === 'Hipo') badgeClass = 'hipo';
-            else if (horse.esquadrao === 'DH') badgeClass = 'dh';
-            else badgeClass = 'outro';
-            
             // Construir conteúdo dos detalhes
             let detailContent = `
                 <div class="detail-section">
@@ -1840,13 +1728,11 @@
                     <div class="detail-info">
                         <p><strong>Nome:</strong> ${horse.name}</p>
                         <p><strong>Identificação:</strong> ${horse.id}</p>
+                        <p><strong>Raça:</strong> ${horse.breed}</p>
+                        <p><strong>Idade:</strong> ${horse.age}</p>
                         <p><strong>Cor:</strong> ${horse.color}</p>
                         <p><strong>Sexo:</strong> ${horse.sex}</p>
-                        <p><strong>Esquadrão:</strong> 
-                            <span class="esquadrao-badge ${badgeClass}">
-                                ${horse.esquadrao}${horse.origem ? ` (${horse.origem})` : ''}
-                            </span>
-                        </p>
+                        <p><strong>Proprietário:</strong> ${horse.owner}</p>
                     </div>
                 </div>
                 
@@ -1862,23 +1748,7 @@
                         Histórico Médico
                     </h3>
                     <div class="detail-info">
-            `;
-            
-            // Adicionar histórico médico com datas
-            if (horse.history && horse.history.length > 0) {
-                horse.history.forEach(item => {
-                    detailContent += `
-                        <div class="historico-item">
-                            <div class="historico-data">${item.date}</div>
-                            <div class="historico-descricao">${item.description}</div>
-                        </div>
-                    `;
-                });
-            } else {
-                detailContent += `<p>Nenhum registro no histórico médico.</p>`;
-            }
-            
-            detailContent += `
+                        <p>${horse.history}</p>
                     </div>
                 </div>
             `;
@@ -2133,13 +2003,6 @@
             currentHorseId = null;
             modalTitle.textContent = 'Adicionar Novo Cavalo';
             horseForm.reset();
-            esquadraoOrigem.style.display = 'none';
-            
-            // Limpar seleção de esquadrão
-            esquadraoOptions.forEach(option => {
-                option.classList.remove('selected');
-            });
-            
             horseModal.style.display = 'flex';
         }
         
@@ -2152,28 +2015,12 @@
             
             document.getElementById('horseName').value = horse.name;
             document.getElementById('horseId').value = horse.id;
+            document.getElementById('horseBreed').value = horse.breed;
+            document.getElementById('horseAge').value = horse.age;
             document.getElementById('horseColor').value = horse.color;
             document.getElementById('horseSex').value = horse.sex;
-            
-            // Definir esquadrão
-            esquadraoOptions.forEach(option => {
-                option.classList.remove('selected');
-                if (option.getAttribute('data-value') === horse.esquadrao) {
-                    option.classList.add('selected');
-                }
-            });
-            
-            // Mostrar campo de origem se for "Outro"
-            if (horse.esquadrao === 'Outro') {
-                esquadraoOrigem.style.display = 'block';
-                document.getElementById('horseOrigem').value = horse.origem;
-            } else {
-                esquadraoOrigem.style.display = 'none';
-            }
-            
-            // Converter histórico para string
-            const historyText = horse.history.map(item => `${item.date}: ${item.description}`).join('\n');
-            document.getElementById('horseHistory').value = historyText;
+            document.getElementById('horseOwner').value = horse.owner;
+            document.getElementById('horseHistory').value = horse.history;
             
             horseModal.style.display = 'flex';
         }
@@ -2192,69 +2039,15 @@
         function saveHorse(e) {
             e.preventDefault();
             
-            const horseName = document.getElementById('horseName').value;
-            const horseId = currentHorseId ? currentHorseId : Math.max(...horses.map(h => h.id)) + 1;
-            const horseColor = document.getElementById('horseColor').value;
-            const horseSex = document.getElementById('horseSex').value;
-            const horseHistory = document.getElementById('horseHistory').value;
-            
-            // Obter esquadrão selecionado
-            let selectedEsquadrao = '';
-            let origem = '';
-            
-            esquadraoOptions.forEach(option => {
-                if (option.classList.contains('selected')) {
-                    selectedEsquadrao = option.getAttribute('data-value');
-                }
-            });
-            
-            if (selectedEsquadrao === 'Outro') {
-                origem = document.getElementById('horseOrigem').value;
-                if (!origem) {
-                    alert('Por favor, digite a origem do animal.');
-                    return;
-                }
-            }
-            
-            if (!selectedEsquadrao) {
-                alert('Por favor, selecione um esquadrão.');
-                return;
-            }
-            
-            // Converter histórico de volta para array
-            const historyArray = [];
-            if (horseHistory) {
-                const lines = horseHistory.split('\n');
-                lines.forEach(line => {
-                    if (line.trim()) {
-                        // Tentar extrair data do início da linha
-                        const dateMatch = line.match(/^(\d{2}\/\d{2}\/\d{4}):\s*(.*)/);
-                        if (dateMatch) {
-                            historyArray.push({
-                                date: dateMatch[1],
-                                description: dateMatch[2]
-                            });
-                        } else {
-                            // Se não encontrar formato de data, usar data atual
-                            const today = new Date();
-                            const formattedDate = `${today.getDate().toString().padStart(2, '0')}/${(today.getMonth()+1).toString().padStart(2, '0')}/${today.getFullYear()}`;
-                            historyArray.push({
-                                date: formattedDate,
-                                description: line.trim()
-                            });
-                        }
-                    }
-                });
-            }
-            
             const horseData = {
-                name: horseName,
-                id: horseId,
-                color: horseColor,
-                sex: horseSex,
-                esquadrao: selectedEsquadrao,
-                origem: origem,
-                history: historyArray,
+                name: document.getElementById('horseName').value,
+                id: currentHorseId ? currentHorseId : Math.max(...horses.map(h => h.id)) + 1,
+                breed: document.getElementById('horseBreed').value,
+                age: document.getElementById('horseAge').value,
+                color: document.getElementById('horseColor').value,
+                sex: document.getElementById('horseSex').value,
+                owner: document.getElementById('horseOwner').value,
+                history: document.getElementById('horseHistory').value,
                 prescriptions: currentHorseId ? horses.find(h => h.id === currentHorseId).prescriptions : []
             };
             
@@ -2315,24 +2108,6 @@
                 openEditModal(currentHorseId);
             });
             
-            // Event Listeners para opções de esquadrão
-            esquadraoOptions.forEach(option => {
-                option.addEventListener('click', function() {
-                    // Remover seleção de todas as opções
-                    esquadraoOptions.forEach(opt => opt.classList.remove('selected'));
-                    
-                    // Selecionar a opção clicada
-                    this.classList.add('selected');
-                    
-                    // Mostrar/ocultar campo de origem
-                    if (this.getAttribute('data-value') === 'Outro') {
-                        esquadraoOrigem.style.display = 'block';
-                    } else {
-                        esquadraoOrigem.style.display = 'none';
-                    }
-                });
-            });
-            
             // Fechar modais ao clicar fora deles
             window.addEventListener('click', (e) => {
                 if (e.target === horseModal) {
@@ -2360,3 +2135,4 @@
     </script>
 </body>
 </html>
+
