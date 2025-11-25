@@ -1328,139 +1328,156 @@
         ];
         
         // ========== DADOS DOS CAVALOS ==========
-        let horses = [
-            { 
-                id: 1, 
-                name: "Gastador", 
-                color: "Alazão", 
-                sex: "Macho", 
-                esquadrao: "Hipo",
-                origem: "",
-                history: [
-                    { date: "15/11/2025", description: "Pós cirúrgico. Última consulta" },
-                    { date: "10/11/2025", description: "Aplicação de vacina contra influenza" },
-                    { date: "05/11/2025", description: "Exame de sangue realizado - resultados normais" }
-                ],
-                prescriptions: [
-                    {
-                        id: 1,
-                        medication: "Anti-inflamatório",
-                        dosage: "1 comprimido",
-                        frequency: "2 vezes ao dia",
-                        duration: 7,
-                        startDate: "2025-01-15",
-                        medicationDays: [
-                            { day: 1, status: "applied" },
-                            { day: 2, status: "applied" },
-                            { day: 3, status: "not-applied" },
-                            { day: 4, status: null },
-                            { day: 5, status: null },
-                            { day: 6, status: null },
-                            { day: 7, status: null }
+        // Função para carregar dados do localStorage
+        function loadHorsesFromStorage() {
+            const storedHorses = localStorage.getItem('vetSystemHorses');
+            if (storedHorses) {
+                return JSON.parse(storedHorses);
+            } else {
+                // Dados padrão se não houver nada salvo
+                return [
+                    { 
+                        id: 1, 
+                        name: "Gastador", 
+                        color: "Alazão", 
+                        sex: "Macho", 
+                        esquadrao: "Hipo",
+                        origem: "",
+                        history: [
+                            { date: "15/11/2025", description: "Pós cirúrgico. Última consulta" },
+                            { date: "10/11/2025", description: "Aplicação de vacina contra influenza" },
+                            { date: "05/11/2025", description: "Exame de sangue realizado - resultados normais" }
+                        ],
+                        prescriptions: [
+                            {
+                                id: 1,
+                                medication: "Anti-inflamatório",
+                                dosage: "1 comprimido",
+                                frequency: "2 vezes ao dia",
+                                duration: 7,
+                                startDate: "2025-01-15",
+                                medicationDays: [
+                                    { day: 1, status: "applied" },
+                                    { day: 2, status: "applied" },
+                                    { day: 3, status: "not-applied" },
+                                    { day: 4, status: null },
+                                    { day: 5, status: null },
+                                    { day: 6, status: null },
+                                    { day: 7, status: null }
+                                ]
+                            },
+                            {
+                                id: 2,
+                                medication: "Vitamina E",
+                                dosage: "500mg",
+                                frequency: "1 vez ao dia",
+                                duration: 14,
+                                startDate: "2025-01-10",
+                                medicationDays: [
+                                    { day: 1, status: "applied" },
+                                    { day: 2, status: "applied" },
+                                    { day: 3, status: "applied" },
+                                    { day: 4, status: "applied" },
+                                    { day: 5, status: "applied" },
+                                    { day: 6, status: "applied" },
+                                    { day: 7, status: "applied" },
+                                    { day: 8, status: "not-applied" },
+                                    { day: 9, status: null },
+                                    { day: 10, status: null },
+                                    { day: 11, status: null },
+                                    { day: 12, status: null },
+                                    { day: 13, status: null },
+                                    { day: 14, status: null }
+                                ]
+                            }
                         ]
                     },
-                    {
-                        id: 2,
-                        medication: "Vitamina E",
-                        dosage: "500mg",
-                        frequency: "1 vez ao dia",
-                        duration: 14,
-                        startDate: "2025-01-10",
-                        medicationDays: [
-                            { day: 1, status: "applied" },
-                            { day: 2, status: "applied" },
-                            { day: 3, status: "applied" },
-                            { day: 4, status: "applied" },
-                            { day: 5, status: "applied" },
-                            { day: 6, status: "applied" },
-                            { day: 7, status: "applied" },
-                            { day: 8, status: "not-applied" },
-                            { day: 9, status: null },
-                            { day: 10, status: null },
-                            { day: 11, status: null },
-                            { day: 12, status: null },
-                            { day: 13, status: null },
-                            { day: 14, status: null }
+                    { 
+                        id: 2, 
+                        name: "Afeição", 
+                        color: "Tordilho", 
+                        sex: "Fêmea", 
+                        esquadrao: "DH",
+                        origem: "",
+                        history: [
+                            { date: "20/11/2025", description: "Problema articular tratado. Controle semestral." },
+                            { date: "15/10/2025", description: "Aplicação de suplemento articular" }
+                        ],
+                        prescriptions: [
+                            {
+                                id: 1,
+                                medication: "Suplemento articular",
+                                dosage: "2 comprimidos",
+                                frequency: "1 vez ao dia",
+                                duration: 30,
+                                startDate: "2025-01-01",
+                                medicationDays: Array.from({length: 30}, (_, i) => ({ 
+                                    day: i + 1, 
+                                    status: i < 14 ? "applied" : null 
+                                }))
+                            }
                         ]
+                    },
+                    { 
+                        id: 3, 
+                        name: "Gallen", 
+                        color: "Preto", 
+                        sex: "Fêmea", 
+                        esquadrao: "Outro",
+                        origem: "Haras Real",
+                        history: [
+                            { date: "18/11/2025", description: "Histórico de cólica. Dieta controlada." },
+                            { date: "10/11/2025", description: "Exame de rotina - resultados satisfatórios" }
+                        ],
+                        prescriptions: []
+                    },
+                    { 
+                        id: 4, 
+                        name: "Janeiro", 
+                        color: "Tordilho", 
+                        sex: "Macho", 
+                        esquadrao: "DH",
+                        origem: "",
+                        history: [
+                            { date: "22/11/2025", description: "Atleta em treinamento. Acompanhamento mensal." }
+                        ],
+                        prescriptions: []
+                    },
+                    { 
+                        id: 5, 
+                        name: "Branca", 
+                        color: "Branco", 
+                        sex: "Fêmea", 
+                        esquadrao: "Hipo",
+                        origem: "",
+                        history: [
+                            { date: "12/11/2025", description: "Parte do programa de equoterapia. Saúde excelente." }
+                        ],
+                        prescriptions: []
+                    },
+                    { 
+                        id: 6, 
+                        name: "Bruxo", 
+                        color: "Tordilho", 
+                        sex: "Macho", 
+                        esquadrao: "Outro",
+                        origem: "Capitão Godoy",
+                        history: [
+                            { date: "19/11/2025", description: "Problema respiratório controlado com medicação." }
+                        ],
+                        prescriptions: []
                     }
-                ]
-            },
-            { 
-                id: 2, 
-                name: "Afeição", 
-                color: "Tordilho", 
-                sex: "Fêmea", 
-                esquadrao: "DH",
-                origem: "",
-                history: [
-                    { date: "20/11/2025", description: "Problema articular tratado. Controle semestral." },
-                    { date: "15/10/2025", description: "Aplicação de suplemento articular" }
-                ],
-                prescriptions: [
-                    {
-                        id: 1,
-                        medication: "Suplemento articular",
-                        dosage: "2 comprimidos",
-                        frequency: "1 vez ao dia",
-                        duration: 30,
-                        startDate: "2025-01-01",
-                        medicationDays: Array.from({length: 30}, (_, i) => ({ 
-                            day: i + 1, 
-                            status: i < 14 ? "applied" : null 
-                        }))
-                    }
-                ]
-            },
-            { 
-                id: 3, 
-                name: "Gallen", 
-                color: "Preto", 
-                sex: "Fêmea", 
-                esquadrao: "Outro",
-                origem: "Haras Real",
-                history: [
-                    { date: "18/11/2025", description: "Histórico de cólica. Dieta controlada." },
-                    { date: "10/11/2025", description: "Exame de rotina - resultados satisfatórios" }
-                ],
-                prescriptions: []
-            },
-            { 
-                id: 4, 
-                name: "Janeiro", 
-                color: "Tordilho", 
-                sex: "Macho", 
-                esquadrao: "DH",
-                origem: "",
-                history: [
-                    { date: "22/11/2025", description: "Atleta em treinamento. Acompanhamento mensal." }
-                ],
-                prescriptions: []
-            },
-            { 
-                id: 5, 
-                name: "Branca", 
-                color: "Branco", 
-                sex: "Fêmea", 
-                esquadrao: "Hipo",
-                origem: "",
-                history: [
-                    { date: "12/11/2025", description: "Parte do programa de equoterapia. Saúde excelente." }
-                ],
-                prescriptions: []
-            },
-            { 
-                id: 6, 
-                name: "Bruxo", 
-                color: "Tordilho", 
-                sex: "Macho", 
-                esquadrao: "Outro",
-                origem: "Capitão Godoy",
-                history: [
-                    { date: "19/11/2025", description: "Problema respiratório controlado com medicação." }
-                ],
-                prescriptions: []
+                ];
             }
-        ];
+        }
+        
+        // Função para salvar dados no localStorage
+        function saveHorsesToStorage() {
+            localStorage.setItem('vetSystemHorses', JSON.stringify(horses));
+        }
+        
+        // Carregar dados iniciais
+        let horses = loadHorsesFromStorage();
         
         // ========== ELEMENTOS DO DOM ==========
         // Login
@@ -2064,6 +2081,9 @@
                 element.classList.remove('not-applied');
                 element.innerHTML = day;
             }
+            
+            // Salvar alterações no localStorage
+            saveHorsesToStorage();
         }
         
         // Alternar visibilidade do formulário de prescrição
@@ -2109,6 +2129,9 @@
                 medicationDays: medicationDays
             });
             
+            // Salvar alterações no localStorage
+            saveHorsesToStorage();
+            
             // Fechar formulário e atualizar view
             showPrescriptionForm = false;
             openHorseDetail(currentHorseId);
@@ -2124,6 +2147,10 @@
             if (prescriptionIndex === -1) return;
             
             horse.prescriptions.splice(prescriptionIndex, 1);
+            
+            // Salvar alterações no localStorage
+            saveHorsesToStorage();
+            
             openHorseDetail(horseId);
             alert('Prescrição excluída com sucesso!');
         }
@@ -2268,6 +2295,9 @@
                 // Adicionar novo cavalo
                 horses.push(horseData);
             }
+            
+            // Salvar alterações no localStorage
+            saveHorsesToStorage();
             
             closeHorseModal();
             renderHorses();
