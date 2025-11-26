@@ -1241,7 +1241,8 @@
         <div class="login-container">
             <div class="logo">
                 <div class="logo-image">
-                    <img src="2-rcg-926x926 (1).jpg" alt="Logo Veterinária">
+                    <!-- Imagem placeholder - substitua pela sua imagem -->
+                    <div style="width:100%;height:100%;background:#2c7fb8;display:flex;align-items:center;justify-content:center;color:white;font-weight:bold;">LOGO</div>
                 </div>
                 <h1>Vet 2°rcg System</h1>
                 <p>Sistema de Gestão Veterinária</p>
@@ -1316,7 +1317,8 @@
     <div id="welcomePage">
         <div class="welcome-container">
             <div class="welcome-logo">
-                <img src="2-rcg-926x926 (1).jpg" alt="Logo Veterinária">
+                <!-- Imagem placeholder - substitua pela sua imagem -->
+                <div style="width:100%;height:100%;background:rgba(255,255,255,0.2);display:flex;align-items:center;justify-content:center;color:white;font-weight:bold;font-size:24px;">LOGO</div>
             </div>
             <h1 class="welcome-title">Bem-vindo(a)</h1>
             <h2 class="welcome-subtitle">ao Vet2°rcg System</h2>
@@ -1333,7 +1335,8 @@
         <div class="header">
             <div class="logo-section">
                 <div class="logo-image-small">
-                    <img src="2-rcg-926x926 (1).jpg" alt="Logo Veterinária">
+                    <!-- Imagem placeholder - substitua pela sua imagem -->
+                    <div style="width:100%;height:100%;background:#2c7fb8;display:flex;align-items:center;justify-content:center;color:white;font-weight:bold;">LOGO</div>
                 </div>
                 <div class="logo-text">
                     <h1>Vet 2°rcg System</h1>
@@ -1581,9 +1584,9 @@
         
         // Dicas de senha para cada cargo
         const passwordHints = {
-            'admin': 'Use a senha do Administrador',
-            'moderador': 'Use a senha do Moderador',
-            'visitante': 'Use a senha do Visitante'
+            'admin': 'Senha: admin123',
+            'moderador': 'Senha: mod456',
+            'visitante': 'Senha: estag789'
         };
         
         // Lista de administradores
@@ -1823,7 +1826,7 @@
             e.preventDefault();
             
             const role = document.getElementById('role').value;
-            const username = document.getElementById('username').value;
+            let username = document.getElementById('username').value;
             const password = document.getElementById('password').value;
             
             // Validar se todos os campos foram preenchidos
@@ -1846,6 +1849,17 @@
                 errorMessage.style.display = 'block';
                 successMessage.style.display = 'none';
                 return;
+            }
+            
+            // Se for admin, usar o valor do select
+            if (role === 'admin') {
+                username = adminUsersSelect.value;
+                if (!username) {
+                    errorMessage.textContent = 'Por favor, selecione um administrador.';
+                    errorMessage.style.display = 'block';
+                    successMessage.style.display = 'none';
+                    return;
+                }
             }
             
             // Verificar se a senha está correta para o cargo selecionado
@@ -2352,7 +2366,7 @@
                                 <input type="text" id="medicationFrequency" required>
                             </div>
                             <div class="form-group">
-                                <label for="medicationDuration">Duração (dias)</label>
+                                <label for="medicationDuration">Duração (dais)</label>
                                 <input type="number" id="medicationDuration" min="1" max="90" required>
                             </div>
                         </div>
