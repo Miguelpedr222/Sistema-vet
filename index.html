@@ -402,6 +402,9 @@
         
         .user-info {
             text-align: right;
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
         
         .user-info span {
@@ -426,6 +429,26 @@
         
         .btn-logout:hover {
             background: #c0392b;
+        }
+        
+        /* NOVO ESTILO PARA O BOTÃO VISITA */
+        .btn-visita-redirect {
+            background: #9b59b6;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            margin-top: 5px;
+            transition: background 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .btn-visita-redirect:hover {
+            background: #8e44ad;
         }
         
         .main-container {
@@ -1160,6 +1183,7 @@
             
             .user-info {
                 text-align: center;
+                flex-direction: column;
             }
             
             .actions-bar {
@@ -1321,6 +1345,15 @@
             </div>
             <div class="user-info">
                 <p>Logado como: <span id="loggedUser">Administrador</span></p>
+                <!-- BOTÃO VISITA ADICIONADO AQUI -->
+                <button class="btn-visita-redirect" id="btnVisitaRedirect">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M9 21H5C4.46957 21 3.96086 20.7893 3.58579 20.4142C3.21071 20.0391 3 19.5304 3 19V5C3 4.46957 3.21071 3.96086 3.58579 3.58579C3.96086 3.21071 4.46957 3 5 3H9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M16 17L21 12L16 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M21 12H9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    Visita
+                </button>
                 <button class="btn-logout" id="btnLogout">
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path d="M9 21H5C4.46957 21 3.96086 20.7893 3.58579 20.4142C3.21071 20.0391 3 19.5304 3 19V5C3 4.46957 3.21071 3.96086 3.58579 3.58579C3.96086 3.21071 4.46957 3 5 3H9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
@@ -2097,6 +2130,9 @@
         const btnLimparVisita = document.getElementById('btnLimparVisita');
         const hipoTable = document.getElementById('hipoTable').querySelector('tbody');
         const dhTable = document.getElementById('dhTable').querySelector('tbody');
+        
+        // NOVO BOTÃO VISITA
+        const btnVisitaRedirect = document.getElementById('btnVisitaRedirect');
         
         let currentHorseId = null;
         let currentFilter = 'all';
@@ -3068,6 +3104,11 @@
             btnMarcarVisita.addEventListener('click', marcarTodosParaVisita);
             btnLimparVisita.addEventListener('click', limparSelecaoVisitas);
             
+            // NOVO EVENT LISTENER PARA O BOTÃO VISITA
+            btnVisitaRedirect.addEventListener('click', function() {
+                window.location.href = 'visita.html';
+            });
+            
             // Fechar modais ao clicar fora deles
             window.addEventListener('click', (e) => {
                 if (e.target === horseModal) {
@@ -3095,4 +3136,3 @@
     </script>
 </body>
 </html>
-
