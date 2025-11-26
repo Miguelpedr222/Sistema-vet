@@ -626,6 +626,15 @@
             background: #c0392b;
         }
         
+        .btn-visita {
+            background: #9b59b6;
+            color: white;
+        }
+        
+        .btn-visita:hover {
+            background: #8e44ad;
+        }
+        
         .no-results {
             text-align: center;
             padding: 40px;
@@ -1151,6 +1160,125 @@
             transform: translateY(-2px);
         }
         
+        /* NOVOS ESTILOS PARA CADERNO DE VISITAS */
+        .caderno-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 8px;
+        }
+        
+        .caderno-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .caderno-date {
+            font-weight: 600;
+            color: #2c7fb8;
+            font-size: 18px;
+        }
+        
+        .caderno-status {
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 600;
+            color: white;
+        }
+        
+        .caderno-status.active {
+            background: #27ae60;
+        }
+        
+        .caderno-status.archived {
+            background: #7f8c8d;
+        }
+        
+        .caderno-actions {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .caderno-list {
+            margin-bottom: 30px;
+        }
+        
+        .caderno-item {
+            padding: 15px;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            background: white;
+        }
+        
+        .caderno-item-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        
+        .caderno-horse-name {
+            font-weight: 600;
+            color: #2c7fb8;
+        }
+        
+        .caderno-horse-esquadrao {
+            font-size: 12px;
+            color: #666;
+        }
+        
+        .caderno-visit-status {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .caderno-visit-desc {
+            margin-top: 10px;
+            padding: 10px;
+            background: #f8f9fa;
+            border-radius: 5px;
+            font-size: 14px;
+            color: #555;
+        }
+        
+        .archived-visitas {
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 2px solid #e0e0e0;
+        }
+        
+        .archived-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 15px;
+            margin-top: 15px;
+        }
+        
+        .archived-item {
+            padding: 15px;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            background: #f8f9fa;
+        }
+        
+        .archived-date {
+            font-weight: 600;
+            color: #2c7fb8;
+            margin-bottom: 10px;
+        }
+        
+        .archived-count {
+            font-size: 14px;
+            color: #666;
+        }
+        
         @media (max-width: 768px) {
             .header {
                 flex-direction: column;
@@ -1212,6 +1340,17 @@
                 display: block;
                 overflow-x: auto;
             }
+            
+            .caderno-header {
+                flex-direction: column;
+                gap: 15px;
+                align-items: flex-start;
+            }
+            
+            .caderno-actions {
+                width: 100%;
+                justify-content: space-between;
+            }
         }
     </style>
 </head>
@@ -1247,6 +1386,7 @@
                         <option value="Ten. Henrique">Ten. Henrique</option>
                         <option value="Ten. Thayanne">Ten. Thayanne</option>
                         <option value="Ten. Andressa">Ten. Andressa</option>
+                        <option value="Ten. Andressa">Ten. Aragon</option>
                         <option value="Ten. Espinho">Ten. Espinho</option>
                     </select>
                 </div>
@@ -1397,53 +1537,39 @@
                     Visitas Veterinárias
                 </h1>
                 
-                <div class="visit-actions">
-                    <button class="btn btn-primary" id="btnMarcarVisita">
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M12 5V19" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                            <path d="M5 12H19" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                        </svg>
-                        Marcar para Visita
-                    </button>
-                    <button class="btn btn-secondary" id="btnLimparVisita">
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M3 6H5H21" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                            <path d="M8 6V4C8 3.46957 8.21071 2.96086 8.58579 2.58579C8.96086 2.21071 9.46957 2 10 2H14C14.5304 2 15.0391 2.21071 15.4142 2.58579C15.7893 2.96086 16 3.46957 16 4V6M19 6V20C19 20.5304 18.7893 21.0391 18.4142 21.4142C18.0391 21.7893 17.5304 22 17 22H7C6.46957 22 5.96086 21.7893 5.58579 21.4142C5.21071 21.0391 5 20.5304 5 20V6H19Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                        </svg>
-                        Limpar Seleção
-                    </button>
+                <div class="caderno-header">
+                    <div class="caderno-info">
+                        <div class="caderno-date" id="currentCadernoDate">Nenhum caderno ativo</div>
+                        <div class="caderno-status" id="cadernoStatus">Inativo</div>
+                    </div>
+                    <div class="caderno-actions">
+                        <button class="btn btn-primary" id="btnNovoCaderno">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M12 5V19" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M5 12H19" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                            Novo Caderno
+                        </button>
+                        <button class="btn btn-secondary" id="btnArquivarCaderno">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M21 16V8.00002C20.9996 7.6493 20.9071 7.30483 20.7315 7.00119C20.556 6.69754 20.3037 6.44539 20 6.27002L13 2.27002C12.696 2.09449 12.3511 2.00208 12 2.00208C11.6489 2.00208 11.304 2.09449 11 2.27002L4 6.27002C3.69626 6.44539 3.44398 6.69754 3.26846 7.00119C3.09294 7.30483 3.00036 7.6493 3 8.00002V16C3.00036 16.3508 3.09294 16.6952 3.26846 16.9989C3.44398 17.3025 3.69626 17.5547 4 17.73L11 21.73C11.304 21.9056 11.6489 21.998 12 21.998C12.3511 21.998 12.696 21.9056 13 21.73L20 17.73C20.3037 17.5547 20.556 17.3025 20.7315 16.9989C20.9071 16.6952 20.9996 16.3508 21 16Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M3.27002 6.95996L12 12L20.73 6.95996" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M12 22.08V12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                            Arquivar
+                        </button>
+                    </div>
                 </div>
                 
-                <div class="visit-section">
-                    <h3>HIPO</h3>
-                    <table class="visit-table" id="hipoTable">
-                        <thead>
-                            <tr>
-                                <th style="width: 50px;">Visita</th>
-                                <th>Cavalo</th>
-                                <th>Protocolo</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <!-- Conteúdo será preenchido via JavaScript -->
-                        </tbody>
-                    </table>
+                <div class="caderno-list" id="cadernoList">
+                    <!-- Conteúdo será preenchido via JavaScript -->
                 </div>
                 
-                <div class="visit-section">
-                    <h3>DH</h3>
-                    <table class="visit-table" id="dhTable">
-                        <thead>
-                            <tr>
-                                <th style="width: 50px;">Visita</th>
-                                <th>Cavalo</th>
-                                <th>Protocolo</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <!-- Conteúdo será preenchido via JavaScript -->
-                        </tbody>
-                    </table>
+                <div class="archived-visitas" id="archivedVisitas">
+                    <h3>Visitas Arquivadas</h3>
+                    <div class="archived-list" id="archivedList">
+                        <!-- Conteúdo será preenchido via JavaScript -->
+                    </div>
                 </div>
             </div>
         </div>
@@ -1530,7 +1656,52 @@
             <div class="modal-actions">
                 <button type="button" class="btn btn-secondary" id="btnCloseDetail">Fechar</button>
                 <button type="button" class="btn btn-primary" id="btnEditHorse">Editar Ficha</button>
+                <button type="button" class="btn btn-visita" id="btnAddToVisita">Adicionar à Visita</button>
             </div>
+        </div>
+    </div>
+
+    <!-- Modal para Adicionar à Visita -->
+    <div class="modal" id="visitaModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">Adicionar à Visita</h2>
+                <button class="close-modal" id="closeVisitaModal">&times;</button>
+            </div>
+            
+            <form id="visitaForm">
+                <div class="form-group">
+                    <label for="visitaDescription">Descrição do que precisa ser feito</label>
+                    <textarea id="visitaDescription" rows="4" placeholder="Descreva o que precisa ser feito com o cavalo..." required></textarea>
+                </div>
+                
+                <div class="modal-actions">
+                    <button type="button" class="btn btn-secondary" id="btnCancelVisita">Cancelar</button>
+                    <button type="submit" class="btn btn-primary">Confirmar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal para Criar Novo Caderno -->
+    <div class="modal" id="cadernoModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">Criar Novo Caderno de Visitas</h2>
+                <button class="close-modal" id="closeCadernoModal">&times;</button>
+            </div>
+            
+            <form id="cadernoForm">
+                <div class="form-group">
+                    <label for="cadernoDate">Data da Visita</label>
+                    <input type="date" id="cadernoDate" required>
+                </div>
+                
+                <div class="modal-actions">
+                    <button type="button" class="btn btn-secondary" id="btnCancelCaderno">Cancelar</button>
+                    <button type="submit" class="btn btn-primary">Criar Caderno</button>
+                </div>
+            </form>
         </div>
     </div>
 
@@ -2048,6 +2219,28 @@
         // Carregar dados iniciais
         let horses = loadHorsesFromStorage();
         
+        // ========== DADOS DAS VISITAS ==========
+        // Função para carregar dados das visitas do localStorage
+        function loadVisitasFromStorage() {
+            const storedVisitas = localStorage.getItem('vetSystemVisitas');
+            if (storedVisitas) {
+                return JSON.parse(storedVisitas);
+            } else {
+                return {
+                    cadernosAtivos: [],
+                    cadernosArquivados: []
+                };
+            }
+        }
+        
+        // Função para salvar dados das visitas no localStorage
+        function saveVisitasToStorage() {
+            localStorage.setItem('vetSystemVisitas', JSON.stringify(visitas));
+        }
+        
+        // Carregar dados iniciais das visitas
+        let visitas = loadVisitasFromStorage();
+        
         // ========== ELEMENTOS DO DOM ==========
         // Login
         const loginPage = document.getElementById('loginPage');
@@ -2085,6 +2278,19 @@
         const closeDetailModal = document.getElementById('closeDetailModal');
         const btnCloseDetail = document.getElementById('btnCloseDetail');
         const btnEditHorse = document.getElementById('btnEditHorse');
+        const btnAddToVisita = document.getElementById('btnAddToVisita');
+        
+        // Visita
+        const visitaModal = document.getElementById('visitaModal');
+        const closeVisitaModal = document.getElementById('closeVisitaModal');
+        const btnCancelVisita = document.getElementById('btnCancelVisita');
+        const visitaForm = document.getElementById('visitaForm');
+        
+        // Caderno
+        const cadernoModal = document.getElementById('cadernoModal');
+        const closeCadernoModal = document.getElementById('closeCadernoModal');
+        const btnCancelCaderno = document.getElementById('btnCancelCaderno');
+        const cadernoForm = document.getElementById('cadernoForm');
         
         // Esquadrão
         const esquadraoOptions = document.querySelectorAll('.esquadrao-option');
@@ -2093,15 +2299,18 @@
         // Visitas
         const navTabs = document.querySelectorAll('.nav-tab');
         const tabContents = document.querySelectorAll('.tab-content');
-        const btnMarcarVisita = document.getElementById('btnMarcarVisita');
-        const btnLimparVisita = document.getElementById('btnLimparVisita');
-        const hipoTable = document.getElementById('hipoTable').querySelector('tbody');
-        const dhTable = document.getElementById('dhTable').querySelector('tbody');
+        const currentCadernoDate = document.getElementById('currentCadernoDate');
+        const cadernoStatus = document.getElementById('cadernoStatus');
+        const btnNovoCaderno = document.getElementById('btnNovoCaderno');
+        const btnArquivarCaderno = document.getElementById('btnArquivarCaderno');
+        const cadernoList = document.getElementById('cadernoList');
+        const archivedList = document.getElementById('archivedList');
         
         let currentHorseId = null;
         let currentFilter = 'all';
         let currentUser = '';
         let showPrescriptionForm = false;
+        let currentCaderno = null;
         
         // ========== FUNÇÕES DE LOGIN ==========
         // Alternar entre input de texto e select para administradores
@@ -2374,6 +2583,12 @@
                             </svg>
                             PDF
                         </button>
+                        <button class="btn-small btn-visita" data-id="${horse.id}">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M19 21V5C19 3.89543 18.1046 3 17 3H7C5.89543 3 5 3.89543 5 5V21M19 21L21 21M19 21H14M5 21L3 21M5 21H10M9 6.99998H15M9 11H15M9 15H13" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                            Visita
+                        </button>
                     </div>
                 `;
                 filesGrid.appendChild(horseCard);
@@ -2402,95 +2617,236 @@
                     exportToPDF(horseId);
                 });
             });
-        }
-        
-        // ========== FUNÇÕES DA ABA DE VISITAS ==========
-        // Renderizar tabelas de visitas
-        function renderVisitas() {
-            // Limpar tabelas
-            hipoTable.innerHTML = '';
-            dhTable.innerHTML = '';
             
-            // Separar cavalos por esquadrão
-            const hipoHorses = horses.filter(horse => horse.esquadrao === 'Hipo');
-            const dhHorses = horses.filter(horse => horse.esquadrao === 'DH');
-            
-            // Renderizar cavalos HIPO
-            hipoHorses.forEach(horse => {
-                const row = document.createElement('tr');
-                row.innerHTML = `
-                    <td class="checkbox-container">
-                        <input type="checkbox" class="visit-checkbox" data-id="${horse.id}" ${horse.selectedForVisit ? 'checked' : ''}>
-                    </td>
-                    <td>${horse.name}</td>
-                    <td>
-                        ${getProtocoloBadge(horse.protocolo)}
-                    </td>
-                `;
-                hipoTable.appendChild(row);
-            });
-            
-            // Renderizar cavalos DH
-            dhHorses.forEach(horse => {
-                const row = document.createElement('tr');
-                row.innerHTML = `
-                    <td class="checkbox-container">
-                        <input type="checkbox" class="visit-checkbox" data-id="${horse.id}" ${horse.selectedForVisit ? 'checked' : ''}>
-                    </td>
-                    <td>${horse.name}</td>
-                    <td>
-                        ${getProtocoloBadge(horse.protocolo)}
-                    </td>
-                `;
-                dhTable.appendChild(row);
-            });
-            
-            // Adicionar event listeners para os checkboxes
-            document.querySelectorAll('.visit-checkbox').forEach(checkbox => {
-                checkbox.addEventListener('change', function() {
-                    const horseId = parseInt(this.getAttribute('data-id'));
-                    const horse = horses.find(h => h.id === horseId);
-                    if (horse) {
-                        horse.selectedForVisit = this.checked;
-                        saveHorsesToStorage();
-                    }
+            // Adicionar event listeners para os botões de visita
+            document.querySelectorAll('.btn-visita').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    const horseId = parseInt(e.currentTarget.getAttribute('data-id'));
+                    openVisitaModal(horseId);
                 });
             });
         }
         
-        // Obter badge do protocolo
-        function getProtocoloBadge(protocolo) {
-            if (!protocolo) return '';
+        // ========== FUNÇÕES DA ABA DE VISITAS ==========
+        // Renderizar visitas
+        function renderVisitas() {
+            // Verificar se há caderno ativo
+            currentCaderno = visitas.cadernosAtivos.length > 0 ? visitas.cadernosAtivos[0] : null;
             
-            if (protocolo.includes('Quarentena')) {
-                return `<span class="quarentena-badge">${protocolo}</span>`;
-            } else if (protocolo.includes('Suplementação') || protocolo.includes('Suplemento')) {
-                return `<span class="suplementacao-badge">${protocolo}</span>`;
-            } else if (protocolo.includes('Corte')) {
-                return `<span class="corte-badge">${protocolo}</span>`;
+            if (currentCaderno) {
+                currentCadernoDate.textContent = `Caderno de Visitas - ${formatDate(currentCaderno.data)}`;
+                cadernoStatus.textContent = 'Ativo';
+                cadernoStatus.className = 'caderno-status active';
+                btnArquivarCaderno.disabled = false;
             } else {
-                return `<span class="protocolo-badge">${protocolo}</span>`;
+                currentCadernoDate.textContent = 'Nenhum caderno ativo';
+                cadernoStatus.textContent = 'Inativo';
+                cadernoStatus.className = 'caderno-status';
+                btnArquivarCaderno.disabled = true;
+            }
+            
+            // Renderizar lista de visitas do caderno ativo
+            renderCadernoList();
+            
+            // Renderizar visitas arquivadas
+            renderArchivedList();
+        }
+        
+        // Renderizar lista do caderno ativo
+        function renderCadernoList() {
+            cadernoList.innerHTML = '';
+            
+            if (!currentCaderno) {
+                cadernoList.innerHTML = `
+                    <div class="no-results">
+                        <h3>Nenhum caderno de visitas ativo</h3>
+                        <p>Crie um novo caderno para começar a registrar visitas</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            if (currentCaderno.visitas.length === 0) {
+                cadernoList.innerHTML = `
+                    <div class="no-results">
+                        <h3>Nenhuma visita registrada para este caderno</h3>
+                        <p>Adicione cavalos à visita através da aba de Arquivos</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            // Ordenar por esquadrão (Hipo primeiro)
+            const visitasOrdenadas = [...currentCaderno.visitas].sort((a, b) => {
+                if (a.esquadrao === 'Hipo' && b.esquadrao !== 'Hipo') return -1;
+                if (a.esquadrao !== 'Hipo' && b.esquadrao === 'Hipo') return 1;
+                return a.name.localeCompare(b.name);
+            });
+            
+            // Renderizar cada visita
+            visitasOrdenadas.forEach(visita => {
+                const visitaItem = document.createElement('div');
+                visitaItem.className = 'caderno-item';
+                
+                visitaItem.innerHTML = `
+                    <div class="caderno-item-header">
+                        <div>
+                            <div class="caderno-horse-name">${visita.name}</div>
+                            <div class="caderno-horse-esquadrao">
+                                <span class="esquadrao-badge ${visita.esquadrao.toLowerCase()}">${visita.esquadrao}</span>
+                            </div>
+                        </div>
+                        <div class="caderno-visit-status">
+                            <label>
+                                <input type="checkbox" class="visit-status-checkbox" data-id="${visita.horseId}" ${visita.visited ? 'checked' : ''}>
+                                Visitado
+                            </label>
+                        </div>
+                    </div>
+                    <div class="caderno-visit-desc">
+                        <strong>Descrição:</strong> ${visita.description}
+                    </div>
+                `;
+                
+                cadernoList.appendChild(visitaItem);
+            });
+            
+            // Adicionar event listeners para os checkboxes de status
+            document.querySelectorAll('.visit-status-checkbox').forEach(checkbox => {
+                checkbox.addEventListener('change', function() {
+                    const horseId = parseInt(this.getAttribute('data-id'));
+                    updateVisitStatus(horseId, this.checked);
+                });
+            });
+        }
+        
+        // Renderizar lista de visitas arquivadas
+        function renderArchivedList() {
+            archivedList.innerHTML = '';
+            
+            if (visitas.cadernosArquivados.length === 0) {
+                document.getElementById('archivedVisitas').style.display = 'none';
+                return;
+            }
+            
+            document.getElementById('archivedVisitas').style.display = 'block';
+            
+            // Ordenar por data (mais recente primeiro)
+            const cadernosOrdenados = [...visitas.cadernosArquivados].sort((a, b) => 
+                new Date(b.data) - new Date(a.data)
+            );
+            
+            // Renderizar cada caderno arquivado
+            cadernosOrdenados.forEach(caderno => {
+                const archivedItem = document.createElement('div');
+                archivedItem.className = 'archived-item';
+                
+                const visitasCount = caderno.visitas.length;
+                const visitasRealizadas = caderno.visitas.filter(v => v.visited).length;
+                
+                archivedItem.innerHTML = `
+                    <div class="archived-date">${formatDate(caderno.data)}</div>
+                    <div class="archived-count">
+                        ${visitasRealizadas}/${visitasCount} visitas realizadas
+                    </div>
+                `;
+                
+                archivedList.appendChild(archivedItem);
+            });
+        }
+        
+        // Atualizar status da visita
+        function updateVisitStatus(horseId, visited) {
+            if (!currentCaderno) return;
+            
+            const visita = currentCaderno.visitas.find(v => v.horseId === horseId);
+            if (visita) {
+                visita.visited = visited;
+                saveVisitasToStorage();
             }
         }
         
-        // Marcar todos para visita
-        function marcarTodosParaVisita() {
-            horses.forEach(horse => {
-                horse.selectedForVisit = true;
-            });
-            saveHorsesToStorage();
+        // Criar novo caderno
+        function createCaderno(data) {
+            // Verificar se já existe um caderno ativo
+            if (visitas.cadernosAtivos.length > 0) {
+                if (!confirm('Já existe um caderno ativo. Deseja arquivá-lo e criar um novo?')) {
+                    return;
+                }
+                
+                // Arquivar caderno atual
+                archiveCurrentCaderno();
+            }
+            
+            const novoCaderno = {
+                id: Date.now(),
+                data: data,
+                visitas: []
+            };
+            
+            visitas.cadernosAtivos.push(novoCaderno);
+            saveVisitasToStorage();
+            currentCaderno = novoCaderno;
             renderVisitas();
-            alert('Todos os cavalos marcados para visita!');
+            
+            alert('Caderno criado com sucesso!');
         }
         
-        // Limpar seleção de visitas
-        function limparSelecaoVisitas() {
-            horses.forEach(horse => {
-                horse.selectedForVisit = false;
+        // Arquivar caderno atual
+        function archiveCurrentCaderno() {
+            if (!currentCaderno) return;
+            
+            // Mover caderno ativo para arquivados
+            const index = visitas.cadernosAtivos.findIndex(c => c.id === currentCaderno.id);
+            if (index !== -1) {
+                visitas.cadernosAtivos.splice(index, 1);
+                visitas.cadernosArquivados.push(currentCaderno);
+                saveVisitasToStorage();
+                currentCaderno = null;
+                renderVisitas();
+                
+                alert('Caderno arquivado com sucesso!');
+            }
+        }
+        
+        // Adicionar cavalo à visita
+        function addHorseToVisita(horseId, description) {
+            if (!currentCaderno) {
+                alert('Não há caderno de visitas ativo. Crie um caderno primeiro.');
+                return;
+            }
+            
+            const horse = horses.find(h => h.id === horseId);
+            if (!horse) return;
+            
+            // Verificar se o cavalo já está na visita
+            const existingVisita = currentCaderno.visitas.find(v => v.horseId === horseId);
+            if (existingVisita) {
+                alert('Este cavalo já está na lista de visitas.');
+                return;
+            }
+            
+            // Adicionar à visita
+            currentCaderno.visitas.push({
+                horseId: horseId,
+                name: horse.name,
+                esquadrao: horse.esquadrao,
+                description: description,
+                visited: false
             });
-            saveHorsesToStorage();
+            
+            saveVisitasToStorage();
             renderVisitas();
-            alert('Seleção de visitas limpa!');
+            
+            alert('Cavalo adicionado à visita com sucesso!');
+        }
+        
+        // ========== FUNÇÕES AUXILIARES ==========
+        // Formatar data para exibição
+        function formatDate(dateString) {
+            const date = new Date(dateString);
+            return date.toLocaleDateString('pt-BR');
         }
         
         // ========== FUNÇÕES DE NAVEGAÇÃO ==========
@@ -2895,6 +3251,21 @@
             horseModal.style.display = 'flex';
         }
         
+        // Abrir modal para adicionar à visita
+        function openVisitaModal(horseId) {
+            currentHorseId = horseId;
+            document.getElementById('visitaDescription').value = '';
+            visitaModal.style.display = 'flex';
+        }
+        
+        // Abrir modal para criar caderno
+        function openCadernoModal() {
+            // Definir data padrão como hoje
+            const today = new Date().toISOString().split('T')[0];
+            document.getElementById('cadernoDate').value = today;
+            cadernoModal.style.display = 'flex';
+        }
+        
         // Fechar modais
         function closeHorseModal() {
             horseModal.style.display = 'none';
@@ -2903,6 +3274,14 @@
         function closeHorseDetailModal() {
             horseDetailModal.style.display = 'none';
             showPrescriptionForm = false;
+        }
+        
+        function closeVisitaModal() {
+            visitaModal.style.display = 'none';
+        }
+        
+        function closeCadernoModal() {
+            cadernoModal.style.display = 'none';
         }
         
         // Salvar cavalo (adicionar ou editar)
@@ -2997,6 +3376,36 @@
             alert('Ficha salva com sucesso!');
         }
         
+        // Salvar visita
+        function saveVisita(e) {
+            e.preventDefault();
+            
+            const description = document.getElementById('visitaDescription').value;
+            
+            if (!description) {
+                alert('Por favor, preencha a descrição da visita.');
+                return;
+            }
+            
+            addHorseToVisita(currentHorseId, description);
+            closeVisitaModal();
+        }
+        
+        // Salvar caderno
+        function saveCaderno(e) {
+            e.preventDefault();
+            
+            const date = document.getElementById('cadernoDate').value;
+            
+            if (!date) {
+                alert('Por favor, selecione uma data.');
+                return;
+            }
+            
+            createCaderno(date);
+            closeCadernoModal();
+        }
+        
         // Exportar para PDF
         function exportToPDF(horseId) {
             const horse = horses.find(h => h.id === horseId);
@@ -3037,6 +3446,20 @@
                 closeHorseDetailModal();
                 openEditModal(currentHorseId);
             });
+            btnAddToVisita.addEventListener('click', () => {
+                closeHorseDetailModal();
+                openVisitaModal(currentHorseId);
+            });
+            
+            // Event Listeners do modal de visita
+            closeVisitaModal.addEventListener('click', closeVisitaModal);
+            btnCancelVisita.addEventListener('click', closeVisitaModal);
+            visitaForm.addEventListener('submit', saveVisita);
+            
+            // Event Listeners do modal de caderno
+            closeCadernoModal.addEventListener('click', closeCadernoModal);
+            btnCancelCaderno.addEventListener('click', closeCadernoModal);
+            cadernoForm.addEventListener('submit', saveCaderno);
             
             // Event Listeners para opções de esquadrão
             esquadraoOptions.forEach(option => {
@@ -3065,8 +3488,8 @@
             });
             
             // Event Listeners para visitas
-            btnMarcarVisita.addEventListener('click', marcarTodosParaVisita);
-            btnLimparVisita.addEventListener('click', limparSelecaoVisitas);
+            btnNovoCaderno.addEventListener('click', openCadernoModal);
+            btnArquivarCaderno.addEventListener('click', archiveCurrentCaderno);
             
             // Fechar modais ao clicar fora deles
             window.addEventListener('click', (e) => {
@@ -3075,6 +3498,12 @@
                 }
                 if (e.target === horseDetailModal) {
                     closeHorseDetailModal();
+                }
+                if (e.target === visitaModal) {
+                    closeVisitaModal();
+                }
+                if (e.target === cadernoModal) {
+                    closeCadernoModal();
                 }
             });
             
