@@ -528,16 +528,6 @@
             transform: translateY(-2px);
         }
         
-        .btn-danger {
-            background: #e74c3c;
-            color: white;
-        }
-        
-        .btn-danger:hover {
-            background: #c0392b;
-            transform: translateY(-2px);
-        }
-        
         .alphabet-filter {
             display: flex;
             justify-content: center;
@@ -584,7 +574,6 @@
             border-left: 4px solid #2c7fb8;
             transition: transform 0.3s, box-shadow 0.3s;
             cursor: pointer;
-            position: relative;
         }
         
         .file-card:hover {
@@ -615,7 +604,6 @@
         .file-actions {
             display: flex;
             gap: 10px;
-            flex-wrap: wrap;
         }
         
         .btn-small {
@@ -655,15 +643,6 @@
         
         .btn-visita-small:hover {
             background: #8e44ad;
-        }
-        
-        .btn-delete-small {
-            background: #e74c3c;
-            color: white;
-        }
-        
-        .btn-delete-small:hover {
-            background: #c0392b;
         }
         
         .no-results {
@@ -1184,42 +1163,6 @@
             font-weight: 500;
         }
         
-        /* MODAL DE CONFIRMAÇÃO DE EXCLUSÃO */
-        .confirmation-modal {
-            text-align: center;
-        }
-        
-        .confirmation-icon {
-            font-size: 48px;
-            color: #e74c3c;
-            margin-bottom: 20px;
-        }
-        
-        .confirmation-message {
-            margin-bottom: 25px;
-            color: #555;
-        }
-        
-        .confirmation-warning {
-            background: #ffeaea;
-            padding: 15px;
-            border-radius: 8px;
-            border-left: 4px solid #e74c3c;
-            margin-bottom: 20px;
-            text-align: left;
-        }
-        
-        .confirmation-warning h4 {
-            color: #e74c3c;
-            margin-bottom: 8px;
-        }
-        
-        .confirmation-actions {
-            display: flex;
-            gap: 15px;
-            justify-content: center;
-        }
-        
         @media (max-width: 768px) {
             .header {
                 flex-direction: column;
@@ -1289,10 +1232,6 @@
             .btn-small {
                 justify-content: center;
             }
-            
-            .confirmation-actions {
-                flex-direction: column;
-            }
         }
     </style>
 </head>
@@ -1302,7 +1241,7 @@
         <div class="login-container">
             <div class="logo">
                 <div class="logo-image">
-                    <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTIwIiBoZWlnaHQ9IjEyMCIgdmlld0JveD0iMCAwIDEyMCAxMjAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSIxMjAiIGhlaWdodD0iMTIwIiByeD0iNjAiIGZpbGw9IiMyYzdmYjgiLz4KPHRleHQgeD0iNjAiIHk9IjY1IiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTQiIGZpbGw9IndoaXRlIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5WZXQ8L3RleHQ+Cjx0ZXh0IHg9IjYwIiB5PSI4NSIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjE0IiBmaWxsPSJ3aGl0ZSIgdGV4dC1hbmNob3I9Im1pZGRsZSI+TG9nbzwvdGV4dD4KPC9zdmc+" alt="Logo Veterinária">
+                    <img src="2-rcg-926x926 (1).jpg" alt="Logo Veterinária">
                 </div>
                 <h1>Vet 2°rcg System</h1>
                 <p>Sistema de Gestão Veterinária</p>
@@ -1319,21 +1258,16 @@
                     </select>
                 </div>
                 
-                <div class="form-group" id="usernameGroup">
+                <div class="form-group">
                     <label for="username">Usuário</label>
                     <input type="text" id="username" placeholder="Digite seu usuário" required>
-                </div>
-                
-                <div class="form-group" id="adminUsersGroup" style="display: none;">
-                    <label for="adminUsers">Selecione o Administrador</label>
-                    <select id="adminUsers">
+                    <select id="adminUsers" style="display: none; margin-top: 10px;">
                         <option value="">Selecione um administrador</option>
                         <option value="Maj. Cristovam">Maj. Cristovam</option>
-                        <option value="Ten. Henrique">Ten. Henrique</option>
-                        <option value="Ten. Thayanne">Ten. Thayanne</option>
-                        <option value="Ten. Andressa">Ten. Andressa</option>
-                        <option value="Ten. Aragon">Ten. Aragon</option>
-                        <option value="Ten. Espinho">Ten. Espinho</option>
+                        <option value="Ten. Henrique">Ten. Espinho</option>
+                        <option value="Ten. Thayanne">Ten. Aragon</option>
+                        <option value="Ten. Andressa">Ten. Andressa Alves</option>
+                        <option value="Ten. Aragon">Ten. Thayanne Mara</option>
                     </select>
                 </div>
                 
@@ -1381,7 +1315,7 @@
     <div id="welcomePage">
         <div class="welcome-container">
             <div class="welcome-logo">
-                <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTUwIiBoZWlnaHQ9IjE1MCIgdmlld0JveD0iMCAwIDE1MCAxNTAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSIxNTAiIGhlaWdodD0iMTUwIiByeD0iNzUiIGZpbGw9IiMyYzdmYjgiLz4KPHRleHQgeD0iNzUiIHk9IjgwIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTgiIGZpbGw9IndoaXRlIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5WZXQ8L3RleHQ+Cjx0ZXh0IHg9Ijc1IiB5PSIxMTAiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxOCIgZmlsbD0id2hpdGUiIHRleHQtYW5jaG9yPSJtaWRkbGUiPkxvZ288L3RleHQ+Cjwvc3ZnPg==" alt="Logo Veterinária">
+                <img src="2-rcg-926x926 (1).jpg" alt="Logo Veterinária">
             </div>
             <h1 class="welcome-title">Bem-vindo(a)</h1>
             <h2 class="welcome-subtitle">ao Vet2°rcg System</h2>
@@ -1398,7 +1332,7 @@
         <div class="header">
             <div class="logo-section">
                 <div class="logo-image-small">
-                    <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3Qgd2lkdGg9IjYwIiBoZWlnaHQ9IjYwIiByeD0iMzAiIGZpbGw9IiMyYzdmYjgiLz4KPHRleHQgeD0iMzAiIHk9IjM1IiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTIiIGZpbGw9IndoaXRlIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5WZXQ8L3RleHQ+Cjx0ZXh0IHg9IjMwIiB5PSI1MCIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjEyIiBmaWxsPSJ3aGl0ZSIgdGV4dC1hbmNob3I9Im1pZGRsZSI+TG9nbzwvdGV4dD4KPC9zdmc+" alt="Logo Veterinária">
+                    <img src="2-rcg-926x926 (1).jpg" alt="Logo Veterinária">
                 </div>
                 <div class="logo-text">
                     <h1>Vet 2°rcg System</h1>
@@ -1500,7 +1434,6 @@
                                 <th style="width: 50px;">Visita</th>
                                 <th>Cavalo</th>
                                 <th>Protocolo</th>
-                                <th style="width: 100px;">Ações</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -1517,7 +1450,6 @@
                                 <th style="width: 50px;">Visita</th>
                                 <th>Cavalo</th>
                                 <th>Protocolo</th>
-                                <th style="width: 100px;">Ações</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -1540,18 +1472,18 @@
             <form id="horseForm">
                 <div class="form-row">
                     <div class="form-group">
-                        <label for="horseName">Nome do Cavalo</label>
+                        <label for="horseName">Animal</label>
                         <input type="text" id="horseName" required>
                     </div>
                     <div class="form-group">
-                        <label for="horseId">Identificação</label>
+                        <label for="horseId">Registro</label>
                         <input type="text" id="horseId" required>
                     </div>
                 </div>
                 
                 <div class="form-row">
                     <div class="form-group">
-                        <label for="horseColor">Cor</label>
+                        <label for="horseColor">Pelagem</label>
                         <input type="text" id="horseColor" required>
                     </div>
                     <div class="form-group">
@@ -1611,7 +1543,6 @@
                 <button type="button" class="btn btn-secondary" id="btnCloseDetail">Fechar</button>
                 <button type="button" class="btn btn-primary" id="btnEditHorse">Editar Ficha</button>
                 <button type="button" class="btn btn-visita" id="btnAddToVisita">Adicionar à Visita</button>
-                <button type="button" class="btn btn-danger" id="btnDeleteHorse">Excluir Ficha</button>
             </div>
         </div>
     </div>
@@ -1638,28 +1569,6 @@
         </div>
     </div>
 
-    <!-- Modal de Confirmação de Exclusão -->
-    <div class="modal" id="deleteConfirmationModal">
-        <div class="modal-content confirmation-modal">
-            <div class="confirmation-icon">⚠️</div>
-            <h2 class="modal-title">Confirmar Exclusão</h2>
-            
-            <div class="confirmation-message">
-                <p>Tem certeza que deseja excluir a ficha do cavalo <strong id="deleteHorseName"></strong>?</p>
-            </div>
-            
-            <div class="confirmation-warning">
-                <h4>Atenção</h4>
-                <p>Esta ficha será excluída permanentemente. Todos os dados do cavalo, incluindo histórico médico e prescrições, serão perdidos e não poderão ser recuperados.</p>
-            </div>
-            
-            <div class="confirmation-actions">
-                <button type="button" class="btn btn-secondary" id="btnCancelDelete">Cancelar</button>
-                <button type="button" class="btn btn-danger" id="btnConfirmDelete">Sim, Excluir Permanentemente</button>
-            </div>
-        </div>
-    </div>
-
     <script>
         // ========== CONFIGURAÇÕES DE LOGIN ==========
         // Senhas para cada tipo de permissão
@@ -1675,6 +1584,15 @@
             'moderador': 'Use a senha do Moderador',
             'visitante': 'Use a senha do Visitante'
         };
+        
+        // Lista de administradores
+        const adminUsers = [
+            'Maj. Cristovam',
+            'Ten. Henrique', 
+            'Ten. Thayanne',
+            'Ten. Andressa',
+            'Ten. Espinho'
+        ];
         
         // ========== DADOS DOS CAVALOS ==========
         // Função para carregar dados do localStorage
@@ -1717,8 +1635,7 @@
                             }
                         ],
                         protocolo: "Quarentena - PITE",
-                        selectedForVisit: false,
-                        visitaDescription: ""
+                        selectedForVisit: false
                     },
                     { 
                         id: 2, 
@@ -1746,8 +1663,7 @@
                             }
                         ],
                         protocolo: "Suplementação (Óleo)",
-                        selectedForVisit: false,
-                        visitaDescription: ""
+                        selectedForVisit: false
                     },
                     { 
                         id: 3, 
@@ -1762,8 +1678,7 @@
                         ],
                         prescriptions: [],
                         protocolo: "Quarentena",
-                        selectedForVisit: false,
-                        visitaDescription: ""
+                        selectedForVisit: false
                     }
                 ];
             }
@@ -1784,9 +1699,7 @@
         const filesPage = document.getElementById('filesPage');
         const roleSelect = document.getElementById('role');
         const usernameInput = document.getElementById('username');
-        const usernameGroup = document.getElementById('usernameGroup');
         const adminUsersSelect = document.getElementById('adminUsers');
-        const adminUsersGroup = document.getElementById('adminUsersGroup');
         const passwordInput = document.getElementById('password');
         const passwordHint = document.getElementById('passwordHint');
         const togglePassword = document.getElementById('togglePassword');
@@ -1817,19 +1730,12 @@
         const btnCloseDetail = document.getElementById('btnCloseDetail');
         const btnEditHorse = document.getElementById('btnEditHorse');
         const btnAddToVisita = document.getElementById('btnAddToVisita');
-        const btnDeleteHorse = document.getElementById('btnDeleteHorse');
         
         // Visita
         const visitaModal = document.getElementById('visitaModal');
         const closeVisitaModal = document.getElementById('closeVisitaModal');
         const btnCancelVisita = document.getElementById('btnCancelVisita');
         const visitaForm = document.getElementById('visitaForm');
-        
-        // Exclusão
-        const deleteConfirmationModal = document.getElementById('deleteConfirmationModal');
-        const deleteHorseName = document.getElementById('deleteHorseName');
-        const btnCancelDelete = document.getElementById('btnCancelDelete');
-        const btnConfirmDelete = document.getElementById('btnConfirmDelete');
         
         // Visitas
         const navTabs = document.querySelectorAll('.nav-tab');
@@ -1863,15 +1769,15 @@
                 passwordHint.textContent = '';
             }
             
-            // Mostrar/ocultar campos de usuário baseado no cargo
+            // Mostrar/ocultar select de administradores
             if (selectedRole === 'admin') {
-                usernameGroup.style.display = 'none';
-                adminUsersGroup.style.display = 'block';
+                usernameInput.style.display = 'none';
+                adminUsersSelect.style.display = 'block';
                 adminUsersSelect.required = true;
                 usernameInput.required = false;
             } else {
-                usernameGroup.style.display = 'block';
-                adminUsersGroup.style.display = 'none';
+                usernameInput.style.display = 'block';
+                adminUsersSelect.style.display = 'none';
                 usernameInput.required = true;
                 adminUsersSelect.required = false;
                 usernameInput.value = '';
@@ -1916,15 +1822,7 @@
             e.preventDefault();
             
             const role = document.getElementById('role').value;
-            let username = '';
-            
-            // Obter username baseado no tipo de cargo
-            if (role === 'admin') {
-                username = document.getElementById('adminUsers').value;
-            } else {
-                username = document.getElementById('username').value;
-            }
-            
+            const username = document.getElementById('username').value;
             const password = document.getElementById('password').value;
             
             // Validar se todos os campos foram preenchidos
@@ -1936,11 +1834,7 @@
             }
             
             if (!username) {
-                if (role === 'admin') {
-                    errorMessage.textContent = 'Por favor, selecione um administrador.';
-                } else {
-                    errorMessage.textContent = 'Por favor, preencha o usuário.';
-                }
+                errorMessage.textContent = 'Por favor, preencha o usuário.';
                 errorMessage.style.display = 'block';
                 successMessage.style.display = 'none';
                 return;
@@ -1998,7 +1892,7 @@
             loggedUser.textContent = currentUser;
             generateAlphabetFilter();
             renderHorses();
-            renderVisitas();
+            renderVisi tas();
         }
         
         // Voltar para tela de login
@@ -2009,8 +1903,8 @@
             errorMessage.style.display = 'none';
             successMessage.style.display = 'none';
             passwordHint.textContent = '';
-            usernameGroup.style.display = 'block';
-            adminUsersGroup.style.display = 'none';
+            usernameInput.style.display = 'block';
+            adminUsersSelect.style.display = 'none';
         }
         
         // ========== FUNÇÕES DA TELA DE ARQUIVOS ==========
@@ -2117,7 +2011,6 @@
                             </span>
                         </div>
                         <div><strong>Protocolo:</strong> ${horse.protocolo || 'Nenhum'}</div>
-                        ${horse.selectedForVisit ? '<div style="color: #9b59b6; font-weight: 600;">⭐ Adicionado à Visita</div>' : ''}
                     </div>
                     <div class="file-actions">
                         <button class="btn-small btn-edit" data-id="${horse.id}">
@@ -2141,16 +2034,7 @@
                             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <path d="M19 21V5C19 3.89543 18.1046 3 17 3H7C5.89543 3 5 3.89543 5 5V21M19 21L21 21M19 21H14M5 21L3 21M5 21H10M9 6.99998H15M9 11H15M9 15H13" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                             </svg>
-                            ${horse.selectedForVisit ? 'Remover Visita' : 'Adicionar Visita'}
-                        </button>
-                        <button class="btn-small btn-delete-small" data-id="${horse.id}">
-                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M3 6H5H21" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                <path d="M8 6V4C8 3.46957 8.21071 2.96086 8.58579 2.58579C8.96086 2.21071 9.46957 2 10 2H14C14.5304 2 15.0391 2.21071 15.4142 2.58579C15.7893 2.96086 16 3.46957 16 4V6M19 6V20C19 20.5304 18.7893 21.0391 18.4142 21.4142C18.0391 21.7893 17.5304 22 17 22H7C6.46957 22 5.96086 21.7893 5.58579 21.4142C5.21071 21.0391 5 20.5304 5 20V6H19Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                <path d="M10 11V17" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                <path d="M14 11V17" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                            </svg>
-                            Excluir
+                            Visita
                         </button>
                     </div>
                 `;
@@ -2186,30 +2070,7 @@
                 btn.addEventListener('click', (e) => {
                     e.stopPropagation();
                     const horseId = parseInt(e.currentTarget.getAttribute('data-id'));
-                    const horse = horses.find(h => h.id === horseId);
-                    if (horse) {
-                        if (horse.selectedForVisit) {
-                            // Remover da visita
-                            horse.selectedForVisit = false;
-                            horse.visitaDescription = "";
-                            saveHorsesToStorage();
-                            renderHorses();
-                            renderVisitas();
-                            alert(`${horse.name} removido da visita com sucesso!`);
-                        } else {
-                            // Adicionar à visita
-                            openVisitaModal(horseId);
-                        }
-                    }
-                });
-            });
-            
-            // Adicionar event listeners para os botões de exclusão
-            document.querySelectorAll('.btn-delete-small').forEach(btn => {
-                btn.addEventListener('click', (e) => {
-                    e.stopPropagation();
-                    const horseId = parseInt(e.currentTarget.getAttribute('data-id'));
-                    openDeleteConfirmation(horseId);
+                    openVisitaModal(horseId);
                 });
             });
         }
@@ -2222,8 +2083,8 @@
             dhTable.innerHTML = '';
             
             // Separar cavalos por esquadrão
-            const hipoHorses = horses.filter(horse => horse.esquadrao === 'Hipo' && horse.selectedForVisit);
-            const dhHorses = horses.filter(horse => horse.esquadrao === 'DH' && horse.selectedForVisit);
+            const hipoHorses = horses.filter(horse => horse.esquadrao === 'Hipo');
+            const dhHorses = horses.filter(horse => horse.esquadrao === 'DH');
             
             // Renderizar cavalos HIPO
             hipoHorses.forEach(horse => {
@@ -2235,17 +2096,6 @@
                     <td>${horse.name}</td>
                     <td>
                         ${getProtocoloBadge(horse.protocolo)}
-                    </td>
-                    <td>
-                        <button class="btn-small btn-danger" data-id="${horse.id}">
-                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M3 6H5H21" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                <path d="M8 6V4C8 3.46957 8.21071 2.96086 8.58579 2.58579C8.96086 2.21071 9.46957 2 10 2H14C14.5304 2 15.0391 2.21071 15.4142 2.58579C15.7893 2.96086 16 3.46957 16 4V6M19 6V20C19 20.5304 18.7893 21.0391 18.4142 21.4142C18.0391 21.7893 17.5304 22 17 22H7C6.46957 22 5.96086 21.7893 5.58579 21.4142C5.21071 21.0391 5 20.5304 5 20V6H19Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                <path d="M10 11V17" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                <path d="M14 11V17" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                            </svg>
-                            Remover
-                        </button>
                     </td>
                 `;
                 hipoTable.appendChild(row);
@@ -2262,17 +2112,6 @@
                     <td>
                         ${getProtocoloBadge(horse.protocolo)}
                     </td>
-                    <td>
-                        <button class="btn-small btn-danger" data-id="${horse.id}">
-                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M3 6H5H21" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                <path d="M8 6V4C8 3.46957 8.21071 2.96086 8.58579 2.58579C8.96086 2.21071 9.46957 2 10 2H14C14.5304 2 15.0391 2.21071 15.4142 2.58579C15.7893 2.96086 16 3.46957 16 4V6M19 6V20C19 20.5304 18.7893 21.0391 18.4142 21.4142C18.0391 21.7893 17.5304 22 17 22H7C6.46957 22 5.96086 21.7893 5.58579 21.4142C5.21071 21.0391 5 20.5304 5 20V6H19Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                <path d="M10 11V17" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                <path d="M14 11V17" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                            </svg>
-                            Remover
-                        </button>
-                    </td>
                 `;
                 dhTable.appendChild(row);
             });
@@ -2285,23 +2124,6 @@
                     if (horse) {
                         horse.selectedForVisit = this.checked;
                         saveHorsesToStorage();
-                        renderHorses();
-                    }
-                });
-            });
-            
-            // Adicionar event listeners para os botões de remover
-            document.querySelectorAll('.btn-danger').forEach(btn => {
-                btn.addEventListener('click', function() {
-                    const horseId = parseInt(this.getAttribute('data-id'));
-                    const horse = horses.find(h => h.id === horseId);
-                    if (horse) {
-                        horse.selectedForVisit = false;
-                        horse.visitaDescription = "";
-                        saveHorsesToStorage();
-                        renderHorses();
-                        renderVisitas();
-                        alert(`${horse.name} removido da visita com sucesso!`);
                     }
                 });
             });
@@ -2324,7 +2146,6 @@
         
         // Abrir sistema de visitas
         function abrirSistemaVisitas() {
-            // Redireciona diretamente para a página de visitas
             window.location.href = 'visita.html';
         }
         
@@ -2389,8 +2210,6 @@
                             </span>
                         </p>
                         <p><strong>Protocolo:</strong> ${horse.protocolo || 'Nenhum'}</p>
-                        ${horse.selectedForVisit ? `<p><strong>Status Visita:</strong> <span style="color: #9b59b6; font-weight: 600;">Adicionado à Visita</span></p>` : ''}
-                        ${horse.visitaDescription ? `<p><strong>Descrição da Visita:</strong> ${horse.visitaDescription}</p>` : ''}
                     </div>
                 </div>
                 
@@ -2739,38 +2558,6 @@
             visitaModal.style.display = 'flex';
         }
         
-        // Abrir modal de confirmação de exclusão
-        function openDeleteConfirmation(horseId) {
-            const horse = horses.find(h => h.id === horseId);
-            if (!horse) return;
-            
-            currentHorseId = horseId;
-            deleteHorseName.textContent = horse.name;
-            deleteConfirmationModal.style.display = 'flex';
-        }
-        
-        // Excluir cavalo
-        function deleteHorse() {
-            const horseIndex = horses.findIndex(h => h.id === currentHorseId);
-            if (horseIndex === -1) return;
-            
-            const horseName = horses[horseIndex].name;
-            horses.splice(horseIndex, 1);
-            
-            // Salvar alterações no localStorage
-            saveHorsesToStorage();
-            
-            // Fechar modais
-            closeDeleteConfirmationModal();
-            closeHorseDetailModal();
-            
-            // Atualizar interface
-            renderHorses();
-            renderVisitas();
-            
-            alert(`Ficha do cavalo "${horseName}" excluída permanentemente!`);
-        }
-        
         // Fechar modais
         function closeHorseModal() {
             horseModal.style.display = 'none';
@@ -2785,16 +2572,12 @@
             visitaModal.style.display = 'none';
         }
         
-        function closeDeleteConfirmationModal() {
-            deleteConfirmationModal.style.display = 'none';
-        }
-        
         // Salvar cavalo (adicionar ou editar)
         function saveHorse(e) {
             e.preventDefault();
             
             const horseName = document.getElementById('horseName').value;
-            const horseId = currentHorseId ? currentHorseId : Math.max(0, ...horses.map(h => h.id)) + 1;
+            const horseId = currentHorseId ? currentHorseId : Math.max(...horses.map(h => h.id)) + 1;
             const horseColor = document.getElementById('horseColor').value;
             const horseSex = document.getElementById('horseSex').value;
             const horseHistory = document.getElementById('horseHistory').value;
@@ -2858,8 +2641,7 @@
                 history: historyArray,
                 prescriptions: currentHorseId ? horses.find(h => h.id === currentHorseId).prescriptions : [],
                 protocolo: currentHorseId ? horses.find(h => h.id === currentHorseId).protocolo : "Quarentena",
-                selectedForVisit: currentHorseId ? horses.find(h => h.id === currentHorseId).selectedForVisit : false,
-                visitaDescription: currentHorseId ? horses.find(h => h.id === currentHorseId).visitaDescription : ""
+                selectedForVisit: currentHorseId ? horses.find(h => h.id === currentHorseId).selectedForVisit : false
             };
             
             if (currentHorseId) {
@@ -2893,20 +2675,10 @@
                 return;
             }
             
-            const horse = horses.find(h => h.id === currentHorseId);
-            if (!horse) return;
-            
-            // Adicionar à visita
-            horse.selectedForVisit = true;
-            horse.visitaDescription = description;
-            
-            // Salvar alterações no localStorage
-            saveHorsesToStorage();
-            
+            // Aqui você pode implementar a lógica para salvar a visita
+            // Por enquanto, vamos apenas fechar o modal e mostrar uma mensagem
             closeVisitaModal();
-            renderHorses();
-            renderVisitas();
-            alert(`${horse.name} adicionado à visita com sucesso!\n\nDescrição: ${description}`);
+            alert('Cavalo adicionado à visita com sucesso!\n\nDescrição: ' + description);
         }
         
         // Exportar para PDF
@@ -2951,19 +2723,11 @@
                 closeHorseDetailModal();
                 openVisitaModal(currentHorseId);
             });
-            btnDeleteHorse.addEventListener('click', () => {
-                closeHorseDetailModal();
-                openDeleteConfirmation(currentHorseId);
-            });
             
             // Event Listeners do modal de visita
             closeVisitaModal.addEventListener('click', closeVisitaModal);
             btnCancelVisita.addEventListener('click', closeVisitaModal);
             visitaForm.addEventListener('submit', saveVisita);
-            
-            // Event Listeners do modal de exclusão
-            btnCancelDelete.addEventListener('click', closeDeleteConfirmationModal);
-            btnConfirmDelete.addEventListener('click', deleteHorse);
             
             // Event Listeners para opções de esquadrão
             esquadraoOptions.forEach(option => {
@@ -3004,9 +2768,6 @@
                 }
                 if (e.target === visitaModal) {
                     closeVisitaModal();
-                }
-                if (e.target === deleteConfirmationModal) {
-                    closeDeleteConfirmationModal();
                 }
             });
             
