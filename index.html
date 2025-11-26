@@ -518,6 +518,16 @@
             transform: translateY(-2px);
         }
         
+        .btn-visita {
+            background: #9b59b6;
+            color: white;
+        }
+        
+        .btn-visita:hover {
+            background: #8e44ad;
+            transform: translateY(-2px);
+        }
+        
         .alphabet-filter {
             display: flex;
             justify-content: center;
@@ -624,6 +634,15 @@
         
         .btn-pdf:hover {
             background: #c0392b;
+        }
+        
+        .btn-visita-small {
+            background: #9b59b6;
+            color: white;
+        }
+        
+        .btn-visita-small:hover {
+            background: #8e44ad;
         }
         
         .no-results {
@@ -1132,23 +1151,16 @@
             margin-bottom: 20px;
         }
         
-        .btn-visita {
-            background: #f39c12;
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: 600;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            transition: all 0.3s;
+        /* MODAL PARA ADICIONAR À VISITA */
+        .visita-form-group {
+            margin-bottom: 20px;
         }
         
-        .btn-visita:hover {
-            background: #e67e22;
-            transform: translateY(-2px);
+        .visita-form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #333;
+            font-weight: 500;
         }
         
         @media (max-width: 768px) {
@@ -1212,6 +1224,14 @@
                 display: block;
                 overflow-x: auto;
             }
+            
+            .file-actions {
+                flex-direction: column;
+            }
+            
+            .btn-small {
+                justify-content: center;
+            }
         }
     </style>
 </head>
@@ -1221,7 +1241,8 @@
         <div class="login-container">
             <div class="logo">
                 <div class="logo-image">
-                    <img src="2-rcg-926x926 (1).jpg" alt="Logo Veterinária">
+                    <!-- Imagem base64 para evitar problemas de caminho -->
+                    <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTIwIiBoZWlnaHQ9IjEyMCIgdmlld0JveD0iMCAwIDEyMCAxMjAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSIxMjAiIGhlaWdodD0iMTIwIiByeD0iNjAiIGZpbGw9IiMyYzdmYjgiLz4KPHRleHQgeD0iNjAiIHk9IjY1IiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTQiIGZpbGw9IndoaXRlIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5WZXQ8L3RleHQ+Cjx0ZXh0IHg9IjYwIiB5PSI4NSIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjE0IiBmaWxsPSJ3aGl0ZSIgdGV4dC1hbmNob3I9Im1pZGRsZSI+TG9nbzwvdGV4dD4KPC9zdmc+" alt="Logo Veterinária">
                 </div>
                 <h1>Vet 2°rcg System</h1>
                 <p>Sistema de Gestão Veterinária</p>
@@ -1247,6 +1268,7 @@
                         <option value="Ten. Henrique">Ten. Henrique</option>
                         <option value="Ten. Thayanne">Ten. Thayanne</option>
                         <option value="Ten. Andressa">Ten. Andressa</option>
+                        <option value="Ten. Aragon">Ten. Aragon</option>
                         <option value="Ten. Espinho">Ten. Espinho</option>
                     </select>
                 </div>
@@ -1295,7 +1317,7 @@
     <div id="welcomePage">
         <div class="welcome-container">
             <div class="welcome-logo">
-                <img src="2-rcg-926x926 (1).jpg" alt="Logo Veterinária">
+                <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTUwIiBoZWlnaHQ9IjE1MCIgdmlld0JveD0iMCAwIDE1MCAxNTAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSIxNTAiIGhlaWdodD0iMTUwIiByeD0iNzUiIGZpbGw9IiMyYzdmYjgiLz4KPHRleHQgeD0iNzUiIHk9IjgwIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTgiIGZpbGw9IndoaXRlIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5WZXQ8L3RleHQ+Cjx0ZXh0IHg9Ijc1IiB5PSIxMTAiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxOCIgZmlsbD0id2hpdGUiIHRleHQtYW5jaG9yPSJtaWRkbGUiPkxvZ288L3RleHQ+Cjwvc3ZnPg==" alt="Logo Veterinária">
             </div>
             <h1 class="welcome-title">Bem-vindo(a)</h1>
             <h2 class="welcome-subtitle">ao Vet2°rcg System</h2>
@@ -1312,7 +1334,7 @@
         <div class="header">
             <div class="logo-section">
                 <div class="logo-image-small">
-                    <img src="2-rcg-926x926 (1).jpg" alt="Logo Veterinária">
+                    <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3Qgd2lkdGg9IjYwIiBoZWlnaHQ9IjYwIiByeD0iMzAiIGZpbGw9IiMyYzdmYjgiLz4KPHRleHQgeD0iMzAiIHk9IjM1IiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTIiIGZpbGw9IndoaXRlIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5WZXQ8L3RleHQ+Cjx0ZXh0IHg9IjMwIiB5PSI1MCIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjEyIiBmaWxsPSJ3aGl0ZSIgdGV4dC1hbmNob3I9Im1pZGRsZSI+TG9nbzwvdGV4dD4KPC9zdmc+" alt="Logo Veterinária">
                 </div>
                 <div class="logo-text">
                     <h1>Vet 2°rcg System</h1>
@@ -1398,19 +1420,11 @@
                 </h1>
                 
                 <div class="visit-actions">
-                    <button class="btn btn-primary" id="btnMarcarVisita">
+                    <button class="btn btn-visita" id="btnAbrirVisitas">
                         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M12 5V19" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                            <path d="M5 12H19" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M19 21V5C19 3.89543 18.1046 3 17 3H7C5.89543 3 5 3.89543 5 5V21M19 21L21 21M19 21H14M5 21L3 21M5 21H10M9 6.99998H15M9 11H15M9 15H13" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                         </svg>
-                        Marcar para Visita
-                    </button>
-                    <button class="btn btn-secondary" id="btnLimparVisita">
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M3 6H5H21" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                            <path d="M8 6V4C8 3.46957 8.21071 2.96086 8.58579 2.58579C8.96086 2.21071 9.46957 2 10 2H14C14.5304 2 15.0391 2.21071 15.4142 2.58579C15.7893 2.96086 16 3.46957 16 4V6M19 6V20C19 20.5304 18.7893 21.0391 18.4142 21.4142C18.0391 21.7893 17.5304 22 17 22H7C6.46957 22 5.96086 21.7893 5.58579 21.4142C5.21071 21.0391 5 20.5304 5 20V6H19Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                        </svg>
-                        Limpar Seleção
+                        Abrir Sistema de Visitas
                     </button>
                 </div>
                 
@@ -1530,7 +1544,30 @@
             <div class="modal-actions">
                 <button type="button" class="btn btn-secondary" id="btnCloseDetail">Fechar</button>
                 <button type="button" class="btn btn-primary" id="btnEditHorse">Editar Ficha</button>
+                <button type="button" class="btn btn-visita" id="btnAddToVisita">Adicionar à Visita</button>
             </div>
+        </div>
+    </div>
+
+    <!-- Modal para Adicionar à Visita -->
+    <div class="modal" id="visitaModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">Adicionar à Visita</h2>
+                <button class="close-modal" id="closeVisitaModal">&times;</button>
+            </div>
+            
+            <form id="visitaForm">
+                <div class="visita-form-group">
+                    <label for="visitaDescription">Descrição do que precisa ser feito</label>
+                    <textarea id="visitaDescription" rows="4" placeholder="Descreva o que precisa ser feito com o cavalo..." required></textarea>
+                </div>
+                
+                <div class="modal-actions">
+                    <button type="button" class="btn btn-secondary" id="btnCancelVisita">Cancelar</button>
+                    <button type="submit" class="btn btn-primary">Confirmar</button>
+                </div>
+            </form>
         </div>
     </div>
 
@@ -1597,30 +1634,6 @@
                                     { day: 6, status: null },
                                     { day: 7, status: null }
                                 ]
-                            },
-                            {
-                                id: 2,
-                                medication: "Vitamina E",
-                                dosage: "500mg",
-                                frequency: "1 vez ao dia",
-                                duration: 14,
-                                startDate: "2025-01-10",
-                                medicationDays: [
-                                    { day: 1, status: "applied" },
-                                    { day: 2, status: "applied" },
-                                    { day: 3, status: "applied" },
-                                    { day: 4, status: "applied" },
-                                    { day: 5, status: "applied" },
-                                    { day: 6, status: "applied" },
-                                    { day: 7, status: "applied" },
-                                    { day: 8, status: "not-applied" },
-                                    { day: 9, status: null },
-                                    { day: 10, status: null },
-                                    { day: 11, status: null },
-                                    { day: 12, status: null },
-                                    { day: 13, status: null },
-                                    { day: 14, status: null }
-                                ]
                             }
                         ],
                         protocolo: "Quarentena - PITE",
@@ -1667,373 +1680,6 @@
                         ],
                         prescriptions: [],
                         protocolo: "Quarentena",
-                        selectedForVisit: false
-                    },
-                    { 
-                        id: 4, 
-                        name: "Janeiro", 
-                        color: "Tordilho", 
-                        sex: "Macho", 
-                        esquadrao: "DH",
-                        origem: "",
-                        history: [
-                            { date: "22/11/2025", description: "Atleta em treinamento. Acompanhamento mensal." }
-                        ],
-                        prescriptions: [],
-                        protocolo: "Suplementação (Óleo)",
-                        selectedForVisit: false
-                    },
-                    { 
-                        id: 5, 
-                        name: "Branca", 
-                        color: "Branco", 
-                        sex: "Fêmea", 
-                        esquadrao: "Hipo",
-                        origem: "",
-                        history: [
-                            { date: "12/11/2025", description: "Parte do programa de equoterapia. Saúde excelente." }
-                        ],
-                        prescriptions: [],
-                        protocolo: "Quarentena",
-                        selectedForVisit: false
-                    },
-                    { 
-                        id: 6, 
-                        name: "Bruxo", 
-                        color: "Tordilho", 
-                        sex: "Macho", 
-                        esquadrao: "Outro",
-                        origem: "Capitão Godoy",
-                        history: [
-                            { date: "19/11/2025", description: "Problema respiratório controlado com medicação." }
-                        ],
-                        prescriptions: [],
-                        protocolo: "Corte na Quartela",
-                        selectedForVisit: false
-                    },
-                    // Novos cavalos baseados na imagem
-                    { 
-                        id: 7, 
-                        name: "Ceplêudida", 
-                        color: "Alazão", 
-                        sex: "Fêmea", 
-                        esquadrao: "Hipo",
-                        origem: "",
-                        history: [],
-                        prescriptions: [],
-                        protocolo: "Dermatofitose",
-                        selectedForVisit: false
-                    },
-                    { 
-                        id: 8, 
-                        name: "Elza", 
-                        color: "Tordilho", 
-                        sex: "Fêmea", 
-                        esquadrao: "Hipo",
-                        origem: "",
-                        history: [],
-                        prescriptions: [],
-                        protocolo: "Suplementação (Óleo)",
-                        selectedForVisit: false
-                    },
-                    { 
-                        id: 9, 
-                        name: "Afeição", 
-                        color: "Alazão", 
-                        sex: "Fêmea", 
-                        esquadrao: "Hipo",
-                        origem: "",
-                        history: [],
-                        prescriptions: [],
-                        protocolo: "Quarentena - Não está com reg. diss. sa.",
-                        selectedForVisit: false
-                    },
-                    { 
-                        id: 10, 
-                        name: "Esperança", 
-                        color: "Branco", 
-                        sex: "Fêmea", 
-                        esquadrao: "Hipo",
-                        origem: "",
-                        history: [],
-                        prescriptions: [],
-                        protocolo: "Quarentena - PITE",
-                        selectedForVisit: false
-                    },
-                    { 
-                        id: 11, 
-                        name: "Ganacra", 
-                        color: "Preto", 
-                        sex: "Fêmea", 
-                        esquadrao: "Hipo",
-                        origem: "",
-                        history: [],
-                        prescriptions: [],
-                        protocolo: "Logo Motorizado (Unimprão)",
-                        selectedForVisit: false
-                    },
-                    { 
-                        id: 12, 
-                        name: "Kwaitzwy", 
-                        color: "Tordilho", 
-                        sex: "Macho", 
-                        esquadrao: "Hipo",
-                        origem: "",
-                        history: [],
-                        prescriptions: [],
-                        protocolo: "Quarentena, diss. qual é um ar-dermando?",
-                        selectedForVisit: false
-                    },
-                    { 
-                        id: 13, 
-                        name: "Focada", 
-                        color: "Alazão", 
-                        sex: "Fêmea", 
-                        esquadrao: "Hipo",
-                        origem: "",
-                        history: [],
-                        prescriptions: [],
-                        protocolo: "Quarentena não qual é todos princípios?",
-                        selectedForVisit: false
-                    },
-                    { 
-                        id: 14, 
-                        name: "Gazeta", 
-                        color: "Branco", 
-                        sex: "Fêmea", 
-                        esquadrao: "Hipo",
-                        origem: "",
-                        history: [],
-                        prescriptions: [],
-                        protocolo: "Quarentena",
-                        selectedForVisit: false
-                    },
-                    { 
-                        id: 15, 
-                        name: "Embaixade", 
-                        color: "Tordilho", 
-                        sex: "Macho", 
-                        esquadrao: "Hipo",
-                        origem: "",
-                        history: [],
-                        prescriptions: [],
-                        protocolo: "Logo Motorizado (Unimprão)",
-                        selectedForVisit: false
-                    },
-                    { 
-                        id: 16, 
-                        name: "Viinte", 
-                        color: "Alazão", 
-                        sex: "Macho", 
-                        esquadrao: "Hipo",
-                        origem: "",
-                        history: [],
-                        prescriptions: [],
-                        protocolo: "Coxalgia",
-                        selectedForVisit: false
-                    },
-                    { 
-                        id: 17, 
-                        name: "Ovelhaje", 
-                        color: "Branco", 
-                        sex: "Fêmea", 
-                        esquadrao: "Hipo",
-                        origem: "",
-                        history: [],
-                        prescriptions: [],
-                        protocolo: "Quarentena",
-                        selectedForVisit: false
-                    },
-                    { 
-                        id: 18, 
-                        name: "Éditora", 
-                        color: "Tordilho", 
-                        sex: "Fêmea", 
-                        esquadrao: "Hipo",
-                        origem: "",
-                        history: [],
-                        prescriptions: [],
-                        protocolo: "Dissardura",
-                        selectedForVisit: false
-                    },
-                    { 
-                        id: 19, 
-                        name: "Zara", 
-                        color: "Alazão", 
-                        sex: "Fêmea", 
-                        esquadrao: "Hipo",
-                        origem: "",
-                        history: [],
-                        prescriptions: [],
-                        protocolo: "Quarentena - Descartivo não quantelas?",
-                        selectedForVisit: false
-                    },
-                    { 
-                        id: 20, 
-                        name: "Dilema", 
-                        color: "Tordilho", 
-                        sex: "Macho", 
-                        esquadrao: "DH",
-                        origem: "",
-                        history: [],
-                        prescriptions: [],
-                        protocolo: "Suplementação (Óleo)",
-                        selectedForVisit: false
-                    },
-                    { 
-                        id: 21, 
-                        name: "Esmeralda", 
-                        color: "Alazão", 
-                        sex: "Fêmea", 
-                        esquadrao: "DH",
-                        origem: "",
-                        history: [],
-                        prescriptions: [],
-                        protocolo: "Suplemento (Ujóvaro para a área)",
-                        selectedForVisit: false
-                    },
-                    { 
-                        id: 22, 
-                        name: "Castanha", 
-                        color: "Marrom", 
-                        sex: "Fêmea", 
-                        esquadrao: "DH",
-                        origem: "",
-                        history: [],
-                        prescriptions: [],
-                        protocolo: "Quarentena vai-smartar",
-                        selectedForVisit: false
-                    },
-                    { 
-                        id: 23, 
-                        name: "Manobrarolina", 
-                        color: "Tordilho", 
-                        sex: "Fêmea", 
-                        esquadrao: "DH",
-                        origem: "",
-                        history: [],
-                        prescriptions: [],
-                        protocolo: "Quarentena (Numa) (Não)",
-                        selectedForVisit: false
-                    },
-                    { 
-                        id: 24, 
-                        name: "Vicios", 
-                        color: "Preto", 
-                        sex: "Macho", 
-                        esquadrao: "DH",
-                        origem: "",
-                        history: [],
-                        prescriptions: [],
-                        protocolo: "Código",
-                        selectedForVisit: false
-                    },
-                    { 
-                        id: 25, 
-                        name: "Crescy", 
-                        color: "Alazão", 
-                        sex: "Fêmea", 
-                        esquadrao: "DH",
-                        origem: "",
-                        history: [],
-                        prescriptions: [],
-                        protocolo: "Quarentena não",
-                        selectedForVisit: false
-                    },
-                    { 
-                        id: 26, 
-                        name: "Essultura", 
-                        color: "Branco", 
-                        sex: "Fêmea", 
-                        esquadrao: "DH",
-                        origem: "",
-                        history: [],
-                        prescriptions: [],
-                        protocolo: "Quarentena (Carrea)",
-                        selectedForVisit: false
-                    },
-                    { 
-                        id: 27, 
-                        name: "Batalha", 
-                        color: "Tordilho", 
-                        sex: "Macho", 
-                        esquadrao: "DH",
-                        origem: "",
-                        history: [],
-                        prescriptions: [],
-                        protocolo: "Quarentena (Guarente)",
-                        selectedForVisit: false
-                    },
-                    { 
-                        id: 28, 
-                        name: "Protocolo", 
-                        color: "Alazão", 
-                        sex: "Macho", 
-                        esquadrao: "DH",
-                        origem: "",
-                        history: [],
-                        prescriptions: [],
-                        protocolo: "Salsão",
-                        selectedForVisit: false
-                    },
-                    { 
-                        id: 29, 
-                        name: "Lesão no Ligamento Colateral", 
-                        color: "Tordilho", 
-                        sex: "Macho", 
-                        esquadrao: "DH",
-                        origem: "",
-                        history: [],
-                        prescriptions: [],
-                        protocolo: "Carrier",
-                        selectedForVisit: false
-                    },
-                    { 
-                        id: 30, 
-                        name: "Quadruplo", 
-                        color: "Branco", 
-                        sex: "Macho", 
-                        esquadrao: "DH",
-                        origem: "",
-                        history: [],
-                        prescriptions: [],
-                        protocolo: "Todo banho não",
-                        selectedForVisit: false
-                    },
-                    { 
-                        id: 31, 
-                        name: "Derek", 
-                        color: "Alazão", 
-                        sex: "Macho", 
-                        esquadrao: "DH",
-                        origem: "",
-                        history: [],
-                        prescriptions: [],
-                        protocolo: "Linfangite",
-                        selectedForVisit: false
-                    },
-                    { 
-                        id: 32, 
-                        name: "Maximos", 
-                        color: "Tordilho", 
-                        sex: "Macho", 
-                        esquadrao: "DH",
-                        origem: "",
-                        history: [],
-                        prescriptions: [],
-                        protocolo: "Ferro a P.D. - Caraco",
-                        selectedForVisit: false
-                    },
-                    { 
-                        id: 33, 
-                        name: "Nissan", 
-                        color: "Preto", 
-                        sex: "Macho", 
-                        esquadrao: "DH",
-                        origem: "",
-                        history: [],
-                        prescriptions: [],
-                        protocolo: "Corte na Quartela",
                         selectedForVisit: false
                     }
                 ];
@@ -2085,18 +1731,24 @@
         const closeDetailModal = document.getElementById('closeDetailModal');
         const btnCloseDetail = document.getElementById('btnCloseDetail');
         const btnEditHorse = document.getElementById('btnEditHorse');
+        const btnAddToVisita = document.getElementById('btnAddToVisita');
         
-        // Esquadrão
-        const esquadraoOptions = document.querySelectorAll('.esquadrao-option');
-        const esquadraoOrigem = document.getElementById('esquadraoOrigem');
+        // Visita
+        const visitaModal = document.getElementById('visitaModal');
+        const closeVisitaModal = document.getElementById('closeVisitaModal');
+        const btnCancelVisita = document.getElementById('btnCancelVisita');
+        const visitaForm = document.getElementById('visitaForm');
         
         // Visitas
         const navTabs = document.querySelectorAll('.nav-tab');
         const tabContents = document.querySelectorAll('.tab-content');
-        const btnMarcarVisita = document.getElementById('btnMarcarVisita');
-        const btnLimparVisita = document.getElementById('btnLimparVisita');
+        const btnAbrirVisitas = document.getElementById('btnAbrirVisitas');
         const hipoTable = document.getElementById('hipoTable').querySelector('tbody');
         const dhTable = document.getElementById('dhTable').querySelector('tbody');
+        
+        // Esquadrão
+        const esquadraoOptions = document.querySelectorAll('.esquadrao-option');
+        const esquadraoOrigem = document.getElementById('esquadraoOrigem');
         
         let currentHorseId = null;
         let currentFilter = 'all';
@@ -2203,6 +1855,12 @@
                 errorMessage.style.display = 'none';
                 successMessage.style.display = 'block';
                 currentUser = username;
+                
+                // Salvar dados do usuário
+                localStorage.setItem('vetSystemCurrentUser', JSON.stringify({
+                    name: username,
+                    role: role
+                }));
                 
                 // Redirecionar para a tela de boas-vindas após 1 segundo
                 setTimeout(function() {
@@ -2374,6 +2032,12 @@
                             </svg>
                             PDF
                         </button>
+                        <button class="btn-small btn-visita-small" data-id="${horse.id}">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M19 21V5C19 3.89543 18.1046 3 17 3H7C5.89543 3 5 3.89543 5 5V21M19 21L21 21M19 21H14M5 21L3 21M5 21H10M9 6.99998H15M9 11H15M9 15H13" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                            Visita
+                        </button>
                     </div>
                 `;
                 filesGrid.appendChild(horseCard);
@@ -2400,6 +2064,15 @@
                 btn.addEventListener('click', (e) => {
                     const horseId = parseInt(e.currentTarget.getAttribute('data-id'));
                     exportToPDF(horseId);
+                });
+            });
+            
+            // Adicionar event listeners para os botões de visita
+            document.querySelectorAll('.btn-visita-small').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    const horseId = parseInt(e.currentTarget.getAttribute('data-id'));
+                    openVisitaModal(horseId);
                 });
             });
         }
@@ -2473,24 +2146,10 @@
             }
         }
         
-        // Marcar todos para visita
-        function marcarTodosParaVisita() {
-            horses.forEach(horse => {
-                horse.selectedForVisit = true;
-            });
-            saveHorsesToStorage();
-            renderVisitas();
-            alert('Todos os cavalos marcados para visita!');
-        }
-        
-        // Limpar seleção de visitas
-        function limparSelecaoVisitas() {
-            horses.forEach(horse => {
-                horse.selectedForVisit = false;
-            });
-            saveHorsesToStorage();
-            renderVisitas();
-            alert('Seleção de visitas limpa!');
+        // Abrir sistema de visitas
+        function abrirSistemaVisitas() {
+            alert('Sistema de visitas seria aberto em uma nova página');
+            // window.location.href = 'visita.html';
         }
         
         // ========== FUNÇÕES DE NAVEGAÇÃO ==========
@@ -2513,7 +2172,7 @@
             });
         }
         
-        // ========== FUNÇÕES RESTANTES (mantidas do código anterior) ==========
+        // ========== FUNÇÕES RESTANTES ==========
         // Abrir modal de detalhes do cavalo
         function openHorseDetail(horseId) {
             const horse = horses.find(h => h.id === horseId);
@@ -2895,6 +2554,13 @@
             horseModal.style.display = 'flex';
         }
         
+        // Abrir modal para adicionar à visita
+        function openVisitaModal(horseId) {
+            currentHorseId = horseId;
+            document.getElementById('visitaDescription').value = '';
+            visitaModal.style.display = 'flex';
+        }
+        
         // Fechar modais
         function closeHorseModal() {
             horseModal.style.display = 'none';
@@ -2903,6 +2569,10 @@
         function closeHorseDetailModal() {
             horseDetailModal.style.display = 'none';
             showPrescriptionForm = false;
+        }
+        
+        function closeVisitaModal() {
+            visitaModal.style.display = 'none';
         }
         
         // Salvar cavalo (adicionar ou editar)
@@ -2997,19 +2667,34 @@
             alert('Ficha salva com sucesso!');
         }
         
+        // Salvar visita
+        function saveVisita(e) {
+            e.preventDefault();
+            
+            const description = document.getElementById('visitaDescription').value;
+            
+            if (!description) {
+                alert('Por favor, preencha a descrição da visita.');
+                return;
+            }
+            
+            // Aqui você pode implementar a lógica para salvar a visita
+            // Por enquanto, vamos apenas fechar o modal e mostrar uma mensagem
+            closeVisitaModal();
+            alert('Cavalo adicionado à visita com sucesso!\n\nDescrição: ' + description);
+        }
+        
         // Exportar para PDF
         function exportToPDF(horseId) {
             const horse = horses.find(h => h.id === horseId);
             if (!horse) return;
             
             alert(`Gerando PDF para ${horse.name}...\n\nEm um sistema real, isso geraria um arquivo PDF com todas as informações da ficha.`);
-            // Em um sistema real, aqui você usaria uma biblioteca como jsPDF para gerar o PDF
         }
         
         // Exportar todos para PDF
         function exportAllToPDF() {
             alert('Exportando todas as fichas para PDF...\n\nEm um sistema real, isso geraria um arquivo ZIP com PDFs de todos os cavalos.');
-            // Em um sistema real, aqui você geraria PDFs para todos os cavalos
         }
         
         // Fazer logout
@@ -3037,6 +2722,15 @@
                 closeHorseDetailModal();
                 openEditModal(currentHorseId);
             });
+            btnAddToVisita.addEventListener('click', () => {
+                closeHorseDetailModal();
+                openVisitaModal(currentHorseId);
+            });
+            
+            // Event Listeners do modal de visita
+            closeVisitaModal.addEventListener('click', closeVisitaModal);
+            btnCancelVisita.addEventListener('click', closeVisitaModal);
+            visitaForm.addEventListener('submit', saveVisita);
             
             // Event Listeners para opções de esquadrão
             esquadraoOptions.forEach(option => {
@@ -3065,8 +2759,7 @@
             });
             
             // Event Listeners para visitas
-            btnMarcarVisita.addEventListener('click', marcarTodosParaVisita);
-            btnLimparVisita.addEventListener('click', limparSelecaoVisitas);
+            btnAbrirVisitas.addEventListener('click', abrirSistemaVisitas);
             
             // Fechar modais ao clicar fora deles
             window.addEventListener('click', (e) => {
@@ -3075,6 +2768,9 @@
                 }
                 if (e.target === horseDetailModal) {
                     closeHorseDetailModal();
+                }
+                if (e.target === visitaModal) {
+                    closeVisitaModal();
                 }
             });
             
