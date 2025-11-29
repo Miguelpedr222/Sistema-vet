@@ -541,6 +541,16 @@
             transform: translateY(-2px);
         }
         
+        .btn-danger {
+            background: #e74c3c;
+            color: white;
+        }
+        
+        .btn-danger:hover {
+            background: #c0392b;
+            transform: translateY(-2px);
+        }
+        
         .alphabet-filter {
             display: flex;
             justify-content: center;
@@ -641,11 +651,20 @@
         }
         
         .btn-pdf {
-            background: #e74c3c;
+            background: #3498db;
             color: white;
         }
         
         .btn-pdf:hover {
+            background: #2980b9;
+        }
+        
+        .btn-delete {
+            background: #e74c3c;
+            color: white;
+        }
+        
+        .btn-delete:hover {
             background: #c0392b;
         }
         
@@ -804,63 +823,35 @@
         }
         
         /* NOVOS ESTILOS PARA LINHA DO TEMPO */
-        .timeline {
-            position: relative;
+        .timeline-container {
             margin: 20px 0;
         }
         
-        .timeline::before {
-            content: '';
-            position: absolute;
-            left: 15px;
-            top: 0;
-            bottom: 0;
-            width: 2px;
-            background: #2c7fb8;
-        }
-        
         .timeline-item {
-            position: relative;
-            margin-bottom: 20px;
-            padding-left: 40px;
-        }
-        
-        .timeline-date {
-            position: absolute;
-            left: 0;
-            top: 0;
-            width: 32px;
-            height: 32px;
-            background: #2c7fb8;
-            color: white;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
-            font-size: 12px;
-            z-index: 2;
-        }
-        
-        .timeline-content {
             background: white;
             border: 1px solid #e0e0e0;
             border-radius: 8px;
-            padding: 15px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            margin-bottom: 10px;
+            overflow: hidden;
         }
         
         .timeline-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 10px;
+            padding: 15px;
+            background: #f8f9fa;
+            cursor: pointer;
+            transition: background 0.3s;
         }
         
-        .timeline-title {
+        .timeline-header:hover {
+            background: #e9ecef;
+        }
+        
+        .timeline-date {
             font-weight: 600;
             color: #2c7fb8;
-            font-size: 14px;
         }
         
         .expand-btn {
@@ -879,109 +870,66 @@
         }
         
         .expand-btn:hover {
-            background: #f0f8ff;
+            background: #2c7fb8;
+            color: white;
         }
         
-        .timeline-details {
+        .timeline-content {
             display: none;
-            margin-top: 10px;
-            padding-top: 10px;
+            padding: 15px;
             border-top: 1px solid #e0e0e0;
         }
         
-        .timeline-details.expanded {
+        .timeline-content.expanded {
             display: block;
         }
         
-        .prescription-info {
+        .prescription-item {
             background: #f8f9fa;
-            padding: 10px;
-            border-radius: 5px;
-            margin-bottom: 8px;
+            padding: 12px;
+            border-radius: 6px;
+            margin-bottom: 10px;
+            border-left: 4px solid #2c7fb8;
         }
         
-        .prescription-info:last-child {
-            margin-bottom: 0;
+        .prescription-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
         }
         
         .med-name {
             font-weight: 600;
             color: #2c7fb8;
+            font-size: 14px;
         }
         
         .med-details {
             font-size: 12px;
             color: #666;
-            margin-top: 4px;
+            margin-bottom: 8px;
         }
         
-        .med-schedule {
-            margin-top: 8px;
-            padding: 8px;
-            background: white;
+        .prescription-actions {
+            display: flex;
+            gap: 8px;
+            margin-top: 10px;
+        }
+        
+        .btn-tiny {
+            padding: 4px 8px;
+            border: none;
             border-radius: 4px;
-            border: 1px solid #e0e0e0;
-        }
-        
-        .schedule-title {
-            font-weight: 600;
-            font-size: 11px;
-            color: #555;
-            margin-bottom: 5px;
-        }
-        
-        .days-grid {
-            display: grid;
-            grid-template-columns: repeat(7, 1fr);
-            gap: 4px;
-        }
-        
-        .day-box {
-            width: 25px;
-            height: 25px;
-            border: 1px solid #ddd;
-            border-radius: 3px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 10px;
-            font-weight: 600;
             cursor: pointer;
-            transition: all 0.3s;
-            background: white;
-            position: relative;
-        }
-        
-        .day-box.applied {
-            background: #27ae60;
-            color: white;
-            border-color: #27ae60;
-        }
-        
-        .day-box.not-applied {
-            background: #e74c3c;
-            color: white;
-            border-color: #e74c3c;
-        }
-        
-        .day-box:hover {
-            transform: scale(1.1);
-        }
-        
-        .day-status {
-            position: absolute;
-            top: -2px;
-            right: -2px;
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-            font-size: 6px;
+            font-size: 11px;
             display: flex;
             align-items: center;
-            justify-content: center;
+            gap: 4px;
+            transition: all 0.3s;
         }
         
-        .add-prescription {
+        .add-prescription-section {
             margin-top: 20px;
             padding: 15px;
             background: #e6f7ff;
@@ -1225,10 +1173,6 @@
             
             .horse-detail-grid {
                 grid-template-columns: 1fr;
-            }
-            
-            .days-grid {
-                grid-template-columns: repeat(4, 1fr);
             }
             
             .form-row {
@@ -1589,29 +1533,81 @@
             </div>
             
             <div class="modal-actions">
+                <button type="button" class="btn btn-danger" id="btnDeleteHorse">Excluir Ficha</button>
                 <button type="button" class="btn btn-secondary" id="btnCloseDetail">Fechar</button>
                 <button type="button" class="btn btn-primary" id="btnEditHorse">Editar Ficha</button>
             </div>
         </div>
     </div>
 
+    <!-- Modal Prescrição -->
+    <div class="modal" id="prescriptionModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title" id="prescriptionModalTitle">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M12 4.5V19.5M19.5 12H4.5" stroke="#2c7fb8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    Adicionar Prescrição
+                </h2>
+                <button class="close-modal" id="closePrescriptionModal">&times;</button>
+            </div>
+            
+            <form id="prescriptionForm">
+                <div class="form-group">
+                    <label for="prescriptionDate">Data</label>
+                    <input type="date" id="prescriptionDate" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="prescriptionDescription">Descrição</label>
+                    <textarea id="prescriptionDescription" rows="3" placeholder="Descrição da consulta/procedimento"></textarea>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="medicationName">Medicamento</label>
+                        <input type="text" id="medicationName" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="medicationDosage">Dosagem</label>
+                        <input type="text" id="medicationDosage" required>
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="medicationFrequency">Frequência</label>
+                        <input type="text" id="medicationFrequency" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="medicationDuration">Duração (dias)</label>
+                        <input type="number" id="medicationDuration" min="1" max="90" required>
+                    </div>
+                </div>
+                
+                <div class="modal-actions">
+                    <button type="button" class="btn btn-secondary" id="btnCancelPrescription">Cancelar</button>
+                    <button type="submit" class="btn btn-primary" id="btnSavePrescription">Salvar Prescrição</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
     <script>
         // ========== CONFIGURAÇÕES DE LOGIN ==========
-        // Senhas para cada tipo de permissão
         const passwords = {
             'admin': 'admin123',
             'moderador': 'mod456',
             'visitante': 'estag789'
         };
         
-        // Dicas de senha para cada cargo
         const passwordHints = {
             'admin': 'Use a senha do Administrador',
             'moderador': 'Use a senha do Moderador',
             'visitante': 'Use a senha do Visitante'
         };
         
-        // Lista de administradores
         const adminUsers = [
             'Maj. Cristovam',
             'Ten. Henrique', 
@@ -1621,13 +1617,11 @@
         ];
         
         // ========== DADOS DOS CAVALOS ==========
-        // Função para carregar dados do localStorage
         function loadHorsesFromStorage() {
             const storedHorses = localStorage.getItem('vetSystemHorses');
             if (storedHorses) {
                 return JSON.parse(storedHorses);
             } else {
-                // Dados padrão se não houver nada salvo
                 return [
                     { 
                         id: 1, 
@@ -1638,7 +1632,7 @@
                         origem: "",
                         history: [
                             { 
-                                date: "15/11/2025", 
+                                date: "2025-01-15", 
                                 description: "Pós cirúrgico. Última consulta",
                                 prescriptions: [
                                     {
@@ -1646,52 +1640,20 @@
                                         medication: "Anti-inflamatório",
                                         dosage: "1 comprimido",
                                         frequency: "2 vezes ao dia",
-                                        duration: 7,
-                                        startDate: "2025-01-15",
-                                        medicationDays: [
-                                            { day: 1, status: "applied" },
-                                            { day: 2, status: "applied" },
-                                            { day: 3, status: "not-applied" },
-                                            { day: 4, status: null },
-                                            { day: 5, status: null },
-                                            { day: 6, status: null },
-                                            { day: 7, status: null }
-                                        ]
+                                        duration: 7
                                     }
                                 ]
                             },
                             { 
-                                date: "10/11/2025", 
+                                date: "2025-01-10", 
                                 description: "Aplicação de vacina contra influenza",
-                                prescriptions: []
-                            },
-                            { 
-                                date: "05/11/2025", 
-                                description: "Exame de sangue realizado - resultados normais",
                                 prescriptions: [
                                     {
                                         id: 2,
                                         medication: "Vitamina E",
                                         dosage: "500mg",
                                         frequency: "1 vez ao dia",
-                                        duration: 14,
-                                        startDate: "2025-01-10",
-                                        medicationDays: [
-                                            { day: 1, status: "applied" },
-                                            { day: 2, status: "applied" },
-                                            { day: 3, status: "applied" },
-                                            { day: 4, status: "applied" },
-                                            { day: 5, status: "applied" },
-                                            { day: 6, status: "applied" },
-                                            { day: 7, status: "applied" },
-                                            { day: 8, status: "not-applied" },
-                                            { day: 9, status: null },
-                                            { day: 10, status: null },
-                                            { day: 11, status: null },
-                                            { day: 12, status: null },
-                                            { day: 13, status: null },
-                                            { day: 14, status: null }
-                                        ]
+                                        duration: 14
                                     }
                                 ]
                             }
@@ -1708,7 +1670,7 @@
                         origem: "",
                         history: [
                             { 
-                                date: "20/11/2025", 
+                                date: "2025-01-20", 
                                 description: "Problema articular tratado. Controle semestral.",
                                 prescriptions: [
                                     {
@@ -1716,61 +1678,25 @@
                                         medication: "Suplemento articular",
                                         dosage: "2 comprimidos",
                                         frequency: "1 vez ao dia",
-                                        duration: 30,
-                                        startDate: "2025-01-01",
-                                        medicationDays: Array.from({length: 30}, (_, i) => ({ 
-                                            day: i + 1, 
-                                            status: i < 14 ? "applied" : null 
-                                        }))
+                                        duration: 30
                                     }
                                 ]
-                            },
-                            { 
-                                date: "15/10/2025", 
-                                description: "Aplicação de suplemento articular",
-                                prescriptions: []
                             }
                         ],
                         protocolo: "Suplementação (Óleo)",
-                        selectedForVisit: false
-                    },
-                    // ... (outros cavalos permanecem iguais)
-                    { 
-                        id: 3, 
-                        name: "Gallen", 
-                        color: "Preto", 
-                        sex: "Fêmea", 
-                        esquadrao: "Outro",
-                        origem: "Haras Real",
-                        history: [
-                            { 
-                                date: "18/11/2025", 
-                                description: "Histórico de cólica. Dieta controlada.",
-                                prescriptions: []
-                            },
-                            { 
-                                date: "10/11/2025", 
-                                description: "Exame de rotina - resultados satisfatórios",
-                                prescriptions: []
-                            }
-                        ],
-                        protocolo: "Quarentena",
                         selectedForVisit: false
                     }
                 ];
             }
         }
         
-        // Função para salvar dados no localStorage
         function saveHorsesToStorage() {
             localStorage.setItem('vetSystemHorses', JSON.stringify(horses));
         }
         
-        // Carregar dados iniciais
         let horses = loadHorsesFromStorage();
         
         // ========== ELEMENTOS DO DOM ==========
-        // Login
         const loginPage = document.getElementById('loginPage');
         const welcomePage = document.getElementById('welcomePage');
         const filesPage = document.getElementById('filesPage');
@@ -1785,7 +1711,6 @@
         const loginForm = document.getElementById('loginForm');
         const welcomeUserName = document.getElementById('welcomeUserName');
         
-        // Arquivos
         const alphabetFilter = document.getElementById('alphabetFilter');
         const filesGrid = document.getElementById('filesGrid');
         const searchInput = document.getElementById('searchInput');
@@ -1799,19 +1724,17 @@
         const btnLogout = document.getElementById('btnLogout');
         const loggedUser = document.getElementById('loggedUser');
         
-        // Detalhes do cavalo
         const horseDetailModal = document.getElementById('horseDetailModal');
         const horseDetailTitle = document.getElementById('horseDetailTitle');
         const horseDetailContent = document.getElementById('horseDetailContent');
         const closeDetailModal = document.getElementById('closeDetailModal');
         const btnCloseDetail = document.getElementById('btnCloseDetail');
         const btnEditHorse = document.getElementById('btnEditHorse');
+        const btnDeleteHorse = document.getElementById('btnDeleteHorse');
         
-        // Esquadrão
         const esquadraoOptions = document.querySelectorAll('.esquadrao-option');
         const esquadraoOrigem = document.getElementById('esquadraoOrigem');
         
-        // Visitas
         const navTabs = document.querySelectorAll('.nav-tab');
         const tabContents = document.querySelectorAll('.tab-content');
         const btnMarcarVisita = document.getElementById('btnMarcarVisita');
@@ -1819,31 +1742,34 @@
         const hipoTable = document.getElementById('hipoTable').querySelector('tbody');
         const dhTable = document.getElementById('dhTable').querySelector('tbody');
         
-        // NOVO BOTÃO VISITA
         const btnVisitaRedirect = document.getElementById('btnVisitaRedirect');
+        
+        const prescriptionModal = document.getElementById('prescriptionModal');
+        const prescriptionModalTitle = document.getElementById('prescriptionModalTitle');
+        const closePrescriptionModal = document.getElementById('closePrescriptionModal');
+        const prescriptionForm = document.getElementById('prescriptionForm');
+        const btnCancelPrescription = document.getElementById('btnCancelPrescription');
+        const btnSavePrescription = document.getElementById('btnSavePrescription');
         
         let currentHorseId = null;
         let currentFilter = 'all';
         let currentUser = '';
-        let showPrescriptionForm = false;
+        let currentEditingPrescription = null;
+        let currentEditingDate = null;
         
         // ========== FUNÇÕES DE LOGIN ==========
-        // Alternar entre input de texto e select para administradores
         roleSelect.addEventListener('change', function() {
             const selectedRole = this.value;
             
-            // Limpar mensagens de erro/sucesso
             errorMessage.style.display = 'none';
             successMessage.style.display = 'none';
             
-            // Atualizar dica de senha
             if (selectedRole && passwordHints[selectedRole]) {
                 passwordHint.textContent = passwordHints[selectedRole];
             } else {
                 passwordHint.textContent = '';
             }
             
-            // Mostrar/ocultar select de administradores
             if (selectedRole === 'admin') {
                 usernameInput.style.display = 'none';
                 adminUsersSelect.style.display = 'block';
@@ -1857,23 +1783,19 @@
                 usernameInput.value = '';
             }
             
-            // Limpar seleção do select de administradores
             adminUsersSelect.value = '';
         });
         
-        // Preencher automaticamente o campo de usuário quando selecionar um administrador
         adminUsersSelect.addEventListener('change', function() {
             if (this.value) {
                 usernameInput.value = this.value;
             }
         });
         
-        // Alternar visibilidade da senha
         togglePassword.addEventListener('click', function() {
             const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
             passwordInput.setAttribute('type', type);
             
-            // Alterar ícone do olho
             if (type === 'text') {
                 this.innerHTML = `
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -1891,7 +1813,6 @@
             }
         });
         
-        // Processar o formulário de login
         loginForm.addEventListener('submit', function(e) {
             e.preventDefault();
             
@@ -1899,7 +1820,6 @@
             const username = document.getElementById('username').value;
             const password = document.getElementById('password').value;
             
-            // Validar se todos os campos foram preenchidos
             if (!role) {
                 errorMessage.textContent = 'Por favor, selecione um cargo.';
                 errorMessage.style.display = 'block';
@@ -1921,19 +1841,15 @@
                 return;
             }
             
-            // Verificar se a senha está correta para o cargo selecionado
             if (password === passwords[role]) {
-                // Login bem-sucedido
                 errorMessage.style.display = 'none';
                 successMessage.style.display = 'block';
                 currentUser = username;
                 
-                // Redirecionar para a tela de boas-vindas após 1 segundo
                 setTimeout(function() {
                     showWelcomePage();
                 }, 1000);
             } else {
-                // Senha incorreta
                 errorMessage.textContent = 'Senha incorreta para este cargo. Tente novamente.';
                 errorMessage.style.display = 'block';
                 successMessage.style.display = 'none';
@@ -1941,19 +1857,16 @@
         });
         
         // ========== FUNÇÕES DE TRANSIÇÃO ==========
-        // Mostrar tela de boas-vindas
         function showWelcomePage() {
             loginPage.style.display = 'none';
             welcomePage.style.display = 'flex';
             welcomeUserName.textContent = currentUser;
             
-            // Redirecionar para a tela de arquivos após a animação (4.5 segundos)
             setTimeout(function() {
                 showFilesPage();
             }, 4500);
         }
         
-        // Mostrar tela de arquivos
         function showFilesPage() {
             welcomePage.style.display = 'none';
             filesPage.style.display = 'block';
@@ -1963,7 +1876,6 @@
             renderVisitas();
         }
         
-        // Voltar para tela de login
         function showLoginPage() {
             filesPage.style.display = 'none';
             loginPage.style.display = 'flex';
@@ -1976,19 +1888,16 @@
         }
         
         // ========== FUNÇÕES DA TELA DE ARQUIVOS ==========
-        // Gerar filtro alfabético
         function generateAlphabetFilter() {
             const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
             alphabetFilter.innerHTML = '';
             
-            // Botão "Todos"
             const allButton = document.createElement('button');
             allButton.className = 'letter-btn active';
             allButton.textContent = 'TODOS';
             allButton.addEventListener('click', () => filterHorsesByLetter('all'));
             alphabetFilter.appendChild(allButton);
             
-            // Botões para cada letra
             letters.forEach(letter => {
                 const button = document.createElement('button');
                 button.className = 'letter-btn';
@@ -1998,11 +1907,9 @@
             });
         }
         
-        // Filtrar cavalos por letra
         function filterHorsesByLetter(letter) {
             currentFilter = letter;
             
-            // Atualizar botões ativos
             document.querySelectorAll('.letter-btn').forEach(btn => {
                 btn.classList.remove('active');
             });
@@ -2016,20 +1923,17 @@
             renderHorses();
         }
         
-        // Renderizar lista de cavalos
         function renderHorses() {
             filesGrid.innerHTML = '';
             
             let filteredHorses = [...horses];
             
-            // Aplicar filtro alfabético
             if (currentFilter !== 'all') {
                 filteredHorses = filteredHorses.filter(horse => 
                     horse.name.toUpperCase().startsWith(currentFilter)
                 );
             }
             
-            // Aplicar filtro de busca
             const searchTerm = searchInput.value.toLowerCase();
             if (searchTerm) {
                 filteredHorses = filteredHorses.filter(horse => 
@@ -2039,7 +1943,6 @@
                 );
             }
             
-            // Ordenar alfabeticamente
             filteredHorses.sort((a, b) => a.name.localeCompare(b.name));
             
             if (filteredHorses.length === 0) {
@@ -2052,12 +1955,10 @@
                 return;
             }
             
-            // Renderizar cada cavalo
             filteredHorses.forEach(horse => {
                 const horseCard = document.createElement('div');
                 horseCard.className = 'file-card';
                 
-                // Determinar a classe do badge baseado no esquadrão
                 let badgeClass = '';
                 if (horse.esquadrao === 'Hipo') badgeClass = 'hipo';
                 else if (horse.esquadrao === 'DH') badgeClass = 'dh';
@@ -2098,20 +1999,24 @@
                             </svg>
                             PDF
                         </button>
+                        <button class="btn-small btn-delete" data-id="${horse.id}">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M3 6H5H21" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M8 6V4C8 3.46957 8.21071 2.96086 8.58579 2.58579C8.96086 2.21071 9.46957 2 10 2H14C14.5304 2 15.0391 2.21071 15.4142 2.58579C15.7893 2.96086 16 3.46957 16 4V6M19 6V20C19 20.5304 18.7893 21.0391 18.4142 21.4142C18.0391 21.7893 17.5304 22 17 22H7C6.46957 22 5.96086 21.7893 5.58579 21.4142C5.21071 21.0391 5 20.5304 5 20V6H19Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                            Excluir
+                        </button>
                     </div>
                 `;
                 filesGrid.appendChild(horseCard);
                 
-                // Adicionar evento de clique no card
                 horseCard.addEventListener('click', (e) => {
-                    // Evitar que o clique nos botões abra o modal
                     if (!e.target.closest('.file-actions')) {
                         openHorseDetail(horse.id);
                     }
                 });
             });
             
-            // Adicionar event listeners para os botões de edição
             document.querySelectorAll('.btn-edit').forEach(btn => {
                 btn.addEventListener('click', (e) => {
                     const horseId = parseInt(e.currentTarget.getAttribute('data-id'));
@@ -2119,27 +2024,39 @@
                 });
             });
             
-            // Adicionar event listeners para os botões de PDF
             document.querySelectorAll('.btn-pdf').forEach(btn => {
                 btn.addEventListener('click', (e) => {
                     const horseId = parseInt(e.currentTarget.getAttribute('data-id'));
                     exportToPDF(horseId);
                 });
             });
+            
+            document.querySelectorAll('.btn-delete').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    const horseId = parseInt(e.currentTarget.getAttribute('data-id'));
+                    deleteHorse(horseId);
+                });
+            });
+        }
+        
+        function deleteHorse(horseId) {
+            if (confirm('Tem certeza que deseja excluir esta ficha? Esta ação não pode ser desfeita.')) {
+                horses = horses.filter(horse => horse.id !== horseId);
+                saveHorsesToStorage();
+                renderHorses();
+                alert('Ficha excluída com sucesso!');
+            }
         }
         
         // ========== FUNÇÕES DA ABA DE VISITAS ==========
-        // Renderizar tabelas de visitas
         function renderVisitas() {
-            // Limpar tabelas
             hipoTable.innerHTML = '';
             dhTable.innerHTML = '';
             
-            // Separar cavalos por esquadrão
             const hipoHorses = horses.filter(horse => horse.esquadrao === 'Hipo');
             const dhHorses = horses.filter(horse => horse.esquadrao === 'DH');
             
-            // Renderizar cavalos HIPO
             hipoHorses.forEach(horse => {
                 const row = document.createElement('tr');
                 row.innerHTML = `
@@ -2154,7 +2071,6 @@
                 hipoTable.appendChild(row);
             });
             
-            // Renderizar cavalos DH
             dhHorses.forEach(horse => {
                 const row = document.createElement('tr');
                 row.innerHTML = `
@@ -2169,7 +2085,6 @@
                 dhTable.appendChild(row);
             });
             
-            // Adicionar event listeners para os checkboxes
             document.querySelectorAll('.visit-checkbox').forEach(checkbox => {
                 checkbox.addEventListener('change', function() {
                     const horseId = parseInt(this.getAttribute('data-id'));
@@ -2182,7 +2097,6 @@
             });
         }
         
-        // Obter badge do protocolo
         function getProtocoloBadge(protocolo) {
             if (!protocolo) return '';
             
@@ -2197,7 +2111,6 @@
             }
         }
         
-        // Marcar todos para visita
         function marcarTodosParaVisita() {
             horses.forEach(horse => {
                 horse.selectedForVisit = true;
@@ -2207,7 +2120,6 @@
             alert('Todos os cavalos marcados para visita!');
         }
         
-        // Limpar seleção de visitas
         function limparSelecaoVisitas() {
             horses.forEach(horse => {
                 horse.selectedForVisit = false;
@@ -2218,9 +2130,7 @@
         }
         
         // ========== FUNÇÕES DE NAVEGAÇÃO ==========
-        // Alternar entre abas
         function switchTab(tabName) {
-            // Atualizar botões de navegação
             navTabs.forEach(tab => {
                 tab.classList.remove('active');
                 if (tab.getAttribute('data-tab') === tabName) {
@@ -2228,7 +2138,6 @@
                 }
             });
             
-            // Atualizar conteúdo das abas
             tabContents.forEach(content => {
                 content.classList.remove('active');
                 if (content.id === `${tabName}Tab`) {
@@ -2237,8 +2146,7 @@
             });
         }
         
-        // ========== NOVAS FUNÇÕES PARA LINHA DO TEMPO ==========
-        // Abrir modal de detalhes do cavalo com nova linha do tempo
+        // ========== FUNÇÕES DO HISTÓRICO MÉDICO ==========
         function openHorseDetail(horseId) {
             const horse = horses.find(h => h.id === horseId);
             if (!horse) return;
@@ -2251,13 +2159,11 @@
                 Detalhes - ${horse.name}
             `;
             
-            // Determinar a classe do badge baseado no esquadrão
             let badgeClass = '';
             if (horse.esquadrao === 'Hipo') badgeClass = 'hipo';
             else if (horse.esquadrao === 'DH') badgeClass = 'dh';
             else badgeClass = 'outro';
             
-            // Construir conteúdo dos detalhes
             let detailContent = `
                 <div class="detail-section">
                     <h3>
@@ -2293,66 +2199,57 @@
                         Histórico Médico
                     </h3>
                     <div class="detail-info">
-                        <div class="timeline">
+                        <div class="timeline-container">
             `;
             
-            // Adicionar histórico médico como linha do tempo
             if (horse.history && horse.history.length > 0) {
-                // Ordenar histórico por data (mais recente primeiro)
-                const sortedHistory = [...horse.history].sort((a, b) => {
-                    const dateA = new Date(a.date.split('/').reverse().join('-'));
-                    const dateB = new Date(b.date.split('/').reverse().join('-'));
-                    return dateB - dateA;
-                });
+                const sortedHistory = [...horse.history].sort((a, b) => new Date(b.date) - new Date(a.date));
                 
                 sortedHistory.forEach((item, index) => {
-                    const day = item.date.split('/')[0];
-                    const month = item.date.split('/')[1];
+                    const formattedDate = new Date(item.date).toLocaleDateString('pt-BR');
                     
                     detailContent += `
                         <div class="timeline-item">
-                            <div class="timeline-date">${day}</div>
-                            <div class="timeline-content">
-                                <div class="timeline-header">
-                                    <div class="timeline-title">${item.date} - ${item.description}</div>
-                                    <button class="expand-btn" data-index="${index}">
-                                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                            <path d="M6 9L12 15L18 9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                        </svg>
-                                    </button>
-                                </div>
-                                <div class="timeline-details" id="timeline-details-${index}">
+                            <div class="timeline-header">
+                                <div class="timeline-date">${formattedDate}</div>
+                                <button class="expand-btn" data-index="${index}">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M6 9L12 15L18 9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                    </svg>
+                                </button>
+                            </div>
+                            <div class="timeline-content" id="timeline-content-${index}">
+                                <p><strong>Descrição:</strong> ${item.description}</p>
                     `;
                     
-                    // Adicionar prescrições para esta data
                     if (item.prescriptions && item.prescriptions.length > 0) {
+                        detailContent += `<div style="margin-top: 10px;"><strong>Prescrições:</strong></div>`;
                         item.prescriptions.forEach(prescription => {
                             detailContent += `
-                                <div class="prescription-info">
-                                    <div class="med-name">${prescription.medication}</div>
-                                    <div class="med-details">${prescription.dosage} - ${prescription.frequency}</div>
-                                    <div class="med-schedule">
-                                        <div class="schedule-title">Controle de dosagem (${prescription.duration} dias):</div>
-                                        <div class="days-grid">
-                            `;
-                            
-                            // Gerar quadrados para cada dia
-                            prescription.medicationDays.forEach(dayInfo => {
-                                const statusClass = dayInfo.status ? dayInfo.status : '';
-                                const statusIcon = dayInfo.status === 'applied' ? '✓' : dayInfo.status === 'not-applied' ? '✗' : '';
-                                
-                                detailContent += `
-                                    <div class="day-box ${statusClass}" 
-                                         data-prescription-id="${prescription.id}" 
-                                         data-day="${dayInfo.day}">
-                                        ${dayInfo.day}
-                                        ${statusIcon ? `<div class="day-status">${statusIcon}</div>` : ''}
-                                    </div>
-                                `;
-                            });
-                            
-                            detailContent += `
+                                <div class="prescription-item">
+                                    <div class="prescription-header">
+                                        <div class="med-name">${prescription.medication}</div>
+                                        <div class="prescription-actions">
+                                            <button class="btn-tiny btn-edit" data-date="${item.date}" data-prescription-id="${prescription.id}">
+                                                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                    <path d="M11 4H4C3.46957 4 2.96086 4.21071 2.58579 4.58579C2.21071 4.96086 2 5.46957 2 6V20C2 20.5304 2.21071 21.0391 2.58579 21.4142C2.96086 21.7893 3.46957 22 4 22H18C18.5304 22 19.0391 21.7893 19.4142 21.4142C19.7893 21.0391 20 20.5304 20 20V13" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                                    <path d="M18.5 2.5C18.8978 2.10217 19.4374 1.87868 20 1.87868C20.5626 1.87868 21.1022 2.10217 21.5 2.5C21.8978 2.89782 22.1213 3.43739 22.1213 4C22.1213 4.56261 21.8978 5.10217 21.5 5.5L12 15L8 16L9 12L18.5 2.5Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                                </svg>
+                                                Editar
+                                            </button>
+                                            <button class="btn-tiny btn-delete" data-date="${item.date}" data-prescription-id="${prescription.id}">
+                                                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                    <path d="M3 6H5H21" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                                    <path d="M8 6V4C8 3.46957 8.21071 2.96086 8.58579 2.58579C8.96086 2.21071 9.46957 2 10 2H14C14.5304 2 15.0391 2.21071 15.4142 2.58579C15.7893 2.96086 16 3.46957 16 4V6M19 6V20C19 20.5304 18.7893 21.0391 18.4142 21.4142C18.0391 21.7893 17.5304 22 17 22H7C6.46957 22 5.96086 21.7893 5.58579 21.4142C5.21071 21.0391 5 20.5304 5 20V6H19Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                                </svg>
+                                                Excluir
+                                            </button>
                                         </div>
+                                    </div>
+                                    <div class="med-details">
+                                        <strong>Dosagem:</strong> ${prescription.dosage}<br>
+                                        <strong>Frequência:</strong> ${prescription.frequency}<br>
+                                        <strong>Duração:</strong> ${prescription.duration} dias
                                     </div>
                                 </div>
                             `;
@@ -2362,6 +2259,14 @@
                     }
                     
                     detailContent += `
+                                <div class="add-prescription-section">
+                                    <button class="add-prescription-btn" data-date="${item.date}">
+                                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <path d="M12 5V19" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                            <path d="M5 12H19" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                        </svg>
+                                        Adicionar Prescrição
+                                    </button>
                                 </div>
                             </div>
                         </div>
@@ -2373,106 +2278,200 @@
             
             detailContent += `
                         </div>
+                        <div class="add-prescription-section">
+                            <button class="add-prescription-btn" id="btnAddNewDate">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M12 5V19" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                    <path d="M5 12H19" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                                Adicionar Nova Data
+                            </button>
+                        </div>
                     </div>
                 </div>
             `;
             
             horseDetailContent.innerHTML = detailContent;
             
-            // Adicionar event listeners para os botões de expansão
             document.querySelectorAll('.expand-btn').forEach(btn => {
                 btn.addEventListener('click', function() {
                     const index = this.getAttribute('data-index');
-                    const details = document.getElementById(`timeline-details-${index}`);
-                    const isExpanded = details.classList.contains('expanded');
+                    const content = document.getElementById(`timeline-content-${index}`);
+                    const isExpanded = content.classList.contains('expanded');
                     
-                    // Fechar todos os outros
-                    document.querySelectorAll('.timeline-details').forEach(d => {
-                        d.classList.remove('expanded');
-                    });
-                    document.querySelectorAll('.expand-btn').forEach(b => {
-                        b.innerHTML = `
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M6 9L12 15L18 9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                            </svg>
-                        `;
-                    });
-                    
-                    // Abrir/fechar o atual
                     if (!isExpanded) {
-                        details.classList.add('expanded');
+                        content.classList.add('expanded');
                         this.innerHTML = `
                             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <path d="M6 15L12 9L18 15" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        `;
+                    } else {
+                        content.classList.remove('expanded');
+                        this.innerHTML = `
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M6 9L12 15L18 9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                             </svg>
                         `;
                     }
                 });
             });
             
-            // Adicionar event listeners para os quadrados de dias
-            document.querySelectorAll('.day-box').forEach(box => {
-                box.addEventListener('click', function() {
-                    const prescriptionId = parseInt(this.getAttribute('data-prescription-id'));
-                    const day = parseInt(this.getAttribute('data-day'));
-                    toggleMedicationDay(horseId, prescriptionId, day, this);
+            document.querySelectorAll('.add-prescription-btn[data-date]').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const date = this.getAttribute('data-date');
+                    openPrescriptionModal(null, date);
                 });
+            });
+            
+            document.querySelectorAll('.btn-edit[data-date]').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const date = this.getAttribute('data-date');
+                    const prescriptionId = parseInt(this.getAttribute('data-prescription-id'));
+                    openPrescriptionModal(prescriptionId, date);
+                });
+            });
+            
+            document.querySelectorAll('.btn-delete[data-date]').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const date = this.getAttribute('data-date');
+                    const prescriptionId = parseInt(this.getAttribute('data-prescription-id'));
+                    deletePrescription(date, prescriptionId);
+                });
+            });
+            
+            document.getElementById('btnAddNewDate').addEventListener('click', function() {
+                openPrescriptionModal(null, null);
             });
             
             horseDetailModal.style.display = 'flex';
         }
         
-        // Alternar status do dia da medicação
-        function toggleMedicationDay(horseId, prescriptionId, day, element) {
-            const horse = horses.find(h => h.id === horseId);
-            if (!horse) return;
+        function openPrescriptionModal(prescriptionId, date) {
+            currentEditingPrescription = prescriptionId;
+            currentEditingDate = date;
             
-            // Encontrar a prescrição em qualquer item do histórico
-            let prescription = null;
-            let historyItem = null;
-            
-            for (const item of horse.history) {
-                prescription = item.prescriptions.find(p => p.id === prescriptionId);
-                if (prescription) {
-                    historyItem = item;
-                    break;
+            if (prescriptionId) {
+                prescriptionModalTitle.innerHTML = `
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M11 4H4C3.46957 4 2.96086 4.21071 2.58579 4.58579C2.21071 4.96086 2 5.46957 2 6V20C2 20.5304 2.21071 21.0391 2.58579 21.4142C2.96086 21.7893 3.46957 22 4 22H18C18.5304 22 19.0391 21.7893 19.4142 21.4142C19.7893 21.0391 20 20.5304 20 20V13" stroke="#2c7fb8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M18.5 2.5C18.8978 2.10217 19.4374 1.87868 20 1.87868C20.5626 1.87868 21.1022 2.10217 21.5 2.5C21.8978 2.89782 22.1213 3.43739 22.1213 4C22.1213 4.56261 21.8978 5.10217 21.5 5.5L12 15L8 16L9 12L18.5 2.5Z" stroke="#2c7fb8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    Editar Prescrição
+                `;
+                
+                const horse = horses.find(h => h.id === currentHorseId);
+                const historyItem = horse.history.find(item => item.date === date);
+                const prescription = historyItem.prescriptions.find(p => p.id === prescriptionId);
+                
+                document.getElementById('prescriptionDate').value = date;
+                document.getElementById('prescriptionDescription').value = historyItem.description;
+                document.getElementById('medicationName').value = prescription.medication;
+                document.getElementById('medicationDosage').value = prescription.dosage;
+                document.getElementById('medicationFrequency').value = prescription.frequency;
+                document.getElementById('medicationDuration').value = prescription.duration;
+            } else {
+                prescriptionModalTitle.innerHTML = `
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M12 4.5V19.5M19.5 12H4.5" stroke="#2c7fb8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    Adicionar Prescrição
+                `;
+                
+                prescriptionForm.reset();
+                if (date) {
+                    document.getElementById('prescriptionDate').value = date;
+                    const horse = horses.find(h => h.id === currentHorseId);
+                    const historyItem = horse.history.find(item => item.date === date);
+                    if (historyItem) {
+                        document.getElementById('prescriptionDescription').value = historyItem.description;
+                    }
+                } else {
+                    document.getElementById('prescriptionDate').value = new Date().toISOString().split('T')[0];
                 }
             }
             
-            if (!prescription) return;
+            prescriptionModal.style.display = 'flex';
+        }
+        
+        function deletePrescription(date, prescriptionId) {
+            if (confirm('Tem certeza que deseja excluir esta prescrição?')) {
+                const horse = horses.find(h => h.id === currentHorseId);
+                const historyItem = horse.history.find(item => item.date === date);
+                historyItem.prescriptions = historyItem.prescriptions.filter(p => p.id !== prescriptionId);
+                
+                saveHorsesToStorage();
+                openHorseDetail(currentHorseId);
+                alert('Prescrição excluída com sucesso!');
+            }
+        }
+        
+        prescriptionForm.addEventListener('submit', function(e) {
+            e.preventDefault();
             
-            const dayInfo = prescription.medicationDays.find(d => d.day === day);
-            if (!dayInfo) return;
+            const date = document.getElementById('prescriptionDate').value;
+            const description = document.getElementById('prescriptionDescription').value;
+            const medication = document.getElementById('medicationName').value;
+            const dosage = document.getElementById('medicationDosage').value;
+            const frequency = document.getElementById('medicationFrequency').value;
+            const duration = parseInt(document.getElementById('medicationDuration').value);
             
-            // Ciclo de estados: null -> applied -> not-applied -> null
-            if (dayInfo.status === null) {
-                dayInfo.status = "applied";
-                element.classList.add('applied');
-                element.innerHTML = `${day}<div class="day-status">✓</div>`;
-            } else if (dayInfo.status === "applied") {
-                dayInfo.status = "not-applied";
-                element.classList.remove('applied');
-                element.classList.add('not-applied');
-                element.innerHTML = `${day}<div class="day-status">✗</div>`;
-            } else {
-                dayInfo.status = null;
-                element.classList.remove('not-applied');
-                element.innerHTML = day;
+            const horse = horses.find(h => h.id === currentHorseId);
+            
+            let historyItem = horse.history.find(item => item.date === date);
+            
+            if (!historyItem) {
+                historyItem = {
+                    date: date,
+                    description: description,
+                    prescriptions: []
+                };
+                horse.history.push(historyItem);
+            } else if (description && historyItem.description !== description) {
+                historyItem.description = description;
             }
             
-            // Salvar alterações no localStorage
+            if (currentEditingPrescription) {
+                const prescription = historyItem.prescriptions.find(p => p.id === currentEditingPrescription);
+                if (prescription) {
+                    prescription.medication = medication;
+                    prescription.dosage = dosage;
+                    prescription.frequency = frequency;
+                    prescription.duration = duration;
+                }
+            } else {
+                const newPrescriptionId = historyItem.prescriptions.length > 0 
+                    ? Math.max(...historyItem.prescriptions.map(p => p.id)) + 1 
+                    : 1;
+                
+                historyItem.prescriptions.push({
+                    id: newPrescriptionId,
+                    medication: medication,
+                    dosage: dosage,
+                    frequency: frequency,
+                    duration: duration
+                });
+            }
+            
             saveHorsesToStorage();
+            closePrescriptionModal();
+            openHorseDetail(currentHorseId);
+            alert('Prescrição salva com sucesso!');
+        });
+        
+        function closePrescriptionModal() {
+            prescriptionModal.style.display = 'none';
+            currentEditingPrescription = null;
+            currentEditingDate = null;
         }
         
         // ========== FUNÇÕES RESTANTES ==========
-        // Abrir modal para adicionar/editar cavalo
         function openAddModal() {
             currentHorseId = null;
             modalTitle.textContent = 'Adicionar Novo Cavalo';
             horseForm.reset();
             esquadraoOrigem.style.display = 'none';
             
-            // Limpar seleção de esquadrão
             esquadraoOptions.forEach(option => {
                 option.classList.remove('selected');
             });
@@ -2492,7 +2491,6 @@
             document.getElementById('horseColor').value = horse.color;
             document.getElementById('horseSex').value = horse.sex;
             
-            // Definir esquadrão
             esquadraoOptions.forEach(option => {
                 option.classList.remove('selected');
                 if (option.getAttribute('data-value') === horse.esquadrao) {
@@ -2500,7 +2498,6 @@
                 }
             });
             
-            // Mostrar campo de origem se for "Outro"
             if (horse.esquadrao === 'Outro') {
                 esquadraoOrigem.style.display = 'block';
                 document.getElementById('horseOrigem').value = horse.origem;
@@ -2508,14 +2505,14 @@
                 esquadraoOrigem.style.display = 'none';
             }
             
-            // Converter histórico para string
-            const historyText = horse.history.map(item => `${item.date}: ${item.description}`).join('\n');
+            const historyText = horse.history.map(item => 
+                `${item.date}: ${item.description}${item.prescriptions.length > 0 ? ` (${item.prescriptions.length} prescrições)` : ''}`
+            ).join('\n');
             document.getElementById('horseHistory').value = historyText;
             
             horseModal.style.display = 'flex';
         }
         
-        // Fechar modais
         function closeHorseModal() {
             horseModal.style.display = 'none';
         }
@@ -2524,17 +2521,15 @@
             horseDetailModal.style.display = 'none';
         }
         
-        // Salvar cavalo (adicionar ou editar)
         function saveHorse(e) {
             e.preventDefault();
             
             const horseName = document.getElementById('horseName').value;
-            const horseId = currentHorseId ? currentHorseId : Math.max(...horses.map(h => h.id)) + 1;
+            const horseId = currentHorseId ? currentHorseId : Math.max(0, ...horses.map(h => h.id)) + 1;
             const horseColor = document.getElementById('horseColor').value;
             const horseSex = document.getElementById('horseSex').value;
             const horseHistory = document.getElementById('horseHistory').value;
             
-            // Obter esquadrão selecionado
             let selectedEsquadrao = '';
             let origem = '';
             
@@ -2557,34 +2552,6 @@
                 return;
             }
             
-            // Converter histórico de volta para array
-            const historyArray = [];
-            if (horseHistory) {
-                const lines = horseHistory.split('\n');
-                lines.forEach(line => {
-                    if (line.trim()) {
-                        // Tentar extrair data do início da linha
-                        const dateMatch = line.match(/^(\d{2}\/\d{2}\/\d{4}):\s*(.*)/);
-                        if (dateMatch) {
-                            historyArray.push({
-                                date: dateMatch[1],
-                                description: dateMatch[2],
-                                prescriptions: []
-                            });
-                        } else {
-                            // Se não encontrar formato de data, usar data atual
-                            const today = new Date();
-                            const formattedDate = `${today.getDate().toString().padStart(2, '0')}/${(today.getMonth()+1).toString().padStart(2, '0')}/${today.getFullYear()}`;
-                            historyArray.push({
-                                date: formattedDate,
-                                description: line.trim(),
-                                prescriptions: []
-                            });
-                        }
-                    }
-                });
-            }
-            
             const horseData = {
                 name: horseName,
                 id: horseId,
@@ -2592,32 +2559,27 @@
                 sex: horseSex,
                 esquadrao: selectedEsquadrao,
                 origem: origem,
-                history: currentHorseId ? horses.find(h => h.id === currentHorseId).history : historyArray,
+                history: currentHorseId ? horses.find(h => h.id === currentHorseId).history : [],
                 protocolo: currentHorseId ? horses.find(h => h.id === currentHorseId).protocolo : "Quarentena",
                 selectedForVisit: currentHorseId ? horses.find(h => h.id === currentHorseId).selectedForVisit : false
             };
             
             if (currentHorseId) {
-                // Editar cavalo existente
                 const index = horses.findIndex(h => h.id === currentHorseId);
                 if (index !== -1) {
                     horses[index] = horseData;
                 }
             } else {
-                // Adicionar novo cavalo
                 horses.push(horseData);
             }
             
-            // Salvar alterações no localStorage
             saveHorsesToStorage();
-            
             closeHorseModal();
             renderHorses();
             renderVisitas();
             alert('Ficha salva com sucesso!');
         }
         
-        // Exportar para PDF
         function exportToPDF(horseId) {
             const horse = horses.find(h => h.id === horseId);
             if (!horse) return;
@@ -2625,12 +2587,10 @@
             alert(`Gerando PDF para ${horse.name}...\n\nEm um sistema real, isso geraria um arquivo PDF com todas as informações da ficha.`);
         }
         
-        // Exportar todos para PDF
         function exportAllToPDF() {
             alert('Exportando todas as fichas para PDF...\n\nEm um sistema real, isso geraria um arquivo ZIP com PDFs de todos os cavalos.');
         }
         
-        // Fazer logout
         function logout() {
             if (confirm('Tem certeza que deseja sair do sistema?')) {
                 showLoginPage();
@@ -2639,7 +2599,6 @@
         
         // ========== INICIALIZAÇÃO ==========
         function init() {
-            // Event Listeners da tela de arquivos
             btnAddHorse.addEventListener('click', openAddModal);
             btnExportAll.addEventListener('click', exportAllToPDF);
             closeModal.addEventListener('click', closeHorseModal);
@@ -2648,7 +2607,6 @@
             searchInput.addEventListener('input', renderHorses);
             btnLogout.addEventListener('click', logout);
             
-            // Event Listeners do modal de detalhes
             closeDetailModal.addEventListener('click', closeHorseDetailModal);
             btnCloseDetail.addEventListener('click', closeHorseDetailModal);
             btnEditHorse.addEventListener('click', () => {
@@ -2656,16 +2614,18 @@
                 openEditModal(currentHorseId);
             });
             
-            // Event Listeners para opções de esquadrão
+            btnDeleteHorse.addEventListener('click', () => {
+                if (confirm('Tem certeza que deseja excluir esta ficha? Esta ação não pode ser desfeita.')) {
+                    deleteHorse(currentHorseId);
+                    closeHorseDetailModal();
+                }
+            });
+            
             esquadraoOptions.forEach(option => {
                 option.addEventListener('click', function() {
-                    // Remover seleção de todas as opções
                     esquadraoOptions.forEach(opt => opt.classList.remove('selected'));
-                    
-                    // Selecionar a opção clicada
                     this.classList.add('selected');
                     
-                    // Mostrar/ocultar campo de origem
                     if (this.getAttribute('data-value') === 'Outro') {
                         esquadraoOrigem.style.display = 'block';
                     } else {
@@ -2674,7 +2634,6 @@
                 });
             });
             
-            // Event Listeners para navegação entre abas
             navTabs.forEach(tab => {
                 tab.addEventListener('click', function() {
                     const tabName = this.getAttribute('data-tab');
@@ -2682,26 +2641,22 @@
                 });
             });
             
-            // Event Listeners para visitas
             btnMarcarVisita.addEventListener('click', marcarTodosParaVisita);
             btnLimparVisita.addEventListener('click', limparSelecaoVisitas);
             
-            // NOVO EVENT LISTENER PARA O BOTÃO VISITA
             btnVisitaRedirect.addEventListener('click', function() {
                 window.location.href = 'visita.html';
             });
             
-            // Fechar modais ao clicar fora deles
+            closePrescriptionModal.addEventListener('click', closePrescriptionModal);
+            btnCancelPrescription.addEventListener('click', closePrescriptionModal);
+            
             window.addEventListener('click', (e) => {
-                if (e.target === horseModal) {
-                    closeHorseModal();
-                }
-                if (e.target === horseDetailModal) {
-                    closeHorseDetailModal();
-                }
+                if (e.target === horseModal) closeHorseModal();
+                if (e.target === horseDetailModal) closeHorseDetailModal();
+                if (e.target === prescriptionModal) closePrescriptionModal();
             });
             
-            // Limpar mensagens quando o usuário começar a digitar (login)
             document.getElementById('username').addEventListener('input', function() {
                 errorMessage.style.display = 'none';
                 successMessage.style.display = 'none';
@@ -2713,7 +2668,6 @@
             });
         }
         
-        // Iniciar a aplicação
         init();
     </script>
 </body>
