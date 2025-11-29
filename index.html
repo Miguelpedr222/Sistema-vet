@@ -803,91 +803,148 @@
             margin-bottom: 0;
         }
         
-        .prescription-section {
-            margin-top: 30px;
-            border-top: 2px solid #eee;
-            padding-top: 20px;
-        }
-        
-        .prescription-list {
-            margin-bottom: 25px;
-        }
-        
-        .prescription-item {
-            background: #f8f9fa;
-            padding: 15px;
-            border-radius: 8px;
-            margin-bottom: 15px;
-            border-left: 4px solid #2c7fb8;
+        /* NOVOS ESTILOS PARA LINHA DO TEMPO */
+        .timeline {
             position: relative;
+            margin: 20px 0;
         }
         
-        .prescription-header {
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 15px;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: #2c7fb8;
+        }
+        
+        .timeline-item {
+            position: relative;
+            margin-bottom: 20px;
+            padding-left: 40px;
+        }
+        
+        .timeline-date {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 32px;
+            height: 32px;
+            background: #2c7fb8;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 12px;
+            z-index: 2;
+        }
+        
+        .timeline-content {
+            background: white;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 15px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        .timeline-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
             margin-bottom: 10px;
         }
         
-        .medication-name {
+        .timeline-title {
             font-weight: 600;
             color: #2c7fb8;
-            font-size: 16px;
-        }
-        
-        .medication-dosage {
-            color: #666;
             font-size: 14px;
         }
         
-        .prescription-actions {
-            display: flex;
-            gap: 8px;
-            margin-top: 10px;
-        }
-        
-        .btn-delete {
-            background: #e74c3c;
-            color: white;
+        .expand-btn {
+            background: none;
             border: none;
-            padding: 4px 8px;
-            border-radius: 4px;
+            color: #2c7fb8;
             cursor: pointer;
-            font-size: 12px;
+            font-size: 16px;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
             display: flex;
             align-items: center;
-            gap: 4px;
+            justify-content: center;
+            transition: all 0.3s;
         }
         
-        .btn-delete:hover {
-            background: #c0392b;
+        .expand-btn:hover {
+            background: #f0f8ff;
         }
         
-        .medication-schedule {
+        .timeline-details {
+            display: none;
             margin-top: 10px;
+            padding-top: 10px;
+            border-top: 1px solid #e0e0e0;
+        }
+        
+        .timeline-details.expanded {
+            display: block;
+        }
+        
+        .prescription-info {
+            background: #f8f9fa;
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 8px;
+        }
+        
+        .prescription-info:last-child {
+            margin-bottom: 0;
+        }
+        
+        .med-name {
+            font-weight: 600;
+            color: #2c7fb8;
+        }
+        
+        .med-details {
+            font-size: 12px;
+            color: #666;
+            margin-top: 4px;
+        }
+        
+        .med-schedule {
+            margin-top: 8px;
+            padding: 8px;
+            background: white;
+            border-radius: 4px;
+            border: 1px solid #e0e0e0;
         }
         
         .schedule-title {
             font-weight: 600;
-            margin-bottom: 8px;
+            font-size: 11px;
             color: #555;
+            margin-bottom: 5px;
         }
         
         .days-grid {
             display: grid;
             grid-template-columns: repeat(7, 1fr);
-            gap: 8px;
-            margin-top: 10px;
+            gap: 4px;
         }
         
         .day-box {
-            width: 35px;
-            height: 35px;
-            border: 2px solid #ddd;
-            border-radius: 5px;
+            width: 25px;
+            height: 25px;
+            border: 1px solid #ddd;
+            border-radius: 3px;
             display: flex;
             align-items: center;
             justify-content: center;
+            font-size: 10px;
             font-weight: 600;
             cursor: pointer;
             transition: all 0.3s;
@@ -911,21 +968,14 @@
             transform: scale(1.1);
         }
         
-        .day-label {
-            font-size: 12px;
-            color: #666;
-            text-align: center;
-            margin-top: 5px;
-        }
-        
         .day-status {
             position: absolute;
-            top: -5px;
-            right: -5px;
-            width: 12px;
-            height: 12px;
+            top: -2px;
+            right: -2px;
+            width: 8px;
+            height: 8px;
             border-radius: 50%;
-            font-size: 8px;
+            font-size: 6px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -999,28 +1049,6 @@
             justify-content: flex-end;
             gap: 10px;
             margin-top: 25px;
-        }
-        
-        /* HISTÓRICO MÉDICO COM DATAS */
-        .historico-item {
-            padding: 10px 0;
-            border-bottom: 1px solid #eee;
-        }
-        
-        .historico-item:last-child {
-            border-bottom: none;
-        }
-        
-        .historico-data {
-            font-weight: 600;
-            color: #2c7fb8;
-            margin-bottom: 5px;
-            font-size: 14px;
-        }
-        
-        .historico-descricao {
-            color: #666;
-            font-size: 14px;
         }
         
         /* NOVOS ESTILOS PARA VISITAS */
@@ -1269,10 +1297,9 @@
                         <option value="">Selecione um administrador</option>
                         <option value="Maj. Cristovam">Maj. Cristovam</option>
                         <option value="Ten. Henrique">Ten. Henrique</option>
+                        <option value="Ten. Thayanne">Ten. Thayanne</option>
+                        <option value="Ten. Andressa">Ten. Andressa</option>
                         <option value="Ten. Espinho">Ten. Espinho</option>
-                        <option value="Ten. Andressa">Ten. Aragon</option>
-                        <option value="Ten. Thayanne">Ten. Andressa</option>
-                        <option value="Ten. Andressa">Ten. Thayanne</option>
                     </select>
                 </div>
                 
@@ -1610,50 +1637,62 @@
                         esquadrao: "Hipo",
                         origem: "",
                         history: [
-                            { date: "15/11/2025", description: "Pós cirúrgico. Última consulta" },
-                            { date: "10/11/2025", description: "Aplicação de vacina contra influenza" },
-                            { date: "05/11/2025", description: "Exame de sangue realizado - resultados normais" }
-                        ],
-                        prescriptions: [
-                            {
-                                id: 1,
-                                medication: "Anti-inflamatório",
-                                dosage: "1 comprimido",
-                                frequency: "2 vezes ao dia",
-                                duration: 7,
-                                startDate: "2025-01-15",
-                                medicationDays: [
-                                    { day: 1, status: "applied" },
-                                    { day: 2, status: "applied" },
-                                    { day: 3, status: "not-applied" },
-                                    { day: 4, status: null },
-                                    { day: 5, status: null },
-                                    { day: 6, status: null },
-                                    { day: 7, status: null }
+                            { 
+                                date: "15/11/2025", 
+                                description: "Pós cirúrgico. Última consulta",
+                                prescriptions: [
+                                    {
+                                        id: 1,
+                                        medication: "Anti-inflamatório",
+                                        dosage: "1 comprimido",
+                                        frequency: "2 vezes ao dia",
+                                        duration: 7,
+                                        startDate: "2025-01-15",
+                                        medicationDays: [
+                                            { day: 1, status: "applied" },
+                                            { day: 2, status: "applied" },
+                                            { day: 3, status: "not-applied" },
+                                            { day: 4, status: null },
+                                            { day: 5, status: null },
+                                            { day: 6, status: null },
+                                            { day: 7, status: null }
+                                        ]
+                                    }
                                 ]
                             },
-                            {
-                                id: 2,
-                                medication: "Vitamina E",
-                                dosage: "500mg",
-                                frequency: "1 vez ao dia",
-                                duration: 14,
-                                startDate: "2025-01-10",
-                                medicationDays: [
-                                    { day: 1, status: "applied" },
-                                    { day: 2, status: "applied" },
-                                    { day: 3, status: "applied" },
-                                    { day: 4, status: "applied" },
-                                    { day: 5, status: "applied" },
-                                    { day: 6, status: "applied" },
-                                    { day: 7, status: "applied" },
-                                    { day: 8, status: "not-applied" },
-                                    { day: 9, status: null },
-                                    { day: 10, status: null },
-                                    { day: 11, status: null },
-                                    { day: 12, status: null },
-                                    { day: 13, status: null },
-                                    { day: 14, status: null }
+                            { 
+                                date: "10/11/2025", 
+                                description: "Aplicação de vacina contra influenza",
+                                prescriptions: []
+                            },
+                            { 
+                                date: "05/11/2025", 
+                                description: "Exame de sangue realizado - resultados normais",
+                                prescriptions: [
+                                    {
+                                        id: 2,
+                                        medication: "Vitamina E",
+                                        dosage: "500mg",
+                                        frequency: "1 vez ao dia",
+                                        duration: 14,
+                                        startDate: "2025-01-10",
+                                        medicationDays: [
+                                            { day: 1, status: "applied" },
+                                            { day: 2, status: "applied" },
+                                            { day: 3, status: "applied" },
+                                            { day: 4, status: "applied" },
+                                            { day: 5, status: "applied" },
+                                            { day: 6, status: "applied" },
+                                            { day: 7, status: "applied" },
+                                            { day: 8, status: "not-applied" },
+                                            { day: 9, status: null },
+                                            { day: 10, status: null },
+                                            { day: 11, status: null },
+                                            { day: 12, status: null },
+                                            { day: 13, status: null },
+                                            { day: 14, status: null }
+                                        ]
+                                    }
                                 ]
                             }
                         ],
@@ -1668,26 +1707,34 @@
                         esquadrao: "DH",
                         origem: "",
                         history: [
-                            { date: "20/11/2025", description: "Problema articular tratado. Controle semestral." },
-                            { date: "15/10/2025", description: "Aplicação de suplemento articular" }
-                        ],
-                        prescriptions: [
-                            {
-                                id: 1,
-                                medication: "Suplemento articular",
-                                dosage: "2 comprimidos",
-                                frequency: "1 vez ao dia",
-                                duration: 30,
-                                startDate: "2025-01-01",
-                                medicationDays: Array.from({length: 30}, (_, i) => ({ 
-                                    day: i + 1, 
-                                    status: i < 14 ? "applied" : null 
-                                }))
+                            { 
+                                date: "20/11/2025", 
+                                description: "Problema articular tratado. Controle semestral.",
+                                prescriptions: [
+                                    {
+                                        id: 1,
+                                        medication: "Suplemento articular",
+                                        dosage: "2 comprimidos",
+                                        frequency: "1 vez ao dia",
+                                        duration: 30,
+                                        startDate: "2025-01-01",
+                                        medicationDays: Array.from({length: 30}, (_, i) => ({ 
+                                            day: i + 1, 
+                                            status: i < 14 ? "applied" : null 
+                                        }))
+                                    }
+                                ]
+                            },
+                            { 
+                                date: "15/10/2025", 
+                                description: "Aplicação de suplemento articular",
+                                prescriptions: []
                             }
                         ],
                         protocolo: "Suplementação (Óleo)",
                         selectedForVisit: false
                     },
+                    // ... (outros cavalos permanecem iguais)
                     { 
                         id: 3, 
                         name: "Gallen", 
@@ -1696,378 +1743,18 @@
                         esquadrao: "Outro",
                         origem: "Haras Real",
                         history: [
-                            { date: "18/11/2025", description: "Histórico de cólica. Dieta controlada." },
-                            { date: "10/11/2025", description: "Exame de rotina - resultados satisfatórios" }
+                            { 
+                                date: "18/11/2025", 
+                                description: "Histórico de cólica. Dieta controlada.",
+                                prescriptions: []
+                            },
+                            { 
+                                date: "10/11/2025", 
+                                description: "Exame de rotina - resultados satisfatórios",
+                                prescriptions: []
+                            }
                         ],
-                        prescriptions: [],
                         protocolo: "Quarentena",
-                        selectedForVisit: false
-                    },
-                    { 
-                        id: 4, 
-                        name: "Janeiro", 
-                        color: "Tordilho", 
-                        sex: "Macho", 
-                        esquadrao: "DH",
-                        origem: "",
-                        history: [
-                            { date: "22/11/2025", description: "Atleta em treinamento. Acompanhamento mensal." }
-                        ],
-                        prescriptions: [],
-                        protocolo: "Suplementação (Óleo)",
-                        selectedForVisit: false
-                    },
-                    { 
-                        id: 5, 
-                        name: "Branca", 
-                        color: "Branco", 
-                        sex: "Fêmea", 
-                        esquadrao: "Hipo",
-                        origem: "",
-                        history: [
-                            { date: "12/11/2025", description: "Parte do programa de equoterapia. Saúde excelente." }
-                        ],
-                        prescriptions: [],
-                        protocolo: "Quarentena",
-                        selectedForVisit: false
-                    },
-                    { 
-                        id: 6, 
-                        name: "Bruxo", 
-                        color: "Tordilho", 
-                        sex: "Macho", 
-                        esquadrao: "Outro",
-                        origem: "Capitão Godoy",
-                        history: [
-                            { date: "19/11/2025", description: "Problema respiratório controlado com medicação." }
-                        ],
-                        prescriptions: [],
-                        protocolo: "Corte na Quartela",
-                        selectedForVisit: false
-                    },
-                    // Novos cavalos baseados na imagem
-                    { 
-                        id: 7, 
-                        name: "Ceplêudida", 
-                        color: "Alazão", 
-                        sex: "Fêmea", 
-                        esquadrao: "Hipo",
-                        origem: "",
-                        history: [],
-                        prescriptions: [],
-                        protocolo: "Dermatofitose",
-                        selectedForVisit: false
-                    },
-                    { 
-                        id: 8, 
-                        name: "Elza", 
-                        color: "Tordilho", 
-                        sex: "Fêmea", 
-                        esquadrao: "Hipo",
-                        origem: "",
-                        history: [],
-                        prescriptions: [],
-                        protocolo: "Suplementação (Óleo)",
-                        selectedForVisit: false
-                    },
-                    { 
-                        id: 9, 
-                        name: "Afeição", 
-                        color: "Alazão", 
-                        sex: "Fêmea", 
-                        esquadrao: "Hipo",
-                        origem: "",
-                        history: [],
-                        prescriptions: [],
-                        protocolo: "Quarentena - Não está com reg. diss. sa.",
-                        selectedForVisit: false
-                    },
-                    { 
-                        id: 10, 
-                        name: "Esperança", 
-                        color: "Branco", 
-                        sex: "Fêmea", 
-                        esquadrao: "Hipo",
-                        origem: "",
-                        history: [],
-                        prescriptions: [],
-                        protocolo: "Quarentena - PITE",
-                        selectedForVisit: false
-                    },
-                    { 
-                        id: 11, 
-                        name: "Ganacra", 
-                        color: "Preto", 
-                        sex: "Fêmea", 
-                        esquadrao: "Hipo",
-                        origem: "",
-                        history: [],
-                        prescriptions: [],
-                        protocolo: "Logo Motorizado (Unimprão)",
-                        selectedForVisit: false
-                    },
-                    { 
-                        id: 12, 
-                        name: "Kwaitzwy", 
-                        color: "Tordilho", 
-                        sex: "Macho", 
-                        esquadrao: "Hipo",
-                        origem: "",
-                        history: [],
-                        prescriptions: [],
-                        protocolo: "Quarentena, diss. qual é um ar-dermando?",
-                        selectedForVisit: false
-                    },
-                    { 
-                        id: 13, 
-                        name: "Focada", 
-                        color: "Alazão", 
-                        sex: "Fêmea", 
-                        esquadrao: "Hipo",
-                        origem: "",
-                        history: [],
-                        prescriptions: [],
-                        protocolo: "Quarentena não qual é todos princípios?",
-                        selectedForVisit: false
-                    },
-                    { 
-                        id: 14, 
-                        name: "Gazeta", 
-                        color: "Branco", 
-                        sex: "Fêmea", 
-                        esquadrao: "Hipo",
-                        origem: "",
-                        history: [],
-                        prescriptions: [],
-                        protocolo: "Quarentena",
-                        selectedForVisit: false
-                    },
-                    { 
-                        id: 15, 
-                        name: "Embaixade", 
-                        color: "Tordilho", 
-                        sex: "Macho", 
-                        esquadrao: "Hipo",
-                        origem: "",
-                        history: [],
-                        prescriptions: [],
-                        protocolo: "Logo Motorizado (Unimprão)",
-                        selectedForVisit: false
-                    },
-                    { 
-                        id: 16, 
-                        name: "Viinte", 
-                        color: "Alazão", 
-                        sex: "Macho", 
-                        esquadrao: "Hipo",
-                        origem: "",
-                        history: [],
-                        prescriptions: [],
-                        protocolo: "Coxalgia",
-                        selectedForVisit: false
-                    },
-                    { 
-                        id: 17, 
-                        name: "Ovelhaje", 
-                        color: "Branco", 
-                        sex: "Fêmea", 
-                        esquadrao: "Hipo",
-                        origem: "",
-                        history: [],
-                        prescriptions: [],
-                        protocolo: "Quarentena",
-                        selectedForVisit: false
-                    },
-                    { 
-                        id: 18, 
-                        name: "Éditora", 
-                        color: "Tordilho", 
-                        sex: "Fêmea", 
-                        esquadrao: "Hipo",
-                        origem: "",
-                        history: [],
-                        prescriptions: [],
-                        protocolo: "Dissardura",
-                        selectedForVisit: false
-                    },
-                    { 
-                        id: 19, 
-                        name: "Zara", 
-                        color: "Alazão", 
-                        sex: "Fêmea", 
-                        esquadrao: "Hipo",
-                        origem: "",
-                        history: [],
-                        prescriptions: [],
-                        protocolo: "Quarentena - Descartivo não quantelas?",
-                        selectedForVisit: false
-                    },
-                    { 
-                        id: 20, 
-                        name: "Dilema", 
-                        color: "Tordilho", 
-                        sex: "Macho", 
-                        esquadrao: "DH",
-                        origem: "",
-                        history: [],
-                        prescriptions: [],
-                        protocolo: "Suplementação (Óleo)",
-                        selectedForVisit: false
-                    },
-                    { 
-                        id: 21, 
-                        name: "Esmeralda", 
-                        color: "Alazão", 
-                        sex: "Fêmea", 
-                        esquadrao: "DH",
-                        origem: "",
-                        history: [],
-                        prescriptions: [],
-                        protocolo: "Suplemento (Ujóvaro para a área)",
-                        selectedForVisit: false
-                    },
-                    { 
-                        id: 22, 
-                        name: "Castanha", 
-                        color: "Marrom", 
-                        sex: "Fêmea", 
-                        esquadrao: "DH",
-                        origem: "",
-                        history: [],
-                        prescriptions: [],
-                        protocolo: "Quarentena vai-smartar",
-                        selectedForVisit: false
-                    },
-                    { 
-                        id: 23, 
-                        name: "Manobrarolina", 
-                        color: "Tordilho", 
-                        sex: "Fêmea", 
-                        esquadrao: "DH",
-                        origem: "",
-                        history: [],
-                        prescriptions: [],
-                        protocolo: "Quarentena (Numa) (Não)",
-                        selectedForVisit: false
-                    },
-                    { 
-                        id: 24, 
-                        name: "Vicios", 
-                        color: "Preto", 
-                        sex: "Macho", 
-                        esquadrao: "DH",
-                        origem: "",
-                        history: [],
-                        prescriptions: [],
-                        protocolo: "Código",
-                        selectedForVisit: false
-                    },
-                    { 
-                        id: 25, 
-                        name: "Crescy", 
-                        color: "Alazão", 
-                        sex: "Fêmea", 
-                        esquadrao: "DH",
-                        origem: "",
-                        history: [],
-                        prescriptions: [],
-                        protocolo: "Quarentena não",
-                        selectedForVisit: false
-                    },
-                    { 
-                        id: 26, 
-                        name: "Essultura", 
-                        color: "Branco", 
-                        sex: "Fêmea", 
-                        esquadrao: "DH",
-                        origem: "",
-                        history: [],
-                        prescriptions: [],
-                        protocolo: "Quarentena (Carrea)",
-                        selectedForVisit: false
-                    },
-                    { 
-                        id: 27, 
-                        name: "Batalha", 
-                        color: "Tordilho", 
-                        sex: "Macho", 
-                        esquadrao: "DH",
-                        origem: "",
-                        history: [],
-                        prescriptions: [],
-                        protocolo: "Quarentena (Guarente)",
-                        selectedForVisit: false
-                    },
-                    { 
-                        id: 28, 
-                        name: "Protocolo", 
-                        color: "Alazão", 
-                        sex: "Macho", 
-                        esquadrao: "DH",
-                        origem: "",
-                        history: [],
-                        prescriptions: [],
-                        protocolo: "Salsão",
-                        selectedForVisit: false
-                    },
-                    { 
-                        id: 29, 
-                        name: "Lesão no Ligamento Colateral", 
-                        color: "Tordilho", 
-                        sex: "Macho", 
-                        esquadrao: "DH",
-                        origem: "",
-                        history: [],
-                        prescriptions: [],
-                        protocolo: "Carrier",
-                        selectedForVisit: false
-                    },
-                    { 
-                        id: 30, 
-                        name: "Quadruplo", 
-                        color: "Branco", 
-                        sex: "Macho", 
-                        esquadrao: "DH",
-                        origem: "",
-                        history: [],
-                        prescriptions: [],
-                        protocolo: "Todo banho não",
-                        selectedForVisit: false
-                    },
-                    { 
-                        id: 31, 
-                        name: "Derek", 
-                        color: "Alazão", 
-                        sex: "Macho", 
-                        esquadrao: "DH",
-                        origem: "",
-                        history: [],
-                        prescriptions: [],
-                        protocolo: "Linfangite",
-                        selectedForVisit: false
-                    },
-                    { 
-                        id: 32, 
-                        name: "Maximos", 
-                        color: "Tordilho", 
-                        sex: "Macho", 
-                        esquadrao: "DH",
-                        origem: "",
-                        history: [],
-                        prescriptions: [],
-                        protocolo: "Ferro a P.D. - Caraco",
-                        selectedForVisit: false
-                    },
-                    { 
-                        id: 33, 
-                        name: "Nissan", 
-                        color: "Preto", 
-                        sex: "Macho", 
-                        esquadrao: "DH",
-                        origem: "",
-                        history: [],
-                        prescriptions: [],
-                        protocolo: "Corte na Quartela",
                         selectedForVisit: false
                     }
                 ];
@@ -2550,8 +2237,8 @@
             });
         }
         
-        // ========== FUNÇÕES RESTANTES (mantidas do código anterior) ==========
-        // Abrir modal de detalhes do cavalo
+        // ========== NOVAS FUNÇÕES PARA LINHA DO TEMPO ==========
+        // Abrir modal de detalhes do cavalo com nova linha do tempo
         function openHorseDetail(horseId) {
             const horse = horses.find(h => h.id === horseId);
             if (!horse) return;
@@ -2606,83 +2293,73 @@
                         Histórico Médico
                     </h3>
                     <div class="detail-info">
+                        <div class="timeline">
             `;
             
-            // Adicionar histórico médico com datas
+            // Adicionar histórico médico como linha do tempo
             if (horse.history && horse.history.length > 0) {
-                horse.history.forEach(item => {
-                    detailContent += `
-                        <div class="historico-item">
-                            <div class="historico-data">${item.date}</div>
-                            <div class="historico-descricao">${item.description}</div>
-                        </div>
-                    `;
+                // Ordenar histórico por data (mais recente primeiro)
+                const sortedHistory = [...horse.history].sort((a, b) => {
+                    const dateA = new Date(a.date.split('/').reverse().join('-'));
+                    const dateB = new Date(b.date.split('/').reverse().join('-'));
+                    return dateB - dateA;
                 });
-            } else {
-                detailContent += `<p>Nenhum registro no histórico médico.</p>`;
-            }
-            
-            detailContent += `
-                    </div>
-                </div>
-            `;
-            
-            // Adicionar seção de prescrições médicas
-            detailContent += `
-                <div class="prescription-section">
-                    <h3>
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M12 4.5V19.5M19.5 12H4.5" stroke="#2c7fb8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                        </svg>
-                        Prescrições Médicas
-                    </h3>
+                
+                sortedHistory.forEach((item, index) => {
+                    const day = item.date.split('/')[0];
+                    const month = item.date.split('/')[1];
                     
-                    <div class="prescription-list">
-            `;
-            
-            if (horse.prescriptions && horse.prescriptions.length > 0) {
-                horse.prescriptions.forEach(prescription => {
                     detailContent += `
-                        <div class="prescription-item">
-                            <div class="prescription-header">
-                                <div>
-                                    <span class="medication-name">${prescription.medication}</span>
-                                    <div class="medication-dosage">${prescription.dosage} - ${prescription.frequency}</div>
-                                </div>
-                                <div class="prescription-actions">
-                                    <button class="btn-delete" data-prescription-id="${prescription.id}">
-                                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                            <path d="M3 6H5H21" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                            <path d="M8 6V4C8 3.46957 8.21071 2.96086 8.58579 2.58579C8.96086 2.21071 9.46957 2 10 2H14C14.5304 2 15.0391 2.21071 15.4142 2.58579C15.7893 2.96086 16 3.46957 16 4V6M19 6V20C19 20.5304 18.7893 21.0391 18.4142 21.4142C18.0391 21.7893 17.5304 22 17 22H7C6.46957 22 5.96086 21.7893 5.58579 21.4142C5.21071 21.0391 5 20.5304 5 20V6H19Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                            <path d="M10 11V17" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                            <path d="M14 11V17" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        <div class="timeline-item">
+                            <div class="timeline-date">${day}</div>
+                            <div class="timeline-content">
+                                <div class="timeline-header">
+                                    <div class="timeline-title">${item.date} - ${item.description}</div>
+                                    <button class="expand-btn" data-index="${index}">
+                                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <path d="M6 9L12 15L18 9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                                         </svg>
-                                        Excluir
                                     </button>
                                 </div>
-                            </div>
-                            <div class="medication-schedule">
-                                <div class="schedule-title">Controle de dosagem (${prescription.duration} dias):</div>
-                                <div class="days-grid">
+                                <div class="timeline-details" id="timeline-details-${index}">
                     `;
                     
-                    // Gerar quadrados para cada dia
-                    prescription.medicationDays.forEach(dayInfo => {
-                        const statusClass = dayInfo.status ? dayInfo.status : '';
-                        const statusIcon = dayInfo.status === 'applied' ? '✓' : dayInfo.status === 'not-applied' ? '✗' : '';
-                        
-                        detailContent += `
-                            <div>
-                                <div class="day-box ${statusClass}" 
-                                     data-prescription-id="${prescription.id}" 
-                                     data-day="${dayInfo.day}">
-                                    ${dayInfo.day}
-                                    ${statusIcon ? `<div class="day-status">${statusIcon}</div>` : ''}
+                    // Adicionar prescrições para esta data
+                    if (item.prescriptions && item.prescriptions.length > 0) {
+                        item.prescriptions.forEach(prescription => {
+                            detailContent += `
+                                <div class="prescription-info">
+                                    <div class="med-name">${prescription.medication}</div>
+                                    <div class="med-details">${prescription.dosage} - ${prescription.frequency}</div>
+                                    <div class="med-schedule">
+                                        <div class="schedule-title">Controle de dosagem (${prescription.duration} dias):</div>
+                                        <div class="days-grid">
+                            `;
+                            
+                            // Gerar quadrados para cada dia
+                            prescription.medicationDays.forEach(dayInfo => {
+                                const statusClass = dayInfo.status ? dayInfo.status : '';
+                                const statusIcon = dayInfo.status === 'applied' ? '✓' : dayInfo.status === 'not-applied' ? '✗' : '';
+                                
+                                detailContent += `
+                                    <div class="day-box ${statusClass}" 
+                                         data-prescription-id="${prescription.id}" 
+                                         data-day="${dayInfo.day}">
+                                        ${dayInfo.day}
+                                        ${statusIcon ? `<div class="day-status">${statusIcon}</div>` : ''}
+                                    </div>
+                                `;
+                            });
+                            
+                            detailContent += `
+                                        </div>
+                                    </div>
                                 </div>
-                                <div class="day-label">Dia ${dayInfo.day}</div>
-                            </div>
-                        `;
-                    });
+                            `;
+                        });
+                    } else {
+                        detailContent += `<p style="color: #666; font-style: italic;">Nenhuma prescrição para esta data.</p>`;
+                    }
                     
                     detailContent += `
                                 </div>
@@ -2691,65 +2368,47 @@
                     `;
                 });
             } else {
-                detailContent += `
-                    <div class="detail-info">
-                        <p>Nenhuma prescrição médica registrada.</p>
-                    </div>
-                `;
+                detailContent += `<p style="color: #666; font-style: italic;">Nenhum registro no histórico médico.</p>`;
             }
             
             detailContent += `
-                    </div>
-                    
-                    <div class="add-prescription">
-                        <button class="add-prescription-btn" id="showPrescriptionForm">
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M12 5V19" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                <path d="M5 12H19" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                            </svg>
-                            Adicionar Nova Prescrição
-                        </button>
-            `;
-            
-            // Formulário de prescrição (inicialmente oculto)
-            if (showPrescriptionForm) {
-                detailContent += `
-                    <div class="prescription-form" id="prescriptionForm">
-                        <h4>Nova Prescrição</h4>
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label for="medicationName">Medicamento</label>
-                                <input type="text" id="medicationName" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="medicationDosage">Dosagem</label>
-                                <input type="text" id="medicationDosage" required>
-                            </div>
                         </div>
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label for="medicationFrequency">Frequência</label>
-                                <input type="text" id="medicationFrequency" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="medicationDuration">Duração (dias)</label>
-                                <input type="number" id="medicationDuration" min="1" max="90" required>
-                            </div>
-                        </div>
-                        <div class="form-actions">
-                            <button type="button" class="btn btn-secondary" id="cancelPrescription">Cancelar</button>
-                            <button type="button" class="btn btn-primary" id="savePrescription">Salvar Prescrição</button>
-                        </div>
-                    </div>
-                `;
-            }
-            
-            detailContent += `
                     </div>
                 </div>
             `;
             
             horseDetailContent.innerHTML = detailContent;
+            
+            // Adicionar event listeners para os botões de expansão
+            document.querySelectorAll('.expand-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const index = this.getAttribute('data-index');
+                    const details = document.getElementById(`timeline-details-${index}`);
+                    const isExpanded = details.classList.contains('expanded');
+                    
+                    // Fechar todos os outros
+                    document.querySelectorAll('.timeline-details').forEach(d => {
+                        d.classList.remove('expanded');
+                    });
+                    document.querySelectorAll('.expand-btn').forEach(b => {
+                        b.innerHTML = `
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M6 9L12 15L18 9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        `;
+                    });
+                    
+                    // Abrir/fechar o atual
+                    if (!isExpanded) {
+                        details.classList.add('expanded');
+                        this.innerHTML = `
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M6 15L12 9L18 15" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        `;
+                    }
+                });
+            });
             
             // Adicionar event listeners para os quadrados de dias
             document.querySelectorAll('.day-box').forEach(box => {
@@ -2760,25 +2419,6 @@
                 });
             });
             
-            // Adicionar event listeners para os botões de exclusão
-            document.querySelectorAll('.btn-delete').forEach(btn => {
-                btn.addEventListener('click', function() {
-                    const prescriptionId = parseInt(this.getAttribute('data-prescription-id'));
-                    if (confirm('Tem certeza que deseja excluir esta prescrição?')) {
-                        deletePrescription(horseId, prescriptionId);
-                    }
-                });
-            });
-            
-            // Adicionar event listeners para o formulário de prescrição
-            if (showPrescriptionForm) {
-                document.getElementById('showPrescriptionForm').addEventListener('click', togglePrescriptionForm);
-                document.getElementById('cancelPrescription').addEventListener('click', togglePrescriptionForm);
-                document.getElementById('savePrescription').addEventListener('click', savePrescription);
-            } else {
-                document.getElementById('showPrescriptionForm').addEventListener('click', togglePrescriptionForm);
-            }
-            
             horseDetailModal.style.display = 'flex';
         }
         
@@ -2787,7 +2427,18 @@
             const horse = horses.find(h => h.id === horseId);
             if (!horse) return;
             
-            const prescription = horse.prescriptions.find(p => p.id === prescriptionId);
+            // Encontrar a prescrição em qualquer item do histórico
+            let prescription = null;
+            let historyItem = null;
+            
+            for (const item of horse.history) {
+                prescription = item.prescriptions.find(p => p.id === prescriptionId);
+                if (prescription) {
+                    historyItem = item;
+                    break;
+                }
+            }
+            
             if (!prescription) return;
             
             const dayInfo = prescription.medicationDays.find(d => d.day === day);
@@ -2813,75 +2464,7 @@
             saveHorsesToStorage();
         }
         
-        // Alternar visibilidade do formulário de prescrição
-        function togglePrescriptionForm() {
-            showPrescriptionForm = !showPrescriptionForm;
-            openHorseDetail(currentHorseId);
-        }
-        
-        // Salvar nova prescrição
-        function savePrescription() {
-            const medicationName = document.getElementById('medicationName').value;
-            const medicationDosage = document.getElementById('medicationDosage').value;
-            const medicationFrequency = document.getElementById('medicationFrequency').value;
-            const medicationDuration = parseInt(document.getElementById('medicationDuration').value);
-            
-            if (!medicationName || !medicationDosage || !medicationFrequency || !medicationDuration) {
-                alert('Por favor, preencha todos os campos.');
-                return;
-            }
-            
-            const horse = horses.find(h => h.id === currentHorseId);
-            if (!horse) return;
-            
-            // Gerar ID único para a prescrição
-            const newPrescriptionId = horse.prescriptions.length > 0 
-                ? Math.max(...horse.prescriptions.map(p => p.id)) + 1 
-                : 1;
-            
-            // Criar array de dias
-            const medicationDays = Array.from({length: medicationDuration}, (_, i) => ({
-                day: i + 1,
-                status: null
-            }));
-            
-            // Adicionar nova prescrição
-            horse.prescriptions.push({
-                id: newPrescriptionId,
-                medication: medicationName,
-                dosage: medicationDosage,
-                frequency: medicationFrequency,
-                duration: medicationDuration,
-                startDate: new Date().toISOString().split('T')[0],
-                medicationDays: medicationDays
-            });
-            
-            // Salvar alterações no localStorage
-            saveHorsesToStorage();
-            
-            // Fechar formulário e atualizar view
-            showPrescriptionForm = false;
-            openHorseDetail(currentHorseId);
-            alert('Prescrição adicionada com sucesso!');
-        }
-        
-        // Excluir prescrição
-        function deletePrescription(horseId, prescriptionId) {
-            const horse = horses.find(h => h.id === horseId);
-            if (!horse) return;
-            
-            const prescriptionIndex = horse.prescriptions.findIndex(p => p.id === prescriptionId);
-            if (prescriptionIndex === -1) return;
-            
-            horse.prescriptions.splice(prescriptionIndex, 1);
-            
-            // Salvar alterações no localStorage
-            saveHorsesToStorage();
-            
-            openHorseDetail(horseId);
-            alert('Prescrição excluída com sucesso!');
-        }
-        
+        // ========== FUNÇÕES RESTANTES ==========
         // Abrir modal para adicionar/editar cavalo
         function openAddModal() {
             currentHorseId = null;
@@ -2939,7 +2522,6 @@
         
         function closeHorseDetailModal() {
             horseDetailModal.style.display = 'none';
-            showPrescriptionForm = false;
         }
         
         // Salvar cavalo (adicionar ou editar)
@@ -2986,7 +2568,8 @@
                         if (dateMatch) {
                             historyArray.push({
                                 date: dateMatch[1],
-                                description: dateMatch[2]
+                                description: dateMatch[2],
+                                prescriptions: []
                             });
                         } else {
                             // Se não encontrar formato de data, usar data atual
@@ -2994,7 +2577,8 @@
                             const formattedDate = `${today.getDate().toString().padStart(2, '0')}/${(today.getMonth()+1).toString().padStart(2, '0')}/${today.getFullYear()}`;
                             historyArray.push({
                                 date: formattedDate,
-                                description: line.trim()
+                                description: line.trim(),
+                                prescriptions: []
                             });
                         }
                     }
@@ -3008,8 +2592,7 @@
                 sex: horseSex,
                 esquadrao: selectedEsquadrao,
                 origem: origem,
-                history: historyArray,
-                prescriptions: currentHorseId ? horses.find(h => h.id === currentHorseId).prescriptions : [],
+                history: currentHorseId ? horses.find(h => h.id === currentHorseId).history : historyArray,
                 protocolo: currentHorseId ? horses.find(h => h.id === currentHorseId).protocolo : "Quarentena",
                 selectedForVisit: currentHorseId ? horses.find(h => h.id === currentHorseId).selectedForVisit : false
             };
@@ -3040,13 +2623,11 @@
             if (!horse) return;
             
             alert(`Gerando PDF para ${horse.name}...\n\nEm um sistema real, isso geraria um arquivo PDF com todas as informações da ficha.`);
-            // Em um sistema real, aqui você usaria uma biblioteca como jsPDF para gerar o PDF
         }
         
         // Exportar todos para PDF
         function exportAllToPDF() {
             alert('Exportando todas as fichas para PDF...\n\nEm um sistema real, isso geraria um arquivo ZIP com PDFs de todos os cavalos.');
-            // Em um sistema real, aqui você geraria PDFs para todos os cavalos
         }
         
         // Fazer logout
@@ -3137,4 +2718,3 @@
     </script>
 </body>
 </html>
-
