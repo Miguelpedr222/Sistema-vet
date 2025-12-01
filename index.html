@@ -3,71 +3,2758 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Vet 2°rcg System - Redirecionando</title>
+    <title>Sistema Veterinário</title>
     <style>
+        /* ESTILOS DA TELA DE TRANSIÇÃO */
+        #welcomePage {
+            display: flex;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #2c7fb8 0%, #7fcdbb 100%);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            color: white;
+            text-align: center;
+        }
+        
+        .welcome-container {
+            max-width: 600px;
+            padding: 40px;
+            animation: fadeInUp 1s ease-out;
+        }
+        
+        .welcome-logo {
+            width: 150px;
+            height: 150px;
+            margin: 0 auto 30px;
+            border-radius: 50%;
+            background-color: rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 4px solid rgba(255, 255, 255, 0.3);
+            overflow: hidden;
+            backdrop-filter: blur(10px);
+        }
+        
+        .welcome-logo img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .welcome-title {
+            font-size: 3.5rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+            opacity: 0;
+            animation: fadeIn 0.8s ease 0.5s forwards;
+            text-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        .welcome-subtitle {
+            font-size: 1.8rem;
+            margin-bottom: 40px;
+            opacity: 0;
+            animation: fadeIn 0.8s ease 1s forwards;
+            font-weight: 300;
+        }
+        
+        .welcome-user {
+            font-size: 2.2rem;
+            font-weight: 600;
+            margin-bottom: 30px;
+            opacity: 0;
+            animation: fadeIn 0.8s ease 1.5s forwards;
+            color: #ffeb3b;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+        }
+        
+        .loading-bar {
+            width: 300px;
+            height: 6px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+            overflow: hidden;
+            margin: 30px auto;
+            opacity: 0;
+            animation: fadeIn 0.8s ease 2s forwards;
+        }
+        
+        .loading-progress {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, #ffeb3b, #ff9800);
+            border-radius: 10px;
+            animation: loading 2.5s ease 2.2s forwards;
+        }
+        
+        .welcome-message {
+            font-size: 1.2rem;
+            opacity: 0;
+            animation: fadeIn 0.8s ease 2.5s forwards;
+            margin-top: 20px;
+            font-weight: 300;
+        }
+        
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+        
+        @keyframes loading {
+            0% {
+                width: 0%;
+            }
+            100% {
+                width: 100%;
+            }
+        }
+        
+        /* ESTILOS DA TELA DE ARQUIVOS */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
         body {
             background: linear-gradient(135deg, #f0f8ff 0%, #e6f7ff 100%);
             min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            margin: 0;
+            overflow-x: hidden;
         }
         
-        .redirect-container {
-            text-align: center;
-            background: white;
-            padding: 40px;
+        #filesPage {
+            display: none;
+            min-height: 100vh;
+            padding: 20px;
+            animation: fadeIn 0.8s ease;
+        }
+        
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #2c7fb8;
+        }
+        
+        .logo-section {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .logo-image-small {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            border: 2px solid #2c7fb8;
+            overflow: hidden;
+        }
+        
+        .logo-image-small img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .logo-text h1 {
+            color: #2c7fb8;
+            font-size: 24px;
+            margin-bottom: 5px;
+        }
+        
+        .logo-text p {
+            color: #666;
+            font-size: 14px;
+        }
+        
+        .user-info {
+            text-align: right;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .user-info span {
+            color: #2c7fb8;
+            font-weight: 600;
+        }
+        
+        .btn-logout {
+            background: #e74c3c;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            margin-top: 5px;
+            transition: background 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .btn-logout:hover {
+            background: #c0392b;
+        }
+        
+        /* NOVO ESTILO PARA O BOTÃO VISITA */
+        .btn-visita-redirect {
+            background: #9b59b6;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            margin-top: 5px;
+            transition: background 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .btn-visita-redirect:hover {
+            background: #8e44ad;
+        }
+        
+        .main-container {
+            background-color: white;
             border-radius: 15px;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-            max-width: 400px;
+            padding: 30px;
+            max-width: 1200px;
+            margin: 0 auto;
         }
         
-        .loading-spinner {
-            width: 50px;
-            height: 50px;
-            border: 5px solid #f3f3f3;
-            border-top: 5px solid #2c7fb8;
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-            margin: 0 auto 20px;
-        }
-        
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-        
-        h1 {
+        .page-title {
             color: #2c7fb8;
+            margin-bottom: 25px;
+            font-size: 28px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .page-title svg {
+            width: 30px;
+            height: 30px;
+        }
+        
+        .actions-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+        
+        .search-box {
+            display: flex;
+            align-items: center;
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 8px 15px;
+            width: 300px;
+        }
+        
+        .search-box input {
+            border: none;
+            background: transparent;
+            padding: 8px;
+            width: 100%;
+            outline: none;
+        }
+        
+        .search-box svg {
+            color: #666;
+        }
+        
+        .action-buttons {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s;
+        }
+        
+        .btn-primary {
+            background: #2c7fb8;
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background: #1d5f8a;
+            transform: translateY(-2px);
+        }
+        
+        .btn-secondary {
+            background: #7fcdbb;
+            color: white;
+        }
+        
+        .btn-secondary:hover {
+            background: #5bbfa5;
+            transform: translateY(-2px);
+        }
+        
+        .alphabet-filter {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 25px;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 10px;
+        }
+        
+        .letter-btn {
+            width: 35px;
+            height: 35px;
+            border: none;
+            border-radius: 50%;
+            background: white;
+            color: #2c7fb8;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .letter-btn:hover, .letter-btn.active {
+            background: #2c7fb8;
+            color: white;
+        }
+        
+        .files-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .file-card {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+            border-left: 4px solid #2c7fb8;
+            transition: transform 0.3s, box-shadow 0.3s;
+            cursor: pointer;
+        }
+        
+        .file-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+        }
+        
+        .horse-name {
+            color: #2c7fb8;
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .horse-details {
+            color: #666;
+            font-size: 14px;
+            margin-bottom: 15px;
+        }
+        
+        .horse-details div {
+            margin-bottom: 5px;
+        }
+        
+        .file-actions {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .btn-small {
+            padding: 6px 12px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 12px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            transition: all 0.3s;
+        }
+        
+        .btn-edit {
+            background: #f39c12;
+            color: white;
+        }
+        
+        .btn-edit:hover {
+            background: #e67e22;
+        }
+        
+        .btn-pdf {
+            background: #e74c3c;
+            color: white;
+        }
+        
+        .btn-pdf:hover {
+            background: #c0392b;
+        }
+
+        /* NOVO BOTÃO EXCLUIR */
+        .btn-delete-horse {
+            background: #e74c3c;
+            color: white;
+        }
+        
+        .btn-delete-horse:hover {
+            background: #c0392b;
+        }
+        
+        .no-results {
+            text-align: center;
+            padding: 40px;
+            color: #666;
+            grid-column: 1 / -1;
+        }
+        
+        /* NOVOS ESTILOS PARA ESQUADRÃO */
+        .esquadrao-options {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+        
+        .esquadrao-option {
+            flex: 1;
+            padding: 12px;
+            text-align: center;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: 600;
+        }
+        
+        .esquadrao-option:hover {
+            border-color: #2c7fb8;
+        }
+        
+        .esquadrao-option.selected {
+            background-color: #2c7fb8;
+            color: white;
+            border-color: #2c7fb8;
+        }
+        
+        .esquadrao-origem {
+            margin-top: 10px;
+            display: none;
+        }
+        
+        .esquadrao-origem label {
+            font-size: 12px;
+            color: #666;
+            margin-bottom: 5px;
+            display: block;
+        }
+        
+        .esquadrao-badge {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 600;
+            color: white;
+        }
+        
+        .esquadrao-badge.hipo {
+            background-color: #e74c3c;
+        }
+        
+        .esquadrao-badge.dh {
+            background-color: #2ecc71;
+        }
+        
+        .esquadrao-badge.outro {
+            background-color: #f39c12;
+        }
+        
+        /* MODAL DETALHES DO CAVALO */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        
+        .modal-content {
+            background: white;
+            border-radius: 15px;
+            width: 90%;
+            max-width: 1000px;
+            max-height: 90vh;
+            overflow-y: auto;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+        
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .modal-title {
+            color: #2c7fb8;
+            font-size: 22px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .close-modal {
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: #666;
+        }
+        
+        .horse-detail-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+        
+        .detail-section {
+            margin-bottom: 25px;
+        }
+        
+        .detail-section h3 {
+            color: #2c7fb8;
+            margin-bottom: 15px;
+            font-size: 18px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .detail-info {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+        }
+        
+        .detail-info p {
+            margin-bottom: 10px;
+            color: #555;
+        }
+        
+        .detail-info p:last-child {
+            margin-bottom: 0;
+        }
+        
+        /* BOTÃO DA SERINGA PARA PRESCRIÇÕES */
+        .prescription-icon-btn {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: #2c7fb8;
+            color: white;
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            transition: all 0.3s;
+            z-index: 10;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+        
+        .prescription-icon-btn:hover {
+            background: #1d5f8a;
+            transform: scale(1.1);
+        }
+        
+        .prescription-icon-btn svg {
+            width: 24px;
+            height: 24px;
+        }
+        
+        /* NOVO ESTILO PARA TIMELINE DE HISTÓRICO MÉDICO */
+        .timeline-section {
+            margin-top: 20px;
+        }
+        
+        .timeline-container {
+            position: relative;
+            padding-left: 30px;
+        }
+        
+        .timeline-container::before {
+            content: '';
+            position: absolute;
+            left: 10px;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: #2c7fb8;
+        }
+        
+        .timeline-item {
+            position: relative;
+            margin-bottom: 15px;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            border-left: 4px solid #2c7fb8;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+        
+        .timeline-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -25px;
+            top: 20px;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: #2c7fb8;
+            border: 2px solid white;
+            z-index: 1;
+        }
+        
+        .timeline-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
             margin-bottom: 10px;
         }
         
-        p {
+        .timeline-date {
+            font-weight: 600;
+            color: #2c7fb8;
+            font-size: 16px;
+        }
+        
+        .timeline-expand {
+            background: #2c7fb8;
+            color: white;
+            border: none;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            transition: all 0.3s;
+        }
+        
+        .timeline-expand:hover {
+            background: #1d5f8a;
+            transform: scale(1.1);
+        }
+        
+        /* JANELAS FLUTUANTES */
+        .floating-window {
+            display: none;
+            position: fixed;
+            z-index: 2000;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.15);
+            border: 1px solid #e0e0e0;
+            min-width: 300px;
+            max-width: 500px;
+            animation: fadeIn 0.3s ease;
+            resize: both;
+            overflow: auto;
+        }
+        
+        .floating-window.active {
+            display: block;
+        }
+        
+        .window-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 15px;
+            background: #2c7fb8;
+            color: white;
+            border-radius: 8px 8px 0 0;
+            cursor: move;
+        }
+        
+        .window-title {
+            font-weight: 600;
+            font-size: 14px;
+        }
+        
+        .window-close {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 20px;
+            cursor: pointer;
+            padding: 0;
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+        }
+        
+        .window-close:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+        
+        .window-content {
+            padding: 15px;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+        
+        .window-content p {
+            margin-bottom: 10px;
+            line-height: 1.5;
+        }
+        
+        .window-content p:last-child {
+            margin-bottom: 0;
+        }
+        
+        /* CONTROLE DE DOSAGEM */
+        .days-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 8px;
+            margin-top: 10px;
+        }
+        
+        .day-box {
+            width: 35px;
+            height: 35px;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            background: white;
+            position: relative;
+        }
+        
+        .day-box.applied {
+            background: #27ae60;
+            color: white;
+            border-color: #27ae60;
+        }
+        
+        .day-box.not-applied {
+            background: #e74c3c;
+            color: white;
+            border-color: #e74c3c;
+        }
+        
+        .day-box:hover {
+            transform: scale(1.1);
+        }
+        
+        .day-label {
+            font-size: 12px;
             color: #666;
+            text-align: center;
+            margin-top: 5px;
+        }
+        
+        .day-status {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            font-size: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        /* FORMULÁRIO DE EDIÇÃO DO HISTÓRICO */
+        .history-edit-form {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 20px;
+            border: 1px solid #ddd;
+        }
+        
+        .history-edit-form h4 {
+            color: #2c7fb8;
+            margin-bottom: 15px;
+            font-size: 16px;
+        }
+        
+        .form-group {
+            margin-bottom: 15px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            color: #333;
+            font-weight: 500;
+            font-size: 14px;
+        }
+        
+        input, select, textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: all 0.3s;
+        }
+        
+        input:focus, select:focus, textarea:focus {
+            border-color: #2c7fb8;
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(44, 127, 184, 0.2);
+        }
+        
+        .form-row {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+        
+        .form-row .form-group {
+            flex: 1;
+            margin-bottom: 0;
+        }
+        
+        .form-actions {
+            display: flex;
+            gap: 10px;
+            justify-content: flex-end;
+            margin-top: 20px;
+        }
+        
+        .modal-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+            margin-top: 25px;
+        }
+        
+        /* BOTÃO PARA ADICIONAR NOVO HISTÓRICO */
+        .add-history-btn {
+            background: #2c7fb8;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s;
+            margin-top: 15px;
+        }
+        
+        .add-history-btn:hover {
+            background: #1d5f8a;
+        }
+        
+        /* NOVOS ESTILOS PARA VISITAS */
+        .nav-tabs {
+            display: flex;
+            border-bottom: 2px solid #e0e0e0;
+            margin-bottom: 25px;
+        }
+        
+        .nav-tab {
+            padding: 12px 24px;
+            background: none;
+            border: none;
+            font-size: 16px;
+            font-weight: 600;
+            color: #666;
+            cursor: pointer;
+            transition: all 0.3s;
+            border-bottom: 3px solid transparent;
+        }
+        
+        .nav-tab.active {
+            color: #2c7fb8;
+            border-bottom-color: #2c7fb8;
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        .visit-section {
+            margin-bottom: 30px;
+        }
+        
+        .visit-section h3 {
+            color: #2c7fb8;
+            margin-bottom: 15px;
+            font-size: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #e0e0e0;
+        }
+        
+        .visit-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+        }
+        
+        .visit-table th {
+            background: #2c7fb8;
+            color: white;
+            padding: 12px 15px;
+            text-align: left;
+            font-weight: 600;
+        }
+        
+        .visit-table td {
+            padding: 12px 15px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        
+        .visit-table tr:last-child td {
+            border-bottom: none;
+        }
+        
+        .visit-table tr:hover {
+            background: #f8f9fa;
+        }
+        
+        .checkbox-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .visit-checkbox {
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+        }
+        
+        .protocolo-badge {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 600;
+            background: #f39c12;
+            color: white;
+        }
+        
+        .suplementacao-badge {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 600;
+            background: #2ecc71;
+            color: white;
+        }
+        
+        .quarentena-badge {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 600;
+            background: #e74c3c;
+            color: white;
+        }
+        
+        .corte-badge {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 600;
+            background: #9b59b6;
+            color: white;
+        }
+        
+        .visit-actions {
+            display: flex;
+            gap: 10px;
             margin-bottom: 20px;
+        }
+        
+        .btn-visita {
+            background: #f39c12;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s;
+        }
+        
+        .btn-visita:hover {
+            background: #e67e22;
+            transform: translateY(-2px);
+        }
+        
+        @media (max-width: 768px) {
+            .header {
+                flex-direction: column;
+                gap: 15px;
+                text-align: center;
+            }
+            
+            .user-info {
+                text-align: center;
+                flex-direction: column;
+            }
+            
+            .actions-bar {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            
+            .search-box {
+                width: 100%;
+            }
+            
+            .horse-detail-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .days-grid {
+                grid-template-columns: repeat(4, 1fr);
+            }
+            
+            .form-row {
+                flex-direction: column;
+                gap: 0;
+            }
+            
+            .welcome-title {
+                font-size: 2.5rem;
+            }
+            
+            .welcome-subtitle {
+                font-size: 1.4rem;
+            }
+            
+            .welcome-user {
+                font-size: 1.8rem;
+            }
+            
+            .esquadrao-options {
+                flex-direction: column;
+            }
+            
+            .nav-tabs {
+                flex-direction: column;
+            }
+            
+            .nav-tab {
+                text-align: center;
+            }
+            
+            .visit-table {
+                display: block;
+                overflow-x: auto;
+            }
+            
+            .timeline-container::before {
+                left: 15px;
+            }
+            
+            .timeline-item::before {
+                left: -20px;
+            }
+            
+            .floating-window {
+                min-width: 250px;
+                max-width: 300px;
+            }
+            
+            .prescription-icon-btn {
+                top: 10px;
+                right: 10px;
+                width: 35px;
+                height: 35px;
+            }
         }
     </style>
 </head>
 <body>
-    <div class="redirect-container">
-        <div class="loading-spinner"></div>
-        <h1>Vet 2°rcg System</h1>
-        <p>Redirecionando para a tela de login...</p>
-        <p><small>Se o redirecionamento não funcionar, <a href="login.html">clique aqui</a></small></p>
+    <!-- TELA DE TRANSIÇÃO -->
+    <div id="welcomePage">
+        <div class="welcome-container">
+            <div class="welcome-logo">
+                <img src="2-rcg-926x926 (1).jpg" alt="Logo Veterinária">
+            </div>
+            <h1 class="welcome-title">Bem-vindo(a)</h1>
+            <h2 class="welcome-subtitle">ao Vet2°rcg System</h2>
+            <div class="welcome-user" id="welcomeUserName"></div>
+            <div class="loading-bar">
+                <div class="loading-progress"></div>
+            </div>
+            <p class="welcome-message">Carregando seus arquivos...</p>
+        </div>
+    </div>
+
+    <!-- TELA DE ARQUIVOS -->
+    <div id="filesPage">
+        <div class="header">
+            <div class="logo-section">
+                <div class="logo-image-small">
+                    <img src="2-rcg-926x926 (1).jpg" alt="Logo Veterinária">
+                </div>
+                <div class="logo-text">
+                    <h1>Vet 2°rcg System</h1>
+                    <p>Sistema de Gestão Veterinária</p>
+                </div>
+            </div>
+            <div class="user-info">
+                <p>Logado como: <span id="loggedUser">Administrador</span></p>
+                <!-- BOTÃO VISITA ADICIONADO AQUI -->
+                <button class="btn-visita-redirect" id="btnVisitaRedirect">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M9 21H5C4.46957 21 3.96086 20.7893 3.58579 20.4142C3.21071 20.0391 3 19.5304 3 19V5C3 4.46957 3.21071 3.96086 3.58579 3.58579C3.96086 3.21071 4.46957 3 5 3H9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M16 17L21 12L16 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M21 12H9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    Visita
+                </button>
+                <button class="btn-logout" id="btnLogout">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M9 21H5C4.46957 21 3.96086 20.7893 3.58579 20.4142C3.21071 20.0391 3 19.5304 3 19V5C3 4.46957 3.21071 3.96086 3.58579 3.58579C3.96086 3.21071 4.46957 3 5 3H9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M16 17L21 12L16 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M21 12H9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    Sair
+                </button>
+            </div>
+        </div>
+        
+        <div class="main-container">
+            <!-- Navegação por abas -->
+            <div class="nav-tabs">
+                <button class="nav-tab active" data-tab="arquivos">Arquivos de Cavalos</button>
+                <button class="nav-tab" data-tab="visitas">Visitas Veterinárias</button>
+            </div>
+            
+            <!-- Aba de Arquivos -->
+            <div class="tab-content active" id="arquivosTab">
+                <h1 class="page-title">
+                    <svg width="30" height="30" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M14 2H6C5.46957 2 4.96086 2.21071 4.58579 2.58579C4.21071 2.96086 4 3.46957 4 4V20C4 20.5304 4.21071 21.0391 4.58579 21.4142C4.96086 21.7893 5.46957 22 6 22H18C18.5304 22 19.0391 21.7893 19.4142 21.4142C19.7893 21.0391 20 20.5304 20 20V8L14 2Z" stroke="#2c7fb8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M14 2V8H20" stroke="#2c7fb8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M16 13H8" stroke="#2c7fb8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M16 17H8" stroke="#2c7fb8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M10 9H9H8" stroke="#2c7fb8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    Arquivos de Cavalos
+                </h1>
+                
+                <div class="actions-bar">
+                    <div class="search-box">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M21 21L16.514 16.506L21 21ZM19 10.5C19 15.194 15.194 19 10.5 19C5.806 19 2 15.194 2 10.5C2 5.806 5.806 2 10.5 2C15.194 2 19 5.806 19 10.5Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                        <input type="text" id="searchInput" placeholder="Buscar cavalo...">
+                    </div>
+                    
+                    <div class="action-buttons">
+                        <button class="btn btn-primary" id="btnAddHorse">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M12 5V19" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M5 12H19" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                            Adicionar Cavalo
+                        </button>
+                        <button class="btn btn-secondary" id="btnExportAll">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M21 15V19C21 19.5304 20.7893 20.0391 20.4142 20.4142C20.0391 20.7893 19.5304 21 19 21H5C4.46957 21 3.96086 20.7893 3.58579 20.4142C3.21071 20.0391 3 19.5304 3 19V15" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M7 10L12 15L17 10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M12 15V3" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                            Exportar Todos
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="alphabet-filter" id="alphabetFilter">
+                    <!-- As letras serão geradas via JavaScript -->
+                </div>
+                
+                <div class="files-grid" id="filesGrid">
+                    <!-- Os arquivos serão gerados via JavaScript -->
+                </div>
+            </div>
+            
+            <!-- Aba de Visitas -->
+            <div class="tab-content" id="visitasTab">
+                <h1 class="page-title">
+                    <svg width="30" height="30" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M19 21V5C19 3.89543 18.1046 3 17 3H7C5.89543 3 5 3.89543 5 5V21M19 21L21 21M19 21H14M5 21L3 21M5 21H10M9 6.99998H15M9 11H15M9 15H13" stroke="#2c7fb8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    Visitas Veterinárias
+                </h1>
+                
+                <div class="visit-actions">
+                    <button class="btn btn-primary" id="btnMarcarVisita">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M12 5V19" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M5 12H19" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                        Marcar para Visita
+                    </button>
+                    <button class="btn btn-secondary" id="btnLimparVisita">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M3 6H5H21" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M8 6V4C8 3.46957 8.21071 2.96086 8.58579 2.58579C8.96086 2.21071 9.46957 2 10 2H14C14.5304 2 15.0391 2.21071 15.4142 2.58579C15.7893 2.96086 16 3.46957 16 4V6M19 6V20C19 20.5304 18.7893 21.0391 18.4142 21.4142C18.0391 21.7893 17.5304 22 17 22H7C6.46957 22 5.96086 21.7893 5.58579 21.4142C5.21071 21.0391 5 20.5304 5 20V6H19Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                        Limpar Seleção
+                    </button>
+                </div>
+                
+                <div class="visit-section">
+                    <h3>HIPO</h3>
+                    <table class="visit-table" id="hipoTable">
+                        <thead>
+                            <tr>
+                                <th style="width: 50px;">Visita</th>
+                                <th>Cavalo</th>
+                                <th>Protocolo</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Conteúdo será preenchido via JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+                
+                <div class="visit-section">
+                    <h3>DH</h3>
+                    <table class="visit-table" id="dhTable">
+                        <thead>
+                            <tr>
+                                <th style="width: 50px;">Visita</th>
+                                <th>Cavalo</th>
+                                <th>Protocolo</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Conteúdo será preenchido via JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Modal para Adicionar/Editar Cavalo -->
+    <div class="modal" id="horseModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title" id="modalTitle">Adicionar Novo Cavalo</h2>
+                <button class="close-modal" id="closeModal">&times;</button>
+            </div>
+            
+            <form id="horseForm">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="horseName">Animal</label>
+                        <input type="text" id="horseName" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="horseId">Identificação</label>
+                        <input type="text" id="horseId" required>
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="horseColor">Pelagem</label>
+                        <input type="text" id="horseColor" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="horseSex">Sexo</label>
+                        <select id="horseSex" required>
+                            <option value="">Selecione</option>
+                            <option value="Macho">Macho</option>
+                            <option value="Fêmea">Fêmea</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label>Esquadrão</label>
+                    <div class="esquadrao-options">
+                        <div class="esquadrao-option" data-value="Hipo">Hipo</div>
+                        <div class="esquadrao-option" data-value="DH">D.H</div>
+                        <div class="esquadrao-option" data-value="Outro">Outro</div>
+                    </div>
+                    <div class="esquadrao-origem" id="esquadraoOrigem">
+                        <label for="horseOrigem">Digite a origem do animal</label>
+                        <input type="text" id="horseOrigem">
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="horseHistory">Histórico Médico</label>
+                    <textarea id="horseHistory" rows="4"></textarea>
+                </div>
+                
+                <div class="modal-actions">
+                    <button type="button" class="btn btn-secondary" id="btnCancel">Cancelar</button>
+                    <button type="submit" class="btn btn-primary" id="btnSave">Salvar Ficha</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    
+    <!-- Modal Detalhes do Cavalo -->
+    <div class="modal" id="horseDetailModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title" id="horseDetailTitle">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M14 16H9M14 12H11M12 21C12.9465 21 13.8734 20.7716 14.7087 20.3343C15.544 19.897 16.2623 19.2643 16.8 18.492C17.7895 17.1277 19.8333 14.8 21 13C21.3333 12.3333 22 10.8 22 8.5C22 5.5 20.5 3 17.5 3C15.8333 3 14.5 4.5 14.5 4.5C14.5 4.5 13.5 3 11.5 3C9.5 3 8.5 4 8.5 6C8.5 6 7.5 5 5.5 5C3.5 5 2 7 2 9.5C2 12.5 3.5 14.5 5.5 16.5C7.5 18.5 9.66667 19.3333 11 19.5C11.5 19.6 12 19.5 12 19.5Z" stroke="#2c7fb8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    Detalhes do Cavalo
+                </h2>
+                <button class="close-modal" id="closeDetailModal">&times;</button>
+            </div>
+            
+            <!-- BOTÃO DA SERINGA PARA PRESCRIÇÕES -->
+            <button class="prescription-icon-btn" id="prescriptionIconBtn" title="Visualizar Prescrições Médicas">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M19.14 12.94C18.8 12.94 18.5 12.64 18.5 12.3V10.83C18.5 9.22 17.22 7.94 15.61 7.94H14.15C13.81 7.94 13.51 7.64 13.51 7.3C13.51 6.96 13.81 6.66 14.15 6.66H15.61C17.78 6.66 19.5 8.38 19.5 10.55V12.02C19.5 12.36 19.2 12.66 18.86 12.66H19.14V12.94Z" fill="white"/>
+                    <path d="M5 12.94C4.66 12.94 4.36 12.64 4.36 12.3V10.83C4.36 9.22 5.64 7.94 7.25 7.94H8.71C9.05 7.94 9.35 7.64 9.35 7.3C9.35 6.96 9.05 6.66 8.71 6.66H7.25C5.08 6.66 3.36 8.38 3.36 10.55V12.02C3.36 12.36 3.66 12.66 4 12.66H5V12.94Z" fill="white"/>
+                    <path d="M16.21 10.75H7.79C5.65 10.75 4.25 9.35 4.25 7.21V7.14C4.25 4.99 5.65 3.59 7.79 3.59H16.2C18.34 3.59 19.74 4.99 19.74 7.14V7.21C19.75 9.35 18.35 10.75 16.21 10.75ZM7.79 4.84C6.5 4.84 5.5 5.84 5.5 7.14V7.21C5.5 8.5 6.5 9.5 7.79 9.5H16.2C17.49 9.5 18.49 8.5 18.49 7.21V7.14C18.49 5.85 17.49 4.85 16.2 4.85H7.79V4.84Z" fill="white"/>
+                    <path d="M12 14.75C11.59 14.75 11.25 14.41 11.25 14V11C11.25 10.59 11.59 10.25 12 10.25C12.41 10.25 12.75 10.59 12.75 11V14C12.75 14.41 12.41 14.75 12 14.75Z" fill="white"/>
+                    <path d="M12 18.75C11.59 18.75 11.25 18.41 11.25 18V15C11.25 14.59 11.59 14.25 12 14.25C12.41 14.25 12.75 14.59 12.75 15V18C12.75 18.41 12.41 18.75 12 18.75Z" fill="white"/>
+                    <path d="M15 22.75H9C4.59 22.75 2.25 20.41 2.25 16V14C2.25 13.04 3.04 12.25 4 12.25H20C20.96 12.25 21.75 13.04 21.75 14V16C21.75 20.41 19.41 22.75 15 22.75ZM4 13.75C3.86 13.75 3.75 13.86 3.75 14V16C3.75 19.58 5.42 21.25 9 21.25H15C18.58 21.25 20.25 19.58 20.25 16V14C20.25 13.86 20.14 13.75 20 13.75H4Z" fill="white"/>
+                </svg>
+            </button>
+            
+            <div class="horse-detail-grid" id="horseDetailContent">
+                <!-- Conteúdo será preenchido via JavaScript -->
+            </div>
+            
+            <div class="modal-actions">
+                <button type="button" class="btn btn-secondary" id="btnCloseDetail">Fechar</button>
+                <button type="button" class="btn btn-primary" id="btnEditHorse">Editar Ficha</button>
+                <button type="button" class="btn btn-delete-horse" id="btnDeleteHorse">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M3 6H5H21" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M8 6V4C8 3.46957 8.21071 2.96086 8.58579 2.58579C8.96086 2.21071 9.46957 2 10 2H14C14.5304 2 15.0391 2.21071 15.4142 2.58579C15.7893 2.96086 16 3.46957 16 4V6M19 6V20C19 20.5304 18.7893 21.0391 18.4142 21.4142C18.0391 21.7893 17.5304 22 17 22H7C6.46957 22 5.96086 21.7893 5.58579 21.4142C5.21071 21.0391 5 20.5304 5 20V6H19Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    Excluir Cavalo
+                </button>
+            </div>
+        </div>
     </div>
 
     <script>
-        // Redirecionar para a página de login após 2 segundos
-        setTimeout(function() {
-            window.location.href = 'login.html';
-        }, 2000);
+        // ========== DADOS DOS CAVALOS ==========
+        // Função para carregar dados do localStorage
+        function loadHorsesFromStorage() {
+            const storedHorses = localStorage.getItem('vetSystemHorses');
+            if (storedHorses) {
+                return JSON.parse(storedHorses);
+            } else {
+                // Dados padrão se não houver nada salvo
+                return [
+                    { 
+                        id: 1, 
+                        name: "Gastador", 
+                        color: "Alazão", 
+                        sex: "Macho", 
+                        esquadrao: "Hipo",
+                        origem: "",
+                        history: [
+                            { date: "15/11/2025", description: "Pós cirúrgico. Última consulta" },
+                            { date: "10/11/2025", description: "Aplicação de vacina contra influenza" },
+                            { date: "05/11/2025", description: "Exame de sangue realizado - resultados normais" }
+                        ],
+                        prescriptions: [
+                            {
+                                id: 1,
+                                medication: "Anti-inflamatório",
+                                dosage: "1 comprimido",
+                                frequency: "2 vezes ao dia",
+                                duration: 7,
+                                startDate: "2025-01-15",
+                                medicationDays: [
+                                    { day: 1, status: "applied" },
+                                    { day: 2, status: "applied" },
+                                    { day: 3, status: "not-applied" },
+                                    { day: 4, status: null },
+                                    { day: 5, status: null },
+                                    { day: 6, status: null },
+                                    { day: 7, status: null }
+                                ]
+                            },
+                            {
+                                id: 2,
+                                medication: "Vitamina E",
+                                dosage: "500mg",
+                                frequency: "1 vez ao dia",
+                                duration: 14,
+                                startDate: "2025-01-10",
+                                medicationDays: [
+                                    { day: 1, status: "applied" },
+                                    { day: 2, status: "applied" },
+                                    { day: 3, status: "applied" },
+                                    { day: 4, status: "applied" },
+                                    { day: 5, status: "applied" },
+                                    { day: 6, status: "applied" },
+                                    { day: 7, status: "applied" },
+                                    { day: 8, status: "not-applied" },
+                                    { day: 9, status: null },
+                                    { day: 10, status: null },
+                                    { day: 11, status: null },
+                                    { day: 12, status: null },
+                                    { day: 13, status: null },
+                                    { day: 14, status: null }
+                                ]
+                            }
+                        ],
+                        protocolo: "Quarentena - PITE",
+                        selectedForVisit: false
+                    },
+                    { 
+                        id: 2, 
+                        name: "Afeição", 
+                        color: "Tordilho", 
+                        sex: "Fêmea", 
+                        esquadrao: "DH",
+                        origem: "",
+                        history: [
+                            { date: "20/11/2025", description: "Problema articular tratado. Controle semestral." },
+                            { date: "15/10/2025", description: "Aplicação de suplemento articular" },
+                            { date: "26/11/2025", description: "Consulta de rotina - saúde estável" }
+                        ],
+                        prescriptions: [
+                            {
+                                id: 1,
+                                medication: "Suplemento articular",
+                                dosage: "2 comprimidos",
+                                frequency: "1 vez ao dia",
+                                duration: 30,
+                                startDate: "2025-01-01",
+                                medicationDays: Array.from({length: 30}, (_, i) => ({ 
+                                    day: i + 1, 
+                                    status: i < 14 ? "applied" : null 
+                                }))
+                            }
+                        ],
+                        protocolo: "Suplementação (Óleo)",
+                        selectedForVisit: false
+                    }
+                ];
+            }
+        }
         
-        // Redirecionar imediatamente se o usuário clicar
-        document.addEventListener('click', function() {
+        // Função para salvar dados no localStorage
+        function saveHorsesToStorage() {
+            localStorage.setItem('vetSystemHorses', JSON.stringify(horses));
+        }
+        
+        // Carregar dados iniciais
+        let horses = loadHorsesFromStorage();
+        
+        // ========== ELEMENTOS DO DOM ==========
+        // Tela de transição
+        const welcomePage = document.getElementById('welcomePage');
+        const filesPage = document.getElementById('filesPage');
+        const welcomeUserName = document.getElementById('welcomeUserName');
+        
+        // Arquivos
+        const alphabetFilter = document.getElementById('alphabetFilter');
+        const filesGrid = document.getElementById('filesGrid');
+        const searchInput = document.getElementById('searchInput');
+        const btnAddHorse = document.getElementById('btnAddHorse');
+        const btnExportAll = document.getElementById('btnExportAll');
+        const horseModal = document.getElementById('horseModal');
+        const closeModal = document.getElementById('closeModal');
+        const btnCancel = document.getElementById('btnCancel');
+        const horseForm = document.getElementById('horseForm');
+        const modalTitle = document.getElementById('modalTitle');
+        const btnLogout = document.getElementById('btnLogout');
+        const loggedUser = document.getElementById('loggedUser');
+        
+        // Detalhes do cavalo
+        const horseDetailModal = document.getElementById('horseDetailModal');
+        const horseDetailTitle = document.getElementById('horseDetailTitle');
+        const horseDetailContent = document.getElementById('horseDetailContent');
+        const closeDetailModal = document.getElementById('closeDetailModal');
+        const btnCloseDetail = document.getElementById('btnCloseDetail');
+        const btnEditHorse = document.getElementById('btnEditHorse');
+        const btnDeleteHorse = document.getElementById('btnDeleteHorse');
+        const prescriptionIconBtn = document.getElementById('prescriptionIconBtn');
+        
+        // Esquadrão
+        const esquadraoOptions = document.querySelectorAll('.esquadrao-option');
+        const esquadraoOrigem = document.getElementById('esquadraoOrigem');
+        
+        // Visitas
+        const navTabs = document.querySelectorAll('.nav-tab');
+        const tabContents = document.querySelectorAll('.tab-content');
+        const btnMarcarVisita = document.getElementById('btnMarcarVisita');
+        const btnLimparVisita = document.getElementById('btnLimparVisita');
+        const hipoTable = document.getElementById('hipoTable').querySelector('tbody');
+        const dhTable = document.getElementById('dhTable').querySelector('tbody');
+        
+        // NOVO BOTÃO VISITA
+        const btnVisitaRedirect = document.getElementById('btnVisitaRedirect');
+        
+        let currentHorseId = null;
+        let currentFilter = 'all';
+        let currentUser = '';
+        let isEditingHistory = false;
+        let activeWindows = [];
+        
+        // ========== VERIFICAÇÃO DE LOGIN ==========
+        function checkLogin() {
+            const storedUser = localStorage.getItem('currentUser');
+            const storedRole = localStorage.getItem('userRole');
+            
+            if (!storedUser || !storedRole) {
+                // Redirecionar para a página de login se não estiver logado
+                window.location.href = 'login.html';
+                return false;
+            }
+            return true;
+        }
+        
+        // ========== FUNÇÕES DE TRANSIÇÃO ==========
+        // Mostrar tela de boas-vindas
+        function showWelcomePage() {
+            welcomePage.style.display = 'flex';
+            welcomeUserName.textContent = currentUser;
+            
+            // Redirecionar para a tela de arquivos após a animação (4.5 segundos)
+            setTimeout(function() {
+                showFilesPage();
+            }, 4500);
+        }
+        
+        // Mostrar tela de arquivos
+        function showFilesPage() {
+            welcomePage.style.display = 'none';
+            filesPage.style.display = 'block';
+            loggedUser.textContent = currentUser;
+            generateAlphabetFilter();
+            renderHorses();
+            renderVisitas();
+        }
+        
+        // Voltar para tela de login
+        function showLoginPage() {
             window.location.href = 'login.html';
-        });
+        }
+        
+        // ========== FUNÇÕES DA TELA DE ARQUIVOS ==========
+        // Gerar filtro alfabético
+        function generateAlphabetFilter() {
+            const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
+            alphabetFilter.innerHTML = '';
+            
+            // Botão "Todos"
+            const allButton = document.createElement('button');
+            allButton.className = 'letter-btn active';
+            allButton.textContent = 'TODOS';
+            allButton.addEventListener('click', () => filterHorsesByLetter('all'));
+            alphabetFilter.appendChild(allButton);
+            
+            // Botões para cada letra
+            letters.forEach(letter => {
+                const button = document.createElement('button');
+                button.className = 'letter-btn';
+                button.textContent = letter;
+                button.addEventListener('click', () => filterHorsesByLetter(letter));
+                alphabetFilter.appendChild(button);
+            });
+        }
+        
+        // Filtrar cavalos por letra
+        function filterHorsesByLetter(letter) {
+            currentFilter = letter;
+            
+            // Atualizar botões ativos
+            document.querySelectorAll('.letter-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            
+            document.querySelectorAll('.letter-btn').forEach(btn => {
+                if (btn.textContent === letter || (letter === 'all' && btn.textContent === 'TODOS')) {
+                    btn.classList.add('active');
+                }
+            });
+            
+            renderHorses();
+        }
+        
+        // Renderizar lista de cavalos
+        function renderHorses() {
+            filesGrid.innerHTML = '';
+            
+            let filteredHorses = [...horses];
+            
+            // Aplicar filtro alfabético
+            if (currentFilter !== 'all') {
+                filteredHorses = filteredHorses.filter(horse => 
+                    horse.name.toUpperCase().startsWith(currentFilter)
+                );
+            }
+            
+            // Aplicar filtro de busca
+            const searchTerm = searchInput.value.toLowerCase();
+            if (searchTerm) {
+                filteredHorses = filteredHorses.filter(horse => 
+                    horse.name.toLowerCase().includes(searchTerm) ||
+                    horse.color.toLowerCase().includes(searchTerm) ||
+                    horse.esquadrao.toLowerCase().includes(searchTerm)
+                );
+            }
+            
+            // Ordenar alfabeticamente
+            filteredHorses.sort((a, b) => a.name.localeCompare(b.name));
+            
+            if (filteredHorses.length === 0) {
+                filesGrid.innerHTML = `
+                    <div class="no-results">
+                        <h3>Nenhum cavalo encontrado</h3>
+                        <p>Tente ajustar seus filtros de busca</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            // Renderizar cada cavalo
+            filteredHorses.forEach(horse => {
+                const horseCard = document.createElement('div');
+                horseCard.className = 'file-card';
+                
+                // Determinar a classe do badge baseado no esquadrão
+                let badgeClass = '';
+                if (horse.esquadrao === 'Hipo') badgeClass = 'hipo';
+                else if (horse.esquadrao === 'DH') badgeClass = 'dh';
+                else badgeClass = 'outro';
+                
+                horseCard.innerHTML = `
+                    <h3 class="horse-name">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M14 16H9M14 12H11M12 21C12.9465 21 13.8734 20.7716 14.7087 20.3343C15.544 19.897 16.2623 19.2643 16.8 18.492C17.7895 17.1277 19.8333 14.8 21 13C21.3333 12.3333 22 10.8 22 8.5C22 5.5 20.5 3 17.5 3C15.8333 3 14.5 4.5 14.5 4.5C14.5 4.5 13.5 3 11.5 3C9.5 3 8.5 4 8.5 6C8.5 6 7.5 5 5.5 5C3.5 5 2 7 2 9.5C2 12.5 3.5 14.5 5.5 16.5C7.5 18.5 9.66667 19.3333 11 19.5C11.5 19.6 12 19.5 12 19.5Z" stroke="#2c7fb8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                        ${horse.name}
+                    </h3>
+                    <div class="horse-details">
+                        <div><strong>Cor:</strong> ${horse.color}</div>
+                        <div><strong>Sexo:</strong> ${horse.sex}</div>
+                        <div><strong>Esquadrão:</strong> 
+                            <span class="esquadrao-badge ${badgeClass}">
+                                ${horse.esquadrao}${horse.origem ? ` (${horse.origem})` : ''}
+                            </span>
+                        </div>
+                        <div><strong>Protocolo:</strong> ${horse.protocolo || 'Nenhum'}</div>
+                    </div>
+                    <div class="file-actions">
+                        <button class="btn-small btn-edit" data-id="${horse.id}">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M11 4H4C3.46957 4 2.96086 4.21071 2.58579 4.58579C2.21071 4.96086 2 5.46957 2 6V20C2 20.5304 2.21071 21.0391 2.58579 21.4142C2.96086 21.7893 3.46957 22 4 22H18C18.5304 22 19.0391 21.7893 19.4142 21.4142C19.7893 21.0391 20 20.5304 20 20V13" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M18.5 2.5C18.8978 2.10217 19.4374 1.87868 20 1.87868C20.5626 1.87868 21.1022 2.10217 21.5 2.5C21.8978 2.89782 22.1213 3.43739 22.1213 4C22.1213 4.56261 21.8978 5.10217 21.5 5.5L12 15L8 16L9 12L18.5 2.5Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                            Editar
+                        </button>
+                        <button class="btn-small btn-pdf" data-id="${horse.id}">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M14 2H6C5.46957 2 4.96086 2.21071 4.58579 2.58579C4.21071 2.96086 4 3.46957 4 4V20C4 20.5304 4.21071 21.0391 4.58579 21.4142C4.96086 21.7893 5.46957 22 6 22H18C18.5304 22 19.0391 21.7893 19.4142 21.4142C19.7893 21.0391 20 20.5304 20 20V8L14 2Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M14 2V8H20" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M16 13H8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M16 17H8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M10 9H9H8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                            PDF
+                        </button>
+                        <button class="btn-small btn-delete-horse" data-id="${horse.id}">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M3 6H5H21" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M8 6V4C8 3.46957 8.21071 2.96086 8.58579 2.58579C8.96086 2.21071 9.46957 2 10 2H14C14.5304 2 15.0391 2.21071 15.4142 2.58579C15.7893 2.96086 16 3.46957 16 4V6M19 6V20C19 20.5304 18.7893 21.0391 18.4142 21.4142C18.0391 21.7893 17.5304 22 17 22H7C6.46957 22 5.96086 21.7893 5.58579 21.4142C5.21071 21.0391 5 20.5304 5 20V6H19Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                            Excluir
+                        </button>
+                    </div>
+                `;
+                filesGrid.appendChild(horseCard);
+                
+                // Adicionar evento de clique no card
+                horseCard.addEventListener('click', (e) => {
+                    // Evitar que o clique nos botões abra o modal
+                    if (!e.target.closest('.file-actions')) {
+                        openHorseDetail(horse.id);
+                    }
+                });
+            });
+            
+            // Adicionar event listeners para os botões de edição
+            document.querySelectorAll('.btn-edit').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    const horseId = parseInt(e.currentTarget.getAttribute('data-id'));
+                    openEditModal(horseId);
+                });
+            });
+            
+            // Adicionar event listeners para os botões de PDF
+            document.querySelectorAll('.btn-pdf').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    const horseId = parseInt(e.currentTarget.getAttribute('data-id'));
+                    exportToPDF(horseId);
+                });
+            });
+            
+            // Adicionar event listeners para os botões de exclusão
+            document.querySelectorAll('.btn-delete-horse').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    e.stopPropagation(); // Evitar que o clique no card seja acionado
+                    const horseId = parseInt(e.currentTarget.getAttribute('data-id'));
+                    deleteHorse(horseId);
+                });
+            });
+        }
+        
+        // ========== FUNÇÕES DA ABA DE VISITAS ==========
+        // Renderizar tabelas de visitas
+        function renderVisitas() {
+            // Limpar tabelas
+            hipoTable.innerHTML = '';
+            dhTable.innerHTML = '';
+            
+            // Separar cavalos por esquadrão
+            const hipoHorses = horses.filter(horse => horse.esquadrao === 'Hipo');
+            const dhHorses = horses.filter(horse => horse.esquadrao === 'DH');
+            
+            // Renderizar cavalos HIPO
+            hipoHorses.forEach(horse => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td class="checkbox-container">
+                        <input type="checkbox" class="visit-checkbox" data-id="${horse.id}" ${horse.selectedForVisit ? 'checked' : ''}>
+                    </td>
+                    <td>${horse.name}</td>
+                    <td>
+                        ${getProtocoloBadge(horse.protocolo)}
+                    </td>
+                `;
+                hipoTable.appendChild(row);
+            });
+            
+            // Renderizar cavalos DH
+            dhHorses.forEach(horse => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td class="checkbox-container">
+                        <input type="checkbox" class="visit-checkbox" data-id="${horse.id}" ${horse.selectedForVisit ? 'checked' : ''}>
+                    </td>
+                    <td>${horse.name}</td>
+                    <td>
+                        ${getProtocoloBadge(horse.protocolo)}
+                    </td>
+                `;
+                dhTable.appendChild(row);
+            });
+            
+            // Adicionar event listeners para os checkboxes
+            document.querySelectorAll('.visit-checkbox').forEach(checkbox => {
+                checkbox.addEventListener('change', function() {
+                    const horseId = parseInt(this.getAttribute('data-id'));
+                    const horse = horses.find(h => h.id === horseId);
+                    if (horse) {
+                        horse.selectedForVisit = this.checked;
+                        saveHorsesToStorage();
+                    }
+                });
+            });
+        }
+        
+        // Obter badge do protocolo
+        function getProtocoloBadge(protocolo) {
+            if (!protocolo) return '';
+            
+            if (protocolo.includes('Quarentena')) {
+                return `<span class="quarentena-badge">${protocolo}</span>`;
+            } else if (protocolo.includes('Suplementação') || protocolo.includes('Suplemento')) {
+                return `<span class="suplementacao-badge">${protocolo}</span>`;
+            } else if (protocolo.includes('Corte')) {
+                return `<span class="corte-badge">${protocolo}</span>`;
+            } else {
+                return `<span class="protocolo-badge">${protocolo}</span>`;
+            }
+        }
+        
+        // Marcar todos para visita
+        function marcarTodosParaVisita() {
+            horses.forEach(horse => {
+                horse.selectedForVisit = true;
+            });
+            saveHorsesToStorage();
+            renderVisitas();
+            alert('Todos os cavalos marcados para visita!');
+        }
+        
+        // Limpar seleção de visitas
+        function limparSelecaoVisitas() {
+            horses.forEach(horse => {
+                horse.selectedForVisit = false;
+            });
+            saveHorsesToStorage();
+            renderVisitas();
+            alert('Seleção de visitas limpa!');
+        }
+        
+        // ========== FUNÇÕES DE NAVEGAÇÃO ==========
+        // Alternar entre abas
+        function switchTab(tabName) {
+            // Atualizar botões de navegação
+            navTabs.forEach(tab => {
+                tab.classList.remove('active');
+                if (tab.getAttribute('data-tab') === tabName) {
+                    tab.classList.add('active');
+                }
+            });
+            
+            // Atualizar conteúdo das abas
+            tabContents.forEach(content => {
+                content.classList.remove('active');
+                if (content.id === `${tabName}Tab`) {
+                    content.classList.add('active');
+                }
+            });
+        }
+        
+        // ========== FUNÇÕES PARA DRAG & DROP DE JANELAS ==========
+        function makeWindowDraggable(windowElement) {
+            const header = windowElement.querySelector('.window-header');
+            let isDragging = false;
+            let currentX;
+            let currentY;
+            let initialX;
+            let initialY;
+            let xOffset = 0;
+            let yOffset = 0;
+            
+            header.addEventListener('mousedown', dragStart);
+            document.addEventListener('mousemove', drag);
+            document.addEventListener('mouseup', dragEnd);
+            
+            function dragStart(e) {
+                initialX = e.clientX - xOffset;
+                initialY = e.clientY - yOffset;
+                
+                if (e.target === header || e.target.closest('.window-header')) {
+                    isDragging = true;
+                    
+                    // Trazer a janela para frente
+                    activeWindows.forEach(win => {
+                        win.style.zIndex = 2000;
+                    });
+                    windowElement.style.zIndex = 2001;
+                }
+            }
+            
+            function drag(e) {
+                if (isDragging) {
+                    e.preventDefault();
+                    
+                    currentX = e.clientX - initialX;
+                    currentY = e.clientY - initialY;
+                    
+                    xOffset = currentX;
+                    yOffset = currentY;
+                    
+                    setTranslate(currentX, currentY, windowElement);
+                }
+            }
+            
+            function setTranslate(xPos, yPos, el) {
+                el.style.transform = `translate3d(${xPos}px, ${yPos}px, 0)`;
+            }
+            
+            function dragEnd() {
+                initialX = currentX;
+                initialY = currentY;
+                isDragging = false;
+            }
+            
+            // Retornar função para limpar event listeners
+            return function cleanup() {
+                header.removeEventListener('mousedown', dragStart);
+                document.removeEventListener('mousemove', drag);
+                document.removeEventListener('mouseup', dragEnd);
+            };
+        }
+        
+        // ========== FUNÇÕES RESTANTES ==========
+        // Abrir modal de detalhes do cavalo
+        function openHorseDetail(horseId) {
+            const horse = horses.find(h => h.id === horseId);
+            if (!horse) return;
+            
+            currentHorseId = horseId;
+            horseDetailTitle.innerHTML = `
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M14 16H9M14 12H11M12 21C12.9465 21 13.8734 20.7716 14.7087 20.3343C15.544 19.897 16.2623 19.2643 16.8 18.492C17.7895 17.1277 19.8333 14.8 21 13C21.3333 12.3333 22 10.8 22 8.5C22 5.5 20.5 3 17.5 3C15.8333 3 14.5 4.5 14.5 4.5C14.5 4.5 13.5 3 11.5 3C9.5 3 8.5 4 8.5 6C8.5 6 7.5 5 5.5 5C3.5 5 2 7 2 9.5C2 12.5 3.5 14.5 5.5 16.5C7.5 18.5 9.66667 19.3333 11 19.5C11.5 19.6 12 19.5 12 19.5Z" stroke="#2c7fb8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                Detalhes - ${horse.name}
+            `;
+            
+            // Determinar a classe do badge baseado no esquadrão
+            let badgeClass = '';
+            if (horse.esquadrao === 'Hipo') badgeClass = 'hipo';
+            else if (horse.esquadrao === 'DH') badgeClass = 'dh';
+            else badgeClass = 'outro';
+            
+            // Construir conteúdo dos detalhes
+            let detailContent = `
+                <div class="detail-section">
+                    <h3>
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M20 21V19C20 17.9391 19.5786 16.9217 18.8284 16.1716C18.0783 15.4214 17.0609 15 16 15H8C6.93913 15 5.92172 15.4214 5.17157 16.1716C4.42143 16.9217 4 17.9391 4 19V21" stroke="#2c7fb8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M12 11C14.2091 11 16 9.20914 16 7C16 4.79086 14.2091 3 12 3C9.79086 3 8 4.79086 8 7C8 9.20914 9.79086 11 12 11Z" stroke="#2c7fb8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                        Informações Básicas
+                    </h3>
+                    <div class="detail-info">
+                        <p><strong>Nome:</strong> ${horse.name}</p>
+                        <p><strong>Identificação:</strong> ${horse.id}</p>
+                        <p><strong>Cor:</strong> ${horse.color}</p>
+                        <p><strong>Sexo:</strong> ${horse.sex}</p>
+                        <p><strong>Esquadrão:</strong> 
+                            <span class="esquadrao-badge ${badgeClass}">
+                                ${horse.esquadrao}${horse.origem ? ` (${horse.origem})` : ''}
+                            </span>
+                        </p>
+                        <p><strong>Protocolo:</strong> ${horse.protocolo || 'Nenhum'}</p>
+                    </div>
+                </div>
+                
+                <div class="detail-section">
+                    <h3>
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M14 2H6C5.46957 2 4.96086 2.21071 4.58579 2.58579C4.21071 2.96086 4 3.46957 4 4V20C4 20.5304 4.21071 21.0391 4.58579 21.4142C4.96086 21.7893 5.46957 22 6 22H18C18.5304 22 19.0391 21.7893 19.4142 21.4142C19.7893 21.0391 20 20.5304 20 20V8L14 2Z" stroke="#2c7fb8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M14 2V8H20" stroke="#2c7fb8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M16 13H8" stroke="#2c7fb8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M16 17H8" stroke="#2c7fb8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M10 9H9H8" stroke="#2c7fb8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                        Histórico Médico
+                    </h3>
+                    <div class="timeline-section">
+                        <div class="timeline-container">
+            `;
+            
+            // Adicionar histórico médico com linha do tempo
+            if (horse.history && horse.history.length > 0) {
+                // Ordenar histórico por data (mais recente primeiro)
+                const sortedHistory = [...horse.history].sort((a, b) => {
+                    const dateA = a.date.split('/').reverse().join('-');
+                    const dateB = b.date.split('/').reverse().join('-');
+                    return new Date(dateB) - new Date(dateA);
+                });
+                
+                sortedHistory.forEach((item, index) => {
+                    detailContent += `
+                        <div class="timeline-item" data-history-index="${index}">
+                            <div class="timeline-header">
+                                <div class="timeline-date">${item.date}</div>
+                                <button class="timeline-expand" data-history-index="${index}">+</button>
+                            </div>
+                        </div>
+                    `;
+                });
+            } else {
+                detailContent += `
+                    <div class="timeline-item">
+                        <div class="timeline-header">
+                            <div class="timeline-date">Nenhum registro</div>
+                        </div>
+                    </div>
+                `;
+            }
+            
+            detailContent += `
+                        </div>
+                    </div>
+                    
+                    <!-- Botão para adicionar novo histórico -->
+                    <button class="add-history-btn" id="addHistoryBtn">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M12 5V19" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M5 12H19" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                        Adicionar Novo Histórico
+                    </button>
+                    
+                    <!-- Formulário de edição do histórico (inicialmente oculto) -->
+                    <div class="history-edit-form" id="historyEditForm" style="display: ${isEditingHistory ? 'block' : 'none'};">
+                        <h4>${isEditingHistory ? 'Editar Histórico' : 'Novo Registro de Histórico'}</h4>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="historyDate">Data</label>
+                                <input type="text" id="historyDate" placeholder="DD/MM/AAAA" value="${isEditingHistory ? horse.history[0].date : ''}">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="historyDescription">Descrição</label>
+                            <textarea id="historyDescription" rows="3" placeholder="Descreva o histórico médico...">${isEditingHistory ? horse.history[0].description : ''}</textarea>
+                        </div>
+                        <div class="form-actions">
+                            <button type="button" class="btn btn-secondary" id="cancelHistory">Cancelar</button>
+                            <button type="button" class="btn btn-primary" id="saveHistory">Salvar Histórico</button>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            horseDetailContent.innerHTML = detailContent;
+            
+            // Limpar janelas ativas
+            activeWindows.forEach(window => window.remove());
+            activeWindows = [];
+            
+            // Adicionar event listeners para expandir histórico médico
+            document.querySelectorAll('.timeline-expand[data-history-index]').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const historyIndex = parseInt(this.getAttribute('data-history-index'));
+                    const historyItem = horse.history[historyIndex];
+                    if (historyItem) {
+                        openHistoryWindow(historyItem, this.closest('.timeline-item'));
+                    }
+                });
+            });
+            
+            // Adicionar event listeners para o formulário de histórico
+            document.getElementById('addHistoryBtn').addEventListener('click', function() {
+                isEditingHistory = false;
+                document.getElementById('historyEditForm').style.display = 'block';
+                document.getElementById('historyDate').value = '';
+                document.getElementById('historyDescription').value = '';
+            });
+            
+            document.getElementById('cancelHistory').addEventListener('click', function() {
+                document.getElementById('historyEditForm').style.display = 'none';
+            });
+            
+            document.getElementById('saveHistory').addEventListener('click', saveHistory);
+            
+            horseDetailModal.style.display = 'flex';
+        }
+        
+        // Abrir janela de histórico médico
+        function openHistoryWindow(historyItem, timelineItem) {
+            const windowId = `history-window-${Date.now()}`;
+            const windowElement = document.createElement('div');
+            windowElement.className = 'floating-window';
+            windowElement.id = windowId;
+            
+            // Posicionar a janela próxima ao item da timeline
+            const rect = timelineItem.getBoundingClientRect();
+            const modalRect = horseDetailModal.getBoundingClientRect();
+            
+            windowElement.style.position = 'fixed';
+            windowElement.style.left = `${rect.right + 20}px`;
+            windowElement.style.top = `${rect.top}px`;
+            windowElement.style.zIndex = '2000';
+            
+            windowElement.innerHTML = `
+                <div class="window-header">
+                    <div class="window-title">${historyItem.date}</div>
+                    <button class="window-close" data-window-id="${windowId}">×</button>
+                </div>
+                <div class="window-content">
+                    <p>${historyItem.description}</p>
+                </div>
+            `;
+            
+            document.body.appendChild(windowElement);
+            activeWindows.push(windowElement);
+            
+            // Fazer a janela arrastável
+            const cleanup = makeWindowDraggable(windowElement);
+            
+            // Adicionar event listener para fechar a janela
+            windowElement.querySelector('.window-close').addEventListener('click', function() {
+                const windowId = this.getAttribute('data-window-id');
+                const windowToClose = document.getElementById(windowId);
+                if (windowToClose) {
+                    windowToClose.remove();
+                    activeWindows = activeWindows.filter(w => w.id !== windowId);
+                    cleanup();
+                }
+            });
+            
+            // Mostrar a janela
+            setTimeout(() => {
+                windowElement.classList.add('active');
+            }, 10);
+        }
+        
+        // Abrir janela de prescrições médicas
+        function openPrescriptionWindow() {
+            const horse = horses.find(h => h.id === currentHorseId);
+            if (!horse) return;
+            
+            const windowId = `prescription-window-${Date.now()}`;
+            const windowElement = document.createElement('div');
+            windowElement.className = 'floating-window';
+            windowElement.id = windowId;
+            
+            // Posicionar a janela no centro da tela
+            windowElement.style.position = 'fixed';
+            windowElement.style.left = '50%';
+            windowElement.style.top = '50%';
+            windowElement.style.transform = 'translate(-50%, -50%)';
+            windowElement.style.zIndex = '2000';
+            
+            let prescriptionsContent = '';
+            
+            if (horse.prescriptions && horse.prescriptions.length > 0) {
+                horse.prescriptions.forEach((prescription, index) => {
+                    const formattedDate = new Date(prescription.startDate).toLocaleDateString('pt-BR');
+                    
+                    // Gerar conteúdo dos dias da medicação
+                    let daysContent = '';
+                    const maxDaysPerRow = 7;
+                    const totalRows = Math.ceil(prescription.duration / maxDaysPerRow);
+                    
+                    for (let row = 0; row < totalRows; row++) {
+                        const startDay = row * maxDaysPerRow + 1;
+                        const endDay = Math.min((row + 1) * maxDaysPerRow, prescription.duration);
+                        
+                        daysContent += `<div style="display: flex; gap: 5px; margin-bottom: 5px;">`;
+                        
+                        for (let day = startDay; day <= endDay; day++) {
+                            const dayInfo = prescription.medicationDays.find(d => d.day === day);
+                            if (!dayInfo) continue;
+                            
+                            const statusClass = dayInfo.status ? dayInfo.status : '';
+                            const statusIcon = dayInfo.status === 'applied' ? '✓' : dayInfo.status === 'not-applied' ? '✗' : '';
+                            
+                            daysContent += `
+                                <div style="position: relative;">
+                                    <div class="day-box ${statusClass}" 
+                                         style="width: 30px; height: 30px;"
+                                         data-prescription-index="${index}" 
+                                         data-day="${dayInfo.day}">
+                                        ${dayInfo.day}
+                                        ${statusIcon ? `<div class="day-status">${statusIcon}</div>` : ''}
+                                    </div>
+                                    <div class="day-label" style="font-size: 10px;">Dia ${dayInfo.day}</div>
+                                </div>
+                            `;
+                        }
+                        
+                        daysContent += `</div>`;
+                    }
+                    
+                    prescriptionsContent += `
+                        <div style="margin-bottom: 20px; padding-bottom: 20px; border-bottom: 1px solid #eee;">
+                            <h4 style="color: #2c7fb8; margin-bottom: 10px;">Prescrição ${index + 1}</h4>
+                            <div style="margin-bottom: 10px;">
+                                <strong>Medicamento:</strong> ${prescription.medication}
+                            </div>
+                            <div style="margin-bottom: 10px;">
+                                <strong>Dosagem:</strong> ${prescription.dosage}
+                            </div>
+                            <div style="margin-bottom: 10px;">
+                                <strong>Frequência:</strong> ${prescription.frequency}
+                            </div>
+                            <div style="margin-bottom: 10px;">
+                                <strong>Duração:</strong> ${prescription.duration} dias
+                            </div>
+                            <div style="margin-bottom: 10px;">
+                                <strong>Início:</strong> ${formattedDate}
+                            </div>
+                            <div class="medication-schedule">
+                                <div class="schedule-title">Controle de dosagem (${prescription.duration} dias):</div>
+                                ${daysContent}
+                            </div>
+                        </div>
+                    `;
+                });
+            } else {
+                prescriptionsContent = `
+                    <div style="text-align: center; padding: 20px;">
+                        <p>Nenhuma prescrição médica registrada.</p>
+                        <button class="btn btn-primary" id="addNewPrescriptionBtn" style="margin-top: 10px;">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M12 5V19" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M5 12H19" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                            Adicionar Nova Prescrição
+                        </button>
+                    </div>
+                `;
+            }
+            
+            windowElement.innerHTML = `
+                <div class="window-header">
+                    <div class="window-title">Prescrições Médicas - ${horse.name}</div>
+                    <button class="window-close" data-window-id="${windowId}">×</button>
+                </div>
+                <div class="window-content">
+                    ${prescriptionsContent}
+                </div>
+            `;
+            
+            document.body.appendChild(windowElement);
+            activeWindows.push(windowElement);
+            
+            // Fazer a janela arrastável
+            const cleanup = makeWindowDraggable(windowElement);
+            
+            // Adicionar event listeners
+            windowElement.querySelector('.window-close').addEventListener('click', function() {
+                const windowId = this.getAttribute('data-window-id');
+                const windowToClose = document.getElementById(windowId);
+                if (windowToClose) {
+                    windowToClose.remove();
+                    activeWindows = activeWindows.filter(w => w.id !== windowId);
+                    cleanup();
+                }
+            });
+            
+            // Adicionar event listeners para os quadrados de dias
+            windowElement.querySelectorAll('.day-box').forEach(box => {
+                box.addEventListener('click', function() {
+                    const prescriptionIndex = parseInt(this.getAttribute('data-prescription-index'));
+                    const day = parseInt(this.getAttribute('data-day'));
+                    toggleMedicationDay(currentHorseId, prescriptionIndex, day, this);
+                });
+            });
+            
+            // Adicionar event listener para o botão de adicionar nova prescrição
+            const addPrescriptionBtn = windowElement.querySelector('#addNewPrescriptionBtn');
+            if (addPrescriptionBtn) {
+                addPrescriptionBtn.addEventListener('click', function() {
+                    // Fechar a janela atual
+                    windowElement.remove();
+                    activeWindows = activeWindows.filter(w => w.id !== windowId);
+                    cleanup();
+                    
+                    // Abrir formulário para nova prescrição
+                    addNewPrescription();
+                });
+            }
+            
+            // Mostrar a janela
+            setTimeout(() => {
+                windowElement.classList.add('active');
+            }, 10);
+        }
+        
+        // Alternar status do dia da medicação
+        function toggleMedicationDay(horseId, prescriptionIndex, day, element) {
+            const horse = horses.find(h => h.id === horseId);
+            if (!horse || !horse.prescriptions || !horse.prescriptions[prescriptionIndex]) return;
+            
+            const prescription = horse.prescriptions[prescriptionIndex];
+            const dayInfo = prescription.medicationDays.find(d => d.day === day);
+            if (!dayInfo) return;
+            
+            // Ciclo de estados: null -> applied -> not-applied -> null
+            if (dayInfo.status === null) {
+                dayInfo.status = "applied";
+                element.classList.add('applied');
+                element.innerHTML = `${day}<div class="day-status">✓</div>`;
+            } else if (dayInfo.status === "applied") {
+                dayInfo.status = "not-applied";
+                element.classList.remove('applied');
+                element.classList.add('not-applied');
+                element.innerHTML = `${day}<div class="day-status">✗</div>`;
+            } else {
+                dayInfo.status = null;
+                element.classList.remove('not-applied');
+                element.innerHTML = day;
+            }
+            
+            // Salvar alterações no localStorage
+            saveHorsesToStorage();
+        }
+        
+        // Adicionar nova prescrição
+        function addNewPrescription() {
+            const horse = horses.find(h => h.id === currentHorseId);
+            if (!horse) return;
+            
+            const medication = prompt("Digite o nome do medicamento:");
+            if (!medication) return;
+            
+            const dosage = prompt("Digite a dosagem:");
+            if (!dosage) return;
+            
+            const frequency = prompt("Digite a frequência (ex: 1 vez ao dia):");
+            if (!frequency) return;
+            
+            const duration = parseInt(prompt("Digite a duração em dias:"));
+            if (!duration || isNaN(duration)) return;
+            
+            // Gerar ID único para a prescrição
+            const newPrescriptionId = horse.prescriptions.length > 0 
+                ? Math.max(...horse.prescriptions.map(p => p.id)) + 1 
+                : 1;
+            
+            // Criar array de dias
+            const medicationDays = Array.from({length: duration}, (_, i) => ({
+                day: i + 1,
+                status: null
+            }));
+            
+            // Adicionar nova prescrição
+            horse.prescriptions.push({
+                id: newPrescriptionId,
+                medication: medication,
+                dosage: dosage,
+                frequency: frequency,
+                duration: duration,
+                startDate: new Date().toISOString().split('T')[0],
+                medicationDays: medicationDays
+            });
+            
+            // Salvar alterações no localStorage
+            saveHorsesToStorage();
+            
+            // Atualizar janela de prescrições
+            openPrescriptionWindow();
+            alert('Prescrição adicionada com sucesso!');
+        }
+        
+        // Salvar histórico médico
+        function saveHistory() {
+            const date = document.getElementById('historyDate').value;
+            const description = document.getElementById('historyDescription').value;
+            
+            if (!date || !description) {
+                alert('Por favor, preencha todos os campos.');
+                return;
+            }
+            
+            // Validar formato da data (DD/MM/AAAA)
+            const dateRegex = /^\d{2}\/\d{2}\/\d{4}$/;
+            if (!dateRegex.test(date)) {
+                alert('Por favor, digite a data no formato DD/MM/AAAA');
+                return;
+            }
+            
+            const horse = horses.find(h => h.id === currentHorseId);
+            if (!horse) return;
+            
+            if (isEditingHistory) {
+                // Editar o primeiro item do histórico (simplificado para exemplo)
+                if (horse.history.length > 0) {
+                    horse.history[0].date = date;
+                    horse.history[0].description = description;
+                }
+            } else {
+                // Adicionar novo histórico
+                horse.history.unshift({
+                    date: date,
+                    description: description
+                });
+            }
+            
+            // Salvar alterações no localStorage
+            saveHorsesToStorage();
+            
+            // Fechar formulário e atualizar view
+            document.getElementById('historyEditForm').style.display = 'none';
+            isEditingHistory = false;
+            openHorseDetail(currentHorseId);
+            alert('Histórico salvo com sucesso!');
+        }
+        
+        // Excluir cavalo
+        function deleteHorse(horseId) {
+            if (confirm('⚠️ ATENÇÃO! Esta ação não pode ser desfeita.\n\nTem certeza que deseja excluir permanentemente este cavalo?\nTodos os dados serão perdidos.')) {
+                const horseIndex = horses.findIndex(h => h.id === horseId);
+                if (horseIndex !== -1) {
+                    horses.splice(horseIndex, 1);
+                    
+                    // Salvar alterações no localStorage
+                    saveHorsesToStorage();
+                    
+                    // Fechar modal se estiver aberto
+                    if (currentHorseId === horseId) {
+                        closeHorseDetailModal();
+                    }
+                    
+                    // Atualizar a lista
+                    renderHorses();
+                    renderVisitas();
+                    
+                    alert('Cavalo excluído permanentemente!');
+                }
+            }
+        }
+        
+        // Abrir modal para adicionar/editar cavalo
+        function openAddModal() {
+            currentHorseId = null;
+            modalTitle.textContent = 'Adicionar Novo Cavalo';
+            horseForm.reset();
+            esquadraoOrigem.style.display = 'none';
+            
+            // Limpar seleção de esquadrão
+            esquadraoOptions.forEach(option => {
+                option.classList.remove('selected');
+            });
+            
+            horseModal.style.display = 'flex';
+        }
+        
+        function openEditModal(horseId) {
+            const horse = horses.find(h => h.id === horseId);
+            if (!horse) return;
+            
+            currentHorseId = horseId;
+            modalTitle.textContent = 'Editar Ficha do Cavalo';
+            
+            document.getElementById('horseName').value = horse.name;
+            document.getElementById('horseId').value = horse.id;
+            document.getElementById('horseColor').value = horse.color;
+            document.getElementById('horseSex').value = horse.sex;
+            
+            // Definir esquadrão
+            esquadraoOptions.forEach(option => {
+                option.classList.remove('selected');
+                if (option.getAttribute('data-value') === horse.esquadrao) {
+                    option.classList.add('selected');
+                }
+            });
+            
+            // Mostrar campo de origem se for "Outro"
+            if (horse.esquadrao === 'Outro') {
+                esquadraoOrigem.style.display = 'block';
+                document.getElementById('horseOrigem').value = horse.origem;
+            } else {
+                esquadraoOrigem.style.display = 'none';
+            }
+            
+            // Converter histórico para string
+            const historyText = horse.history.map(item => `${item.date}: ${item.description}`).join('\n');
+            document.getElementById('horseHistory').value = historyText;
+            
+            horseModal.style.display = 'flex';
+        }
+        
+        // Fechar modais
+        function closeHorseModal() {
+            horseModal.style.display = 'none';
+        }
+        
+        function closeHorseDetailModal() {
+            // Fechar todas as janelas abertas
+            activeWindows.forEach(window => window.remove());
+            activeWindows = [];
+            
+            horseDetailModal.style.display = 'none';
+            isEditingHistory = false;
+        }
+        
+        // Salvar cavalo (adicionar ou editar)
+        function saveHorse(e) {
+            e.preventDefault();
+            
+            const horseName = document.getElementById('horseName').value;
+            const horseId = currentHorseId ? currentHorseId : Math.max(...horses.map(h => h.id)) + 1;
+            const horseColor = document.getElementById('horseColor').value;
+            const horseSex = document.getElementById('horseSex').value;
+            const horseHistory = document.getElementById('horseHistory').value;
+            
+            // Obter esquadrão selecionado
+            let selectedEsquadrao = '';
+            let origem = '';
+            
+            esquadraoOptions.forEach(option => {
+                if (option.classList.contains('selected')) {
+                    selectedEsquadrao = option.getAttribute('data-value');
+                }
+            });
+            
+            if (selectedEsquadrao === 'Outro') {
+                origem = document.getElementById('horseOrigem').value;
+                if (!origem) {
+                    alert('Por favor, digite a origem do animal.');
+                    return;
+                }
+            }
+            
+            if (!selectedEsquadrao) {
+                alert('Por favor, selecione um esquadrão.');
+                return;
+            }
+            
+            // Converter histórico de volta para array
+            const historyArray = [];
+            if (horseHistory) {
+                const lines = horseHistory.split('\n');
+                lines.forEach(line => {
+                    if (line.trim()) {
+                        // Tentar extrair data do início da linha
+                        const dateMatch = line.match(/^(\d{2}\/\d{2}\/\d{4}):\s*(.*)/);
+                        if (dateMatch) {
+                            historyArray.push({
+                                date: dateMatch[1],
+                                description: dateMatch[2]
+                            });
+                        } else {
+                            // Se não encontrar formato de data, usar data atual
+                            const today = new Date();
+                            const formattedDate = `${today.getDate().toString().padStart(2, '0')}/${(today.getMonth()+1).toString().padStart(2, '0')}/${today.getFullYear()}`;
+                            historyArray.push({
+                                date: formattedDate,
+                                description: line.trim()
+                            });
+                        }
+                    }
+                });
+            }
+            
+            const horseData = {
+                name: horseName,
+                id: horseId,
+                color: horseColor,
+                sex: horseSex,
+                esquadrao: selectedEsquadrao,
+                origem: origem,
+                history: historyArray,
+                prescriptions: currentHorseId ? horses.find(h => h.id === currentHorseId).prescriptions : [],
+                protocolo: currentHorseId ? horses.find(h => h.id === currentHorseId).protocolo : "Quarentena",
+                selectedForVisit: currentHorseId ? horses.find(h => h.id === currentHorseId).selectedForVisit : false
+            };
+            
+            if (currentHorseId) {
+                // Editar cavalo existente
+                const index = horses.findIndex(h => h.id === currentHorseId);
+                if (index !== -1) {
+                    horses[index] = horseData;
+                }
+            } else {
+                // Adicionar novo cavalo
+                horses.push(horseData);
+            }
+            
+            // Salvar alterações no localStorage
+            saveHorsesToStorage();
+            
+            closeHorseModal();
+            renderHorses();
+            renderVisitas();
+            alert('Ficha salva com sucesso!');
+        }
+        
+        // Exportar para PDF
+        function exportToPDF(horseId) {
+            const horse = horses.find(h => h.id === horseId);
+            if (!horse) return;
+            
+            alert(`Gerando PDF para ${horse.name}...\n\nEm um sistema real, isso geraria um arquivo PDF com todas as informações da ficha.`);
+            // Em um sistema real, aqui você usaria uma biblioteca como jsPDF para gerar o PDF
+        }
+        
+        // Exportar todos para PDF
+        function exportAllToPDF() {
+            alert('Exportando todas as fichas para PDF...\n\nEm um sistema real, isso geraria um arquivo ZIP com PDFs de todos os cavalos.');
+            // Em um sistema real, aqui você geraria PDFs para todos os cavalos
+        }
+        
+        // Fazer logout
+        function logout() {
+            if (confirm('Tem certeza que deseja sair do sistema?')) {
+                // Limpar dados do usuário do localStorage
+                localStorage.removeItem('currentUser');
+                localStorage.removeItem('userRole');
+                showLoginPage();
+            }
+        }
+        
+        // ========== INICIALIZAÇÃO ==========
+        function init() {
+            // Verificar se o usuário está logado
+            if (!checkLogin()) {
+                return;
+            }
+            
+            currentUser = localStorage.getItem('currentUser');
+            
+            // Event Listeners da tela de arquivos
+            btnAddHorse.addEventListener('click', openAddModal);
+            btnExportAll.addEventListener('click', exportAllToPDF);
+            closeModal.addEventListener('click', closeHorseModal);
+            btnCancel.addEventListener('click', closeHorseModal);
+            horseForm.addEventListener('submit', saveHorse);
+            searchInput.addEventListener('input', renderHorses);
+            btnLogout.addEventListener('click', logout);
+            
+            // Event Listeners do modal de detalhes
+            closeDetailModal.addEventListener('click', closeHorseDetailModal);
+            btnCloseDetail.addEventListener('click', closeHorseDetailModal);
+            btnEditHorse.addEventListener('click', () => {
+                closeHorseDetailModal();
+                openEditModal(currentHorseId);
+            });
+            
+            // Event Listener para o botão da seringa (prescrições)
+            prescriptionIconBtn.addEventListener('click', openPrescriptionWindow);
+            
+            // Event Listener para excluir cavalo no modal de detalhes
+            btnDeleteHorse.addEventListener('click', () => {
+                if (confirm('⚠️ ATENÇÃO! Esta ação não pode ser desfeita.\n\nTem certeza que deseja excluir permanentemente este cavalo?\nTodos os dados serão perdidos.')) {
+                    deleteHorse(currentHorseId);
+                    closeHorseDetailModal();
+                }
+            });
+            
+            // Event Listeners para opções de esquadrão
+            esquadraoOptions.forEach(option => {
+                option.addEventListener('click', function() {
+                    // Remover seleção de todas as opções
+                    esquadraoOptions.forEach(opt => opt.classList.remove('selected'));
+                    
+                    // Selecionar a opção clicada
+                    this.classList.add('selected');
+                    
+                    // Mostrar/ocultar campo de origem
+                    if (this.getAttribute('data-value') === 'Outro') {
+                        esquadraoOrigem.style.display = 'block';
+                    } else {
+                        esquadraoOrigem.style.display = 'none';
+                    }
+                });
+            });
+            
+            // Event Listeners para navegação entre abas
+            navTabs.forEach(tab => {
+                tab.addEventListener('click', function() {
+                    const tabName = this.getAttribute('data-tab');
+                    switchTab(tabName);
+                });
+            });
+            
+            // Event Listeners para visitas
+            btnMarcarVisita.addEventListener('click', marcarTodosParaVisita);
+            btnLimparVisita.addEventListener('click', limparSelecaoVisitas);
+            
+            // NOVO EVENT LISTENER PARA O BOTÃO VISITA
+            btnVisitaRedirect.addEventListener('click', function() {
+                window.location.href = 'visita.html';
+            });
+            
+            // Fechar modais ao clicar fora deles
+            window.addEventListener('click', (e) => {
+                if (e.target === horseModal) {
+                    closeHorseModal();
+                }
+                if (e.target === horseDetailModal) {
+                    closeHorseDetailModal();
+                }
+            });
+            
+            // Iniciar a aplicação
+            showWelcomePage();
+        }
+        
+        // Iniciar a aplicação
+        init();
     </script>
 </body>
 </html>
+
