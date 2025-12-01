@@ -612,18 +612,52 @@
             grid-column: 1 / -1;
         }
         
-        /* NOVO ESTILO PARA TIMELINE DE PRESCRIÇÕES */
-        .prescription-timeline {
+        /* NOVO ESTILO PARA TIMELINE DE HISTÓRICO MÉDICO E PRESCRIÇÕES */
+        .timeline-section {
             margin-top: 20px;
+        }
+        
+        .timeline-container {
+            position: relative;
+            padding-left: 30px;
+        }
+        
+        .timeline-container::before {
+            content: '';
+            position: absolute;
+            left: 10px;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: #2c7fb8;
         }
         
         .timeline-item {
             position: relative;
-            padding: 15px;
             margin-bottom: 15px;
+            padding: 15px;
             background: #f8f9fa;
             border-radius: 8px;
             border-left: 4px solid #2c7fb8;
+            transition: all 0.3s;
+        }
+        
+        .timeline-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -25px;
+            top: 20px;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: #2c7fb8;
+            border: 2px solid white;
+            z-index: 1;
         }
         
         .timeline-header {
@@ -657,6 +691,75 @@
         .timeline-expand:hover {
             background: #1d5f8a;
             transform: scale(1.1);
+        }
+        
+        .timeline-window {
+            display: none;
+            position: absolute;
+            z-index: 100;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.15);
+            border: 1px solid #e0e0e0;
+            min-width: 300px;
+            max-width: 500px;
+            animation: fadeIn 0.3s ease;
+            resize: both;
+            overflow: auto;
+        }
+        
+        .timeline-window.active {
+            display: block;
+        }
+        
+        .window-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 15px;
+            background: #2c7fb8;
+            color: white;
+            border-radius: 8px 8px 0 0;
+            cursor: move;
+        }
+        
+        .window-title {
+            font-weight: 600;
+            font-size: 14px;
+        }
+        
+        .window-close {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 20px;
+            cursor: pointer;
+            padding: 0;
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+        }
+        
+        .window-close:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+        
+        .window-content {
+            padding: 15px;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        
+        .window-content p {
+            margin-bottom: 10px;
+            line-height: 1.5;
+        }
+        
+        .window-content p:last-child {
+            margin-bottom: 0;
         }
         
         .timeline-content {
@@ -865,28 +968,6 @@
             justify-content: flex-end;
             gap: 10px;
             margin-top: 25px;
-        }
-        
-        /* HISTÓRICO MÉDICO COM DATAS */
-        .historico-item {
-            padding: 10px 0;
-            border-bottom: 1px solid #eee;
-        }
-        
-        .historico-item:last-child {
-            border-bottom: none;
-        }
-        
-        .historico-data {
-            font-weight: 600;
-            color: #2c7fb8;
-            margin-bottom: 5px;
-            font-size: 14px;
-        }
-        
-        .historico-descricao {
-            color: #666;
-            font-size: 14px;
         }
         
         /* NOVOS ESTILOS PARA VISITAS */
@@ -1101,6 +1182,19 @@
             .visit-table {
                 display: block;
                 overflow-x: auto;
+            }
+            
+            .timeline-container::before {
+                left: 15px;
+            }
+            
+            .timeline-item::before {
+                left: -20px;
+            }
+            
+            .timeline-window {
+                min-width: 250px;
+                max-width: 300px;
             }
         }
     </style>
@@ -1442,7 +1536,8 @@
                         origem: "",
                         history: [
                             { date: "20/11/2025", description: "Problema articular tratado. Controle semestral." },
-                            { date: "15/10/2025", description: "Aplicação de suplemento articular" }
+                            { date: "15/10/2025", description: "Aplicação de suplemento articular" },
+                            { date: "26/11/2025", description: "Consulta de rotina - saúde estável" }
                         ],
                         prescriptions: [
                             {
@@ -1578,6 +1673,7 @@
         let currentFilter = 'all';
         let currentUser = '';
         let showPrescriptionForm = false;
+        let activeWindows = [];
         
         // ========== VERIFICAÇÃO DE LOGIN ==========
         function checkLogin() {
@@ -1897,6 +1993,68 @@
             });
         }
         
+        // ========== FUNÇÕES PARA DRAG & DROP DE JANELAS ==========
+        function makeWindowDraggable(windowElement) {
+            const header = windowElement.querySelector('.window-header');
+            let isDragging = false;
+            let currentX;
+            let currentY;
+            let initialX;
+            let initialY;
+            let xOffset = 0;
+            let yOffset = 0;
+            
+            header.addEventListener('mousedown', dragStart);
+            document.addEventListener('mousemove', drag);
+            document.addEventListener('mouseup', dragEnd);
+            
+            function dragStart(e) {
+                initialX = e.clientX - xOffset;
+                initialY = e.clientY - yOffset;
+                
+                if (e.target === header || e.target.closest('.window-header')) {
+                    isDragging = true;
+                    
+                    // Trazer a janela para frente
+                    activeWindows.forEach(win => {
+                        win.style.zIndex = 100;
+                    });
+                    windowElement.style.zIndex = 101;
+                }
+            }
+            
+            function drag(e) {
+                if (isDragging) {
+                    e.preventDefault();
+                    
+                    currentX = e.clientX - initialX;
+                    currentY = e.clientY - initialY;
+                    
+                    xOffset = currentX;
+                    yOffset = currentY;
+                    
+                    setTranslate(currentX, currentY, windowElement);
+                }
+            }
+            
+            function setTranslate(xPos, yPos, el) {
+                el.style.transform = `translate3d(${xPos}px, ${yPos}px, 0)`;
+            }
+            
+            function dragEnd() {
+                initialX = currentX;
+                initialY = currentY;
+                isDragging = false;
+            }
+            
+            // Retornar função para limpar event listeners
+            return function cleanup() {
+                header.removeEventListener('mousedown', dragStart);
+                document.removeEventListener('mousemove', drag);
+                document.removeEventListener('mouseup', dragEnd);
+            };
+        }
+        
         // ========== FUNÇÕES RESTANTES ==========
         // Abrir modal de detalhes do cavalo
         function openHorseDetail(horseId) {
@@ -1952,24 +2110,41 @@
                         </svg>
                         Histórico Médico
                     </h3>
-                    <div class="detail-info">
+                    <div class="timeline-section">
+                        <div class="timeline-container">
             `;
             
-            // Adicionar histórico médico com datas
+            // Adicionar histórico médico com linha do tempo
             if (horse.history && horse.history.length > 0) {
-                horse.history.forEach(item => {
+                // Ordenar histórico por data (mais recente primeiro)
+                const sortedHistory = [...horse.history].sort((a, b) => {
+                    const dateA = a.date.split('/').reverse().join('-');
+                    const dateB = b.date.split('/').reverse().join('-');
+                    return new Date(dateB) - new Date(dateA);
+                });
+                
+                sortedHistory.forEach((item, index) => {
                     detailContent += `
-                        <div class="historico-item">
-                            <div class="historico-data">${item.date}</div>
-                            <div class="historico-descricao">${item.description}</div>
+                        <div class="timeline-item" data-history-index="${index}">
+                            <div class="timeline-header">
+                                <div class="timeline-date">${item.date}</div>
+                                <button class="timeline-expand" data-history-index="${index}">+</button>
+                            </div>
                         </div>
                     `;
                 });
             } else {
-                detailContent += `<p>Nenhum registro no histórico médico.</p>`;
+                detailContent += `
+                    <div class="timeline-item">
+                        <div class="timeline-header">
+                            <div class="timeline-date">Nenhum registro</div>
+                        </div>
+                    </div>
+                `;
             }
             
             detailContent += `
+                        </div>
                     </div>
                 </div>
             `;
@@ -1984,7 +2159,8 @@
                         Prescrições Médicas
                     </h3>
                     
-                    <div class="prescription-timeline">
+                    <div class="timeline-section">
+                        <div class="timeline-container">
             `;
             
             if (horse.prescriptions && horse.prescriptions.length > 0) {
@@ -2002,93 +2178,21 @@
                                 <div class="timeline-date">${formattedDate}</div>
                                 <button class="timeline-expand" data-prescription-id="${prescription.id}">+</button>
                             </div>
-                            <div class="timeline-content" id="timeline-content-${prescription.id}">
-                                <button class="close-timeline" data-prescription-id="${prescription.id}">×</button>
-                                <div class="prescription-details">
-                                    <div class="prescription-detail-item">
-                                        <strong>Medicamento:</strong> ${prescription.medication}
-                                    </div>
-                                    <div class="prescription-detail-item">
-                                        <strong>Dosagem:</strong> ${prescription.dosage}
-                                    </div>
-                                    <div class="prescription-detail-item">
-                                        <strong>Frequência:</strong> ${prescription.frequency}
-                                    </div>
-                                    <div class="prescription-detail-item">
-                                        <strong>Duração:</strong> ${prescription.duration} dias
-                                    </div>
-                                    <div class="prescription-detail-item">
-                                        <strong>Início:</strong> ${formattedDate}
-                                    </div>
-                                </div>
-                                <div class="medication-schedule">
-                                    <div class="schedule-title">Controle de dosagem (${prescription.duration} dias):</div>
-                                    <div class="days-grid">
-                    `;
-                    
-                    // Gerar quadrados para cada dia (máximo 14 por linha para melhor visualização)
-                    const maxDaysPerRow = 14;
-                    const totalRows = Math.ceil(prescription.duration / maxDaysPerRow);
-                    
-                    for (let row = 0; row < totalRows; row++) {
-                        const startDay = row * maxDaysPerRow + 1;
-                        const endDay = Math.min((row + 1) * maxDaysPerRow, prescription.duration);
-                        
-                        // Para mais de uma linha, adicionar um título de linha
-                        if (totalRows > 1) {
-                            detailContent += `
-                                <div style="grid-column: 1 / -1; font-size: 12px; color: #666; margin-top: ${row === 0 ? '0' : '10px'};">
-                                    Dias ${startDay} a ${endDay}:
-                                </div>
-                            `;
-                        }
-                        
-                        for (let day = startDay; day <= endDay; day++) {
-                            const dayInfo = prescription.medicationDays.find(d => d.day === day);
-                            if (!dayInfo) continue;
-                            
-                            const statusClass = dayInfo.status ? dayInfo.status : '';
-                            const statusIcon = dayInfo.status === 'applied' ? '✓' : dayInfo.status === 'not-applied' ? '✗' : '';
-                            
-                            detailContent += `
-                                <div>
-                                    <div class="day-box ${statusClass}" 
-                                         data-prescription-id="${prescription.id}" 
-                                         data-day="${dayInfo.day}">
-                                        ${dayInfo.day}
-                                        ${statusIcon ? `<div class="day-status">${statusIcon}</div>` : ''}
-                                    </div>
-                                    <div class="day-label">Dia ${dayInfo.day}</div>
-                                </div>
-                            `;
-                        }
-                    }
-                    
-                    detailContent += `
-                                    </div>
-                                </div>
-                                <div class="form-actions" style="margin-top: 15px;">
-                                    <button type="button" class="btn btn-delete-horse btn-small" data-prescription-id="${prescription.id}">
-                                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                            <path d="M3 6H5H21" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                            <path d="M8 6V4C8 3.46957 8.21071 2.96086 8.58579 2.58579C8.96086 2.21071 9.46957 2 10 2H14C14.5304 2 15.0391 2.21071 15.4142 2.58579C15.7893 2.96086 16 3.46957 16 4V6M19 6V20C19 20.5304 18.7893 21.0391 18.4142 21.4142C18.0391 21.7893 17.5304 22 17 22H7C6.46957 22 5.96086 21.7893 5.58579 21.4142C5.21071 21.0391 5 20.5304 5 20V6H19Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                        </svg>
-                                        Excluir Prescrição
-                                    </button>
-                                </div>
-                            </div>
                         </div>
                     `;
                 });
             } else {
                 detailContent += `
-                    <div class="detail-info">
-                        <p>Nenhuma prescrição médica registrada.</p>
+                    <div class="timeline-item">
+                        <div class="timeline-header">
+                            <div class="timeline-date">Nenhuma prescrição</div>
+                        </div>
                     </div>
                 `;
             }
             
             detailContent += `
+                        </div>
                     </div>
                     
                     <div class="add-prescription">
@@ -2141,49 +2245,26 @@
             
             horseDetailContent.innerHTML = detailContent;
             
-            // Adicionar event listeners para expandir/retrair timeline
-            document.querySelectorAll('.timeline-expand').forEach(btn => {
+            // Limpar janelas ativas
+            activeWindows.forEach(window => window.remove());
+            activeWindows = [];
+            
+            // Adicionar event listeners para expandir histórico médico
+            document.querySelectorAll('.timeline-expand[data-history-index]').forEach(btn => {
                 btn.addEventListener('click', function() {
-                    const prescriptionId = this.getAttribute('data-prescription-id');
-                    const content = document.getElementById(`timeline-content-${prescriptionId}`);
-                    content.classList.toggle('active');
-                    
-                    // Alterar o botão de + para - quando expandido
-                    if (content.classList.contains('active')) {
-                        this.textContent = '−';
-                    } else {
-                        this.textContent = '+';
-                    }
+                    const historyIndex = this.getAttribute('data-history-index');
+                    const historyItem = horse.history[parseInt(historyIndex)];
+                    openHistoryWindow(historyItem, this.closest('.timeline-item'));
                 });
             });
             
-            // Adicionar event listeners para fechar timeline (botão X)
-            document.querySelectorAll('.close-timeline').forEach(btn => {
-                btn.addEventListener('click', function() {
-                    const prescriptionId = this.getAttribute('data-prescription-id');
-                    const content = document.getElementById(`timeline-content-${prescriptionId}`);
-                    const expandBtn = document.querySelector(`.timeline-expand[data-prescription-id="${prescriptionId}"]`);
-                    
-                    content.classList.remove('active');
-                    expandBtn.textContent = '+';
-                });
-            });
-            
-            // Adicionar event listeners para os quadrados de dias
-            document.querySelectorAll('.day-box').forEach(box => {
-                box.addEventListener('click', function() {
-                    const prescriptionId = parseInt(this.getAttribute('data-prescription-id'));
-                    const day = parseInt(this.getAttribute('data-day'));
-                    toggleMedicationDay(horseId, prescriptionId, day, this);
-                });
-            });
-            
-            // Adicionar event listeners para exclusão de prescrições
-            document.querySelectorAll('.btn-delete-horse[data-prescription-id]').forEach(btn => {
+            // Adicionar event listeners para expandir prescrições
+            document.querySelectorAll('.timeline-expand[data-prescription-id]').forEach(btn => {
                 btn.addEventListener('click', function() {
                     const prescriptionId = parseInt(this.getAttribute('data-prescription-id'));
-                    if (confirm('Tem certeza que deseja excluir esta prescrição?')) {
-                        deletePrescription(horseId, prescriptionId);
+                    const prescription = horse.prescriptions.find(p => p.id === prescriptionId);
+                    if (prescription) {
+                        openPrescriptionWindow(prescription, horse, this.closest('.timeline-item'));
                     }
                 });
             });
@@ -2201,6 +2282,191 @@
             }
             
             horseDetailModal.style.display = 'flex';
+        }
+        
+        // Abrir janela de histórico médico
+        function openHistoryWindow(historyItem, timelineItem) {
+            const windowId = `history-window-${Date.now()}`;
+            const windowElement = document.createElement('div');
+            windowElement.className = 'timeline-window';
+            windowElement.id = windowId;
+            
+            // Posicionar a janela próxima ao item da timeline
+            const rect = timelineItem.getBoundingClientRect();
+            const modalRect = horseDetailModal.getBoundingClientRect();
+            
+            windowElement.style.position = 'absolute';
+            windowElement.style.left = `${rect.right - modalRect.left + 20}px`;
+            windowElement.style.top = `${rect.top - modalRect.top}px`;
+            windowElement.style.zIndex = '100';
+            
+            windowElement.innerHTML = `
+                <div class="window-header">
+                    <div class="window-title">${historyItem.date}</div>
+                    <button class="window-close" data-window-id="${windowId}">×</button>
+                </div>
+                <div class="window-content">
+                    <p>${historyItem.description}</p>
+                </div>
+            `;
+            
+            horseDetailContent.appendChild(windowElement);
+            activeWindows.push(windowElement);
+            
+            // Fazer a janela arrastável
+            const cleanup = makeWindowDraggable(windowElement);
+            
+            // Adicionar event listener para fechar a janela
+            windowElement.querySelector('.window-close').addEventListener('click', function() {
+                const windowId = this.getAttribute('data-window-id');
+                const windowToClose = document.getElementById(windowId);
+                if (windowToClose) {
+                    windowToClose.remove();
+                    activeWindows = activeWindows.filter(w => w.id !== windowId);
+                    cleanup();
+                }
+            });
+            
+            // Mostrar a janela
+            setTimeout(() => {
+                windowElement.classList.add('active');
+            }, 10);
+        }
+        
+        // Abrir janela de prescrição
+        function openPrescriptionWindow(prescription, horse, timelineItem) {
+            const windowId = `prescription-window-${Date.now()}`;
+            const windowElement = document.createElement('div');
+            windowElement.className = 'timeline-window';
+            windowElement.id = windowId;
+            
+            // Posicionar a janela próxima ao item da timeline
+            const rect = timelineItem.getBoundingClientRect();
+            const modalRect = horseDetailModal.getBoundingClientRect();
+            
+            windowElement.style.position = 'absolute';
+            windowElement.style.left = `${rect.right - modalRect.left + 20}px`;
+            windowElement.style.top = `${rect.top - modalRect.top}px`;
+            windowElement.style.zIndex = '100';
+            
+            const formattedDate = new Date(prescription.startDate).toLocaleDateString('pt-BR');
+            
+            // Gerar conteúdo dos dias da medicação
+            let daysContent = '';
+            const maxDaysPerRow = 7;
+            const totalRows = Math.ceil(prescription.duration / maxDaysPerRow);
+            
+            for (let row = 0; row < totalRows; row++) {
+                const startDay = row * maxDaysPerRow + 1;
+                const endDay = Math.min((row + 1) * maxDaysPerRow, prescription.duration);
+                
+                daysContent += `<div style="display: flex; gap: 5px; margin-bottom: 5px;">`;
+                
+                for (let day = startDay; day <= endDay; day++) {
+                    const dayInfo = prescription.medicationDays.find(d => d.day === day);
+                    if (!dayInfo) continue;
+                    
+                    const statusClass = dayInfo.status ? dayInfo.status : '';
+                    const statusIcon = dayInfo.status === 'applied' ? '✓' : dayInfo.status === 'not-applied' ? '✗' : '';
+                    
+                    daysContent += `
+                        <div style="position: relative;">
+                            <div class="day-box ${statusClass}" 
+                                 style="width: 30px; height: 30px;"
+                                 data-prescription-id="${prescription.id}" 
+                                 data-day="${dayInfo.day}">
+                                ${dayInfo.day}
+                                ${statusIcon ? `<div class="day-status">${statusIcon}</div>` : ''}
+                            </div>
+                            <div class="day-label" style="font-size: 10px;">Dia ${dayInfo.day}</div>
+                        </div>
+                    `;
+                }
+                
+                daysContent += `</div>`;
+            }
+            
+            windowElement.innerHTML = `
+                <div class="window-header">
+                    <div class="window-title">Prescrição - ${formattedDate}</div>
+                    <button class="window-close" data-window-id="${windowId}">×</button>
+                </div>
+                <div class="window-content">
+                    <div class="prescription-details">
+                        <div class="prescription-detail-item">
+                            <strong>Medicamento:</strong> ${prescription.medication}
+                        </div>
+                        <div class="prescription-detail-item">
+                            <strong>Dosagem:</strong> ${prescription.dosage}
+                        </div>
+                        <div class="prescription-detail-item">
+                            <strong>Frequência:</strong> ${prescription.frequency}
+                        </div>
+                        <div class="prescription-detail-item">
+                            <strong>Duração:</strong> ${prescription.duration} dias
+                        </div>
+                        <div class="prescription-detail-item">
+                            <strong>Início:</strong> ${formattedDate}
+                        </div>
+                    </div>
+                    <div class="medication-schedule">
+                        <div class="schedule-title">Controle de dosagem (${prescription.duration} dias):</div>
+                        ${daysContent}
+                    </div>
+                    <div class="form-actions" style="margin-top: 15px;">
+                        <button type="button" class="btn btn-delete-horse btn-small" data-prescription-id="${prescription.id}">
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M3 6H5H21" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M8 6V4C8 3.46957 8.21071 2.96086 8.58579 2.58579C8.96086 2.21071 9.46957 2 10 2H14C14.5304 2 15.0391 2.21071 15.4142 2.58579C15.7893 2.96086 16 3.46957 16 4V6M19 6V20C19 20.5304 18.7893 21.0391 18.4142 21.4142C18.0391 21.7893 17.5304 22 17 22H7C6.46957 22 5.96086 21.7893 5.58579 21.4142C5.21071 21.0391 5 20.5304 5 20V6H19Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                            Excluir Prescrição
+                        </button>
+                    </div>
+                </div>
+            `;
+            
+            horseDetailContent.appendChild(windowElement);
+            activeWindows.push(windowElement);
+            
+            // Fazer a janela arrastável
+            const cleanup = makeWindowDraggable(windowElement);
+            
+            // Adicionar event listeners
+            windowElement.querySelector('.window-close').addEventListener('click', function() {
+                const windowId = this.getAttribute('data-window-id');
+                const windowToClose = document.getElementById(windowId);
+                if (windowToClose) {
+                    windowToClose.remove();
+                    activeWindows = activeWindows.filter(w => w.id !== windowId);
+                    cleanup();
+                }
+            });
+            
+            // Adicionar event listeners para os quadrados de dias
+            windowElement.querySelectorAll('.day-box').forEach(box => {
+                box.addEventListener('click', function() {
+                    const prescriptionId = parseInt(this.getAttribute('data-prescription-id'));
+                    const day = parseInt(this.getAttribute('data-day'));
+                    toggleMedicationDay(currentHorseId, prescriptionId, day, this);
+                });
+            });
+            
+            // Adicionar event listener para exclusão de prescrição
+            windowElement.querySelector('.btn-delete-horse[data-prescription-id]').addEventListener('click', function() {
+                const prescriptionId = parseInt(this.getAttribute('data-prescription-id'));
+                if (confirm('Tem certeza que deseja excluir esta prescrição?')) {
+                    const windowId = windowElement.id;
+                    windowElement.remove();
+                    activeWindows = activeWindows.filter(w => w.id !== windowId);
+                    cleanup();
+                    deletePrescription(currentHorseId, prescriptionId);
+                }
+            });
+            
+            // Mostrar a janela
+            setTimeout(() => {
+                windowElement.classList.add('active');
+            }, 10);
         }
         
         // Alternar status do dia da medicação
@@ -2383,6 +2649,10 @@
         }
         
         function closeHorseDetailModal() {
+            // Fechar todas as janelas abertas
+            activeWindows.forEach(window => window.remove());
+            activeWindows = [];
+            
             horseDetailModal.style.display = 'none';
             showPrescriptionForm = false;
         }
