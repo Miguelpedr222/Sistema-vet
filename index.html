@@ -1512,6 +1512,19 @@
         let currentUser = '';
         let showPrescriptionForm = false;
         
+        // ========== VERIFICAÇÃO DE LOGIN ==========
+        function checkLogin() {
+            const storedUser = localStorage.getItem('currentUser');
+            const storedRole = localStorage.getItem('userRole');
+            
+            if (!storedUser || !storedRole) {
+                // Redirecionar para a página de login se não estiver logado
+                window.location.href = 'login.html';
+                return false;
+            }
+            return true;
+        }
+        
         // ========== FUNÇÕES DE TRANSIÇÃO ==========
         // Mostrar tela de boas-vindas
         function showWelcomePage() {
@@ -1983,7 +1996,7 @@
                                 <input type="text" id="medicationFrequency" required>
                             </div>
                             <div class="form-group">
-                                <label for="medicationDuration">Duração (dias)</label>
+                                <label for="medicationDuration">Duração (dais)</label>
                                 <input type="number" id="medicationDuration" min="1" max="90" required>
                             </div>
                         </div>
@@ -2313,16 +2326,11 @@
         // ========== INICIALIZAÇÃO ==========
         function init() {
             // Verificar se o usuário está logado
-            const storedUser = localStorage.getItem('currentUser');
-            const storedRole = localStorage.getItem('userRole');
-            
-            if (!storedUser || !storedRole) {
-                // Redirecionar para a página de login se não estiver logado
-                window.location.href = 'login.html';
+            if (!checkLogin()) {
                 return;
             }
             
-            currentUser = storedUser;
+            currentUser = localStorage.getItem('currentUser');
             
             // Event Listeners da tela de arquivos
             btnAddHorse.addEventListener('click', openAddModal);
@@ -2394,5 +2402,4 @@
         init();
     </script>
 </body>
-</html>v
-
+</html>
