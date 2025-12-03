@@ -1,0 +1,1079 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Editar Ficha - Sistema Veterinário</title>
+    <style>
+        /* RESET E ESTILOS GERAIS */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+            min-height: 100vh;
+            color: #1e293b;
+            line-height: 1.5;
+        }
+        
+        /* HEADER MINIMALISTA */
+        .header {
+            background: white;
+            border-bottom: 1px solid #e2e8f0;
+            padding: 1rem 2rem;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+        }
+        
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .header-title {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+        
+        .header-title h1 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #0f172a;
+        }
+        
+        .header-title span {
+            color: #64748b;
+            font-size: 0.875rem;
+            font-weight: normal;
+        }
+        
+        .header-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+        
+        /* BOTÕES MINIMALISTAS */
+        .btn {
+            padding: 0.5rem 1rem;
+            border: 1px solid #e2e8f0;
+            background: white;
+            border-radius: 0.375rem;
+            font-size: 0.875rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.375rem;
+        }
+        
+        .btn:hover {
+            border-color: #cbd5e1;
+            background: #f8fafc;
+        }
+        
+        .btn-primary {
+            background: #3b82f6;
+            color: white;
+            border-color: #3b82f6;
+        }
+        
+        .btn-primary:hover {
+            background: #2563eb;
+            border-color: #2563eb;
+        }
+        
+        .btn-danger {
+            background: #ef4444;
+            color: white;
+            border-color: #ef4444;
+        }
+        
+        .btn-danger:hover {
+            background: #dc2626;
+            border-color: #dc2626;
+        }
+        
+        .btn-icon {
+            width: 2rem;
+            height: 2rem;
+            padding: 0;
+            justify-content: center;
+        }
+        
+        /* CONTEÚDO PRINCIPAL */
+        .container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 2rem;
+        }
+        
+        /* CARD DO FORMULÁRIO */
+        .form-card {
+            background: white;
+            border-radius: 0.75rem;
+            border: 1px solid #e2e8f0;
+            overflow: hidden;
+            margin-bottom: 1.5rem;
+        }
+        
+        .card-header {
+            padding: 1.5rem;
+            border-bottom: 1px solid #e2e8f0;
+            background: #f8fafc;
+        }
+        
+        .card-title {
+            font-size: 1.125rem;
+            font-weight: 600;
+            color: #0f172a;
+            margin-bottom: 0.5rem;
+        }
+        
+        .card-subtitle {
+            color: #64748b;
+            font-size: 0.875rem;
+        }
+        
+        .card-body {
+            padding: 1.5rem;
+        }
+        
+        /* GRID DO FORMULÁRIO */
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+        
+        /* GRUPO DE FORMULÁRIO */
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+        
+        .form-group label {
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: #475569;
+        }
+        
+        .form-group.required label::after {
+            content: " *";
+            color: #ef4444;
+        }
+        
+        .form-control {
+            padding: 0.625rem 0.875rem;
+            border: 1px solid #cbd5e1;
+            border-radius: 0.375rem;
+            font-size: 0.875rem;
+            transition: all 0.2s;
+            background: white;
+        }
+        
+        .form-control:focus {
+            outline: none;
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+        
+        .form-control::placeholder {
+            color: #94a3b8;
+        }
+        
+        select.form-control {
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%23475569'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 0.75rem center;
+            background-size: 1rem;
+            padding-right: 2.5rem;
+        }
+        
+        textarea.form-control {
+            min-height: 6rem;
+            resize: vertical;
+        }
+        
+        /* OPÇÕES DE ESQUADRÃO */
+        .esquadrao-options {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+        
+        .esquadrao-option {
+            flex: 1;
+            min-width: 100px;
+            padding: 0.75rem;
+            text-align: center;
+            border: 1px solid #cbd5e1;
+            border-radius: 0.375rem;
+            background: white;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 0.875rem;
+            font-weight: 500;
+        }
+        
+        .esquadrao-option:hover {
+            border-color: #3b82f6;
+            background: #eff6ff;
+        }
+        
+        .esquadrao-option.selected {
+            background: #3b82f6;
+            color: white;
+            border-color: #3b82f6;
+        }
+        
+        /* HISTÓRICO MÉDICO */
+        .history-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+        
+        .history-item {
+            padding: 1rem;
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 0.5rem;
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+        }
+        
+        .history-date {
+            flex-shrink: 0;
+            min-width: 100px;
+            font-weight: 500;
+            color: #475569;
+        }
+        
+        .history-content {
+            flex: 1;
+            color: #1e293b;
+        }
+        
+        .history-actions {
+            flex-shrink: 0;
+            display: flex;
+            gap: 0.375rem;
+        }
+        
+        /* AÇÕES DO FORMULÁRIO */
+        .form-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 0.75rem;
+            padding: 1.5rem;
+            border-top: 1px solid #e2e8f0;
+            background: #f8fafc;
+        }
+        
+        /* MODAL */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(15, 23, 42, 0.7);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+        }
+        
+        .modal-content {
+            background: white;
+            border-radius: 0.75rem;
+            max-width: 400px;
+            width: 100%;
+            overflow: hidden;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+        }
+        
+        .modal-header {
+            padding: 1.25rem 1.5rem;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        
+        .modal-title {
+            font-weight: 600;
+            color: #0f172a;
+            font-size: 1.125rem;
+        }
+        
+        .modal-body {
+            padding: 1.5rem;
+        }
+        
+        .modal-footer {
+            padding: 1.25rem 1.5rem;
+            border-top: 1px solid #e2e8f0;
+            display: flex;
+            justify-content: flex-end;
+            gap: 0.75rem;
+        }
+        
+        /* BADGES */
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 0.25rem 0.625rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+        
+        .badge-blue {
+            background: #dbeafe;
+            color: #1d4ed8;
+        }
+        
+        .badge-red {
+            background: #fee2e2;
+            color: #dc2626;
+        }
+        
+        .badge-green {
+            background: #dcfce7;
+            color: #15803d;
+        }
+        
+        /* UTILIDADES */
+        .mb-4 { margin-bottom: 1rem; }
+        .mb-6 { margin-bottom: 1.5rem; }
+        .mt-2 { margin-top: 0.5rem; }
+        .mt-4 { margin-top: 1rem; }
+        .mt-6 { margin-top: 1.5rem; }
+        .w-full { width: 100%; }
+        .hidden { display: none !important; }
+        
+        /* RESPONSIVIDADE */
+        @media (max-width: 768px) {
+            .container {
+                padding: 0 1rem;
+            }
+            
+            .header-content {
+                flex-direction: column;
+                gap: 1rem;
+                text-align: center;
+            }
+            
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .esquadrao-option {
+                min-width: calc(33.333% - 0.5rem);
+            }
+            
+            .history-item {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+            
+            .history-date {
+                min-width: auto;
+            }
+            
+            .history-actions {
+                align-self: flex-end;
+            }
+            
+            .form-actions {
+                flex-direction: column;
+            }
+            
+            .form-actions .btn {
+                width: 100%;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .header {
+                padding: 1rem;
+            }
+            
+            .card-body {
+                padding: 1rem;
+            }
+            
+            .esquadrao-options {
+                flex-direction: column;
+            }
+            
+            .esquadrao-option {
+                min-width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- HEADER -->
+    <header class="header">
+        <div class="header-content">
+            <div class="header-title">
+                <h1>Editar Ficha</h1>
+                <span>• Sistema Veterinário 2°rcg</span>
+            </div>
+            <div class="header-actions">
+                <button class="btn" id="backBtn">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M19 12H5M12 19L5 12L12 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    Voltar
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- CONTEÚDO PRINCIPAL -->
+    <main class="container">
+        <!-- CARD DE INFORMAÇÕES BÁSICAS -->
+        <div class="form-card">
+            <div class="card-header">
+                <h2 class="card-title">Informações Básicas</h2>
+                <p class="card-subtitle">Dados fundamentais do animal</p>
+            </div>
+            <div class="card-body">
+                <div class="form-grid">
+                    <div class="form-group required">
+                        <label for="animalName">Nome do Animal</label>
+                        <input type="text" id="animalName" class="form-control" value="Gastador">
+                    </div>
+                    
+                    <div class="form-group required">
+                        <label for="animalId">Identificação</label>
+                        <input type="text" id="animalId" class="form-control" value="001">
+                    </div>
+                    
+                    <div class="form-group required">
+                        <label for="animalColor">Pelagem</label>
+                        <input type="text" id="animalColor" class="form-control" value="Alazão">
+                    </div>
+                    
+                    <div class="form-group required">
+                        <label for="animalSex">Sexo</label>
+                        <select id="animalSex" class="form-control">
+                            <option value="Macho" selected>Macho</option>
+                            <option value="Fêmea">Fêmea</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- CARD DE ESQUADRÃO -->
+        <div class="form-card">
+            <div class="card-header">
+                <h2 class="card-title">Esquadrão</h2>
+                <p class="card-subtitle">Selecione a origem do animal</p>
+            </div>
+            <div class="card-body">
+                <div class="form-group required">
+                    <label>Esquadrão de origem</label>
+                    <div class="esquadrao-options">
+                        <div class="esquadrao-option selected" data-value="Hipo">
+                            Hipo
+                        </div>
+                        <div class="esquadrao-option" data-value="DH">
+                            D.H
+                        </div>
+                        <div class="esquadrao-option" data-value="Outro">
+                            Outro
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-group hidden" id="origemGroup">
+                    <label for="animalOrigem" class="required">Origem do animal</label>
+                    <input type="text" id="animalOrigem" class="form-control" placeholder="Digite a origem do animal">
+                </div>
+            </div>
+        </div>
+
+        <!-- CARD DE PROTOCOLO -->
+        <div class="form-card">
+            <div class="card-header">
+                <h2 class="card-title">Protocolo</h2>
+                <p class="card-subtitle">Protocolo médico do animal</p>
+            </div>
+            <div class="card-body">
+                <div class="form-group required">
+                    <label for="animalProtocol">Protocolo atual</label>
+                    <select id="animalProtocol" class="form-control">
+                        <option value="Quarentena" selected>Quarentena - Pós cirúrgico</option>
+                        <option value="Suplementacao">Suplementação</option>
+                        <option value="Controle">Controle</option>
+                        <option value="Rotina">Rotina</option>
+                        <option value="Emergencia">Emergência</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="protocolDetails">Detalhes do protocolo</label>
+                    <textarea id="protocolDetails" class="form-control" rows="3">Pós cirúrgico. Última consulta realizada em 15/11/2025</textarea>
+                </div>
+            </div>
+        </div>
+
+        <!-- CARD DE HISTÓRICO MÉDICO -->
+        <div class="form-card">
+            <div class="card-header">
+                <h2 class="card-title">Histórico Médico</h2>
+                <p class="card-subtitle">Registros de atendimentos e tratamentos</p>
+            </div>
+            <div class="card-body">
+                <div class="history-list" id="historyList">
+                    <!-- Histórico será carregado aqui -->
+                </div>
+                
+                <button class="btn w-full mt-4" id="addHistoryBtn">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M12 5V19M5 12H19" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    Adicionar Histórico
+                </button>
+            </div>
+        </div>
+
+        <!-- AÇÕES DO FORMULÁRIO -->
+        <div class="form-actions">
+            <button class="btn" id="cancelBtn">Cancelar</button>
+            <button class="btn btn-danger" id="deleteBtn">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M3 6H5H21M8 6V4C8 3.46957 8.21071 2.96086 8.58579 2.58579C8.96086 2.21071 9.46957 2 10 2H14C14.5304 2 15.0391 2.21071 15.4142 2.58579C15.7893 2.96086 16 3.46957 16 4V6M19 6V20C19 20.5304 18.7893 21.0391 18.4142 21.4142C18.0391 21.7893 17.5304 22 17 22H7C6.46957 22 5.96086 21.7893 5.58579 21.4142C5.21071 21.0391 5 20.5304 5 20V6H19Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                Excluir Ficha
+            </button>
+            <button class="btn btn-primary" id="saveBtn">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M19 21H5C4.46957 21 3.96086 20.7893 3.58579 20.4142C3.21071 20.0391 3 19.5304 3 19V5C3 4.46957 3.21071 3.96086 3.58579 3.58579C3.96086 3.21071 4.46957 3 5 3H16L21 8V19C21 19.5304 20.7893 20.0391 20.4142 20.4142C20.0391 20.7893 19.5304 21 19 21Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M17 21V13H7V21" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M7 3V8H15" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                Salvar Alterações
+            </button>
+        </div>
+    </main>
+
+    <!-- MODAL PARA ADICIONAR/EDITAR HISTÓRICO -->
+    <div class="modal" id="historyModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title" id="modalTitle">Adicionar Histórico</h3>
+            </div>
+            <div class="modal-body">
+                <div class="form-group required">
+                    <label for="historyDate">Data</label>
+                    <input type="date" id="historyDate" class="form-control">
+                </div>
+                <div class="form-group required">
+                    <label for="historyDescription">Descrição</label>
+                    <textarea id="historyDescription" class="form-control" rows="4" placeholder="Descreva o histórico médico..."></textarea>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn" id="cancelModalBtn">Cancelar</button>
+                <button class="btn btn-primary" id="saveModalBtn">Salvar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL DE CONFIRMAÇÃO -->
+    <div class="modal" id="confirmModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title" id="confirmTitle">Confirmar Ação</h3>
+            </div>
+            <div class="modal-body">
+                <p id="confirmMessage">Tem certeza que deseja realizar esta ação?</p>
+            </div>
+            <div class="modal-footer">
+                <button class="btn" id="cancelConfirmBtn">Cancelar</button>
+                <button class="btn btn-primary" id="confirmActionBtn">Confirmar</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // DADOS DO ANIMAL EM EDIÇÃO
+        const currentAnimal = {
+            id: 1,
+            name: "Gastador",
+            animalId: "001",
+            color: "Alazão",
+            sex: "Macho",
+            esquadrao: "Hipo",
+            origem: "",
+            protocol: "Quarentena",
+            protocolDetails: "Pós cirúrgico. Última consulta realizada em 15/11/2025",
+            history: [
+                { id: 1, date: "2025-11-15", description: "Pós cirúrgico. Última consulta" },
+                { id: 2, date: "2025-11-10", description: "Aplicação de vacina contra influenza" },
+                { id: 3, date: "2025-11-05", description: "Exame de sangue realizado - resultados normais" }
+            ]
+        };
+
+        // ELEMENTOS DO DOM
+        const backBtn = document.getElementById('backBtn');
+        const cancelBtn = document.getElementById('cancelBtn');
+        const deleteBtn = document.getElementById('deleteBtn');
+        const saveBtn = document.getElementById('saveBtn');
+        const addHistoryBtn = document.getElementById('addHistoryBtn');
+        const historyList = document.getElementById('historyList');
+        const historyModal = document.getElementById('historyModal');
+        const confirmModal = document.getElementById('confirmModal');
+
+        // ELEMENTOS DO FORMULÁRIO
+        const animalName = document.getElementById('animalName');
+        const animalId = document.getElementById('animalId');
+        const animalColor = document.getElementById('animalColor');
+        const animalSex = document.getElementById('animalSex');
+        const animalProtocol = document.getElementById('animalProtocol');
+        const protocolDetails = document.getElementById('protocolDetails');
+        const esquadraoOptions = document.querySelectorAll('.esquadrao-option');
+        const origemGroup = document.getElementById('origemGroup');
+        const animalOrigem = document.getElementById('animalOrigem');
+
+        // ELEMENTOS DO MODAL DE HISTÓRICO
+        const modalTitle = document.getElementById('modalTitle');
+        const historyDate = document.getElementById('historyDate');
+        const historyDescription = document.getElementById('historyDescription');
+        const cancelModalBtn = document.getElementById('cancelModalBtn');
+        const saveModalBtn = document.getElementById('saveModalBtn');
+
+        // ELEMENTOS DO MODAL DE CONFIRMAÇÃO
+        const confirmTitle = document.getElementById('confirmTitle');
+        const confirmMessage = document.getElementById('confirmMessage');
+        const cancelConfirmBtn = document.getElementById('cancelConfirmBtn');
+        const confirmActionBtn = document.getElementById('confirmActionBtn');
+
+        // ESTADO DA APLICAÇÃO
+        let isEditingHistory = false;
+        let currentHistoryId = null;
+        let pendingAction = null;
+
+        // FORMATAR DATA PARA EXIBIÇÃO
+        function formatDate(dateString) {
+            const date = new Date(dateString);
+            return date.toLocaleDateString('pt-BR');
+        }
+
+        // INICIALIZAR FORMULÁRIO
+        function initForm() {
+            // Preencher campos básicos
+            animalName.value = currentAnimal.name;
+            animalId.value = currentAnimal.animalId;
+            animalColor.value = currentAnimal.color;
+            animalSex.value = currentAnimal.sex;
+            animalProtocol.value = currentAnimal.protocol;
+            protocolDetails.value = currentAnimal.protocolDetails;
+
+            // Configurar esquadrão
+            esquadraoOptions.forEach(option => {
+                option.classList.remove('selected');
+                if (option.getAttribute('data-value') === currentAnimal.esquadrao) {
+                    option.classList.add('selected');
+                    
+                    // Mostrar/ocultar campo de origem
+                    if (currentAnimal.esquadrao === 'Outro') {
+                        origemGroup.classList.remove('hidden');
+                        animalOrigem.value = currentAnimal.origem;
+                    } else {
+                        origemGroup.classList.add('hidden');
+                    }
+                }
+            });
+
+            // Definir data atual como padrão no modal
+            const today = new Date().toISOString().split('T')[0];
+            historyDate.value = today;
+
+            // Renderizar histórico
+            renderHistory();
+        }
+
+        // RENDERIZAR HISTÓRICO
+        function renderHistory() {
+            historyList.innerHTML = '';
+
+            if (currentAnimal.history.length === 0) {
+                historyList.innerHTML = `
+                    <div style="text-align: center; padding: 2rem; color: #64748b;">
+                        <p>Nenhum histórico médico registrado.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            // Ordenar histórico por data (mais recente primeiro)
+            const sortedHistory = [...currentAnimal.history].sort((a, b) => 
+                new Date(b.date) - new Date(a.date)
+            );
+
+            sortedHistory.forEach(item => {
+                const historyItem = document.createElement('div');
+                historyItem.className = 'history-item';
+                
+                historyItem.innerHTML = `
+                    <div class="history-date">
+                        <span class="badge badge-blue">${formatDate(item.date)}</span>
+                    </div>
+                    <div class="history-content">${item.description}</div>
+                    <div class="history-actions">
+                        <button class="btn btn-icon edit-history" data-id="${item.id}">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M11 4H4C3.46957 4 2.96086 4.21071 2.58579 4.58579C2.21071 4.96086 2 5.46957 2 6V20C2 20.5304 2.21071 21.0391 2.58579 21.4142C2.96086 21.7893 3.46957 22 4 22H18C18.5304 22 19.0391 21.7893 19.4142 21.4142C19.7893 21.0391 20 20.5304 20 20V13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M18.5 2.5C18.8978 2.10217 19.4374 1.87868 20 1.87868C20.5626 1.87868 21.1022 2.10217 21.5 2.5C21.8978 2.89782 22.1213 3.43739 22.1213 4C22.1213 4.56261 21.8978 5.10217 21.5 5.5L12 15L8 16L9 12L18.5 2.5Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </button>
+                        <button class="btn btn-icon delete-history" data-id="${item.id}">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M3 6H5H21M8 6V4C8 3.46957 8.21071 2.96086 8.58579 2.58579C8.96086 2.21071 9.46957 2 10 2H14C14.5304 2 15.0391 2.21071 15.4142 2.58579C15.7893 2.96086 16 3.46957 16 4V6M19 6V20C19 20.5304 18.7893 21.0391 18.4142 21.4142C18.0391 21.7893 17.5304 22 17 22H7C6.46957 22 5.96086 21.7893 5.58579 21.4142C5.21071 21.0391 5 20.5304 5 20V6H19Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </button>
+                    </div>
+                `;
+                
+                historyList.appendChild(historyItem);
+            });
+
+            // Adicionar event listeners para os botões de histórico
+            document.querySelectorAll('.edit-history').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const id = parseInt(btn.getAttribute('data-id'));
+                    editHistory(id);
+                });
+            });
+
+            document.querySelectorAll('.delete-history').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const id = parseInt(btn.getAttribute('data-id'));
+                    showDeleteHistoryConfirmation(id);
+                });
+            });
+        }
+
+        // ABRIR MODAL DE HISTÓRICO
+        function openHistoryModal(editing = false, id = null) {
+            if (editing && id) {
+                // Modo edição
+                modalTitle.textContent = 'Editar Histórico';
+                isEditingHistory = true;
+                currentHistoryId = id;
+
+                const historyItem = currentAnimal.history.find(item => item.id === id);
+                if (historyItem) {
+                    historyDate.value = historyItem.date;
+                    historyDescription.value = historyItem.description;
+                }
+            } else {
+                // Modo adição
+                modalTitle.textContent = 'Adicionar Histórico';
+                isEditingHistory = false;
+                currentHistoryId = null;
+
+                // Definir data atual como padrão
+                const today = new Date().toISOString().split('T')[0];
+                historyDate.value = today;
+                historyDescription.value = '';
+            }
+
+            historyModal.style.display = 'flex';
+        }
+
+        // FECHAR MODAL DE HISTÓRICO
+        function closeHistoryModal() {
+            historyModal.style.display = 'none';
+            isEditingHistory = false;
+            currentHistoryId = null;
+            historyDate.value = '';
+            historyDescription.value = '';
+        }
+
+        // SALVAR HISTÓRICO
+        function saveHistory() {
+            const dateValue = historyDate.value;
+            const descriptionValue = historyDescription.value.trim();
+
+            if (!dateValue || !descriptionValue) {
+                alert('Por favor, preencha todos os campos obrigatórios.');
+                return;
+            }
+
+            if (isEditingHistory && currentHistoryId) {
+                // Editar histórico existente
+                const index = currentAnimal.history.findIndex(item => item.id === currentHistoryId);
+                if (index !== -1) {
+                    currentAnimal.history[index] = {
+                        ...currentAnimal.history[index],
+                        date: dateValue,
+                        description: descriptionValue
+                    };
+                }
+            } else {
+                // Adicionar novo histórico
+                const newId = currentAnimal.history.length > 0 
+                    ? Math.max(...currentAnimal.history.map(item => item.id)) + 1 
+                    : 1;
+                
+                currentAnimal.history.push({
+                    id: newId,
+                    date: dateValue,
+                    description: descriptionValue
+                });
+            }
+
+            closeHistoryModal();
+            renderHistory();
+        }
+
+        // EDITAR HISTÓRICO
+        function editHistory(id) {
+            openHistoryModal(true, id);
+        }
+
+        // MOSTRAR CONFIRMAÇÃO DE EXCLUSÃO DE HISTÓRICO
+        function showDeleteHistoryConfirmation(id) {
+            pendingAction = {
+                type: 'deleteHistory',
+                id: id
+            };
+
+            confirmTitle.textContent = 'Excluir Histórico';
+            confirmMessage.textContent = 'Tem certeza que deseja excluir este histórico médico?';
+            confirmModal.style.display = 'flex';
+        }
+
+        // EXCLUIR HISTÓRICO
+        function deleteHistory(id) {
+            const index = currentAnimal.history.findIndex(item => item.id === id);
+            if (index !== -1) {
+                currentAnimal.history.splice(index, 1);
+                renderHistory();
+            }
+        }
+
+        // MOSTRAR CONFIRMAÇÃO DE EXCLUSÃO DA FICHA
+        function showDeleteConfirmation() {
+            pendingAction = {
+                type: 'deleteAnimal'
+            };
+
+            confirmTitle.textContent = 'Excluir Ficha';
+            confirmMessage.textContent = '⚠️ ATENÇÃO!\n\nTem certeza que deseja excluir permanentemente esta ficha?\nTodos os dados serão perdidos.';
+            confirmModal.style.display = 'flex';
+        }
+
+        // EXCLUIR FICHA
+        function deleteAnimal() {
+            // Em um sistema real, aqui você faria uma requisição para excluir no servidor
+            alert('Ficha excluída permanentemente!');
+            window.location.href = 'index.html';
+        }
+
+        // MOSTRAR CONFIRMAÇÃO DE CANCELAMENTO
+        function showCancelConfirmation() {
+            pendingAction = {
+                type: 'cancelEdit'
+            };
+
+            confirmTitle.textContent = 'Cancelar Edição';
+            confirmMessage.textContent = 'Tem certeza que deseja cancelar a edição? Todas as alterações não salvas serão perdidas.';
+            confirmModal.style.display = 'flex';
+        }
+
+        // CANCELAR EDIÇÃO
+        function cancelEdit() {
+            window.location.href = 'index.html';
+        }
+
+        // VALIDAR FORMULÁRIO
+        function validateForm() {
+            const name = animalName.value.trim();
+            const animalIdValue = animalId.value.trim();
+            const color = animalColor.value.trim();
+            const sex = animalSex.value;
+            const protocol = animalProtocol.value;
+
+            if (!name || !animalIdValue || !color || !sex || !protocol) {
+                alert('Por favor, preencha todos os campos obrigatórios.');
+                return false;
+            }
+
+            // Verificar se um esquadrão foi selecionado
+            let selectedEsquadrao = '';
+            esquadraoOptions.forEach(option => {
+                if (option.classList.contains('selected')) {
+                    selectedEsquadrao = option.getAttribute('data-value');
+                }
+            });
+
+            if (!selectedEsquadrao) {
+                alert('Por favor, selecione um esquadrão.');
+                return false;
+            }
+
+            // Se for "Outro", validar origem
+            if (selectedEsquadrao === 'Outro') {
+                const origem = animalOrigem.value.trim();
+                if (!origem) {
+                    alert('Por favor, digite a origem do animal.');
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
+        // SALVAR ALTERAÇÕES
+        function saveChanges() {
+            if (!validateForm()) {
+                return;
+            }
+
+            // Coletar dados do formulário
+            const updatedAnimal = {
+                ...currentAnimal,
+                name: animalName.value.trim(),
+                animalId: animalId.value.trim(),
+                color: animalColor.value.trim(),
+                sex: animalSex.value,
+                protocol: animalProtocol.value,
+                protocolDetails: protocolDetails.value.trim(),
+                history: [...currentAnimal.history]
+            };
+
+            // Obter esquadrão selecionado
+            esquadraoOptions.forEach(option => {
+                if (option.classList.contains('selected')) {
+                    updatedAnimal.esquadrao = option.getAttribute('data-value');
+                }
+            });
+
+            // Se for "Outro", obter origem
+            if (updatedAnimal.esquadrao === 'Outro') {
+                updatedAnimal.origem = animalOrigem.value.trim();
+            } else {
+                updatedAnimal.origem = '';
+            }
+
+            // Em um sistema real, aqui você faria uma requisição para salvar no servidor
+            console.log('Dados salvos:', updatedAnimal);
+            alert('Ficha salva com sucesso!');
+            
+            // Redirecionar para a tela principal
+            window.location.href = 'index.html';
+        }
+
+        // VOLTAR PARA A TELA PRINCIPAL
+        function goBack() {
+            window.location.href = 'index.html';
+        }
+
+        // INICIALIZAR APLICAÇÃO
+        function init() {
+            initForm();
+
+            // Event Listeners para opções de esquadrão
+            esquadraoOptions.forEach(option => {
+                option.addEventListener('click', () => {
+                    // Remover seleção de todas as opções
+                    esquadraoOptions.forEach(opt => opt.classList.remove('selected'));
+                    
+                    // Selecionar a opção clicada
+                    option.classList.add('selected');
+                    
+                    // Mostrar/ocultar campo de origem
+                    if (option.getAttribute('data-value') === 'Outro') {
+                        origemGroup.classList.remove('hidden');
+                    } else {
+                        origemGroup.classList.add('hidden');
+                    }
+                });
+            });
+
+            // Event Listeners principais
+            backBtn.addEventListener('click', goBack);
+            cancelBtn.addEventListener('click', showCancelConfirmation);
+            deleteBtn.addEventListener('click', showDeleteConfirmation);
+            saveBtn.addEventListener('click', saveChanges);
+            addHistoryBtn.addEventListener('click', () => openHistoryModal(false));
+
+            // Event Listeners do modal de histórico
+            cancelModalBtn.addEventListener('click', closeHistoryModal);
+            saveModalBtn.addEventListener('click', saveHistory);
+
+            // Event Listeners do modal de confirmação
+            cancelConfirmBtn.addEventListener('click', () => {
+                confirmModal.style.display = 'none';
+                pendingAction = null;
+            });
+
+            confirmActionBtn.addEventListener('click', () => {
+                if (pendingAction) {
+                    switch (pendingAction.type) {
+                        case 'deleteHistory':
+                            deleteHistory(pendingAction.id);
+                            break;
+                        case 'deleteAnimal':
+                            deleteAnimal();
+                            break;
+                        case 'cancelEdit':
+                            cancelEdit();
+                            break;
+                    }
+                }
+                confirmModal.style.display = 'none';
+                pendingAction = null;
+            });
+
+            // Fechar modais ao clicar fora
+            window.addEventListener('click', (e) => {
+                if (e.target === historyModal) {
+                    closeHistoryModal();
+                }
+                if (e.target === confirmModal) {
+                    confirmModal.style.display = 'none';
+                    pendingAction = null;
+                }
+            });
+
+            // Fechar modais com ESC
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape') {
+                    if (historyModal.style.display === 'flex') {
+                        closeHistoryModal();
+                    }
+                    if (confirmModal.style.display === 'flex') {
+                        confirmModal.style.display = 'none';
+                        pendingAction = null;
+                    }
+                }
+            });
+        }
+
+        // INICIAR QUANDO O DOM ESTIVER PRONTO
+        document.addEventListener('DOMContentLoaded', init);
+    </script>
+</body>
+</html>
