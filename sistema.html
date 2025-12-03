@@ -1338,11 +1338,11 @@
         </div>
     </div>
     
-    <!-- Modal para Adicionar/Editar Cavalo -->
+    <!-- Modal para Adicionar Cavalo -->
     <div class="modal" id="horseModal">
         <div class="modal-content">
             <div class="modal-header">
-                <h2 class="modal-title" id="modalTitle">Adicionar Novo Cavalo</h2>
+                <h2 class="modal-title">Adicionar Novo Cavalo</h2>
                 <button class="close-modal" id="closeModal">&times;</button>
             </div>
             
@@ -1393,7 +1393,7 @@
                 
                 <div class="modal-actions">
                     <button type="button" class="btn btn-secondary" id="btnCancel">Cancelar</button>
-                    <button type="submit" class="btn btn-primary" id="btnSave">Salvar Ficha</button>
+                    <button type="submit" class="btn btn-primary">Salvar Ficha</button>
                 </div>
             </form>
         </div>
@@ -1430,7 +1430,13 @@
             
             <div class="modal-actions">
                 <button type="button" class="btn btn-secondary" id="btnCloseDetail">Fechar</button>
-                <button type="button" class="btn btn-primary" id="btnEditHorse">Editar Ficha</button>
+                <button type="button" class="btn btn-primary" id="btnEditHorse">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M11 4H4C3.46957 4 2.96086 4.21071 2.58579 4.58579C2.21071 4.96086 2 5.46957 2 6V20C2 20.5304 2.21071 21.0391 2.58579 21.4142C2.96086 21.7893 3.46957 22 4 22H18C18.5304 22 19.0391 21.7893 19.4142 21.4142C19.7893 21.0391 20 20.5304 20 20V13" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M18.5 2.5C18.8978 2.10217 19.4374 1.87868 20 1.87868C20.5626 1.87868 21.1022 2.10217 21.5 2.5C21.8978 2.89782 22.1213 3.43739 22.1213 4C22.1213 4.56261 21.8978 5.10217 21.5 5.5L12 15L8 16L9 12L18.5 2.5Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    Editar Ficha
+                </button>
                 <button type="button" class="btn btn-delete-horse" id="btnDeleteHorse">
                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path d="M3 6H5H21" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
@@ -1567,7 +1573,6 @@
         const closeModal = document.getElementById('closeModal');
         const btnCancel = document.getElementById('btnCancel');
         const horseForm = document.getElementById('horseForm');
-        const modalTitle = document.getElementById('modalTitle');
         const btnLogout = document.getElementById('btnLogout');
         const loggedUser = document.getElementById('loggedUser');
         
@@ -1788,14 +1793,16 @@
             // Adicionar event listeners para os botões de edição
             document.querySelectorAll('.btn-edit').forEach(btn => {
                 btn.addEventListener('click', (e) => {
+                    e.stopPropagation(); // Impedir que o clique no card seja acionado
                     const horseId = parseInt(e.currentTarget.getAttribute('data-id'));
-                    openEditModal(horseId);
+                    redirectToFicha(horseId);
                 });
             });
             
             // Adicionar event listeners para os botões de PDF
             document.querySelectorAll('.btn-pdf').forEach(btn => {
                 btn.addEventListener('click', (e) => {
+                    e.stopPropagation(); // Impedir que o clique no card seja acionado
                     const horseId = parseInt(e.currentTarget.getAttribute('data-id'));
                     exportToPDF(horseId);
                 });
@@ -1809,6 +1816,14 @@
                     deleteHorse(horseId);
                 });
             });
+        }
+        
+        // Redirecionar para ficha.html
+        function redirectToFicha(horseId) {
+            // Salvar o ID do cavalo no localStorage para acessar na página de ficha
+            localStorage.setItem('currentHorseId', horseId);
+            // Redirecionar para ficha.html
+            window.location.href = 'ficha.html';
         }
         
         // ========== FUNÇÕES DA ABA DE VISITAS ==========
@@ -2485,10 +2500,8 @@
             }
         }
         
-        // Abrir modal para adicionar/editar cavalo
+        // Abrir modal para adicionar cavalo
         function openAddModal() {
-            currentHorseId = null;
-            modalTitle.textContent = 'Adicionar Novo Cavalo';
             horseForm.reset();
             esquadraoOrigem.style.display = 'none';
             
@@ -2496,41 +2509,6 @@
             esquadraoOptions.forEach(option => {
                 option.classList.remove('selected');
             });
-            
-            horseModal.style.display = 'flex';
-        }
-        
-        function openEditModal(horseId) {
-            const horse = horses.find(h => h.id === horseId);
-            if (!horse) return;
-            
-            currentHorseId = horseId;
-            modalTitle.textContent = 'Editar Ficha do Cavalo';
-            
-            document.getElementById('horseName').value = horse.name;
-            document.getElementById('horseId').value = horse.id;
-            document.getElementById('horseColor').value = horse.color;
-            document.getElementById('horseSex').value = horse.sex;
-            
-            // Definir esquadrão
-            esquadraoOptions.forEach(option => {
-                option.classList.remove('selected');
-                if (option.getAttribute('data-value') === horse.esquadrao) {
-                    option.classList.add('selected');
-                }
-            });
-            
-            // Mostrar campo de origem se for "Outro"
-            if (horse.esquadrao === 'Outro') {
-                esquadraoOrigem.style.display = 'block';
-                document.getElementById('horseOrigem').value = horse.origem;
-            } else {
-                esquadraoOrigem.style.display = 'none';
-            }
-            
-            // Converter histórico para string
-            const historyText = horse.history.map(item => `${item.date}: ${item.description}`).join('\n');
-            document.getElementById('horseHistory').value = historyText;
             
             horseModal.style.display = 'flex';
         }
@@ -2549,12 +2527,12 @@
             isEditingHistory = false;
         }
         
-        // Salvar cavalo (adicionar ou editar)
+        // Salvar cavalo (adicionar novo)
         function saveHorse(e) {
             e.preventDefault();
             
             const horseName = document.getElementById('horseName').value;
-            const horseId = currentHorseId ? currentHorseId : Math.max(...horses.map(h => h.id)) + 1;
+            const horseId = Math.max(...horses.map(h => h.id)) + 1;
             const horseColor = document.getElementById('horseColor').value;
             const horseSex = document.getElementById('horseSex').value;
             const horseHistory = document.getElementById('horseHistory').value;
@@ -2616,21 +2594,13 @@
                 esquadrao: selectedEsquadrao,
                 origem: origem,
                 history: historyArray,
-                prescriptions: currentHorseId ? horses.find(h => h.id === currentHorseId).prescriptions : [],
-                protocolo: currentHorseId ? horses.find(h => h.id === currentHorseId).protocolo : "Quarentena",
-                selectedForVisit: currentHorseId ? horses.find(h => h.id === currentHorseId).selectedForVisit : false
+                prescriptions: [],
+                protocolo: "Quarentena",
+                selectedForVisit: false
             };
             
-            if (currentHorseId) {
-                // Editar cavalo existente
-                const index = horses.findIndex(h => h.id === currentHorseId);
-                if (index !== -1) {
-                    horses[index] = horseData;
-                }
-            } else {
-                // Adicionar novo cavalo
-                horses.push(horseData);
-            }
+            // Adicionar novo cavalo
+            horses.push(horseData);
             
             // Salvar alterações no localStorage
             saveHorsesToStorage();
@@ -2687,9 +2657,10 @@
             // Event Listeners do modal de detalhes
             closeDetailModal.addEventListener('click', closeHorseDetailModal);
             btnCloseDetail.addEventListener('click', closeHorseDetailModal);
+            
+            // Event Listener para o botão "Editar Ficha" no modal de detalhes
             btnEditHorse.addEventListener('click', () => {
-                closeHorseDetailModal();
-                openEditModal(currentHorseId);
+                redirectToFicha(currentHorseId);
             });
             
             // Event Listener para o botão da seringa (prescrições)
@@ -2756,3 +2727,4 @@
         init();
     </script>
 </body>
+</html>
