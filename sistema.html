@@ -1084,6 +1084,178 @@
             background: #e67e22;
             transform: translateY(-2px);
         }
+
+        /* NOVO ESTILO PARA BOTÃO DE ADICIONAR À VISITA */
+        .btn-add-to-visita {
+            background: #9b59b6;
+            color: white;
+        }
+        
+        .btn-add-to-visita:hover {
+            background: #8e44ad;
+        }
+        
+        /* NOVOS ESTILOS PARA O BALÃO DE CONFIRMAÇÃO PERSONALIZADO */
+        .custom-confirm-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 3000;
+            align-items: center;
+            justify-content: center;
+            animation: fadeIn 0.3s ease;
+        }
+        
+        .custom-confirm-box {
+            background: white;
+            border-radius: 15px;
+            width: 90%;
+            max-width: 500px;
+            padding: 0;
+            overflow: hidden;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+            transform: translateY(20px);
+            animation: slideUp 0.4s ease forwards;
+        }
+        
+        @keyframes slideUp {
+            to {
+                transform: translateY(0);
+            }
+        }
+        
+        .confirm-header {
+            background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+            padding: 25px 30px;
+            text-align: center;
+            color: white;
+        }
+        
+        .confirm-icon {
+            width: 70px;
+            height: 70px;
+            margin: 0 auto 15px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 32px;
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+                box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.3);
+            }
+            70% {
+                transform: scale(1.05);
+                box-shadow: 0 0 0 15px rgba(255, 255, 255, 0);
+            }
+            100% {
+                transform: scale(1);
+                box-shadow: 0 0 0 0 rgba(255, 255, 255, 0);
+            }
+        }
+        
+        .confirm-header h3 {
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+        
+        .confirm-header p {
+            opacity: 0.9;
+            font-size: 16px;
+        }
+        
+        .confirm-content {
+            padding: 30px;
+            text-align: center;
+        }
+        
+        .warning-message {
+            background: #fff8e1;
+            border-left: 4px solid #ff9800;
+            padding: 15px;
+            margin-bottom: 25px;
+            text-align: left;
+            border-radius: 0 8px 8px 0;
+        }
+        
+        .warning-message h4 {
+            color: #ff9800;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .confirm-details {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 25px;
+            text-align: left;
+        }
+        
+        .confirm-details p {
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .confirm-details svg {
+            color: #e74c3c;
+            flex-shrink: 0;
+        }
+        
+        .confirm-actions {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+        }
+        
+        .confirm-btn {
+            padding: 12px 30px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 16px;
+            transition: all 0.3s;
+            min-width: 120px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        
+        .confirm-btn.cancel {
+            background: #ecf0f1;
+            color: #34495e;
+        }
+        
+        .confirm-btn.cancel:hover {
+            background: #d5dbdb;
+            transform: translateY(-2px);
+        }
+        
+        .confirm-btn.delete {
+            background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+            color: white;
+        }
+        
+        .confirm-btn.delete:hover {
+            background: linear-gradient(135deg, #c0392b 0%, #a93226 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(231, 76, 60, 0.4);
+        }
         
         @media (max-width: 768px) {
             .header {
@@ -1166,6 +1338,14 @@
                 right: 10px;
                 width: 35px;
                 height: 35px;
+            }
+            
+            .confirm-actions {
+                flex-direction: column;
+            }
+            
+            .confirm-btn {
+                width: 100%;
             }
         }
     </style>
@@ -1265,6 +1445,15 @@
                             </svg>
                             Exportar Todos
                         </button>
+                        <!-- NOVO BOTÃO PARA ADICIONAR À VISITA -->
+                        <button class="btn btn-add-to-visita" id="btnAddToVisita">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M12 5V19" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M5 12H19" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M15 12H9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                            Adicionar à Visita
+                        </button>
                     </div>
                 </div>
                 
@@ -1301,6 +1490,17 @@
                         </svg>
                         Limpar Seleção
                     </button>
+                    <!-- NOVO BOTÃO PARA ADICIONAR SELECIONADOS À VISITA -->
+                    <button class="btn btn-add-to-visita" id="btnAddSelectedToVisita">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M9 21H5C4.46957 21 3.96086 20.7893 3.58579 20.4142C3.21071 20.0391 3 19.5304 3 19V5C3 4.46957 3.21071 3.96086 3.58579 3.58579C3.96086 3.21071 4.46957 3 5 3H9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M16 17L21 12L16 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M21 12H9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M12 5V19" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M5 12H19" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                        Adicionar Selecionados à Visita
+                    </button>
                 </div>
                 
                 <div class="visit-section">
@@ -1311,6 +1511,7 @@
                                 <th style="width: 50px;">Visita</th>
                                 <th>Cavalo</th>
                                 <th>Protocolo</th>
+                                <th style="width: 100px;">Ação</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -1327,6 +1528,7 @@
                                 <th style="width: 50px;">Visita</th>
                                 <th>Cavalo</th>
                                 <th>Protocolo</th>
+                                <th style="width: 100px;">Ação</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -1448,6 +1650,60 @@
         </div>
     </div>
 
+    <!-- NOVO BALÃO DE CONFIRMAÇÃO PERSONALIZADO -->
+    <div class="custom-confirm-overlay" id="customConfirmOverlay">
+        <div class="custom-confirm-box" id="customConfirmBox">
+            <div class="confirm-header">
+                <div class="confirm-icon">⚠️</div>
+                <h3>CONFIRMAR EXCLUSÃO</h3>
+                <p>Você está prestes a excluir permanentemente uma ficha</p>
+            </div>
+            <div class="confirm-content">
+                <div class="warning-message">
+                    <h4>
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M12 9V14" stroke="#ff9800" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M12 17H12.01" stroke="#ff9800" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z" stroke="#ff9800" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    ATENÇÃO! AÇÃO IRREVERSÍVEL
+                    </h4>
+                    <p>Esta ação não pode ser desfeita. Todos os dados do cavalo serão perdidos permanentemente.</p>
+                </div>
+                
+                <div class="confirm-details">
+                    <p>
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M3 6H5H21" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M8 6V4C8 3.46957 8.21071 2.96086 8.58579 2.58579C8.96086 2.21071 9.46957 2 10 2H14C14.5304 2 15.0391 2.21071 15.4142 2.58579C15.7893 2.96086 16 3.46957 16 4V6M19 6V20C19 20.5304 18.7893 21.0391 18.4142 21.4142C18.0391 21.7893 17.5304 22 17 22H7C6.46957 22 5.96086 21.7893 5.58579 21.4142C5.21071 21.0391 5 20.5304 5 20V6H19Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                        <strong>Serão excluídos permanentemente:</strong>
+                    </p>
+                    <p style="margin-left: 28px;">• Ficha completa do animal</p>
+                    <p style="margin-left: 28px;">• Histórico médico registrado</p>
+                    <p style="margin-left: 28px;">• Prescrições e tratamentos</p>
+                    <p style="margin-left: 28px;">• Registros de visitas veterinárias</p>
+                </div>
+                
+                <div class="confirm-actions">
+                    <button class="confirm-btn cancel" id="confirmCancelBtn">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M6 18L18 6M6 6L18 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                        CANCELAR
+                    </button>
+                    <button class="confirm-btn delete" id="confirmDeleteBtn">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M3 6H5H21" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M8 6V4C8 3.46957 8.21071 2.96086 8.58579 2.58579C8.96086 2.21071 9.46957 2 10 2H14C14.5304 2 15.0391 2.21071 15.4142 2.58579C15.7893 2.96086 16 3.46957 16 4V6M19 6V20C19 20.5304 18.7893 21.0391 18.4142 21.4142C18.0391 21.7893 17.5304 22 17 22H7C6.46957 22 5.96086 21.7893 5.58579 21.4142C5.21071 21.0391 5 20.5304 5 20V6H19Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                        EXCLUIR PERMANENTEMENTE
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script>
         // ========== DADOS DOS CAVALOS ==========
         // Função para carregar dados do localStorage
@@ -1549,13 +1805,34 @@
             }
         }
         
+        // Função para carregar visitas do localStorage
+        function loadVisitasFromStorage() {
+            const storedVisitas = localStorage.getItem('vetSystemVisitas');
+            if (storedVisitas) {
+                return JSON.parse(storedVisitas);
+            } else {
+                return {
+                    hipo: [],
+                    dh: [],
+                    outros: [],
+                    lastUpdated: new Date().toISOString()
+                };
+            }
+        }
+        
         // Função para salvar dados no localStorage
         function saveHorsesToStorage() {
             localStorage.setItem('vetSystemHorses', JSON.stringify(horses));
         }
         
+        // Função para salvar visitas no localStorage
+        function saveVisitasToStorage() {
+            localStorage.setItem('vetSystemVisitas', JSON.stringify(visitas));
+        }
+        
         // Carregar dados iniciais
         let horses = loadHorsesFromStorage();
+        let visitas = loadVisitasFromStorage();
         
         // ========== ELEMENTOS DO DOM ==========
         // Tela de transição
@@ -1569,6 +1846,7 @@
         const searchInput = document.getElementById('searchInput');
         const btnAddHorse = document.getElementById('btnAddHorse');
         const btnExportAll = document.getElementById('btnExportAll');
+        const btnAddToVisita = document.getElementById('btnAddToVisita');
         const horseModal = document.getElementById('horseModal');
         const closeModal = document.getElementById('closeModal');
         const btnCancel = document.getElementById('btnCancel');
@@ -1595,17 +1873,26 @@
         const tabContents = document.querySelectorAll('.tab-content');
         const btnMarcarVisita = document.getElementById('btnMarcarVisita');
         const btnLimparVisita = document.getElementById('btnLimparVisita');
+        const btnAddSelectedToVisita = document.getElementById('btnAddSelectedToVisita');
         const hipoTable = document.getElementById('hipoTable').querySelector('tbody');
         const dhTable = document.getElementById('dhTable').querySelector('tbody');
         
         // NOVO BOTÃO VISITA
         const btnVisitaRedirect = document.getElementById('btnVisitaRedirect');
         
+        // NOVO BALÃO DE CONFIRMAÇÃO
+        const customConfirmOverlay = document.getElementById('customConfirmOverlay');
+        const customConfirmBox = document.getElementById('customConfirmBox');
+        const confirmCancelBtn = document.getElementById('confirmCancelBtn');
+        const confirmDeleteBtn = document.getElementById('confirmDeleteBtn');
+        
         let currentHorseId = null;
         let currentFilter = 'all';
         let currentUser = '';
         let isEditingHistory = false;
         let activeWindows = [];
+        let horseToDelete = null;
+        let selectedHorses = new Set();
         
         // ========== VERIFICAÇÃO DE LOGIN ==========
         function checkLogin() {
@@ -1735,12 +2022,15 @@
                 else if (horse.esquadrao === 'DH') badgeClass = 'dh';
                 else badgeClass = 'outro';
                 
+                const isSelected = selectedHorses.has(horse.id);
+                
                 horseCard.innerHTML = `
                     <h3 class="horse-name">
                         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path d="M14 16H9M14 12H11M12 21C12.9465 21 13.8734 20.7716 14.7087 20.3343C15.544 19.897 16.2623 19.2643 16.8 18.492C17.7895 17.1277 19.8333 14.8 21 13C21.3333 12.3333 22 10.8 22 8.5C22 5.5 20.5 3 17.5 3C15.8333 3 14.5 4.5 14.5 4.5C14.5 4.5 13.5 3 11.5 3C9.5 3 8.5 4 8.5 6C8.5 6 7.5 5 5.5 5C3.5 5 2 7 2 9.5C2 12.5 3.5 14.5 5.5 16.5C7.5 18.5 9.66667 19.3333 11 19.5C11.5 19.6 12 19.5 12 19.5Z" stroke="#2c7fb8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                         </svg>
                         ${horse.name}
+                        ${isSelected ? '<span style="margin-left: auto; color: #9b59b6; font-size: 14px;">✓ Selecionado</span>' : ''}
                     </h3>
                     <div class="horse-details">
                         <div><strong>Cor:</strong> ${horse.color}</div>
@@ -1781,11 +2071,24 @@
                 `;
                 filesGrid.appendChild(horseCard);
                 
-                // Adicionar evento de clique no card
+                // Adicionar evento de clique no card para seleção
                 horseCard.addEventListener('click', (e) => {
-                    // Evitar que o clique nos botões abra o modal
+                    // Evitar que o clique nos botões selecione o card
                     if (!e.target.closest('.file-actions')) {
-                        openHorseDetail(horse.id);
+                        if (e.ctrlKey || e.metaKey) {
+                            // Ctrl+clique para seleção múltipla
+                            toggleHorseSelection(horse.id);
+                        } else {
+                            // Clique simples abre os detalhes
+                            openHorseDetail(horse.id);
+                        }
+                    }
+                });
+                
+                // Adicionar evento de duplo clique para seleção rápida
+                horseCard.addEventListener('dblclick', (e) => {
+                    if (!e.target.closest('.file-actions')) {
+                        toggleHorseSelection(horse.id);
                     }
                 });
             });
@@ -1813,9 +2116,78 @@
                 btn.addEventListener('click', (e) => {
                     e.stopPropagation(); // Evitar que o clique no card seja acionado
                     const horseId = parseInt(e.currentTarget.getAttribute('data-id'));
-                    deleteHorse(horseId);
+                    showCustomConfirm(horseId);
                 });
             });
+        }
+        
+        // Alternar seleção de cavalo
+        function toggleHorseSelection(horseId) {
+            if (selectedHorses.has(horseId)) {
+                selectedHorses.delete(horseId);
+            } else {
+                selectedHorses.add(horseId);
+            }
+            renderHorses();
+        }
+        
+        // Adicionar cavalos selecionados à visita
+        function addSelectedToVisita() {
+            if (selectedHorses.size === 0) {
+                alert('Selecione pelo menos um cavalo para adicionar à visita!');
+                return;
+            }
+            
+            const selectedHorsesArray = Array.from(selectedHorses);
+            const horsesToAdd = horses.filter(horse => selectedHorsesArray.includes(horse.id));
+            
+            // Organizar cavalos por esquadrão
+            horsesToAdd.forEach(horse => {
+                const visitaData = {
+                    id: horse.id,
+                    name: horse.name,
+                    color: horse.color,
+                    sex: horse.sex,
+                    esquadrao: horse.esquadrao,
+                    protocolo: horse.protocolo || 'Sem protocolo',
+                    addedDate: new Date().toISOString(),
+                    addedBy: currentUser
+                };
+                
+                // Adicionar ao esquadrão correspondente
+                if (horse.esquadrao === 'Hipo') {
+                    // Verificar se já não está na lista
+                    const alreadyExists = visitas.hipo.some(h => h.id === horse.id);
+                    if (!alreadyExists) {
+                        visitas.hipo.push(visitaData);
+                    }
+                } else if (horse.esquadrao === 'DH') {
+                    const alreadyExists = visitas.dh.some(h => h.id === horse.id);
+                    if (!alreadyExists) {
+                        visitas.dh.push(visitaData);
+                    }
+                } else {
+                    const alreadyExists = visitas.outros.some(h => h.id === horse.id);
+                    if (!alreadyExists) {
+                        visitas.outros.push(visitaData);
+                    }
+                }
+            });
+            
+            // Atualizar data da última modificação
+            visitas.lastUpdated = new Date().toISOString();
+            
+            // Salvar no localStorage
+            saveVisitasToStorage();
+            
+            // Limpar seleção
+            selectedHorses.clear();
+            
+            // Renderizar novamente
+            renderHorses();
+            renderVisitas();
+            
+            alert(`${horsesToAdd.length} cavalo(s) adicionado(s) à visita com sucesso!`);
         }
         
         // Redirecionar para ficha.html
@@ -1839,6 +2211,7 @@
             
             // Renderizar cavalos HIPO
             hipoHorses.forEach(horse => {
+                const isInVisita = visitas.hipo.some(h => h.id === horse.id);
                 const row = document.createElement('tr');
                 row.innerHTML = `
                     <td class="checkbox-container">
@@ -1847,6 +2220,13 @@
                     <td>${horse.name}</td>
                     <td>
                         ${getProtocoloBadge(horse.protocolo)}
+                    </td>
+                    <td>
+                        <button class="btn-small ${isInVisita ? 'btn-secondary' : 'btn-add-to-visita'}" data-id="${horse.id}" data-action="${isInVisita ? 'remove' : 'add'}">
+                            ${isInVisita ? 
+                                '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M6 18L18 6M6 6L18 18" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg> Remover' : 
+                                '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 5V19" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M5 12H19" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg> Adicionar'}
+                        </button>
                     </td>
                 `;
                 hipoTable.appendChild(row);
@@ -1854,6 +2234,7 @@
             
             // Renderizar cavalos DH
             dhHorses.forEach(horse => {
+                const isInVisita = visitas.dh.some(h => h.id === horse.id);
                 const row = document.createElement('tr');
                 row.innerHTML = `
                     <td class="checkbox-container">
@@ -1862,6 +2243,13 @@
                     <td>${horse.name}</td>
                     <td>
                         ${getProtocoloBadge(horse.protocolo)}
+                    </td>
+                    <td>
+                        <button class="btn-small ${isInVisita ? 'btn-secondary' : 'btn-add-to-visita'}" data-id="${horse.id}" data-action="${isInVisita ? 'remove' : 'add'}">
+                            ${isInVisita ? 
+                                '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M6 18L18 6M6 6L18 18" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg> Remover' : 
+                                '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 5V19" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M5 12H19" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg> Adicionar'}
+                        </button>
                     </td>
                 `;
                 dhTable.appendChild(row);
@@ -1878,6 +2266,88 @@
                     }
                 });
             });
+            
+            // Adicionar event listeners para os botões de adicionar/remover da visita
+            document.querySelectorAll('.btn-small[data-action]').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const horseId = parseInt(this.getAttribute('data-id'));
+                    const action = this.getAttribute('data-action');
+                    
+                    if (action === 'add') {
+                        addHorseToVisita(horseId);
+                    } else {
+                        removeHorseFromVisita(horseId);
+                    }
+                });
+            });
+        }
+        
+        // Adicionar cavalo individual à visita
+        function addHorseToVisita(horseId) {
+            const horse = horses.find(h => h.id === horseId);
+            if (!horse) return;
+            
+            const visitaData = {
+                id: horse.id,
+                name: horse.name,
+                color: horse.color,
+                sex: horse.sex,
+                esquadrao: horse.esquadrao,
+                protocolo: horse.protocolo || 'Sem protocolo',
+                addedDate: new Date().toISOString(),
+                addedBy: currentUser
+            };
+            
+            // Adicionar ao esquadrão correspondente
+            if (horse.esquadrao === 'Hipo') {
+                visitas.hipo.push(visitaData);
+            } else if (horse.esquadrao === 'DH') {
+                visitas.dh.push(visitaData);
+            } else {
+                visitas.outros.push(visitaData);
+            }
+            
+            visitas.lastUpdated = new Date().toISOString();
+            saveVisitasToStorage();
+            renderVisitas();
+            
+            alert(`Cavalo "${horse.name}" adicionado à visita!`);
+        }
+        
+        // Remover cavalo da visita
+        function removeHorseFromVisita(horseId) {
+            const horse = horses.find(h => h.id === horseId);
+            if (!horse) return;
+            
+            if (horse.esquadrao === 'Hipo') {
+                visitas.hipo = visitas.hipo.filter(h => h.id !== horseId);
+            } else if (horse.esquadrao === 'DH') {
+                visitas.dh = visitas.dh.filter(h => h.id !== horseId);
+            } else {
+                visitas.outros = visitas.outros.filter(h => h.id !== horseId);
+            }
+            
+            visitas.lastUpdated = new Date().toISOString();
+            saveVisitasToStorage();
+            renderVisitas();
+            
+            alert(`Cavalo "${horse.name}" removido da visita!`);
+        }
+        
+        // Adicionar todos os selecionados à visita (da aba de visitas)
+        function addSelectedToVisitaFromTable() {
+            const selectedCheckboxes = document.querySelectorAll('.visit-checkbox:checked');
+            if (selectedCheckboxes.length === 0) {
+                alert('Selecione pelo menos um cavalo para adicionar à visita!');
+                return;
+            }
+            
+            selectedCheckboxes.forEach(checkbox => {
+                const horseId = parseInt(checkbox.getAttribute('data-id'));
+                addHorseToVisita(horseId);
+            });
+            
+            alert(`${selectedCheckboxes.length} cavalo(s) adicionado(s) à visita!`);
         }
         
         // Obter badge do protocolo
@@ -1935,66 +2405,44 @@
             });
         }
         
-        // ========== FUNÇÕES PARA DRAG & DROP DE JANELAS ==========
-        function makeWindowDraggable(windowElement) {
-            const header = windowElement.querySelector('.window-header');
-            let isDragging = false;
-            let currentX;
-            let currentY;
-            let initialX;
-            let initialY;
-            let xOffset = 0;
-            let yOffset = 0;
+        // ========== NOVO BALÃO DE CONFIRMAÇÃO PERSONALIZADO ==========
+        function showCustomConfirm(horseId) {
+            const horse = horses.find(h => h.id === horseId);
+            if (!horse) return;
             
-            header.addEventListener('mousedown', dragStart);
-            document.addEventListener('mousemove', drag);
-            document.addEventListener('mouseup', dragEnd);
+            horseToDelete = horseId;
             
-            function dragStart(e) {
-                initialX = e.clientX - xOffset;
-                initialY = e.clientY - yOffset;
-                
-                if (e.target === header || e.target.closest('.window-header')) {
-                    isDragging = true;
-                    
-                    // Trazer a janela para frente
-                    activeWindows.forEach(win => {
-                        win.style.zIndex = 2000;
-                    });
-                    windowElement.style.zIndex = 2001;
-                }
+            // Atualizar detalhes no balão
+            const confirmDetails = customConfirmBox.querySelector('.confirm-details');
+            confirmDetails.innerHTML = `
+                <p>
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M12 21C16.9706 21 21 16.9706 21 12C21 7.02944 16.9706 3 12 3C7.02944 3 3 7.02944 3 12C3 16.9706 7.02944 21 12 21Z" stroke="#e74c3c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M12 8V12" stroke="#e74c3c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M12 16H12.01" stroke="#e74c3c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    <strong>Você está excluindo o cavalo:</strong>
+                </p>
+                <p style="margin-left: 28px; font-size: 16px; color: #e74c3c; font-weight: bold;">${horse.name}</p>
+                <p style="margin-left: 28px;">• ${horse.color} - ${horse.sex}</p>
+                <p style="margin-left: 28px;">• Esquadrão: ${horse.esquadrao}</p>
+                <p style="margin-left: 28px;">• Protocolo: ${horse.protocolo || 'Nenhum'}</p>
+            `;
+            
+            // Mostrar o balão
+            customConfirmOverlay.style.display = 'flex';
+        }
+        
+        function hideCustomConfirm() {
+            customConfirmOverlay.style.display = 'none';
+            horseToDelete = null;
+        }
+        
+        function confirmDelete() {
+            if (horseToDelete) {
+                deleteHorse(horseToDelete);
+                hideCustomConfirm();
             }
-            
-            function drag(e) {
-                if (isDragging) {
-                    e.preventDefault();
-                    
-                    currentX = e.clientX - initialX;
-                    currentY = e.clientY - initialY;
-                    
-                    xOffset = currentX;
-                    yOffset = currentY;
-                    
-                    setTranslate(currentX, currentY, windowElement);
-                }
-            }
-            
-            function setTranslate(xPos, yPos, el) {
-                el.style.transform = `translate3d(${xPos}px, ${yPos}px, 0)`;
-            }
-            
-            function dragEnd() {
-                initialX = currentX;
-                initialY = currentY;
-                isDragging = false;
-            }
-            
-            // Retornar função para limpar event listeners
-            return function cleanup() {
-                header.removeEventListener('mousedown', dragStart);
-                document.removeEventListener('mousemove', drag);
-                document.removeEventListener('mouseup', dragEnd);
-            };
         }
         
         // ========== FUNÇÕES RESTANTES ==========
@@ -2153,350 +2601,34 @@
             horseDetailModal.style.display = 'flex';
         }
         
-        // Abrir janela de histórico médico
-        function openHistoryWindow(historyItem, timelineItem) {
-            const windowId = `history-window-${Date.now()}`;
-            const windowElement = document.createElement('div');
-            windowElement.className = 'floating-window';
-            windowElement.id = windowId;
-            
-            // Posicionar a janela próxima ao item da timeline
-            const rect = timelineItem.getBoundingClientRect();
-            const modalRect = horseDetailModal.getBoundingClientRect();
-            
-            windowElement.style.position = 'fixed';
-            windowElement.style.left = `${rect.right + 20}px`;
-            windowElement.style.top = `${rect.top}px`;
-            windowElement.style.zIndex = '2000';
-            
-            windowElement.innerHTML = `
-                <div class="window-header">
-                    <div class="window-title">${historyItem.date}</div>
-                    <button class="window-close" data-window-id="${windowId}">×</button>
-                </div>
-                <div class="window-content">
-                    <p>${historyItem.description}</p>
-                </div>
-            `;
-            
-            document.body.appendChild(windowElement);
-            activeWindows.push(windowElement);
-            
-            // Fazer a janela arrastável
-            const cleanup = makeWindowDraggable(windowElement);
-            
-            // Adicionar event listener para fechar a janela
-            windowElement.querySelector('.window-close').addEventListener('click', function() {
-                const windowId = this.getAttribute('data-window-id');
-                const windowToClose = document.getElementById(windowId);
-                if (windowToClose) {
-                    windowToClose.remove();
-                    activeWindows = activeWindows.filter(w => w.id !== windowId);
-                    cleanup();
-                }
-            });
-            
-            // Mostrar a janela
-            setTimeout(() => {
-                windowElement.classList.add('active');
-            }, 10);
-        }
-        
-        // Abrir janela de prescrições médicas
-        function openPrescriptionWindow() {
-            const horse = horses.find(h => h.id === currentHorseId);
-            if (!horse) return;
-            
-            const windowId = `prescription-window-${Date.now()}`;
-            const windowElement = document.createElement('div');
-            windowElement.className = 'floating-window';
-            windowElement.id = windowId;
-            
-            // Posicionar a janela no centro da tela
-            windowElement.style.position = 'fixed';
-            windowElement.style.left = '50%';
-            windowElement.style.top = '50%';
-            windowElement.style.transform = 'translate(-50%, -50%)';
-            windowElement.style.zIndex = '2000';
-            
-            let prescriptionsContent = '';
-            
-            if (horse.prescriptions && horse.prescriptions.length > 0) {
-                horse.prescriptions.forEach((prescription, index) => {
-                    const formattedDate = new Date(prescription.startDate).toLocaleDateString('pt-BR');
-                    
-                    // Gerar conteúdo dos dias da medicação
-                    let daysContent = '';
-                    const maxDaysPerRow = 7;
-                    const totalRows = Math.ceil(prescription.duration / maxDaysPerRow);
-                    
-                    for (let row = 0; row < totalRows; row++) {
-                        const startDay = row * maxDaysPerRow + 1;
-                        const endDay = Math.min((row + 1) * maxDaysPerRow, prescription.duration);
-                        
-                        daysContent += `<div style="display: flex; gap: 5px; margin-bottom: 5px;">`;
-                        
-                        for (let day = startDay; day <= endDay; day++) {
-                            const dayInfo = prescription.medicationDays.find(d => d.day === day);
-                            if (!dayInfo) continue;
-                            
-                            const statusClass = dayInfo.status ? dayInfo.status : '';
-                            const statusIcon = dayInfo.status === 'applied' ? '✓' : dayInfo.status === 'not-applied' ? '✗' : '';
-                            
-                            daysContent += `
-                                <div style="position: relative;">
-                                    <div class="day-box ${statusClass}" 
-                                         style="width: 30px; height: 30px;"
-                                         data-prescription-index="${index}" 
-                                         data-day="${dayInfo.day}">
-                                        ${dayInfo.day}
-                                        ${statusIcon ? `<div class="day-status">${statusIcon}</div>` : ''}
-                                    </div>
-                                    <div class="day-label" style="font-size: 10px;">Dia ${dayInfo.day}</div>
-                                </div>
-                            `;
-                        }
-                        
-                        daysContent += `</div>`;
-                    }
-                    
-                    prescriptionsContent += `
-                        <div style="margin-bottom: 20px; padding-bottom: 20px; border-bottom: 1px solid #eee;">
-                            <h4 style="color: #2c7fb8; margin-bottom: 10px;">Prescrição ${index + 1}</h4>
-                            <div style="margin-bottom: 10px;">
-                                <strong>Medicamento:</strong> ${prescription.medication}
-                            </div>
-                            <div style="margin-bottom: 10px;">
-                                <strong>Dosagem:</strong> ${prescription.dosage}
-                            </div>
-                            <div style="margin-bottom: 10px;">
-                                <strong>Frequência:</strong> ${prescription.frequency}
-                            </div>
-                            <div style="margin-bottom: 10px;">
-                                <strong>Duração:</strong> ${prescription.duration} dias
-                            </div>
-                            <div style="margin-bottom: 10px;">
-                                <strong>Início:</strong> ${formattedDate}
-                            </div>
-                            <div class="medication-schedule">
-                                <div class="schedule-title">Controle de dosagem (${prescription.duration} dias):</div>
-                                ${daysContent}
-                            </div>
-                        </div>
-                    `;
-                });
-            } else {
-                prescriptionsContent = `
-                    <div style="text-align: center; padding: 20px;">
-                        <p>Nenhuma prescrição médica registrada.</p>
-                        <button class="btn btn-primary" id="addNewPrescriptionBtn" style="margin-top: 10px;">
-                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M12 5V19" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                <path d="M5 12H19" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                            </svg>
-                            Adicionar Nova Prescrição
-                        </button>
-                    </div>
-                `;
-            }
-            
-            windowElement.innerHTML = `
-                <div class="window-header">
-                    <div class="window-title">Prescrições Médicas - ${horse.name}</div>
-                    <button class="window-close" data-window-id="${windowId}">×</button>
-                </div>
-                <div class="window-content">
-                    ${prescriptionsContent}
-                </div>
-            `;
-            
-            document.body.appendChild(windowElement);
-            activeWindows.push(windowElement);
-            
-            // Fazer a janela arrastável
-            const cleanup = makeWindowDraggable(windowElement);
-            
-            // Adicionar event listeners
-            windowElement.querySelector('.window-close').addEventListener('click', function() {
-                const windowId = this.getAttribute('data-window-id');
-                const windowToClose = document.getElementById(windowId);
-                if (windowToClose) {
-                    windowToClose.remove();
-                    activeWindows = activeWindows.filter(w => w.id !== windowId);
-                    cleanup();
-                }
-            });
-            
-            // Adicionar event listeners para os quadrados de dias
-            windowElement.querySelectorAll('.day-box').forEach(box => {
-                box.addEventListener('click', function() {
-                    const prescriptionIndex = parseInt(this.getAttribute('data-prescription-index'));
-                    const day = parseInt(this.getAttribute('data-day'));
-                    toggleMedicationDay(currentHorseId, prescriptionIndex, day, this);
-                });
-            });
-            
-            // Adicionar event listener para o botão de adicionar nova prescrição
-            const addPrescriptionBtn = windowElement.querySelector('#addNewPrescriptionBtn');
-            if (addPrescriptionBtn) {
-                addPrescriptionBtn.addEventListener('click', function() {
-                    // Fechar a janela atual
-                    windowElement.remove();
-                    activeWindows = activeWindows.filter(w => w.id !== windowId);
-                    cleanup();
-                    
-                    // Abrir formulário para nova prescrição
-                    addNewPrescription();
-                });
-            }
-            
-            // Mostrar a janela
-            setTimeout(() => {
-                windowElement.classList.add('active');
-            }, 10);
-        }
-        
-        // Alternar status do dia da medicação
-        function toggleMedicationDay(horseId, prescriptionIndex, day, element) {
-            const horse = horses.find(h => h.id === horseId);
-            if (!horse || !horse.prescriptions || !horse.prescriptions[prescriptionIndex]) return;
-            
-            const prescription = horse.prescriptions[prescriptionIndex];
-            const dayInfo = prescription.medicationDays.find(d => d.day === day);
-            if (!dayInfo) return;
-            
-            // Ciclo de estados: null -> applied -> not-applied -> null
-            if (dayInfo.status === null) {
-                dayInfo.status = "applied";
-                element.classList.add('applied');
-                element.innerHTML = `${day}<div class="day-status">✓</div>`;
-            } else if (dayInfo.status === "applied") {
-                dayInfo.status = "not-applied";
-                element.classList.remove('applied');
-                element.classList.add('not-applied');
-                element.innerHTML = `${day}<div class="day-status">✗</div>`;
-            } else {
-                dayInfo.status = null;
-                element.classList.remove('not-applied');
-                element.innerHTML = day;
-            }
-            
-            // Salvar alterações no localStorage
-            saveHorsesToStorage();
-        }
-        
-        // Adicionar nova prescrição
-        function addNewPrescription() {
-            const horse = horses.find(h => h.id === currentHorseId);
-            if (!horse) return;
-            
-            const medication = prompt("Digite o nome do medicamento:");
-            if (!medication) return;
-            
-            const dosage = prompt("Digite a dosagem:");
-            if (!dosage) return;
-            
-            const frequency = prompt("Digite a frequência (ex: 1 vez ao dia):");
-            if (!frequency) return;
-            
-            const duration = parseInt(prompt("Digite a duração em dias:"));
-            if (!duration || isNaN(duration)) return;
-            
-            // Gerar ID único para a prescrição
-            const newPrescriptionId = horse.prescriptions.length > 0 
-                ? Math.max(...horse.prescriptions.map(p => p.id)) + 1 
-                : 1;
-            
-            // Criar array de dias
-            const medicationDays = Array.from({length: duration}, (_, i) => ({
-                day: i + 1,
-                status: null
-            }));
-            
-            // Adicionar nova prescrição
-            horse.prescriptions.push({
-                id: newPrescriptionId,
-                medication: medication,
-                dosage: dosage,
-                frequency: frequency,
-                duration: duration,
-                startDate: new Date().toISOString().split('T')[0],
-                medicationDays: medicationDays
-            });
-            
-            // Salvar alterações no localStorage
-            saveHorsesToStorage();
-            
-            // Atualizar janela de prescrições
-            openPrescriptionWindow();
-            alert('Prescrição adicionada com sucesso!');
-        }
-        
-        // Salvar histórico médico
-        function saveHistory() {
-            const date = document.getElementById('historyDate').value;
-            const description = document.getElementById('historyDescription').value;
-            
-            if (!date || !description) {
-                alert('Por favor, preencha todos os campos.');
-                return;
-            }
-            
-            // Validar formato da data (DD/MM/AAAA)
-            const dateRegex = /^\d{2}\/\d{2}\/\d{4}$/;
-            if (!dateRegex.test(date)) {
-                alert('Por favor, digite a data no formato DD/MM/AAAA');
-                return;
-            }
-            
-            const horse = horses.find(h => h.id === currentHorseId);
-            if (!horse) return;
-            
-            if (isEditingHistory) {
-                // Editar o primeiro item do histórico (simplificado para exemplo)
-                if (horse.history.length > 0) {
-                    horse.history[0].date = date;
-                    horse.history[0].description = description;
-                }
-            } else {
-                // Adicionar novo histórico
-                horse.history.unshift({
-                    date: date,
-                    description: description
-                });
-            }
-            
-            // Salvar alterações no localStorage
-            saveHorsesToStorage();
-            
-            // Fechar formulário e atualizar view
-            document.getElementById('historyEditForm').style.display = 'none';
-            isEditingHistory = false;
-            openHorseDetail(currentHorseId);
-            alert('Histórico salvo com sucesso!');
-        }
-        
         // Excluir cavalo
         function deleteHorse(horseId) {
-            if (confirm('⚠️ ATENÇÃO! Esta ação não pode ser desfeita.\n\nTem certeza que deseja excluir permanentemente este cavalo?\nTodos os dados serão perdidos.')) {
-                const horseIndex = horses.findIndex(h => h.id === horseId);
-                if (horseIndex !== -1) {
-                    horses.splice(horseIndex, 1);
-                    
-                    // Salvar alterações no localStorage
-                    saveHorsesToStorage();
-                    
-                    // Fechar modal se estiver aberto
-                    if (currentHorseId === horseId) {
-                        closeHorseDetailModal();
-                    }
-                    
-                    // Atualizar a lista
-                    renderHorses();
-                    renderVisitas();
-                    
-                    alert('Cavalo excluído permanentemente!');
+            const horseIndex = horses.findIndex(h => h.id === horseId);
+            if (horseIndex !== -1) {
+                // Remover também das visitas se estiver lá
+                visitas.hipo = visitas.hipo.filter(h => h.id !== horseId);
+                visitas.dh = visitas.dh.filter(h => h.id !== horseId);
+                visitas.outros = visitas.outros.filter(h => h.id !== horseId);
+                
+                horses.splice(horseIndex, 1);
+                
+                // Salvar alterações no localStorage
+                saveHorsesToStorage();
+                saveVisitasToStorage();
+                
+                // Fechar modal se estiver aberto
+                if (currentHorseId === horseId) {
+                    closeHorseDetailModal();
                 }
+                
+                // Remover da seleção se estiver lá
+                selectedHorses.delete(horseId);
+                
+                // Atualizar a lista
+                renderHorses();
+                renderVisitas();
+                
+                alert('Cavalo excluído permanentemente!');
             }
         }
         
@@ -2532,7 +2664,7 @@
             e.preventDefault();
             
             const horseName = document.getElementById('horseName').value;
-            const horseId = Math.max(...horses.map(h => h.id)) + 1;
+            const horseId = horses.length > 0 ? Math.max(...horses.map(h => h.id)) + 1 : 1;
             const horseColor = document.getElementById('horseColor').value;
             const horseSex = document.getElementById('horseSex').value;
             const horseHistory = document.getElementById('horseHistory').value;
@@ -2648,6 +2780,7 @@
             // Event Listeners da tela de arquivos
             btnAddHorse.addEventListener('click', openAddModal);
             btnExportAll.addEventListener('click', exportAllToPDF);
+            btnAddToVisita.addEventListener('click', addSelectedToVisita);
             closeModal.addEventListener('click', closeHorseModal);
             btnCancel.addEventListener('click', closeHorseModal);
             horseForm.addEventListener('submit', saveHorse);
@@ -2663,15 +2796,9 @@
                 redirectToFicha(currentHorseId);
             });
             
-            // Event Listener para o botão da seringa (prescrições)
-            prescriptionIconBtn.addEventListener('click', openPrescriptionWindow);
-            
             // Event Listener para excluir cavalo no modal de detalhes
             btnDeleteHorse.addEventListener('click', () => {
-                if (confirm('⚠️ ATENÇÃO! Esta ação não pode ser desfeita.\n\nTem certeza que deseja excluir permanentemente este cavalo?\nTodos os dados serão perdidos.')) {
-                    deleteHorse(currentHorseId);
-                    closeHorseDetailModal();
-                }
+                showCustomConfirm(currentHorseId);
             });
             
             // Event Listeners para opções de esquadrão
@@ -2703,10 +2830,22 @@
             // Event Listeners para visitas
             btnMarcarVisita.addEventListener('click', marcarTodosParaVisita);
             btnLimparVisita.addEventListener('click', limparSelecaoVisitas);
+            btnAddSelectedToVisita.addEventListener('click', addSelectedToVisitaFromTable);
             
             // NOVO EVENT LISTENER PARA O BOTÃO VISITA
             btnVisitaRedirect.addEventListener('click', function() {
                 window.location.href = 'visita.html';
+            });
+            
+            // Event Listeners para o balão de confirmação personalizado
+            confirmCancelBtn.addEventListener('click', hideCustomConfirm);
+            confirmDeleteBtn.addEventListener('click', confirmDelete);
+            
+            // Fechar balão de confirmação ao clicar fora
+            customConfirmOverlay.addEventListener('click', function(e) {
+                if (e.target === this) {
+                    hideCustomConfirm();
+                }
             });
             
             // Fechar modais ao clicar fora deles
