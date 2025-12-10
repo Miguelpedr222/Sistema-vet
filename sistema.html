@@ -2236,7 +2236,7 @@
         const btnNovaColica = document.getElementById('btnNovaColica');
         const btnRelatorioColicas = document.getElementById('btnRelatorioColicas');
         const colicaModal = document.getElementById('colicaModal');
-        const closeColicaModal = document.getElementById('closeColicaModal');
+        const closeColicaModalBtn = document.getElementById('closeColicaModal'); // CORREÇÃO: Mudei o nome aqui
         const btnCancelColica = document.getElementById('btnCancelColica');
         const colicaForm = document.getElementById('colicaForm');
         const colicaStats = document.getElementById('colicaStats');
@@ -2814,8 +2814,8 @@
             colicaModal.style.display = 'flex';
         }
         
-        // Fechar modal de cólica
-        function closeColicaModal() {
+        // CORREÇÃO: Renomeei a função para evitar conflito
+        function closeColicaModalFunc() {
             colicaModal.style.display = 'none';
         }
         
@@ -2887,7 +2887,7 @@
             saveColicasToStorage();
             
             // Fechar modal e atualizar view
-            closeColicaModal();
+            closeColicaModalFunc();
             renderColicas();
             renderColicaStats();
             initCharts();
@@ -3351,11 +3351,11 @@
                 });
             });
             
-            // Event Listeners para cólicas
+            // Event Listeners para cólicas - CORREÇÃO AQUI
             btnNovaColica.addEventListener('click', openColicaModal);
             btnRelatorioColicas.addEventListener('click', gerarRelatorioColicas);
-            closeColicaModal.addEventListener('click', closeColicaModal);
-            btnCancelColica.addEventListener('click', closeColicaModal);
+            closeColicaModalBtn.addEventListener('click', closeColicaModalFunc); // CORREÇÃO
+            btnCancelColica.addEventListener('click', closeColicaModalFunc); // CORREÇÃO
             colicaForm.addEventListener('submit', saveColica);
             
             // Event Listeners para filtros de esquadrão
@@ -3411,7 +3411,7 @@
                     closeHorseDetailModal();
                 }
                 if (e.target === colicaModal) {
-                    closeColicaModal();
+                    closeColicaModalFunc(); // CORREÇÃO
                 }
             });
             
