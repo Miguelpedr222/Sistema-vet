@@ -12,10 +12,41 @@
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
         
+        :root {
+            --primary-blue: #2c7fb8;
+            --secondary-blue: #5dade2;
+            --light-blue: #e6f7ff;
+            --hipo-red: #e74c3c;
+            --hipo-light-red: #fdeaea;
+            --dh-green: #2ecc71;
+            --dh-light-green: #eafaf1;
+            --warning-orange: #f39c12;
+            --success-green: #27ae60;
+            --gray-light: #f8f9fa;
+            --gray-border: #e0e0e0;
+            --shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+            --shadow-hover: 0 15px 40px rgba(0, 0, 0, 0.12);
+        }
+        
         body {
             background: linear-gradient(135deg, #f0f8ff 0%, #e6f7ff 100%);
             min-height: 100vh;
             overflow-x: hidden;
+            position: relative;
+        }
+        
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                radial-gradient(circle at 10% 20%, rgba(44, 127, 184, 0.05) 0%, transparent 20%),
+                radial-gradient(circle at 90% 80%, rgba(46, 204, 113, 0.05) 0%, transparent 20%);
+            pointer-events: none;
+            z-index: -1;
         }
 
         /* ESTILOS DA TELA DE VISITAS */
@@ -26,44 +57,68 @@
             animation: fadeIn 0.8s ease;
         }
         
+        /* Cabeçalho melhorado */
         .header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 30px;
-            padding-bottom: 15px;
-            border-bottom: 2px solid #2c7fb8;
+            margin-bottom: 40px;
+            padding: 20px;
+            background: white;
+            border-radius: 20px;
+            box-shadow: var(--shadow);
+            border-left: 5px solid var(--primary-blue);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 200px;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(44, 127, 184, 0.1));
+            pointer-events: none;
         }
         
         .logo-section {
             display: flex;
             align-items: center;
-            gap: 15px;
+            gap: 20px;
         }
         
         .logo-image-small {
-            width: 60px;
-            height: 60px;
+            width: 70px;
+            height: 70px;
             border-radius: 50%;
-            border: 2px solid #2c7fb8;
+            border: 3px solid var(--primary-blue);
             overflow: hidden;
+            background: white;
+            padding: 5px;
+            box-shadow: 0 4px 15px rgba(44, 127, 184, 0.2);
         }
         
         .logo-image-small img {
             width: 100%;
             height: 100%;
             object-fit: cover;
+            border-radius: 50%;
         }
         
         .logo-text h1 {
-            color: #2c7fb8;
-            font-size: 24px;
+            color: var(--primary-blue);
+            font-size: 28px;
             margin-bottom: 5px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
         }
         
         .logo-text p {
             color: #666;
             font-size: 14px;
+            max-width: 400px;
         }
         
         .user-info {
@@ -71,367 +126,642 @@
         }
         
         .user-info span {
-            color: #2c7fb8;
-            font-weight: 600;
-        }
-        
-        .btn-logout {
-            background: #e74c3c;
-            color: white;
-            border: none;
-            padding: 8px 15px;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 14px;
-            margin-top: 5px;
-            transition: background 0.3s;
-            display: flex;
-            align-items: center;
-            gap: 5px;
-        }
-        
-        .btn-logout:hover {
-            background: #c0392b;
-        }
-        
-        .main-container {
-            background-color: white;
-            border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-            padding: 30px;
-            max-width: 1400px;
-            margin: 0 auto;
-        }
-        
-        .page-title {
-            color: #2c7fb8;
-            margin-bottom: 25px;
-            font-size: 28px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        
-        .page-title svg {
-            width: 30px;
-            height: 30px;
-        }
-        
-        .btn {
-            padding: 10px 20px;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: 600;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            transition: all 0.3s;
-        }
-        
-        .btn-primary {
-            background: #2c7fb8;
-            color: white;
-        }
-        
-        .btn-primary:hover {
-            background: #1d5f8a;
-            transform: translateY(-2px);
-        }
-        
-        .btn-secondary {
-            background: #7fcdbb;
-            color: white;
-        }
-        
-        .btn-secondary:hover {
-            background: #5bbfa5;
-            transform: translateY(-2px);
-        }
-        
-        .btn-success {
-            background: #27ae60;
-            color: white;
-        }
-        
-        .btn-success:hover {
-            background: #219653;
-            transform: translateY(-2px);
-        }
-        
-        .btn-warning {
-            background: #f39c12;
-            color: white;
-        }
-        
-        .btn-warning:hover {
-            background: #e67e22;
-            transform: translateY(-2px);
-        }
-        
-        .btn-danger {
-            background: #e74c3c;
-            color: white;
-        }
-        
-        .btn-danger:hover {
-            background: #c0392b;
-            transform: translateY(-2px);
+            color: var(--primary-blue);
+            font-weight: 700;
+            background: var(--light-blue);
+            padding: 4px 12px;
+            border-radius: 20px;
+            display: inline-block;
+            margin-bottom: 5px;
         }
         
         .btn-voltar {
-            background: #f39c12;
+            background: linear-gradient(135deg, #f39c12 0%, #e67e22 100%);
             color: white;
-            margin-bottom: 20px;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 50px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 4px 15px rgba(243, 156, 18, 0.3);
         }
         
         .btn-voltar:hover {
-            background: #e67e22;
-            transform: translateY(-2px);
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(243, 156, 18, 0.4);
         }
         
-        /* NOVOS ESTILOS PARA CADERNO DE VISITAS */
-        .caderno-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-            padding: 15px;
-            background: #f8f9fa;
-            border-radius: 8px;
+        /* Container principal */
+        .main-container {
+            background-color: white;
+            border-radius: 25px;
+            box-shadow: var(--shadow);
+            padding: 40px;
+            max-width: 1400px;
+            margin: 0 auto;
+            border: 1px solid rgba(44, 127, 184, 0.1);
         }
         
-        .caderno-info {
+        .page-title {
+            color: var(--primary-blue);
+            margin-bottom: 30px;
+            font-size: 32px;
             display: flex;
             align-items: center;
             gap: 15px;
+            position: relative;
+            padding-bottom: 15px;
         }
         
-        .caderno-date {
-            font-weight: 600;
-            color: #2c7fb8;
-            font-size: 18px;
+        .page-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100px;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary-blue), var(--secondary-blue));
+            border-radius: 2px;
         }
         
-        .caderno-status {
-            padding: 4px 8px;
-            border-radius: 4px;
-            font-size: 12px;
-            font-weight: 600;
-            color: white;
+        .page-title svg {
+            width: 36px;
+            height: 36px;
+            filter: drop-shadow(0 2px 4px rgba(44, 127, 184, 0.3));
         }
         
-        .caderno-status.active {
-            background: #27ae60;
-        }
-        
-        .caderno-status.inactive {
-            background: #7f8c8d;
-        }
-        
-        .caderno-status.pending {
-            background: #f39c12;
-        }
-        
-        .caderno-actions {
-            display: flex;
-            gap: 10px;
-        }
-        
-        /* NOVO LAYOUT PARA LISTAS LADO A LADO */
-        .caderno-lists-container {
+        /* Cards de status */
+        .status-cards {
             display: grid;
-            grid-template-columns: 1fr 1fr;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
             gap: 20px;
             margin-bottom: 30px;
         }
         
+        .status-card {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: var(--shadow);
+            border: 1px solid rgba(44, 127, 184, 0.1);
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .status-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-hover);
+        }
+        
+        .status-card.active {
+            border-top: 4px solid var(--success-green);
+        }
+        
+        .status-card.pending {
+            border-top: 4px solid var(--warning-orange);
+        }
+        
+        .status-card.inactive {
+            border-top: 4px solid #95a5a6;
+        }
+        
+        .card-icon {
+            width: 50px;
+            height: 50px;
+            background: var(--light-blue);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 15px;
+        }
+        
+        .card-icon svg {
+            width: 24px;
+            height: 24px;
+            color: var(--primary-blue);
+        }
+        
+        .card-title {
+            font-size: 16px;
+            color: #666;
+            margin-bottom: 10px;
+        }
+        
+        .card-value {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--primary-blue);
+            margin-bottom: 5px;
+        }
+        
+        .card-date {
+            font-size: 14px;
+            color: #95a5a6;
+        }
+        
+        /* Botões principais */
+        .action-buttons {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+        
+        .btn {
+            padding: 14px 28px;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: all 0.3s;
+            font-size: 15px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .btn::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 5px;
+            height: 5px;
+            background: rgba(255, 255, 255, 0.5);
+            opacity: 0;
+            border-radius: 100%;
+            transform: scale(1, 1) translate(-50%);
+            transform-origin: 50% 50%;
+        }
+        
+        .btn:focus:not(:active)::after {
+            animation: ripple 1s ease-out;
+        }
+        
+        @keyframes ripple {
+            0% {
+                transform: scale(0, 0);
+                opacity: 0.5;
+            }
+            20% {
+                transform: scale(25, 25);
+                opacity: 0.3;
+            }
+            100% {
+                opacity: 0;
+                transform: scale(40, 40);
+            }
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary-blue) 0%, var(--secondary-blue) 100%);
+            color: white;
+            box-shadow: 0 4px 15px rgba(44, 127, 184, 0.3);
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(44, 127, 184, 0.4);
+        }
+        
+        .btn-success {
+            background: linear-gradient(135deg, var(--success-green) 0%, #2ecc71 100%);
+            color: white;
+            box-shadow: 0 4px 15px rgba(39, 174, 96, 0.3);
+        }
+        
+        .btn-success:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(39, 174, 96, 0.4);
+        }
+        
+        .btn-success:disabled {
+            background: linear-gradient(135deg, #95a5a6 0%, #bdc3c7 100%);
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: 0 4px 15px rgba(149, 165, 166, 0.2);
+        }
+        
+        /* Listas de cavalos lado a lado */
+        .squadron-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+        
         @media (max-width: 1024px) {
-            .caderno-lists-container {
+            .squadron-grid {
                 grid-template-columns: 1fr;
             }
         }
         
-        .esquadrao-list {
-            border: 1px solid #e0e0e0;
-            border-radius: 8px;
+        .squadron-card {
+            background: white;
+            border-radius: 20px;
             overflow: hidden;
+            box-shadow: var(--shadow);
+            border: 1px solid rgba(0, 0, 0, 0.05);
+            transition: all 0.3s;
         }
         
-        .esquadrao-header {
-            padding: 15px;
-            background: #2c7fb8;
-            color: white;
-            font-weight: 600;
-            font-size: 18px;
+        .squadron-card:hover {
+            box-shadow: var(--shadow-hover);
+        }
+        
+        .squadron-card.hipo {
+            border-top: 5px solid var(--hipo-red);
+        }
+        
+        .squadron-card.dh {
+            border-top: 5px solid var(--dh-green);
+        }
+        
+        .squadron-header {
+            padding: 25px;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            color: white;
+            font-weight: 700;
+            font-size: 20px;
+            position: relative;
+            overflow: hidden;
         }
         
-        .esquadrao-count {
+        .squadron-header.hipo {
+            background: linear-gradient(135deg, var(--hipo-red) 0%, #c0392b 100%);
+        }
+        
+        .squadron-header.dh {
+            background: linear-gradient(135deg, var(--dh-green) 0%, #27ae60 100%);
+        }
+        
+        .squadron-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 100px;
+            height: 100px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            transform: translate(30px, -30px);
+        }
+        
+        .squadron-count {
             background: rgba(255, 255, 255, 0.2);
-            padding: 4px 12px;
-            border-radius: 20px;
+            padding: 8px 16px;
+            border-radius: 50px;
             font-size: 14px;
+            backdrop-filter: blur(10px);
         }
         
-        .esquadrao-content {
-            padding: 15px;
+        .horse-list-container {
             max-height: 500px;
             overflow-y: auto;
+            padding: 0;
         }
         
         .horse-list {
             display: flex;
             flex-direction: column;
             gap: 10px;
+            padding: 20px;
         }
         
         .horse-item {
-            padding: 12px 15px;
-            border: 1px solid #e0e0e0;
-            border-radius: 6px;
-            background: white;
+            padding: 20px;
+            border-radius: 15px;
             display: flex;
             justify-content: space-between;
             align-items: center;
             transition: all 0.3s;
+            position: relative;
+            border: 1px solid rgba(0, 0, 0, 0.05);
+            background: white;
         }
         
         .horse-item:hover {
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            transform: translateX(5px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .horse-item.visited {
+            border-left: 4px solid var(--success-green);
+            background: linear-gradient(to right, rgba(39, 174, 96, 0.05), white);
+        }
+        
+        .horse-item.pending {
+            border-left: 4px solid var(--warning-orange);
+            background: linear-gradient(to right, rgba(243, 156, 18, 0.05), white);
         }
         
         .horse-info {
             display: flex;
             flex-direction: column;
-            gap: 5px;
+            gap: 8px;
+            flex: 1;
         }
         
         .horse-name {
-            font-weight: 600;
-            color: #2c7fb8;
+            font-weight: 700;
+            color: var(--primary-blue);
             font-size: 16px;
-        }
-        
-        .horse-id {
-            font-size: 12px;
-            color: #666;
-        }
-        
-        .horse-actions {
             display: flex;
             align-items: center;
             gap: 10px;
         }
         
-        .visit-status {
+        .horse-id {
+            font-size: 13px;
+            color: #666;
+            background: var(--gray-light);
+            padding: 4px 10px;
+            border-radius: 20px;
+            display: inline-block;
+            width: fit-content;
+        }
+        
+        .horse-actions {
             display: flex;
             align-items: center;
-            gap: 5px;
-            font-size: 14px;
+            gap: 15px;
+        }
+        
+        .status-toggle {
+            position: relative;
+            display: inline-block;
+            width: 50px;
+            height: 26px;
+        }
+        
+        .status-toggle input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        
+        .toggle-slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: .4s;
+            border-radius: 34px;
+        }
+        
+        .toggle-slider:before {
+            position: absolute;
+            content: "";
+            height: 18px;
+            width: 18px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+        
+        input:checked + .toggle-slider {
+            background-color: var(--success-green);
+        }
+        
+        input:checked + .toggle-slider:before {
+            transform: translateX(24px);
         }
         
         .btn-remove {
-            background: #e74c3c;
-            color: white;
-            border: none;
-            width: 30px;
-            height: 30px;
+            width: 36px;
+            height: 36px;
             border-radius: 50%;
+            background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+            border: none;
+            color: white;
             display: flex;
             align-items: center;
             justify-content: center;
             cursor: pointer;
-            transition: background 0.3s;
+            transition: all 0.3s;
+            box-shadow: 0 2px 10px rgba(231, 76, 60, 0.3);
         }
         
         .btn-remove:hover {
-            background: #c0392b;
+            transform: rotate(90deg) scale(1.1);
+            box-shadow: 0 4px 15px rgba(231, 76, 60, 0.4);
         }
         
+        .btn-add {
+            background: linear-gradient(135deg, var(--primary-blue) 0%, var(--secondary-blue) 100%);
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 50px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 2px 10px rgba(44, 127, 184, 0.3);
+        }
+        
+        .btn-add:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(44, 127, 184, 0.4);
+        }
+        
+        /* Seção de observações */
         .observacoes-section {
-            margin-bottom: 20px;
+            margin-bottom: 40px;
         }
         
-        .observacoes-section h3 {
-            color: #2c7fb8;
-            margin-bottom: 10px;
+        .observacoes-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 15px;
+            color: var(--primary-blue);
             font-size: 18px;
+            font-weight: 600;
         }
         
         .observacoes-textarea {
             width: 100%;
-            padding: 15px;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            font-size: 14px;
+            padding: 20px;
+            border: 2px solid var(--gray-border);
+            border-radius: 15px;
+            font-size: 15px;
             resize: vertical;
-            min-height: 100px;
+            min-height: 120px;
+            transition: all 0.3s;
+            background: var(--gray-light);
         }
         
         .observacoes-textarea:focus {
-            border-color: #2c7fb8;
+            border-color: var(--primary-blue);
+            background: white;
+            box-shadow: 0 0 0 4px rgba(44, 127, 184, 0.1);
             outline: none;
-            box-shadow: 0 0 0 3px rgba(44, 127, 184, 0.2);
         }
         
-        .archived-visitas {
-            margin-top: 30px;
-            padding-top: 20px;
-            border-top: 2px solid #e0e0e0;
+        /* Seção de visitas arquivadas */
+        .archived-section {
+            margin-top: 50px;
+            padding-top: 30px;
+            border-top: 2px solid var(--gray-border);
         }
         
-        .archived-list {
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+        
+        .section-title {
+            color: var(--primary-blue);
+            font-size: 22px;
+            font-weight: 700;
+        }
+        
+        .archived-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 15px;
-            margin-top: 15px;
+            gap: 20px;
         }
         
-        .archived-item {
-            padding: 15px;
-            border: 1px solid #e0e0e0;
-            border-radius: 8px;
-            background: #f8f9fa;
+        .archived-card {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: var(--shadow);
+            border: 1px solid rgba(0, 0, 0, 0.05);
             cursor: pointer;
             transition: all 0.3s;
             position: relative;
+            overflow: hidden;
         }
         
-        .archived-item:hover {
-            background: #e9ecef;
-            transform: translateY(-2px);
+        .archived-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-hover);
+        }
+        
+        .archived-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: linear-gradient(90deg, var(--primary-blue), var(--secondary-blue));
+        }
+        
+        .archived-card.warning::before {
+            background: linear-gradient(90deg, var(--hipo-red), #f39c12);
         }
         
         .archived-date {
-            font-weight: 600;
-            color: #2c7fb8;
-            margin-bottom: 10px;
-        }
-        
-        .archived-count {
-            font-size: 14px;
-            color: #666;
+            font-weight: 700;
+            color: var(--primary-blue);
+            font-size: 18px;
+            margin-bottom: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
         
         .warning-badge {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            color: #e74c3c;
-            font-size: 20px;
+            background: var(--hipo-red);
+            color: white;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 14px;
+            box-shadow: 0 2px 10px rgba(231, 76, 60, 0.3);
         }
         
-        .no-results {
+        .archived-stats {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+        
+        .stat {
             text-align: center;
-            padding: 40px;
-            color: #666;
-            grid-column: 1 / -1;
+            flex: 1;
         }
         
-        /* MODAL PARA CRIAR NOVO CADERNO */
+        .stat-number {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--primary-blue);
+        }
+        
+        .stat-label {
+            font-size: 12px;
+            color: #666;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .progress-bar {
+            height: 8px;
+            background: var(--gray-light);
+            border-radius: 4px;
+            overflow: hidden;
+            margin: 15px 0;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--dh-green), var(--success-green));
+            transition: width 0.5s ease;
+        }
+        
+        .progress-fill.warning {
+            background: linear-gradient(90deg, var(--warning-orange), var(--hipo-red));
+        }
+        
+        .no-caderno {
+            text-align: center;
+            padding: 60px 40px;
+            color: #666;
+        }
+        
+        .no-caderno-icon {
+            width: 80px;
+            height: 80px;
+            background: var(--light-blue);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+        }
+        
+        .no-caderno h3 {
+            color: var(--primary-blue);
+            margin-bottom: 10px;
+            font-size: 22px;
+        }
+        
+        /* Modal estilizado */
         .modal {
             display: none;
             position: fixed;
@@ -440,35 +770,44 @@
             width: 100%;
             height: 100%;
             background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(5px);
             z-index: 1000;
             align-items: center;
             justify-content: center;
             padding: 20px;
+            animation: fadeIn 0.3s ease;
         }
         
         .modal-content {
             background: white;
-            border-radius: 15px;
+            border-radius: 25px;
             width: 90%;
             max-width: 500px;
             max-height: 90vh;
             overflow-y: auto;
-            padding: 30px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            animation: slideUp 0.4s ease;
+            position: relative;
+        }
+        
+        .modal-content.large {
+            max-width: 800px;
         }
         
         .modal-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 20px;
-            padding-bottom: 15px;
-            border-bottom: 1px solid #eee;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid var(--gray-border);
         }
         
         .modal-title {
-            color: #2c7fb8;
-            font-size: 22px;
+            color: var(--primary-blue);
+            font-size: 24px;
+            font-weight: 700;
             display: flex;
             align-items: center;
             gap: 10px;
@@ -477,125 +816,56 @@
         .close-modal {
             background: none;
             border: none;
-            font-size: 24px;
+            font-size: 32px;
             cursor: pointer;
             color: #666;
-        }
-        
-        .form-group {
-            margin-bottom: 15px;
-        }
-        
-        .form-group label {
-            display: block;
-            margin-bottom: 5px;
-            color: #333;
-            font-weight: 500;
-            font-size: 14px;
-        }
-        
-        input, select, textarea {
-            width: 100%;
-            padding: 14px;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            font-size: 16px;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             transition: all 0.3s;
         }
         
-        input:focus, select:focus, textarea:focus {
-            border-color: #2c7fb8;
-            outline: none;
-            box-shadow: 0 0 0 3px rgba(44, 127, 184, 0.2);
+        .close-modal:hover {
+            background: var(--gray-light);
+            color: var(--hipo-red);
+            transform: rotate(90deg);
         }
         
-        .modal-actions {
-            display: flex;
-            justify-content: flex-end;
-            gap: 10px;
-            margin-top: 25px;
-        }
-        
-        /* MODAL DE VISITA ARQUIVADA */
-        .modal-wide {
-            max-width: 900px;
-        }
-        
-        .modal-archived-content {
-            padding: 20px;
-            max-height: 80vh;
-            overflow-y: auto;
-        }
-        
-        .modal-archived-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-            padding-bottom: 15px;
-            border-bottom: 2px solid #2c7fb8;
-        }
-        
-        .modal-archived-date {
-            font-size: 20px;
-            font-weight: 600;
-            color: #2c7fb8;
-        }
-        
-        .modal-archived-stats {
-            display: flex;
-            gap: 15px;
-            margin-bottom: 20px;
-            flex-wrap: wrap;
-        }
-        
-        .stat-box {
-            padding: 15px;
-            background: #f8f9fa;
-            border-radius: 8px;
-            text-align: center;
-            min-width: 120px;
-        }
-        
-        .stat-number {
-            font-size: 24px;
-            font-weight: 700;
-            color: #2c7fb8;
-        }
-        
-        .stat-label {
-            font-size: 12px;
-            color: #666;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-        
-        .modal-observacoes {
-            margin-top: 20px;
-            padding: 15px;
-            background: #f8f9fa;
-            border-radius: 8px;
-        }
-        
-        .modal-observacoes h4 {
-            color: #2c7fb8;
-            margin-bottom: 10px;
-            font-size: 16px;
-        }
-        
-        @keyframes fadeIn {
+        @keyframes slideUp {
             from {
                 opacity: 0;
+                transform: translateY(50px);
             }
             to {
                 opacity: 1;
+                transform: translateY(0);
             }
         }
         
+        /* Animações */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+        
+        .pulse-animation {
+            animation: pulse 2s infinite;
+        }
+        
+        /* Responsividade */
         @media (max-width: 768px) {
             .header {
                 flex-direction: column;
-                gap: 15px;
+                gap: 20px;
                 text-align: center;
             }
             
@@ -603,19 +873,74 @@
                 text-align: center;
             }
             
-            .caderno-header {
+            .action-buttons {
+                justify-content: center;
+            }
+            
+            .btn {
+                padding: 12px 20px;
+                font-size: 14px;
+            }
+            
+            .modal-content {
+                padding: 25px;
+            }
+            
+            .section-header {
                 flex-direction: column;
                 gap: 15px;
                 align-items: flex-start;
             }
-            
-            .caderno-actions {
-                width: 100%;
-                justify-content: space-between;
+        }
+        
+        /* Estados vazios */
+        .empty-state {
+            text-align: center;
+            padding: 40px 20px;
+            color: #666;
+        }
+        
+        .empty-state svg {
+            width: 60px;
+            height: 60px;
+            color: #ddd;
+            margin-bottom: 15px;
+        }
+        
+        /* Notificações flutuantes */
+        .notification {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: white;
+            padding: 20px 25px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            z-index: 1001;
+            animation: slideLeft 0.3s ease;
+            border-left: 4px solid var(--success-green);
+            max-width: 400px;
+        }
+        
+        .notification.warning {
+            border-left-color: var(--warning-orange);
+        }
+        
+        .notification.error {
+            border-left-color: var(--hipo-red);
+        }
+        
+        @keyframes slideLeft {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
             }
-            
-            .modal-archived-stats {
-                justify-content: center;
+            to {
+                transform: translateX(0);
+                opacity: 1;
             }
         }
     </style>
@@ -630,13 +955,13 @@
                 </div>
                 <div class="logo-text">
                     <h1>Vet 2°rcg System</h1>
-                    <p>Gestão de Visitas Veterinárias</p>
-                    <p>Atualização diaria pela Enfermeiro Veterinário de dia.</p>
+                    <p>Gestão Inteligente de Visitas Veterinárias</p>
+                    <p>Controle diário das visitas aos cavalos do Hipo e DH</p>
                 </div>
             </div>
             <div class="user-info">
                 <p>Logado como: <span id="loggedUser">Administrador</span></p>
-                <button class="btn btn-voltar" id="btnVoltar">
+                <button class="btn-voltar" id="btnVoltar">
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path d="M19 12H5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                         <path d="M12 19L5 12L12 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
@@ -648,76 +973,75 @@
         
         <div class="main-container">
             <h1 class="page-title">
-                <svg width="30" height="30" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M19 21V5C19 3.89543 18.1046 3 17 3H7C5.89543 3 5 3.89543 5 5V21M19 21L21 21M19 21H14M5 21L3 21M5 21H10M9 6.99998H15M9 11H15M9 15H13" stroke="#2c7fb8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <svg width="36" height="36" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M19 21V5C19 3.89543 18.1046 3 17 3H7C5.89543 3 5 3.89543 5 5V21M19 21L21 21M19 21H14M5 21L3 21M5 21H10M9 6.99998H15M9 11H15M9 15H13" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                 </svg>
-                Visitas Veterinárias
+                Diário de Visitas Veterinárias
             </h1>
             
-            <div class="caderno-header">
-                <div class="caderno-info">
-                    <div class="caderno-date" id="currentCadernoDate">Nenhum caderno ativo</div>
-                    <div class="caderno-status inactive" id="cadernoStatus">Inativo</div>
-                </div>
-                <div class="caderno-actions">
-                    <button class="btn btn-primary" id="btnNovoCaderno">
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M12 5V19" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                            <path d="M5 12H19" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                        </svg>
-                        Novo Caderno
-                    </button>
-                    <button class="btn btn-success" id="btnFinalizarVisita" disabled>
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M22 11.08V12C21.9988 14.1564 21.3005 16.2547 20.0093 17.9818C18.7182 19.709 16.9033 20.9725 14.8354 21.5839C12.7674 22.1953 10.5573 22.1219 8.53447 21.3746C6.51168 20.6273 4.78465 19.2461 3.61096 17.4371C2.43727 15.628 1.87979 13.4881 2.02168 11.3363C2.16356 9.18455 2.99721 7.13631 4.39828 5.49706C5.79935 3.85781 7.69279 2.71537 9.79619 2.24013C11.8996 1.7649 14.1003 1.98232 16.07 2.85999" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                            <path d="M22 4L12 14.01L9 11.01" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                        </svg>
-                        Finalizar Serviço
-                    </button>
-                </div>
+            <!-- Cards de status -->
+            <div class="status-cards" id="statusCards">
+                <!-- Preenchido por JavaScript -->
             </div>
             
-            <div class="observacoes-section">
-                <h3>Observações do dia:</h3>
-                <textarea class="observacoes-textarea" id="observacoesDia" placeholder="Registre aqui observações importantes do dia..."></textarea>
+            <!-- Botões de ação -->
+            <div class="action-buttons">
+                <button class="btn btn-primary" id="btnNovoCaderno">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M12 5V19" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M5 12H19" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    Iniciar Nova Visita
+                </button>
+                <button class="btn btn-success" id="btnFinalizarVisita" disabled>
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M22 11.08V12C21.9988 14.1564 21.3005 16.2547 20.0093 17.9818C18.7182 19.709 16.9033 20.9725 14.8354 21.5839C12.7674 22.1953 10.5573 22.1219 8.53447 21.3746C6.51168 20.6273 4.78465 19.2461 3.61096 17.4371C2.43727 15.628 1.87979 13.4881 2.02168 11.3363C2.16356 9.18455 2.99721 7.13631 4.39828 5.49706C5.79935 3.85781 7.69279 2.71537 9.79619 2.24013C11.8996 1.7649 14.1003 1.98232 16.07 2.85999" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M22 4L12 14.01L9 11.01" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    Finalizar Serviço
+                </button>
             </div>
             
-            <div class="caderno-lists-container" id="cadernoListsContainer" style="display: none;">
-                <div class="esquadrao-list">
-                    <div class="esquadrao-header">
-                        <span>Hipo</span>
-                        <span class="esquadrao-count" id="hipoCount">0 cavalos</span>
-                    </div>
-                    <div class="esquadrao-content">
-                        <div class="horse-list" id="hipoList">
-                            <!-- Lista de cavalos Hipo -->
-                        </div>
-                    </div>
+            <!-- Conteúdo do caderno atual -->
+            <div id="cadernoContent" style="display: none;">
+                <!-- Listas de cavalos -->
+                <div class="squadron-grid" id="squadronGrid">
+                    <!-- Preenchido por JavaScript -->
                 </div>
                 
-                <div class="esquadrao-list">
-                    <div class="esquadrao-header">
-                        <span>DH</span>
-                        <span class="esquadrao-count" id="dhCount">0 cavalos</span>
+                <!-- Observações -->
+                <div class="observacoes-section">
+                    <div class="observacoes-header">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M11 5H7C5.89543 5 5 5.89543 5 7V19C5 20.1046 5.89543 21 7 21H17C18.1046 21 19 20.1046 19 19V13" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M14 5C14 3.89543 14.8954 3 16 3H20C21.1046 3 22 3.89543 22 5V9C22 10.1046 21.1046 11 20 11H16C14.8954 11 14 10.1046 14 9V5Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M11 14H15" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M11 10H13" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                        Observações do Dia
                     </div>
-                    <div class="esquadrao-content">
-                        <div class="horse-list" id="dhList">
-                            <!-- Lista de cavalos DH -->
-                        </div>
-                    </div>
+                    <textarea class="observacoes-textarea" id="observacoesDia" placeholder="Registre aqui observações importantes sobre as visitas do dia, condições dos cavalos, tratamentos especiais, etc..."></textarea>
                 </div>
             </div>
             
-            <div class="caderno-list" id="cadernoList">
-                <!-- Conteúdo será preenchido via JavaScript -->
+            <!-- Estado vazio -->
+            <div id="emptyState" class="no-caderno">
+                <div class="no-caderno-icon">
+                    <svg width="40" height="40" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M19 21V5C19 3.89543 18.1046 3 17 3H7C5.89543 3 5 3.89543 5 5V21M19 21L21 21M19 21H14M5 21L3 21M5 21H10" stroke="#2c7fb8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </div>
+                <h3>Nenhum caderno de visitas ativo</h3>
+                <p>Clique em "Iniciar Nova Visita" para começar o diário do dia</p>
             </div>
             
-            <div class="archived-visitas" id="archivedVisitas" style="display: none;">
-                <h3 style="color: #2c7fb8; margin-bottom: 15px; font-size: 20px; padding-bottom: 10px; border-bottom: 2px solid #e0e0e0;">
-                    Visitas Arquivadas
-                </h3>
-                <div class="archived-list" id="archivedList">
-                    <!-- Conteúdo será preenchido via JavaScript -->
+            <!-- Visitas arquivadas -->
+            <div class="archived-section" id="archivedSection" style="display: none;">
+                <div class="section-header">
+                    <div class="section-title">Histórico de Visitas</div>
+                </div>
+                <div class="archived-grid" id="archivedGrid">
+                    <!-- Preenchido por JavaScript -->
                 </div>
             </div>
         </div>
@@ -727,19 +1051,19 @@
     <div class="modal" id="cadernoModal">
         <div class="modal-content">
             <div class="modal-header">
-                <h2 class="modal-title">Criar Novo Caderno de Visitas</h2>
+                <h2 class="modal-title">📅 Iniciar Nova Visita</h2>
                 <button class="close-modal" id="closeCadernoModal">&times;</button>
             </div>
             
             <form id="cadernoForm">
                 <div class="form-group">
-                    <label for="cadernoDate">Data da Visita</label>
-                    <input type="date" id="cadernoDate" required>
+                    <label for="cadernoDate">Selecione a data da visita:</label>
+                    <input type="date" id="cadernoDate" required style="padding: 15px; font-size: 16px; border-radius: 12px;">
                 </div>
                 
-                <div class="modal-actions">
-                    <button type="button" class="btn btn-secondary" id="btnCancelCaderno">Cancelar</button>
-                    <button type="submit" class="btn btn-primary">Criar Caderno</button>
+                <div class="modal-actions" style="display: flex; gap: 15px; justify-content: flex-end; margin-top: 30px;">
+                    <button type="button" class="btn btn-secondary" id="btnCancelCaderno" style="background: linear-gradient(135deg, #95a5a6 0%, #7f8c8d 100%);">Cancelar</button>
+                    <button type="submit" class="btn btn-primary">Criar Diário</button>
                 </div>
             </form>
         </div>
@@ -747,21 +1071,23 @@
     
     <!-- Modal para Visualizar Visita Arquivada -->
     <div class="modal" id="archivedModal">
-        <div class="modal-content modal-wide">
-            <div class="modal-archived-header">
-                <div class="modal-archived-date" id="modalArchivedDate"></div>
+        <div class="modal-content large">
+            <div class="modal-header">
+                <h2 class="modal-title" id="modalArchivedTitle">📋 Visita Arquivada</h2>
                 <button class="close-modal" id="closeArchivedModal">&times;</button>
             </div>
             
-            <div class="modal-archived-content" id="modalArchivedContent">
-                <!-- Conteúdo será preenchido via JavaScript -->
+            <div id="modalArchivedContent">
+                <!-- Preenchido por JavaScript -->
             </div>
         </div>
     </div>
+    
+    <!-- Notificações -->
+    <div id="notificationContainer"></div>
 
     <script>
         // ========== DADOS DAS VISITAS ==========
-        // Função para carregar dados das visitas do localStorage
         function loadVisitasFromStorage() {
             const storedVisitas = localStorage.getItem('vetSystemVisitas');
             if (storedVisitas) {
@@ -774,21 +1100,32 @@
             }
         }
 
-        // Função para salvar dados das visitas no localStorage
         function saveVisitasToStorage() {
             localStorage.setItem('vetSystemVisitas', JSON.stringify(visitas));
         }
 
-        // Função para carregar dados dos cavalos
         function loadHorsesFromStorage() {
             const storedHorses = localStorage.getItem('vetSystemHorses');
             if (storedHorses) {
                 return JSON.parse(storedHorses);
             }
-            return [];
+            
+            // Dados de exemplo para teste
+            return [
+                { id: 1, name: 'Átila', esquadrao: 'Hipo', pelagem: 'Alazão' },
+                { id: 2, name: 'Thor', esquadrao: 'Hipo', pelagem: 'Tordilho' },
+                { id: 3, name: 'Odin', esquadrao: 'Hipo', pelagem: 'Preto' },
+                { id: 4, name: 'Zeus', esquadrao: 'Hipo', pelagem: 'Baio' },
+                { id: 5, name: 'Apolo', esquadrao: 'Hipo', pelagem: 'Alazão' },
+                { id: 6, name: 'Pégaso', esquadrao: 'DH', pelagem: 'Tordilho' },
+                { id: 7, name: 'Aquiles', esquadrao: 'DH', pelagem: 'Alazão' },
+                { id: 8, name: 'Hércules', esquadrao: 'DH', pelagem: 'Baio' },
+                { id: 9, name: 'Trovão', esquadrao: 'DH', pelagem: 'Preto' },
+                { id: 10, name: 'Relâmpago', esquadrao: 'DH', pelagem: 'Tordilho' }
+            ];
         }
 
-        // Carregar dados iniciais
+        // ========== ESTADO DA APLICAÇÃO ==========
         let visitas = loadVisitasFromStorage();
         let allHorses = loadHorsesFromStorage();
         let currentCaderno = null;
@@ -796,19 +1133,15 @@
         // ========== ELEMENTOS DO DOM ==========
         const loggedUser = document.getElementById('loggedUser');
         const btnVoltar = document.getElementById('btnVoltar');
-        const currentCadernoDate = document.getElementById('currentCadernoDate');
-        const cadernoStatus = document.getElementById('cadernoStatus');
+        const statusCards = document.getElementById('statusCards');
         const btnNovoCaderno = document.getElementById('btnNovoCaderno');
         const btnFinalizarVisita = document.getElementById('btnFinalizarVisita');
-        const cadernoListsContainer = document.getElementById('cadernoListsContainer');
-        const hipoList = document.getElementById('hipoList');
-        const dhList = document.getElementById('dhList');
-        const hipoCount = document.getElementById('hipoCount');
-        const dhCount = document.getElementById('dhCount');
-        const cadernoList = document.getElementById('cadernoList');
-        const archivedList = document.getElementById('archivedList');
-        const archivedVisitas = document.getElementById('archivedVisitas');
+        const cadernoContent = document.getElementById('cadernoContent');
+        const emptyState = document.getElementById('emptyState');
+        const squadronGrid = document.getElementById('squadronGrid');
         const observacoesDia = document.getElementById('observacoesDia');
+        const archivedSection = document.getElementById('archivedSection');
+        const archivedGrid = document.getElementById('archivedGrid');
         
         // Modais
         const cadernoModal = document.getElementById('cadernoModal');
@@ -817,13 +1150,12 @@
         const btnCancelCaderno = document.getElementById('btnCancelCaderno');
         const cadernoForm = document.getElementById('cadernoForm');
         const closeArchivedModal = document.getElementById('closeArchivedModal');
-        const modalArchivedDate = document.getElementById('modalArchivedDate');
+        const modalArchivedTitle = document.getElementById('modalArchivedTitle');
         const modalArchivedContent = document.getElementById('modalArchivedContent');
+        const notificationContainer = document.getElementById('notificationContainer');
 
         // ========== FUNÇÕES PRINCIPAIS ==========
-        // Inicializar a página
         function init() {
-            // Carregar dados do usuário
             const userData = localStorage.getItem('vetSystemCurrentUser');
             if (userData) {
                 const user = JSON.parse(userData);
@@ -834,7 +1166,6 @@
             setupEventListeners();
         }
 
-        // Configurar event listeners
         function setupEventListeners() {
             btnVoltar.addEventListener('click', voltarParaArquivos);
             btnNovoCaderno.addEventListener('click', openCadernoModal);
@@ -856,52 +1187,348 @@
             });
         }
 
-        // Voltar para a página de arquivos
         function voltarParaArquivos() {
             window.location.href = 'index.html';
         }
 
-        // Renderizar visitas
         function renderVisitas() {
-            // Verificar se há caderno ativo
             currentCaderno = visitas.cadernosAtivos.length > 0 ? visitas.cadernosAtivos[0] : null;
             
+            renderStatusCards();
+            renderCadernoContent();
+            renderArchivedVisitas();
+        }
+
+        function renderStatusCards() {
+            let cardsHTML = '';
+            
             if (currentCaderno) {
-                currentCadernoDate.textContent = `Caderno de Visitas - ${formatDate(currentCaderno.data)}`;
-                
-                // Verificar se pode finalizar (dia seguinte a partir das 6:00)
+                const totalVisitas = currentCaderno.visitas.length;
+                const visitasRealizadas = currentCaderno.visitas.filter(v => v.visited).length;
                 const canFinalize = canFinalizeVisita();
-                if (canFinalize) {
-                    cadernoStatus.textContent = 'Pronto para finalizar';
-                    cadernoStatus.className = 'caderno-status active';
-                    btnFinalizarVisita.disabled = false;
-                } else {
-                    cadernoStatus.textContent = 'Em andamento';
-                    cadernoStatus.className = 'caderno-status pending';
-                    btnFinalizarVisita.disabled = true;
-                }
                 
-                cadernoListsContainer.style.display = 'grid';
+                cardsHTML = `
+                    <div class="status-card ${canFinalize ? 'active' : 'pending'}">
+                        <div class="card-icon">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M9 12L11 14L15 10M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </div>
+                        <div class="card-title">Status da Visita</div>
+                        <div class="card-value">${canFinalize ? 'Pronto para Finalizar' : 'Em Andamento'}</div>
+                        <div class="card-date">${formatDate(currentCaderno.data)}</div>
+                    </div>
+                    
+                    <div class="status-card">
+                        <div class="card-icon">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M16 21V19C16 17.9391 15.5786 16.9217 14.8284 16.1716C14.0783 15.4214 13.0609 15 12 15H5C3.93913 15 2.92172 15.4214 2.17157 16.1716C1.42143 16.9217 1 17.9391 1 19V21M12 7C12 9.20914 10.2091 11 8 11C5.79086 11 4 9.20914 4 7C4 4.79086 5.79086 3 8 3C10.2091 3 12 4.79086 12 7Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </div>
+                        <div class="card-title">Cavalos Visitados</div>
+                        <div class="card-value">${visitasRealizadas}/${totalVisitas || 0}</div>
+                        <div class="card-date">${totalVisitas > 0 ? Math.round((visitasRealizadas / totalVisitas) * 100) + '% completo' : 'Nenhuma visita'}</div>
+                    </div>
+                    
+                    <div class="status-card">
+                        <div class="card-icon">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M8 7V3M16 7V3M7 11H17M5 21H19C20.1046 21 21 20.1046 21 19V7C21 5.89543 20.1046 5 19 5H5C3.89543 5 3 5.89543 3 7V19C3 20.1046 3.89543 21 5 21Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </div>
+                        <div class="card-title">Próxima Finalização</div>
+                        <div class="card-value">${canFinalize ? 'Já Disponível' : 'Amanhã às 6:00'}</div>
+                        <div class="card-date">${canFinalize ? 'Pode finalizar agora' : 'Aguardando período'}</div>
+                    </div>
+                `;
+                
                 btnFinalizarVisita.disabled = !canFinalize;
-                
-                // Carregar observações
-                observacoesDia.value = currentCaderno.observacoes || '';
             } else {
-                currentCadernoDate.textContent = 'Nenhum caderno ativo';
-                cadernoStatus.textContent = 'Inativo';
-                cadernoStatus.className = 'caderno-status inactive';
-                cadernoListsContainer.style.display = 'none';
+                cardsHTML = `
+                    <div class="status-card inactive">
+                        <div class="card-icon">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M19 21V5C19 3.89543 18.1046 3 17 3H7C5.89543 3 5 3.89543 5 5V21M19 21L21 21M19 21H14M5 21L3 21M5 21H10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </div>
+                        <div class="card-title">Status da Visita</div>
+                        <div class="card-value">Nenhum caderno ativo</div>
+                        <div class="card-date">Clique para iniciar uma visita</div>
+                    </div>
+                    
+                    <div class="status-card inactive">
+                        <div class="card-icon">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M12 8V12L15 15M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </div>
+                        <div class="card-title">Período de Finalização</div>
+                        <div class="card-value">Dia seguinte às 6:00</div>
+                        <div class="card-date">Regra de negócio do sistema</div>
+                    </div>
+                `;
+                
                 btnFinalizarVisita.disabled = true;
             }
             
-            // Renderizar listas de cavalos
-            renderHorseLists();
-            
-            // Renderizar visitas arquivadas
-            renderArchivedList();
+            statusCards.innerHTML = cardsHTML;
         }
 
-        // Verificar se pode finalizar a visita
+        function renderCadernoContent() {
+            if (currentCaderno) {
+                emptyState.style.display = 'none';
+                cadernoContent.style.display = 'block';
+                
+                observacoesDia.value = currentCaderno.observacoes || '';
+                renderSquadronLists();
+            } else {
+                emptyState.style.display = 'block';
+                cadernoContent.style.display = 'none';
+            }
+        }
+
+        function renderSquadronLists() {
+            // Separar cavalos por esquadrão
+            const cavalosHipo = allHorses.filter(h => h.esquadrao === 'Hipo');
+            const cavalosDH = allHorses.filter(h => h.esquadrao === 'DH');
+            
+            const cavalosNaVisita = new Set(currentCaderno.visitas.map(v => v.horseId));
+            
+            // Renderizar Hipo
+            let hipoHTML = '';
+            if (cavalosHipo.length === 0) {
+                hipoHTML = `
+                    <div class="empty-state">
+                        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M12 8V12M12 16H12.01M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="#ccc" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                        <p>Nenhum cavalo do Hipo cadastrado</p>
+                    </div>
+                `;
+            } else {
+                hipoHTML = cavalosHipo.map(horse => {
+                    const isInVisita = cavalosNaVisita.has(horse.id);
+                    const visitaInfo = isInVisita ? 
+                        currentCaderno.visitas.find(v => v.horseId === horse.id) : null;
+                    
+                    return `
+                        <div class="horse-item ${isInVisita && visitaInfo.visited ? 'visited' : (isInVisita ? 'pending' : '')}">
+                            <div class="horse-info">
+                                <div class="horse-name">
+                                    ${horse.name}
+                                    ${horse.pelagem ? `<span style="font-size: 12px; color: #666; background: #f0f0f0; padding: 2px 8px; border-radius: 10px;">${horse.pelagem}</span>` : ''}
+                                </div>
+                                <div class="horse-id">ID: ${horse.id}</div>
+                            </div>
+                            <div class="horse-actions">
+                                ${isInVisita ? `
+                                    <label class="status-toggle">
+                                        <input type="checkbox" class="visit-status-checkbox" data-id="${horse.id}" ${visitaInfo.visited ? 'checked' : ''}>
+                                        <span class="toggle-slider"></span>
+                                    </label>
+                                    <button class="btn-remove" data-id="${horse.id}" title="Remover da visita">
+                                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <path d="M18 6L6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                            <path d="M6 6L18 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                        </svg>
+                                    </button>
+                                ` : `
+                                    <button class="btn-add" data-id="${horse.id}">
+                                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="margin-right: 4px;">
+                                            <path d="M12 5V19" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                            <path d="M5 12H19" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                        </svg>
+                                        Adicionar
+                                    </button>
+                                `}
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+            }
+            
+            // Renderizar DH
+            let dhHTML = '';
+            if (cavalosDH.length === 0) {
+                dhHTML = `
+                    <div class="empty-state">
+                        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M12 8V12M12 16H12.01M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="#ccc" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                        <p>Nenhum cavalo do DH cadastrado</p>
+                    </div>
+                `;
+            } else {
+                dhHTML = cavalosDH.map(horse => {
+                    const isInVisita = cavalosNaVisita.has(horse.id);
+                    const visitaInfo = isInVisita ? 
+                        currentCaderno.visitas.find(v => v.horseId === horse.id) : null;
+                    
+                    return `
+                        <div class="horse-item ${isInVisita && visitaInfo.visited ? 'visited' : (isInVisita ? 'pending' : '')}">
+                            <div class="horse-info">
+                                <div class="horse-name">
+                                    ${horse.name}
+                                    ${horse.pelagem ? `<span style="font-size: 12px; color: #666; background: #f0f0f0; padding: 2px 8px; border-radius: 10px;">${horse.pelagem}</span>` : ''}
+                                </div>
+                                <div class="horse-id">ID: ${horse.id}</div>
+                            </div>
+                            <div class="horse-actions">
+                                ${isInVisita ? `
+                                    <label class="status-toggle">
+                                        <input type="checkbox" class="visit-status-checkbox" data-id="${horse.id}" ${visitaInfo.visited ? 'checked' : ''}>
+                                        <span class="toggle-slider"></span>
+                                    </label>
+                                    <button class="btn-remove" data-id="${horse.id}" title="Remover da visita">
+                                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <path d="M18 6L6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                            <path d="M6 6L18 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                        </svg>
+                                    </button>
+                                ` : `
+                                    <button class="btn-add" data-id="${horse.id}">
+                                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="margin-right: 4px;">
+                                            <path d="M12 5V19" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                            <path d="M5 12H19" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                        </svg>
+                                        Adicionar
+                                    </button>
+                                `}
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+            }
+            
+            squadronGrid.innerHTML = `
+                <div class="squadron-card hipo">
+                    <div class="squadron-header hipo">
+                        <span>🎠 Esquadrão Hipo</span>
+                        <span class="squadron-count">${cavalosHipo.length} cavalos</span>
+                    </div>
+                    <div class="horse-list-container">
+                        <div class="horse-list">
+                            ${hipoHTML}
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="squadron-card dh">
+                    <div class="squadron-header dh">
+                        <span>🐎 Esquadrão DH</span>
+                        <span class="squadron-count">${cavalosDH.length} cavalos</span>
+                    </div>
+                    <div class="horse-list-container">
+                        <div class="horse-list">
+                            ${dhHTML}
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            // Adicionar event listeners
+            addHorseEventListeners();
+        }
+
+        function addHorseEventListeners() {
+            // Botões adicionar
+            document.querySelectorAll('.btn-add').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const horseId = parseInt(this.getAttribute('data-id'));
+                    addHorseToVisita(horseId);
+                    showNotification('Cavalo adicionado à visita!', 'success');
+                });
+            });
+            
+            // Botões remover
+            document.querySelectorAll('.btn-remove').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const horseId = parseInt(this.getAttribute('data-id'));
+                    removeHorseFromVisita(horseId);
+                    showNotification('Cavalo removido da visita!', 'warning');
+                });
+            });
+            
+            // Checkboxes de status
+            document.querySelectorAll('.visit-status-checkbox').forEach(checkbox => {
+                checkbox.addEventListener('change', function() {
+                    const horseId = parseInt(this.getAttribute('data-id'));
+                    const isChecked = this.checked;
+                    updateVisitStatus(horseId, isChecked);
+                    
+                    const message = isChecked ? 
+                        'Cavalo marcado como visitado!' : 
+                        'Cavalo marcado como não visitado!';
+                    showNotification(message, 'success');
+                });
+            });
+        }
+
+        function renderArchivedVisitas() {
+            if (visitas.cadernosArquivados.length === 0) {
+                archivedSection.style.display = 'none';
+                return;
+            }
+            
+            archivedSection.style.display = 'block';
+            
+            const cadernosOrdenados = [...visitas.cadernosArquivados].sort((a, b) => 
+                new Date(b.data) - new Date(a.data)
+            );
+            
+            archivedGrid.innerHTML = cadernosOrdenados.map(caderno => {
+                const totalVisitas = caderno.visitas.length;
+                const visitasRealizadas = caderno.visitas.filter(v => v.visited).length;
+                const visitasPendentes = totalVisitas - visitasRealizadas;
+                const porcentagem = totalVisitas > 0 ? Math.round((visitasRealizadas / totalVisitas) * 100) : 0;
+                const hasPending = visitasPendentes > 0;
+                
+                return `
+                    <div class="archived-card ${hasPending ? 'warning' : ''}" data-id="${caderno.id}">
+                        <div class="archived-date">
+                            ${formatDate(caderno.data)}
+                            ${hasPending ? '<div class="warning-badge">!</div>' : ''}
+                        </div>
+                        
+                        <div class="archived-stats">
+                            <div class="stat">
+                                <div class="stat-number">${totalVisitas}</div>
+                                <div class="stat-label">Total</div>
+                            </div>
+                            <div class="stat">
+                                <div class="stat-number" style="color: ${hasPending ? '#e74c3c' : '#27ae60'};">${visitasRealizadas}</div>
+                                <div class="stat-label">Visitados</div>
+                            </div>
+                            <div class="stat">
+                                <div class="stat-number" style="color: ${hasPending ? '#f39c12' : '#666'};">${visitasPendentes}</div>
+                                <div class="stat-label">Pendentes</div>
+                            </div>
+                        </div>
+                        
+                        <div class="progress-bar">
+                            <div class="progress-fill ${hasPending ? 'warning' : ''}" style="width: ${porcentagem}%"></div>
+                        </div>
+                        
+                        <div style="font-size: 14px; color: #666; margin-top: 15px;">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="vertical-align: middle; margin-right: 5px;">
+                                <path d="M12 8V12M12 16H12.01M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                            Clique para ver detalhes
+                        </div>
+                    </div>
+                `;
+            }).join('');
+            
+            // Adicionar event listeners aos cards arquivados
+            document.querySelectorAll('.archived-card').forEach(card => {
+                card.addEventListener('click', function() {
+                    const cadernoId = parseInt(this.getAttribute('data-id'));
+                    openArchivedModal(cadernoId);
+                });
+            });
+        }
+
+        // ========== FUNÇÕES DE NEGÓCIO ==========
         function canFinalizeVisita() {
             if (!currentCaderno) return false;
             
@@ -911,117 +1538,18 @@
             // Verificar se é dia seguinte
             const diaSeguinte = new Date(dataCaderno);
             diaSeguinte.setDate(diaSeguinte.getDate() + 1);
-            diaSeguinte.setHours(6, 0, 0, 0); // A partir das 6:00
+            diaSeguinte.setHours(6, 0, 0, 0);
             
             return hoje >= diaSeguinte;
         }
 
-        // Renderizar listas de cavalos
-        function renderHorseLists() {
-            hipoList.innerHTML = '';
-            dhList.innerHTML = '';
-            
-            if (!currentCaderno) return;
-            
-            // Separar cavalos por esquadrão
-            const cavalosHipo = [];
-            const cavalosDH = [];
-            
-            allHorses.forEach(horse => {
-                if (horse.esquadrao === 'Hipo') {
-                    cavalosHipo.push(horse);
-                } else if (horse.esquadrao === 'DH') {
-                    cavalosDH.push(horse);
-                }
-            });
-            
-            // Verificar quais cavalos já estão na visita atual
-            const cavalosNaVisita = new Set(currentCaderno.visitas.map(v => v.horseId));
-            
-            // Renderizar cavalos Hipo
-            renderHorseList(hipoList, cavalosHipo, cavalosNaVisita);
-            hipoCount.textContent = `${cavalosHipo.length} cavalos`;
-            
-            // Renderizar cavalos DH
-            renderHorseList(dhList, cavalosDH, cavalosNaVisita);
-            dhCount.textContent = `${cavalosDH.length} cavalos`;
-        }
-
-        // Renderizar lista de cavalos individual
-        function renderHorseList(container, horses, cavalosNaVisita) {
-            if (horses.length === 0) {
-                container.innerHTML = '<div style="text-align: center; color: #666; padding: 20px;">Nenhum cavalo registrado</div>';
-                return;
-            }
-            
-            horses.forEach(horse => {
-                const isInVisita = cavalosNaVisita.has(horse.id);
-                const visitaInfo = isInVisita ? 
-                    currentCaderno.visitas.find(v => v.horseId === horse.id) : null;
-                
-                const horseItem = document.createElement('div');
-                horseItem.className = 'horse-item';
-                
-                horseItem.innerHTML = `
-                    <div class="horse-info">
-                        <div class="horse-name">${horse.name}</div>
-                        <div class="horse-id">ID: ${horse.id}</div>
-                    </div>
-                    <div class="horse-actions">
-                        ${isInVisita ? `
-                            <div class="visit-status">
-                                <input type="checkbox" class="visit-status-checkbox" data-id="${horse.id}" ${visitaInfo.visited ? 'checked' : ''}>
-                                <span>Visitado</span>
-                            </div>
-                            <button class="btn-remove" data-id="${horse.id}">
-                                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M18 6L6 18" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                    <path d="M6 6L18 18" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                </svg>
-                            </button>
-                        ` : `
-                            <button class="btn btn-primary btn-sm" data-id="${horse.id}">Adicionar</button>
-                        `}
-                    </div>
-                `;
-                
-                container.appendChild(horseItem);
-            });
-            
-            // Adicionar event listeners
-            container.querySelectorAll('.btn-primary').forEach(btn => {
-                btn.addEventListener('click', function() {
-                    const horseId = parseInt(this.getAttribute('data-id'));
-                    addHorseToVisita(horseId);
-                });
-            });
-            
-            container.querySelectorAll('.btn-remove').forEach(btn => {
-                btn.addEventListener('click', function() {
-                    const horseId = parseInt(this.getAttribute('data-id'));
-                    removeHorseFromVisita(horseId);
-                });
-            });
-            
-            container.querySelectorAll('.visit-status-checkbox').forEach(checkbox => {
-                checkbox.addEventListener('change', function() {
-                    const horseId = parseInt(this.getAttribute('data-id'));
-                    updateVisitStatus(horseId, this.checked);
-                });
-            });
-        }
-
-        // Adicionar cavalo à visita
         function addHorseToVisita(horseId) {
             if (!currentCaderno) return;
             
             const horse = allHorses.find(h => h.id === horseId);
             if (!horse) return;
             
-            // Verificar se já está na visita
-            if (currentCaderno.visitas.some(v => v.horseId === horseId)) {
-                return;
-            }
+            if (currentCaderno.visitas.some(v => v.horseId === horseId)) return;
             
             const novaVisita = {
                 horseId: horse.id,
@@ -1036,7 +1564,6 @@
             renderVisitas();
         }
 
-        // Remover cavalo da visita
         function removeHorseFromVisita(horseId) {
             if (!currentCaderno) return;
             
@@ -1048,7 +1575,6 @@
             }
         }
 
-        // Atualizar status da visita
         function updateVisitStatus(horseId, visited) {
             if (!currentCaderno) return;
             
@@ -1056,10 +1582,10 @@
             if (visita) {
                 visita.visited = visited;
                 saveVisitasToStorage();
+                renderStatusCards();
             }
         }
 
-        // Salvar observações
         function saveObservacoes() {
             if (!currentCaderno) return;
             
@@ -1067,103 +1593,84 @@
             saveVisitasToStorage();
         }
 
-        // Renderizar lista de visitas arquivadas
-        function renderArchivedList() {
-            archivedList.innerHTML = '';
-            
-            if (visitas.cadernosArquivados.length === 0) {
-                archivedVisitas.style.display = 'none';
-                return;
-            }
-            
-            archivedVisitas.style.display = 'block';
-            
-            // Ordenar por data (mais recente primeiro)
-            const cadernosOrdenados = [...visitas.cadernosArquivados].sort((a, b) => 
-                new Date(b.data) - new Date(a.data)
-            );
-            
-            // Renderizar cada caderno arquivado
-            cadernosOrdenados.forEach(caderno => {
-                const visitasCount = caderno.visitas.length;
-                const visitasRealizadas = caderno.visitas.filter(v => v.visited).length;
-                const hasPending = visitasRealizadas < visitasCount;
-                
-                const archivedItem = document.createElement('div');
-                archivedItem.className = 'archived-item';
-                archivedItem.setAttribute('data-id', caderno.id);
-                
-                archivedItem.innerHTML = `
-                    ${hasPending ? '<div class="warning-badge">!</div>' : ''}
-                    <div class="archived-date">${formatDate(caderno.data)}</div>
-                    <div class="archived-count">
-                        ${visitasRealizadas}/${visitasCount} visitas realizadas
-                    </div>
-                `;
-                
-                archivedItem.addEventListener('click', () => openArchivedModal(caderno.id));
-                archivedList.appendChild(archivedItem);
-            });
+        // ========== FUNÇÕES DE MODAL ==========
+        function openCadernoModal() {
+            const today = new Date().toISOString().split('T')[0];
+            document.getElementById('cadernoDate').value = today;
+            cadernoModal.style.display = 'flex';
         }
 
-        // Abrir modal de visita arquivada
+        function closeCadernoModalFunc() {
+            cadernoModal.style.display = 'none';
+        }
+
         function openArchivedModal(cadernoId) {
             const caderno = visitas.cadernosArquivados.find(c => c.id === cadernoId);
             if (!caderno) return;
             
-            modalArchivedDate.textContent = `Visita do dia ${formatDate(caderno.data)}`;
-            
-            // Calcular estatísticas
             const totalVisitas = caderno.visitas.length;
             const visitasRealizadas = caderno.visitas.filter(v => v.visited).length;
             const visitasPendentes = totalVisitas - visitasRealizadas;
             
-            // Separar por esquadrão
             const hipoVisitas = caderno.visitas.filter(v => v.esquadrao === 'Hipo');
             const dhVisitas = caderno.visitas.filter(v => v.esquadrao === 'DH');
             
+            modalArchivedTitle.textContent = `📋 Visita do dia ${formatDate(caderno.data)}`;
+            
             modalArchivedContent.innerHTML = `
-                <div class="modal-archived-stats">
-                    <div class="stat-box">
-                        <div class="stat-number">${totalVisitas}</div>
-                        <div class="stat-label">Total</div>
-                    </div>
-                    <div class="stat-box">
-                        <div class="stat-number">${visitasRealizadas}</div>
-                        <div class="stat-label">Realizadas</div>
-                    </div>
-                    <div class="stat-box">
-                        <div class="stat-number">${visitasPendentes}</div>
-                        <div class="stat-label">Pendentes</div>
+                <div style="margin-bottom: 30px;">
+                    <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-bottom: 25px;">
+                        <div class="stat-box" style="padding: 20px; background: #f8f9fa; border-radius: 12px; text-align: center;">
+                            <div style="font-size: 32px; font-weight: 700; color: #2c7fb8; margin-bottom: 5px;">${totalVisitas}</div>
+                            <div style="font-size: 13px; color: #666;">Total de Cavalos</div>
+                        </div>
+                        <div class="stat-box" style="padding: 20px; background: #f8f9fa; border-radius: 12px; text-align: center;">
+                            <div style="font-size: 32px; font-weight: 700; color: #27ae60; margin-bottom: 5px;">${visitasRealizadas}</div>
+                            <div style="font-size: 13px; color: #666;">Visitados</div>
+                        </div>
+                        <div class="stat-box" style="padding: 20px; background: #f8f9fa; border-radius: 12px; text-align: center;">
+                            <div style="font-size: 32px; font-weight: 700; color: ${visitasPendentes > 0 ? '#e74c3c' : '#95a5a6'}; margin-bottom: 5px;">${visitasPendentes}</div>
+                            <div style="font-size: 13px; color: #666;">Pendentes</div>
+                        </div>
                     </div>
                 </div>
                 
-                <div class="caderno-lists-container">
-                    <div class="esquadrao-list">
-                        <div class="esquadrao-header">
-                            <span>Hipo</span>
-                            <span class="esquadrao-count">${hipoVisitas.length} cavalos</span>
+                <div class="squadron-grid">
+                    <div class="squadron-card hipo">
+                        <div class="squadron-header hipo">
+                            <span>🎠 Esquadrão Hipo</span>
+                            <span class="squadron-count">${hipoVisitas.length} cavalos</span>
                         </div>
-                        <div class="esquadrao-content">
-                            ${renderArchivedHorseList(hipoVisitas)}
+                        <div class="horse-list-container">
+                            <div class="horse-list">
+                                ${renderModalHorseList(hipoVisitas)}
+                            </div>
                         </div>
                     </div>
                     
-                    <div class="esquadrao-list">
-                        <div class="esquadrao-header">
-                            <span>DH</span>
-                            <span class="esquadrao-count">${dhVisitas.length} cavalos</span>
+                    <div class="squadron-card dh">
+                        <div class="squadron-header dh">
+                            <span>🐎 Esquadrão DH</span>
+                            <span class="squadron-count">${dhVisitas.length} cavalos</span>
                         </div>
-                        <div class="esquadrao-content">
-                            ${renderArchivedHorseList(dhVisitas)}
+                        <div class="horse-list-container">
+                            <div class="horse-list">
+                                ${renderModalHorseList(dhVisitas)}
+                            </div>
                         </div>
                     </div>
                 </div>
                 
                 ${caderno.observacoes ? `
-                    <div class="modal-observacoes">
-                        <h4>Observações do dia:</h4>
-                        <p>${caderno.observacoes}</p>
+                    <div style="margin-top: 30px; padding: 25px; background: #f8f9fa; border-radius: 15px;">
+                        <h4 style="color: #2c7fb8; margin-bottom: 15px; font-size: 16px; display: flex; align-items: center; gap: 8px;">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M11 5H7C5.89543 5 5 5.89543 5 7V19C5 20.1046 5.89543 21 7 21H17C18.1046 21 19 20.1046 19 19V13" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M14 5C14 3.89543 14.8954 3 16 3H20C21.1046 3 22 3.89543 22 5V9C22 10.1046 21.1046 11 20 11H16C14.8954 11 14 10.1046 14 9V5Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                            Observações do dia
+                        </h4>
+                        <p style="color: #666; line-height: 1.6; white-space: pre-wrap;">${caderno.observacoes}</p>
                     </div>
                 ` : ''}
             `;
@@ -1171,58 +1678,35 @@
             archivedModal.style.display = 'flex';
         }
 
-        // Renderizar lista de cavalos arquivados
-        function renderArchivedHorseList(visitas) {
+        function renderModalHorseList(visitas) {
             if (visitas.length === 0) {
-                return '<div style="text-align: center; color: #666; padding: 20px;">Nenhum cavalo</div>';
+                return '<div style="text-align: center; padding: 40px 20px; color: #666;">Nenhum cavalo nesta visita</div>';
             }
             
-            return `
-                <div class="horse-list">
-                    ${visitas.map(visita => `
-                        <div class="horse-item">
-                            <div class="horse-info">
-                                <div class="horse-name">${visita.name}</div>
-                                <div class="horse-id">ID: ${visita.horseId}</div>
-                            </div>
-                            <div class="visit-status">
-                                <span style="color: ${visita.visited ? '#27ae60' : '#e74c3c'}; font-weight: 600;">
-                                    ${visita.visited ? '✓ Visitado' : '✗ Não visitado'}
-                                </span>
-                            </div>
-                        </div>
-                    `).join('')}
+            return visitas.map(visita => `
+                <div class="horse-item ${visita.visited ? 'visited' : 'pending'}">
+                    <div class="horse-info">
+                        <div class="horse-name">${visita.name}</div>
+                        <div class="horse-id">ID: ${visita.horseId}</div>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 10px;">
+                        <span style="color: ${visita.visited ? '#27ae60' : '#e74c3c'}; font-weight: 600; font-size: 14px;">
+                            ${visita.visited ? '✓ Visitado' : '✗ Não visitado'}
+                        </span>
+                    </div>
                 </div>
-            `;
+            `).join('');
         }
 
-        // Fechar modal arquivado
         function closeArchivedModalFunc() {
             archivedModal.style.display = 'none';
         }
 
-        // Abrir modal para criar caderno
-        function openCadernoModal() {
-            // Definir data padrão como hoje
-            const today = new Date().toISOString().split('T')[0];
-            document.getElementById('cadernoDate').value = today;
-            cadernoModal.style.display = 'flex';
-        }
-
-        // Fechar modal do caderno
-        function closeCadernoModalFunc() {
-            cadernoModal.style.display = 'none';
-        }
-
-        // Criar novo caderno
         function createCaderno(data) {
-            // Verificar se já existe um caderno ativo
             if (visitas.cadernosAtivos.length > 0) {
                 if (!confirm('Já existe um caderno ativo. Deseja arquivá-lo e criar um novo?')) {
                     return;
                 }
-                
-                // Arquivar caderno atual
                 archiveCurrentCaderno(true);
             }
             
@@ -1239,38 +1723,36 @@
             currentCaderno = novoCaderno;
             renderVisitas();
             
-            alert('Caderno criado com sucesso!');
+            showNotification('Diário de visitas criado com sucesso!', 'success');
         }
 
-        // Finalizar serviço de visitas
         function finalizarServicoVisitas() {
             if (!currentCaderno) return;
             
             if (!canFinalizeVisita()) {
-                alert('A visita só pode ser finalizada no dia seguinte, a partir das 6:00 da manhã.');
+                showNotification('A visita só pode ser finalizada no dia seguinte, a partir das 6:00 da manhã.', 'error');
                 return;
             }
             
             const visitasRealizadas = currentCaderno.visitas.filter(v => v.visited).length;
             const totalVisitas = currentCaderno.visitas.length;
+            const pendentes = totalVisitas - visitasRealizadas;
             
-            if (visitasRealizadas < totalVisitas) {
-                if (!confirm(`${totalVisitas - visitasRealizadas} cavalo(s) não foram visitados. Deseja arquivar mesmo assim?`)) {
+            if (pendentes > 0) {
+                if (!confirm(`⚠️ Atenção!\n\n${pendentes} cavalo(s) não foram visitados.\n\nEsta visita será arquivada com um alerta (!).\n\nDeseja continuar?`)) {
                     return;
                 }
             }
             
             archiveCurrentCaderno(false);
+            showNotification(`Visita finalizada e arquivada!${pendentes > 0 ? ' (Com pendências)' : ''}`, pendentes > 0 ? 'warning' : 'success');
         }
 
-        // Arquivar caderno atual
         function archiveCurrentCaderno(silent = false) {
             if (!currentCaderno) return;
             
-            // Mover caderno ativo para arquivados
             const index = visitas.cadernosAtivos.findIndex(c => c.id === currentCaderno.id);
             if (index !== -1) {
-                // Adicionar data de arquivamento
                 currentCaderno.archivedAt = new Date().toISOString();
                 currentCaderno.archivedWithPending = currentCaderno.visitas.some(v => !v.visited);
                 
@@ -1279,21 +1761,25 @@
                 saveVisitasToStorage();
                 currentCaderno = null;
                 renderVisitas();
-                
-                if (!silent) {
-                    alert('Visita arquivada com sucesso!');
-                }
             }
         }
 
-        // Salvar caderno
         function saveCaderno(e) {
             e.preventDefault();
             
             const date = document.getElementById('cadernoDate').value;
             
             if (!date) {
-                alert('Por favor, selecione uma data.');
+                showNotification('Por favor, selecione uma data.', 'error');
+                return;
+            }
+            
+            const selectedDate = new Date(date);
+            const today = new Date();
+            today.setHours(0, 0, 0, 0);
+            
+            if (selectedDate > today) {
+                showNotification('Não é possível criar um caderno para uma data futura.', 'error');
                 return;
             }
             
@@ -1302,7 +1788,6 @@
         }
 
         // ========== FUNÇÕES AUXILIARES ==========
-        // Formatar data para exibição
         function formatDate(dateString) {
             const date = new Date(dateString);
             return date.toLocaleDateString('pt-BR', {
@@ -1313,8 +1798,39 @@
             });
         }
 
+        function showNotification(message, type = 'success') {
+            const notification = document.createElement('div');
+            notification.className = `notification ${type}`;
+            
+            let icon = '';
+            switch(type) {
+                case 'success':
+                    icon = '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M9 12L11 14L15 10M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="#27ae60" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+                    break;
+                case 'warning':
+                    icon = '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 9V11M12 15H12.01M5.07183 19H18.9282C20.4678 19 21.4301 17.3333 20.6603 16L13.7321 4C12.9623 2.66667 11.0378 2.66667 10.268 4L3.33978 16C2.56998 17.3333 3.53223 19 5.07183 19Z" stroke="#f39c12" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+                    break;
+                case 'error':
+                    icon = '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M10 14L12 12M12 12L14 10M12 12L10 10M12 12L14 14M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="#e74c3c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+                    break;
+            }
+            
+            notification.innerHTML = `
+                ${icon}
+                <div>${message}</div>
+            `;
+            
+            notificationContainer.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.style.animation = 'slideLeft 0.3s ease reverse';
+                setTimeout(() => {
+                    notification.remove();
+                }, 300);
+            }, 3000);
+        }
+
         // ========== INICIALIZAÇÃO ==========
-        // Iniciar a aplicação quando o DOM estiver carregado
         document.addEventListener('DOMContentLoaded', init);
     </script>
 </body>
