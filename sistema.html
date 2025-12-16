@@ -225,26 +225,6 @@
             background: #c0392b;
         }
         
-        /* NOVO ESTILO PARA O BOTÃO VISITA */
-        .btn-visita-redirect {
-            background: #9b59b6;
-            color: white;
-            border: none;
-            padding: 8px 15px;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 14px;
-            margin-top: 5px;
-            transition: background 0.3s;
-            display: flex;
-            align-items: center;
-            gap: 5px;
-        }
-        
-        .btn-visita-redirect:hover {
-            background: #8e44ad;
-        }
-        
         .main-container {
             background-color: white;
             border-radius: 15px;
@@ -332,6 +312,26 @@
         
         .btn-secondary:hover {
             background: #5bbfa5;
+            transform: translateY(-2px);
+        }
+        
+        /* NOVO ESTILO PARA BOTÃO VISITA - POSICIONADO NA BARRA DE AÇÕES */
+        .btn-visita {
+            background: #9b59b6;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s;
+        }
+        
+        .btn-visita:hover {
+            background: #8e44ad;
             transform: translateY(-2px);
         }
         
@@ -443,7 +443,6 @@
             background: #c0392b;
         }
 
-        /* NOVO BOTÃO EXCLUIR */
         .btn-delete-horse {
             background: #e74c3c;
             color: white;
@@ -460,7 +459,6 @@
             grid-column: 1 / -1;
         }
         
-        /* NOVOS ESTILOS PARA ESQUADRÃO */
         .esquadrao-options {
             display: flex;
             gap: 10px;
@@ -607,7 +605,6 @@
             margin-bottom: 0;
         }
         
-        /* BOTÃO DA SERINGA PARA PRESCRIÇÕES */
         .prescription-icon-btn {
             position: absolute;
             top: 20px;
@@ -638,7 +635,7 @@
             height: 24px;
         }
         
-        /* NOVO ESTILO PARA TIMELINE DE HISTÓRICO MÉDICO */
+        /* ESTILOS PARA TIMELINE DE HISTÓRICO MÉDICO */
         .timeline-section {
             margin-top: 20px;
         }
@@ -720,7 +717,7 @@
             transform: scale(1.1);
         }
         
-        /* JANELAS FLUTUANTES */
+        /* JANELAS FLUTUANTES PARA HISTÓRICO MÉDICO */
         .floating-window {
             display: none;
             position: fixed;
@@ -734,6 +731,7 @@
             animation: fadeIn 0.3s ease;
             resize: both;
             overflow: auto;
+            max-height: 80vh;
         }
         
         .floating-window.active {
@@ -790,7 +788,27 @@
             margin-bottom: 0;
         }
         
-        /* CONTROLE DE DOSAGEM */
+        .history-detail {
+            background: #f8f9fa;
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 10px;
+            border-left: 3px solid #2c7fb8;
+        }
+        
+        .history-detail-date {
+            font-weight: bold;
+            color: #2c7fb8;
+            margin-bottom: 5px;
+            font-size: 14px;
+        }
+        
+        .history-detail-description {
+            color: #333;
+            font-size: 13px;
+            line-height: 1.4;
+        }
+        
         .days-grid {
             display: grid;
             grid-template-columns: repeat(7, 1fr);
@@ -849,7 +867,6 @@
             justify-content: center;
         }
         
-        /* FORMULÁRIO DE EDIÇÃO DO HISTÓRICO */
         .history-edit-form {
             background: #f8f9fa;
             padding: 15px;
@@ -916,7 +933,6 @@
             margin-top: 25px;
         }
         
-        /* BOTÃO PARA ADICIONAR NOVO HISTÓRICO */
         .add-history-btn {
             background: #2c7fb8;
             color: white;
@@ -1215,7 +1231,7 @@
             color: #555;
         }
         
-        /* NOVO MODAL PARA REGISTRO DE CÓLICA */
+        /* MODAL PARA REGISTRO DE CÓLICA */
         .colica-form-container {
             max-height: 70vh;
             overflow-y: auto;
@@ -1296,17 +1312,92 @@
             background: #4caf50;
         }
         
-        /* NOVO ESTILO PARA BOTÃO DE ADICIONAR À VISITA */
-        .btn-add-to-visita {
-            background: #9b59b6;
+        /* ESTILOS ESPECÍFICOS PARA HISTÓRICO NO MODAL DE ADICIONAR CAVALO */
+        .history-entries-container {
+            margin-top: 15px;
+            max-height: 200px;
+            overflow-y: auto;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 10px;
+            background: #f9f9f9;
+        }
+        
+        .history-entry {
+            background: white;
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            border-left: 3px solid #2c7fb8;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .history-entry-text {
+            flex: 1;
+            font-size: 13px;
+        }
+        
+        .history-entry-date {
+            font-weight: bold;
+            color: #2c7fb8;
+            margin-right: 10px;
+            font-size: 12px;
+        }
+        
+        .history-entry-actions {
+            display: flex;
+            gap: 5px;
+        }
+        
+        .btn-remove-history {
+            background: #e74c3c;
             color: white;
+            border: none;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
         }
         
-        .btn-add-to-visita:hover {
-            background: #8e44ad;
+        .btn-remove-history:hover {
+            background: #c0392b;
         }
         
-        /* NOVOS ESTILOS PARA O BALÃO DE CONFIRMAÇÃO PERSONALIZADO */
+        .history-input-row {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        
+        .history-input-row input {
+            flex: 1;
+        }
+        
+        .btn-add-history-entry {
+            background: #2c7fb8;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 12px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            white-space: nowrap;
+        }
+        
+        .btn-add-history-entry:hover {
+            background: #1d5f8a;
+        }
+        
+        /* NOVO BALÃO DE CONFIRMAÇÃO PERSONALIZADO */
         .custom-confirm-overlay {
             display: none;
             position: fixed;
@@ -1489,6 +1580,10 @@
                 width: 100%;
             }
             
+            .action-buttons {
+                flex-direction: column;
+            }
+            
             .horse-detail-grid {
                 grid-template-columns: 1fr;
             }
@@ -1574,6 +1669,10 @@
             .severity-indicator {
                 flex-direction: column;
             }
+            
+            .history-input-row {
+                flex-direction: column;
+            }
         }
     </style>
 </head>
@@ -1648,6 +1747,14 @@
                     </div>
                     
                     <div class="action-buttons">
+                        <!-- NOVA POSIÇÃO DO BOTÃO VISITA - AGRUPADO COM OS OUTROS BOTÕES DE AÇÃO -->
+                        <button class="btn btn-visita" id="btnVisita">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M9 12L11 14L15 10" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                            Visita
+                        </button>
                         <button class="btn btn-primary" id="btnAddHorse">
                             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <path d="M12 5V19" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
@@ -1779,19 +1886,19 @@
             <form id="horseForm">
                 <div class="form-row">
                     <div class="form-group">
-                        <label for="horseName">Animal</label>
-                        <input type="text" id="horseName" required>
+                        <label for="horseName">Nome do Cavalo</label>
+                        <input type="text" id="horseName" required placeholder="Ex: Relâmpago">
                     </div>
                     <div class="form-group">
-                        <label for="horseId">Identificação</label>
-                        <input type="text" id="horseId" required>
+                        <label for="horseId">Identificação/Número</label>
+                        <input type="text" id="horseId" required placeholder="Ex: 001">
                     </div>
                 </div>
                 
                 <div class="form-row">
                     <div class="form-group">
                         <label for="horseColor">Pelagem</label>
-                        <input type="text" id="horseColor" required>
+                        <input type="text" id="horseColor" required placeholder="Ex: Alazão, Tordilho, Baio">
                     </div>
                     <div class="form-group">
                         <label for="horseSex">Sexo</label>
@@ -1812,13 +1919,35 @@
                     </div>
                     <div class="esquadrao-origem" id="esquadraoOrigem">
                         <label for="horseOrigem">Digite a origem do animal</label>
-                        <input type="text" id="horseOrigem">
+                        <input type="text" id="horseOrigem" placeholder="Ex: Fazenda São José">
                     </div>
                 </div>
                 
                 <div class="form-group">
-                    <label for="horseHistory">Histórico Médico</label>
-                    <textarea id="horseHistory" rows="4"></textarea>
+                    <label for="horseProtocolo">Protocolo/Tratamento Atual</label>
+                    <input type="text" id="horseProtocolo" placeholder="Ex: Quarentena, Suplementação, Controle">
+                </div>
+                
+                <div class="form-group">
+                    <label>Histórico Médico</label>
+                    <div class="history-entries-container" id="historyEntriesContainer">
+                        <!-- Histórico será adicionado aqui -->
+                    </div>
+                    
+                    <div class="history-input-row">
+                        <input type="text" id="historyDate" placeholder="DD/MM/AAAA" style="flex: 1;">
+                        <input type="text" id="historyDescription" placeholder="Descrição do histórico" style="flex: 2;">
+                        <button type="button" class="btn-add-history-entry" id="btnAddHistoryEntry">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M12 5V19" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M5 12H19" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                            Adicionar
+                        </button>
+                    </div>
+                    <small style="color: #666; font-size: 12px; display: block; margin-top: 5px;">
+                        Adicione o histórico médico do cavalo. Você pode adicionar múltiplos registros.
+                    </small>
                 </div>
                 
                 <div class="modal-actions">
@@ -2134,43 +2263,8 @@
             if (storedColicas) {
                 return JSON.parse(storedColicas);
             } else {
-                // Dados de exemplo para cólicas
-                const hoje = new Date();
-                const umMesAtras = new Date();
-                umMesAtras.setMonth(hoje.getMonth() - 1);
-                
-                return [
-                    {
-                        id: 1,
-                        horseId: 1,
-                        horseName: "Gastador",
-                        esquadrao: "Hipo",
-                        date: formatDate(umMesAtras),
-                        time: "14:30",
-                        severity: "alta",
-                        treatment: ["clinico", "medicamento"],
-                        sintomas: "Inquietação, sudação, olhar para o flanco, tentativas de deitar e rolar",
-                        tratamentoDetalhes: "Administração de analgésico e antiespasmódico. Repouso absoluto.",
-                        observacoes: "Monitorar ingestão de água e fezes. Reavaliação em 6 horas.",
-                        veterinario: "Dr. Carlos Silva",
-                        createdAt: new Date().toISOString()
-                    },
-                    {
-                        id: 2,
-                        horseId: 2,
-                        horseName: "Afeição",
-                        esquadrao: "DH",
-                        date: formatDate(hoje),
-                        time: "09:15",
-                        severity: "media",
-                        treatment: ["medicamento"],
-                        sintomas: "Leve desconforto abdominal, diminuição do apetite",
-                        tratamentoDetalhes: "Administração de óleo mineral via sonda nasogástrica",
-                        observacoes: "Dieta líquida por 24 horas. Retornar alimentação normal gradualmente.",
-                        veterinario: "Dra. Maria Santos",
-                        createdAt: new Date().toISOString()
-                    }
-                ];
+                // CÓLICAS ZERADAS - começando com array vazio
+                return [];
             }
         }
         
@@ -2195,7 +2289,7 @@
         
         // Carregar dados iniciais
         let horses = loadHorsesFromStorage();
-        let colicas = loadColicasFromStorage();
+        let colicas = loadColicasFromStorage(); // Agora começa vazio
         
         // ========== ELEMENTOS DO DOM ==========
         // Tela de transição
@@ -2215,6 +2309,7 @@
         const horseForm = document.getElementById('horseForm');
         const btnLogout = document.getElementById('btnLogout');
         const loggedUser = document.getElementById('loggedUser');
+        const btnVisita = document.getElementById('btnVisita'); // Botão Visita agora na barra de ações
         
         // Detalhes do cavalo
         const horseDetailModal = document.getElementById('horseDetailModal');
@@ -2230,13 +2325,19 @@
         const esquadraoOptions = document.querySelectorAll('.esquadrao-option');
         const esquadraoOrigem = document.getElementById('esquadraoOrigem');
         
+        // Modal Adicionar Cavalo - Novos campos
+        const historyEntriesContainer = document.getElementById('historyEntriesContainer');
+        const historyDate = document.getElementById('historyDate');
+        const historyDescription = document.getElementById('historyDescription');
+        const btnAddHistoryEntry = document.getElementById('btnAddHistoryEntry');
+        
         // Cólicas
         const navTabs = document.querySelectorAll('.nav-tab');
         const tabContents = document.querySelectorAll('.tab-content');
         const btnNovaColica = document.getElementById('btnNovaColica');
         const btnRelatorioColicas = document.getElementById('btnRelatorioColicas');
         const colicaModal = document.getElementById('colicaModal');
-        const closeColicaModalBtn = document.getElementById('closeColicaModal'); // CORREÇÃO: Mudei o nome aqui
+        const closeColicaModalBtn = document.getElementById('closeColicaModal');
         const btnCancelColica = document.getElementById('btnCancelColica');
         const colicaForm = document.getElementById('colicaForm');
         const colicaStats = document.getElementById('colicaStats');
@@ -2247,7 +2348,7 @@
         let colicaChart = null;
         let severityChart = null;
         
-        // NOVO BALÃO DE CONFIRMAÇÃO
+        // Balão de confirmação
         const customConfirmOverlay = document.getElementById('customConfirmOverlay');
         const customConfirmBox = document.getElementById('customConfirmBox');
         const confirmCancelBtn = document.getElementById('confirmCancelBtn');
@@ -2567,7 +2668,7 @@
         }
         
         function renderColicaStats() {
-            // Calcular estatísticas
+            // Calcular estatísticas - AGORA COMEÇA COM ZEROS
             const totalColicas = colicas.length;
             const colicasAlta = colicas.filter(c => c.severity === 'alta').length;
             const colicasMedia = colicas.filter(c => c.severity === 'media').length;
@@ -2814,7 +2915,6 @@
             colicaModal.style.display = 'flex';
         }
         
-        // CORREÇÃO: Renomeei a função para evitar conflito
         function closeColicaModalFunc() {
             colicaModal.style.display = 'none';
         }
@@ -2995,6 +3095,179 @@
             });
         }
         
+        // ========== FUNÇÕES DO HISTÓRICO MÉDICO - JANELA FLUTUANTE ==========
+        function openHistoryWindow(horseId, historyIndex) {
+            const horse = horses.find(h => h.id === horseId);
+            if (!horse || !horse.history || horse.history.length === 0) return;
+            
+            const historyItem = horse.history[historyIndex];
+            
+            // Fechar janelas existentes
+            activeWindows.forEach(window => window.remove());
+            activeWindows = [];
+            
+            // Criar nova janela
+            const windowId = `history-window-${horseId}-${historyIndex}`;
+            const floatingWindow = document.createElement('div');
+            floatingWindow.className = 'floating-window active';
+            floatingWindow.id = windowId;
+            floatingWindow.style.position = 'fixed';
+            floatingWindow.style.top = '100px';
+            floatingWindow.style.left = '100px';
+            floatingWindow.style.zIndex = '2000';
+            
+            floatingWindow.innerHTML = `
+                <div class="window-header">
+                    <div class="window-title">Histórico Médico - ${horse.name}</div>
+                    <button class="window-close" data-window-id="${windowId}">&times;</button>
+                </div>
+                <div class="window-content">
+                    <div class="history-detail">
+                        <div class="history-detail-date">${historyItem.date}</div>
+                        <div class="history-detail-description">${historyItem.description}</div>
+                    </div>
+                    <div style="margin-top: 15px; font-size: 12px; color: #666;">
+                        <strong>Cavalo:</strong> ${horse.name} (${horse.color})<br>
+                        <strong>Esquadrão:</strong> ${horse.esquadrao}<br>
+                        <strong>Registrado em:</strong> ${new Date().toLocaleDateString('pt-BR')}
+                    </div>
+                </div>
+            `;
+            
+            document.body.appendChild(floatingWindow);
+            activeWindows.push(floatingWindow);
+            
+            // Tornar a janela arrastável
+            makeWindowDraggable(floatingWindow);
+            
+            // Evento para fechar a janela
+            const closeBtn = floatingWindow.querySelector('.window-close');
+            closeBtn.addEventListener('click', () => {
+                floatingWindow.remove();
+                activeWindows = activeWindows.filter(w => w !== floatingWindow);
+            });
+        }
+        
+        function makeWindowDraggable(windowElement) {
+            const header = windowElement.querySelector('.window-header');
+            let isDragging = false;
+            let currentX;
+            let currentY;
+            let initialX;
+            let initialY;
+            let xOffset = 0;
+            let yOffset = 0;
+            
+            header.addEventListener('mousedown', dragStart);
+            document.addEventListener('mousemove', drag);
+            document.addEventListener('mouseup', dragEnd);
+            
+            function dragStart(e) {
+                initialX = e.clientX - xOffset;
+                initialY = e.clientY - yOffset;
+                
+                if (e.target === header || header.contains(e.target)) {
+                    isDragging = true;
+                }
+            }
+            
+            function drag(e) {
+                if (isDragging) {
+                    e.preventDefault();
+                    currentX = e.clientX - initialX;
+                    currentY = e.clientY - initialY;
+                    
+                    xOffset = currentX;
+                    yOffset = currentY;
+                    
+                    setTranslate(currentX, currentY, windowElement);
+                }
+            }
+            
+            function setTranslate(xPos, yPos, el) {
+                el.style.transform = `translate3d(${xPos}px, ${yPos}px, 0)`;
+            }
+            
+            function dragEnd() {
+                initialX = currentX;
+                initialY = currentY;
+                isDragging = false;
+            }
+        }
+        
+        // ========== FUNÇÕES DO MODAL ADICIONAR CAVALO ==========
+        function openAddModal() {
+            horseForm.reset();
+            esquadraoOrigem.style.display = 'none';
+            historyEntriesContainer.innerHTML = '';
+            
+            esquadraoOptions.forEach(option => {
+                option.classList.remove('selected');
+            });
+            
+            // Definir data atual no campo de data do histórico
+            const hoje = new Date();
+            const dia = String(hoje.getDate()).padStart(2, '0');
+            const mes = String(hoje.getMonth() + 1).padStart(2, '0');
+            const ano = hoje.getFullYear();
+            historyDate.value = `${dia}/${mes}/${ano}`;
+            
+            horseModal.style.display = 'flex';
+        }
+        
+        function addHistoryEntry() {
+            const date = historyDate.value.trim();
+            const description = historyDescription.value.trim();
+            
+            if (!date || !description) {
+                alert('Preencha a data e descrição do histórico!');
+                return;
+            }
+            
+            // Validar formato da data
+            const dateRegex = /^\d{2}\/\d{2}\/\d{4}$/;
+            if (!dateRegex.test(date)) {
+                alert('Formato de data inválido! Use DD/MM/AAAA');
+                return;
+            }
+            
+            // Criar elemento de histórico
+            const entryId = Date.now(); // ID único baseado no timestamp
+            const entryElement = document.createElement('div');
+            entryElement.className = 'history-entry';
+            entryElement.dataset.id = entryId;
+            entryElement.innerHTML = `
+                <div class="history-entry-text">
+                    <span class="history-entry-date">${date}</span>
+                    <span>${description}</span>
+                </div>
+                <div class="history-entry-actions">
+                    <button type="button" class="btn-remove-history" data-id="${entryId}">
+                        &times;
+                    </button>
+                </div>
+            `;
+            
+            historyEntriesContainer.appendChild(entryElement);
+            
+            // Limpar campos
+            historyDescription.value = '';
+            
+            // Definir data para amanhã
+            const tomorrow = new Date();
+            tomorrow.setDate(tomorrow.getDate() + 1);
+            const diaAmanha = String(tomorrow.getDate()).padStart(2, '0');
+            const mesAmanha = String(tomorrow.getMonth() + 1).padStart(2, '0');
+            const anoAmanha = tomorrow.getFullYear();
+            historyDate.value = `${diaAmanha}/${mesAmanha}/${anoAmanha}`;
+            
+            // Adicionar evento para remover o histórico
+            const removeBtn = entryElement.querySelector('.btn-remove-history');
+            removeBtn.addEventListener('click', () => {
+                entryElement.remove();
+            });
+        }
+        
         // ========== NOVO BALÃO DE CONFIRMAÇÃO PERSONALIZADO ==========
         function showCustomConfirm(horseId) {
             const horse = horses.find(h => h.id === horseId);
@@ -3118,39 +3391,23 @@
             detailContent += `
                         </div>
                     </div>
-                    
-                    <button class="add-history-btn" id="addHistoryBtn">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M12 5V19" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                            <path d="M5 12H19" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                        </svg>
-                        Adicionar Novo Histórico
-                    </button>
-                    
-                    <div class="history-edit-form" id="historyEditForm" style="display: ${isEditingHistory ? 'block' : 'none'};">
-                        <h4>${isEditingHistory ? 'Editar Histórico' : 'Novo Registro de Histórico'}</h4>
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label for="historyDate">Data</label>
-                                <input type="text" id="historyDate" placeholder="DD/MM/AAAA" value="${isEditingHistory ? horse.history[0].date : ''}">
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="historyDescription">Descrição</label>
-                            <textarea id="historyDescription" rows="3" placeholder="Descreva o histórico médico...">${isEditingHistory ? horse.history[0].description : ''}</textarea>
-                        </div>
-                        <div class="form-actions">
-                            <button type="button" class="btn btn-secondary" id="cancelHistory">Cancelar</button>
-                            <button type="button" class="btn btn-primary" id="saveHistory">Salvar Histórico</button>
-                        </div>
-                    </div>
                 </div>
             `;
             
             horseDetailContent.innerHTML = detailContent;
             
+            // Limpar janelas existentes
             activeWindows.forEach(window => window.remove());
             activeWindows = [];
+            
+            // Adicionar eventos para expandir histórico
+            document.querySelectorAll('.timeline-expand').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    const historyIndex = parseInt(e.currentTarget.getAttribute('data-history-index'));
+                    openHistoryWindow(horseId, historyIndex);
+                });
+            });
             
             horseDetailModal.style.display = 'flex';
         }
@@ -3179,17 +3436,6 @@
             }
         }
         
-        function openAddModal() {
-            horseForm.reset();
-            esquadraoOrigem.style.display = 'none';
-            
-            esquadraoOptions.forEach(option => {
-                option.classList.remove('selected');
-            });
-            
-            horseModal.style.display = 'flex';
-        }
-        
         function closeHorseModal() {
             horseModal.style.display = 'none';
         }
@@ -3206,10 +3452,10 @@
             e.preventDefault();
             
             const horseName = document.getElementById('horseName').value;
-            const horseId = horses.length > 0 ? Math.max(...horses.map(h => h.id)) + 1 : 1;
+            const horseId = document.getElementById('horseId').value;
             const horseColor = document.getElementById('horseColor').value;
             const horseSex = document.getElementById('horseSex').value;
-            const horseHistory = document.getElementById('horseHistory').value;
+            const horseProtocolo = document.getElementById('horseProtocolo').value;
             
             let selectedEsquadrao = '';
             let origem = '';
@@ -3233,39 +3479,28 @@
                 return;
             }
             
+            // Coletar histórico médico
             const historyArray = [];
-            if (horseHistory) {
-                const lines = horseHistory.split('\n');
-                lines.forEach(line => {
-                    if (line.trim()) {
-                        const dateMatch = line.match(/^(\d{2}\/\d{2}\/\d{4}):\s*(.*)/);
-                        if (dateMatch) {
-                            historyArray.push({
-                                date: dateMatch[1],
-                                description: dateMatch[2]
-                            });
-                        } else {
-                            const today = new Date();
-                            const formattedDate = `${today.getDate().toString().padStart(2, '0')}/${(today.getMonth()+1).toString().padStart(2, '0')}/${today.getFullYear()}`;
-                            historyArray.push({
-                                date: formattedDate,
-                                description: line.trim()
-                            });
-                        }
-                    }
+            const historyEntries = historyEntriesContainer.querySelectorAll('.history-entry');
+            historyEntries.forEach(entry => {
+                const date = entry.querySelector('.history-entry-date').textContent;
+                const description = entry.querySelector('.history-entry-text span:last-child').textContent;
+                historyArray.push({
+                    date: date,
+                    description: description
                 });
-            }
+            });
             
             const horseData = {
                 name: horseName,
-                id: horseId,
+                id: parseInt(horseId) || (horses.length > 0 ? Math.max(...horses.map(h => h.id)) + 1 : 1),
                 color: horseColor,
                 sex: horseSex,
                 esquadrao: selectedEsquadrao,
                 origem: origem,
                 history: historyArray,
                 prescriptions: [],
-                protocolo: "Quarentena",
+                protocolo: horseProtocolo || "Quarentena",
                 selectedForVisit: false
             };
             
@@ -3288,6 +3523,10 @@
         
         function exportAllToPDF() {
             alert('Exportando todas as fichas para PDF...\n\nEm um sistema real, isso geraria um arquivo ZIP com PDFs de todos os cavalos.');
+        }
+        
+        function redirectToVisita() {
+            window.location.href = 'visita.html';
         }
         
         function logout() {
@@ -3314,6 +3553,7 @@
             horseForm.addEventListener('submit', saveHorse);
             searchInput.addEventListener('input', renderHorses);
             btnLogout.addEventListener('click', logout);
+            btnVisita.addEventListener('click', redirectToVisita);
             
             // Event Listeners do modal de detalhes
             closeDetailModal.addEventListener('click', closeHorseDetailModal);
@@ -3343,6 +3583,17 @@
                 });
             });
             
+            // Event Listeners para adicionar histórico
+            btnAddHistoryEntry.addEventListener('click', addHistoryEntry);
+            
+            // Permitir adicionar histórico com Enter
+            historyDescription.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    addHistoryEntry();
+                }
+            });
+            
             // Event Listeners para navegação entre abas
             navTabs.forEach(tab => {
                 tab.addEventListener('click', function() {
@@ -3351,11 +3602,11 @@
                 });
             });
             
-            // Event Listeners para cólicas - CORREÇÃO AQUI
+            // Event Listeners para cólicas
             btnNovaColica.addEventListener('click', openColicaModal);
             btnRelatorioColicas.addEventListener('click', gerarRelatorioColicas);
-            closeColicaModalBtn.addEventListener('click', closeColicaModalFunc); // CORREÇÃO
-            btnCancelColica.addEventListener('click', closeColicaModalFunc); // CORREÇÃO
+            closeColicaModalBtn.addEventListener('click', closeColicaModalFunc);
+            btnCancelColica.addEventListener('click', closeColicaModalFunc);
             colicaForm.addEventListener('submit', saveColica);
             
             // Event Listeners para filtros de esquadrão
@@ -3411,7 +3662,7 @@
                     closeHorseDetailModal();
                 }
                 if (e.target === colicaModal) {
-                    closeColicaModalFunc(); // CORREÇÃO
+                    closeColicaModalFunc();
                 }
             });
             
