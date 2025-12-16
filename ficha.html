@@ -104,6 +104,17 @@
             border-color: #dc2626;
         }
         
+        .btn-success {
+            background: #10b981;
+            color: white;
+            border-color: #10b981;
+        }
+        
+        .btn-success:hover {
+            background: #059669;
+            border-color: #059669;
+        }
+        
         .btn-icon {
             width: 2rem;
             height: 2rem;
@@ -306,17 +317,39 @@
             width: 100%;
             overflow: hidden;
             box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+            animation: modalSlideIn 0.3s ease-out;
+        }
+        
+        @keyframes modalSlideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
         
         .modal-header {
             padding: 1.25rem 1.5rem;
             border-bottom: 1px solid #e2e8f0;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+        
+        .modal-icon {
+            width: 24px;
+            height: 24px;
+            color: #3b82f6;
         }
         
         .modal-title {
             font-weight: 600;
             color: #0f172a;
             font-size: 1.125rem;
+            flex: 1;
         }
         
         .modal-body {
@@ -364,6 +397,31 @@
         .mt-6 { margin-top: 1.5rem; }
         .w-full { width: 100%; }
         .hidden { display: none !important; }
+        
+        /* MENSAGEM DE SUCESSO */
+        .success-message {
+            text-align: center;
+            padding: 2rem;
+        }
+        
+        .success-icon {
+            width: 48px;
+            height: 48px;
+            color: #10b981;
+            margin: 0 auto 1rem;
+        }
+        
+        .success-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #0f172a;
+            margin-bottom: 0.5rem;
+        }
+        
+        .success-text {
+            color: #64748b;
+            margin-bottom: 1.5rem;
+        }
         
         /* RESPONSIVIDADE */
         @media (max-width: 768px) {
@@ -602,6 +660,9 @@
     <div class="modal" id="confirmModal">
         <div class="modal-content">
             <div class="modal-header">
+                <svg class="modal-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M12 9V12M12 15H12.01M5.07183 19H18.9282C20.4678 19 21.4301 17.3333 20.6603 16L13.7321 4C12.9623 2.66667 11.0377 2.66667 10.2679 4L3.33975 16C2.56995 17.3333 3.5322 19 5.07183 19Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
                 <h3 class="modal-title" id="confirmTitle">Confirmar Ação</h3>
             </div>
             <div class="modal-body">
@@ -610,6 +671,48 @@
             <div class="modal-footer">
                 <button class="btn" id="cancelConfirmBtn">Cancelar</button>
                 <button class="btn btn-primary" id="confirmActionBtn">Confirmar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL DE CONFIRMAÇÃO DE SALVAMENTO -->
+    <div class="modal" id="saveConfirmModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <svg class="modal-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M8 12H12V16M12 8V8.01M12 3C16.9706 3 21 7.02944 21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                <h3 class="modal-title">Salvar Alterações</h3>
+            </div>
+            <div class="modal-body">
+                <p>Tem certeza que deseja salvar as alterações realizadas nesta ficha?</p>
+                <p class="mt-4" style="color: #64748b; font-size: 0.875rem;">As informações serão atualizadas no sistema.</p>
+            </div>
+            <div class="modal-footer">
+                <button class="btn" id="cancelSaveBtn">Cancelar</button>
+                <button class="btn btn-primary" id="confirmSaveBtn">Salvar Alterações</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL DE SUCESSO -->
+    <div class="modal" id="successModal">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="success-message">
+                    <svg class="success-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M22 11.08V12C21.9988 14.1564 21.3005 16.2547 20.0093 17.9818C18.7182 19.709 16.9033 20.9725 14.8354 21.5839C12.7674 22.1953 10.5573 22.1219 8.53447 21.3746C6.51168 20.6273 4.78465 19.2461 3.61096 17.4371C2.43727 15.628 1.87979 13.4881 2.02168 11.3363C2.16356 9.18455 2.99721 7.13631 4.39828 5.49706C5.79935 3.85781 7.69279 2.71537 9.79619 2.24013C11.8996 1.7649 14.1003 1.98232 16.07 2.85999" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M22 4L12 14.01L9 11.01" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    <h3 class="success-title">Ficha salva com sucesso!</h3>
+                    <p class="success-text">As alterações foram salvas no sistema.</p>
+                    <button class="btn btn-success" id="continueBtn">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M9 5L16 12L9 19" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                        Continuar Editando
+                    </button>
+                </div>
             </div>
         </div>
     </div>
@@ -642,6 +745,8 @@
         const historyList = document.getElementById('historyList');
         const historyModal = document.getElementById('historyModal');
         const confirmModal = document.getElementById('confirmModal');
+        const saveConfirmModal = document.getElementById('saveConfirmModal');
+        const successModal = document.getElementById('successModal');
 
         // ELEMENTOS DO FORMULÁRIO
         const animalName = document.getElementById('animalName');
@@ -666,6 +771,13 @@
         const confirmMessage = document.getElementById('confirmMessage');
         const cancelConfirmBtn = document.getElementById('cancelConfirmBtn');
         const confirmActionBtn = document.getElementById('confirmActionBtn');
+
+        // ELEMENTOS DO MODAL DE SALVAMENTO
+        const cancelSaveBtn = document.getElementById('cancelSaveBtn');
+        const confirmSaveBtn = document.getElementById('confirmSaveBtn');
+
+        // ELEMENTOS DO MODAL DE SUCESSO
+        const continueBtn = document.getElementById('continueBtn');
 
         // ESTADO DA APLICAÇÃO
         let isEditingHistory = false;
@@ -816,7 +928,7 @@
             const descriptionValue = historyDescription.value.trim();
 
             if (!dateValue || !descriptionValue) {
-                alert('Por favor, preencha todos os campos obrigatórios.');
+                showAlertModal('Aviso', 'Por favor, preencha todos os campos obrigatórios.');
                 return;
             }
 
@@ -887,8 +999,11 @@
         // EXCLUIR FICHA
         function deleteAnimal() {
             // Em um sistema real, aqui você faria uma requisição para excluir no servidor
-            alert('Ficha excluída permanentemente!');
-            window.location.href = 'index.html';
+            showAlertModal('Sucesso', 'Ficha excluída permanentemente!');
+            setTimeout(() => {
+                // Não redirecionar para login - voltar para sistema
+                window.location.href = 'sistema.html';
+            }, 1500);
         }
 
         // MOSTRAR CONFIRMAÇÃO DE CANCELAMENTO
@@ -904,7 +1019,7 @@
 
         // CANCELAR EDIÇÃO
         function cancelEdit() {
-            window.location.href = 'index.html';
+            window.location.href = 'sistema.html';
         }
 
         // VALIDAR FORMULÁRIO
@@ -916,7 +1031,7 @@
             const protocol = animalProtocol.value;
 
             if (!name || !animalIdValue || !color || !sex || !protocol) {
-                alert('Por favor, preencha todos os campos obrigatórios.');
+                showAlertModal('Validação', 'Por favor, preencha todos os campos obrigatórios.');
                 return false;
             }
 
@@ -929,7 +1044,7 @@
             });
 
             if (!selectedEsquadrao) {
-                alert('Por favor, selecione um esquadrão.');
+                showAlertModal('Validação', 'Por favor, selecione um esquadrão.');
                 return false;
             }
 
@@ -937,7 +1052,7 @@
             if (selectedEsquadrao === 'Outro') {
                 const origem = animalOrigem.value.trim();
                 if (!origem) {
-                    alert('Por favor, digite a origem do animal.');
+                    showAlertModal('Validação', 'Por favor, digite a origem do animal.');
                     return false;
                 }
             }
@@ -945,12 +1060,25 @@
             return true;
         }
 
-        // SALVAR ALTERAÇÕES
-        function saveChanges() {
+        // MOSTRAR MODAL DE ALERTA
+        function showAlertModal(title, message) {
+            confirmTitle.textContent = title;
+            confirmMessage.textContent = message;
+            confirmActionBtn.textContent = 'OK';
+            pendingAction = { type: 'alert' };
+            confirmModal.style.display = 'flex';
+        }
+
+        // MOSTRAR MODAL DE CONFIRMAÇÃO DE SALVAMENTO
+        function showSaveConfirmation() {
             if (!validateForm()) {
                 return;
             }
+            saveConfirmModal.style.display = 'flex';
+        }
 
+        // SALVAR ALTERAÇÕES
+        function saveChanges() {
             // Coletar dados do formulário
             const updatedAnimal = {
                 ...currentAnimal,
@@ -979,10 +1107,15 @@
 
             // Em um sistema real, aqui você faria uma requisição para salvar no servidor
             console.log('Dados salvos:', updatedAnimal);
-            alert('Ficha salva com sucesso!');
             
-            // Redirecionar para a tela principal
-            window.location.href = 'index.html';
+            // Fechar modal de confirmação
+            saveConfirmModal.style.display = 'none';
+            
+            // Mostrar modal de sucesso
+            successModal.style.display = 'flex';
+            
+            // Atualizar dados locais (em um sistema real, isso viria do servidor)
+            Object.assign(currentAnimal, updatedAnimal);
         }
 
         // VOLTAR PARA A TELA PRINCIPAL
@@ -1016,7 +1149,7 @@
             backBtn.addEventListener('click', goBack);
             cancelBtn.addEventListener('click', showCancelConfirmation);
             deleteBtn.addEventListener('click', showDeleteConfirmation);
-            saveBtn.addEventListener('click', saveChanges);
+            saveBtn.addEventListener('click', showSaveConfirmation); // Alterado para mostrar confirmação
             addHistoryBtn.addEventListener('click', () => openHistoryModal(false));
 
             // Event Listeners do modal de histórico
@@ -1041,10 +1174,25 @@
                         case 'cancelEdit':
                             cancelEdit();
                             break;
+                        case 'alert':
+                            // Apenas fechar o modal para alertas
+                            break;
                     }
                 }
                 confirmModal.style.display = 'none';
                 pendingAction = null;
+            });
+
+            // Event Listeners do modal de salvamento
+            cancelSaveBtn.addEventListener('click', () => {
+                saveConfirmModal.style.display = 'none';
+            });
+
+            confirmSaveBtn.addEventListener('click', saveChanges);
+
+            // Event Listeners do modal de sucesso
+            continueBtn.addEventListener('click', () => {
+                successModal.style.display = 'none';
             });
 
             // Fechar modais ao clicar fora
@@ -1055,6 +1203,12 @@
                 if (e.target === confirmModal) {
                     confirmModal.style.display = 'none';
                     pendingAction = null;
+                }
+                if (e.target === saveConfirmModal) {
+                    saveConfirmModal.style.display = 'none';
+                }
+                if (e.target === successModal) {
+                    successModal.style.display = 'none';
                 }
             });
 
@@ -1067,6 +1221,12 @@
                     if (confirmModal.style.display === 'flex') {
                         confirmModal.style.display = 'none';
                         pendingAction = null;
+                    }
+                    if (saveConfirmModal.style.display === 'flex') {
+                        saveConfirmModal.style.display = 'none';
+                    }
+                    if (successModal.style.display === 'flex') {
+                        successModal.style.display = 'none';
                     }
                 }
             });
