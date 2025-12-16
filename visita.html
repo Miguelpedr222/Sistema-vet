@@ -1188,17 +1188,9 @@
         }
 
         function voltarParaArquivos() {
-    // Verificar se o usuário está logado
-    const userData = localStorage.getItem('vetSystemCurrentUser');
-    if (!userData) {
-        // Se não houver usuário logado, redireciona para o login
-        window.location.href = 'login.html';
-        return;
-    }
-    
-    // Redireciona diretamente para os arquivos
-    window.location.href = 'index.html?skipWelcome=true';
-}
+            // Redireciona diretamente para sistema.html
+            window.location.href = 'sistema.html';
+        }
 
         function renderVisitas() {
             currentCaderno = visitas.cadernosAtivos.length > 0 ? visitas.cadernosAtivos[0] : null;
