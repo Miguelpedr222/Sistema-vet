@@ -498,49 +498,35 @@
             gap: 15px;
         }
         
-        .status-toggle {
-            position: relative;
-            display: inline-block;
-            width: 50px;
-            height: 26px;
-        }
-        
-        .status-toggle input {
-            opacity: 0;
-            width: 0;
-            height: 0;
-        }
-        
-        .toggle-slider {
-            position: absolute;
+        .btn-visit {
+            background: linear-gradient(135deg, var(--success-green) 0%, #2ecc71 100%);
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 50px;
+            font-size: 13px;
+            font-weight: 600;
             cursor: pointer;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background-color: #ccc;
-            transition: .4s;
-            border-radius: 34px;
+            transition: all 0.3s;
+            box-shadow: 0 2px 10px rgba(39, 174, 96, 0.3);
+            display: flex;
+            align-items: center;
+            gap: 6px;
         }
         
-        .toggle-slider:before {
-            position: absolute;
-            content: "";
-            height: 18px;
-            width: 18px;
-            left: 4px;
-            bottom: 4px;
-            background-color: white;
-            transition: .4s;
-            border-radius: 50%;
+        .btn-visit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(39, 174, 96, 0.4);
         }
         
-        input:checked + .toggle-slider {
-            background-color: var(--success-green);
+        .btn-visit.visited {
+            background: linear-gradient(135deg, #95a5a6 0%, #7f8c8d 100%);
+            cursor: not-allowed;
         }
         
-        input:checked + .toggle-slider:before {
-            transform: translateX(24px);
+        .btn-visit.visited:hover {
+            transform: none;
+            box-shadow: 0 2px 10px rgba(149, 165, 166, 0.3);
         }
         
         .btn-remove {
@@ -561,24 +547,6 @@
         .btn-remove:hover {
             transform: rotate(90deg) scale(1.1);
             box-shadow: 0 4px 15px rgba(231, 76, 60, 0.4);
-        }
-        
-        .btn-add {
-            background: linear-gradient(135deg, var(--primary-blue) 0%, var(--secondary-blue) 100%);
-            color: white;
-            border: none;
-            padding: 8px 16px;
-            border-radius: 50px;
-            font-size: 13px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s;
-            box-shadow: 0 2px 10px rgba(44, 127, 184, 0.3);
-        }
-        
-        .btn-add:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 15px rgba(44, 127, 184, 0.4);
         }
         
         /* Seção de observações */
@@ -782,7 +750,7 @@
             background: white;
             border-radius: 25px;
             width: 90%;
-            max-width: 500px;
+            max-width: 800px;
             max-height: 90vh;
             overflow-y: auto;
             padding: 40px;
@@ -792,7 +760,7 @@
         }
         
         .modal-content.large {
-            max-width: 800px;
+            max-width: 900px;
         }
         
         .modal-header {
@@ -832,6 +800,108 @@
             background: var(--gray-light);
             color: var(--hipo-red);
             transform: rotate(90deg);
+        }
+        
+        /* Estilos para checkboxes no modal de criação */
+        .horse-select-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 15px;
+            border-radius: 10px;
+            transition: all 0.3s;
+            border: 1px solid var(--gray-border);
+            margin-bottom: 8px;
+        }
+        
+        .horse-select-item:hover {
+            background: var(--light-blue);
+            transform: translateX(5px);
+        }
+        
+        .horse-select-item.selected {
+            background: linear-gradient(to right, rgba(44, 127, 184, 0.1), white);
+            border-color: var(--primary-blue);
+        }
+        
+        .horse-select-checkbox {
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+        }
+        
+        .horse-select-name {
+            font-weight: 600;
+            color: var(--primary-blue);
+            flex: 1;
+        }
+        
+        .horse-select-esquadrao {
+            font-size: 12px;
+            color: white;
+            padding: 3px 10px;
+            border-radius: 12px;
+            font-weight: 600;
+        }
+        
+        .horse-select-esquadrao.hipo {
+            background: linear-gradient(135deg, var(--hipo-red) 0%, #c0392b 100%);
+        }
+        
+        .horse-select-esquadrao.dh {
+            background: linear-gradient(135deg, var(--dh-green) 0%, #27ae60 100%);
+        }
+        
+        .modal-actions {
+            display: flex;
+            gap: 15px;
+            justify-content: flex-end;
+            margin-top: 30px;
+        }
+        
+        .modal-section {
+            margin-bottom: 30px;
+        }
+        
+        .modal-section-title {
+            font-size: 18px;
+            color: var(--primary-blue);
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--gray-border);
+        }
+        
+        .repeat-visita-option {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 20px;
+            padding: 15px;
+            background: var(--light-blue);
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .repeat-visita-option:hover {
+            background: #d6ecff;
+        }
+        
+        .repeat-visita-option input {
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+        }
+        
+        .repeat-visita-label {
+            font-weight: 600;
+            color: var(--primary-blue);
+        }
+        
+        .repeat-visita-description {
+            font-size: 13px;
+            color: #666;
+            margin-top: 3px;
         }
         
         @keyframes slideUp {
@@ -1049,21 +1119,61 @@
     
     <!-- Modal para Criar Novo Caderno -->
     <div class="modal" id="cadernoModal">
-        <div class="modal-content">
+        <div class="modal-content large">
             <div class="modal-header">
-                <h2 class="modal-title">📅 Iniciar Nova Visita</h2>
+                <h2 class="modal-title">📅 Criar Nova Visita</h2>
                 <button class="close-modal" id="closeCadernoModal">&times;</button>
             </div>
             
             <form id="cadernoForm">
-                <div class="form-group">
-                    <label for="cadernoDate">Selecione a data da visita:</label>
-                    <input type="date" id="cadernoDate" required style="padding: 15px; font-size: 16px; border-radius: 12px;">
+                <div class="modal-section">
+                    <div class="modal-section-title">1. Data da Visita</div>
+                    <div style="margin-bottom: 20px;">
+                        <label for="cadernoDate">Selecione a data da visita:</label>
+                        <input type="date" id="cadernoDate" required style="width: 100%; padding: 15px; font-size: 16px; border-radius: 12px; border: 2px solid var(--gray-border); margin-top: 10px;">
+                    </div>
                 </div>
                 
-                <div class="modal-actions" style="display: flex; gap: 15px; justify-content: flex-end; margin-top: 30px;">
+                <div class="modal-section">
+                    <div class="modal-section-title">2. Configuração dos Cavalos</div>
+                    
+                    <!-- Opção de repetir visita anterior -->
+                    <div class="repeat-visita-option" id="repeatVisitaOption">
+                        <input type="checkbox" id="repeatLastVisita">
+                        <div>
+                            <div class="repeat-visita-label">Repetir cavalos da última visita</div>
+                            <div class="repeat-visita-description">Se marcado, todos os cavalos da última visita serão automaticamente selecionados. Você ainda poderá ajustar a seleção.</div>
+                        </div>
+                    </div>
+                    
+                    <div style="margin-top: 20px;">
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px;">
+                            <!-- Hipo -->
+                            <div>
+                                <h3 style="color: var(--hipo-red); margin-bottom: 15px; font-size: 18px;">🎠 Esquadrão Hipo</h3>
+                                <div class="horse-list-container" style="max-height: 300px;">
+                                    <div id="hipoSelectionList">
+                                        <!-- Preenchido por JavaScript -->
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- DH -->
+                            <div>
+                                <h3 style="color: var(--dh-green); margin-bottom: 15px; font-size: 18px;">🐎 Esquadrão DH</h3>
+                                <div class="horse-list-container" style="max-height: 300px;">
+                                    <div id="dhSelectionList">
+                                        <!-- Preenchido por JavaScript -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="modal-actions">
                     <button type="button" class="btn btn-secondary" id="btnCancelCaderno" style="background: linear-gradient(135deg, #95a5a6 0%, #7f8c8d 100%);">Cancelar</button>
-                    <button type="submit" class="btn btn-primary">Criar Diário</button>
+                    <button type="submit" class="btn btn-primary">Criar Diário de Visitas</button>
                 </div>
             </form>
         </div>
@@ -1153,6 +1263,12 @@
         const modalArchivedTitle = document.getElementById('modalArchivedTitle');
         const modalArchivedContent = document.getElementById('modalArchivedContent');
         const notificationContainer = document.getElementById('notificationContainer');
+        
+        // Elementos do modal de criação
+        const repeatVisitaOption = document.getElementById('repeatVisitaOption');
+        const repeatLastVisitaCheckbox = document.getElementById('repeatLastVisita');
+        const hipoSelectionList = document.getElementById('hipoSelectionList');
+        const dhSelectionList = document.getElementById('dhSelectionList');
 
         // ========== FUNÇÕES PRINCIPAIS ==========
         function init() {
@@ -1176,6 +1292,9 @@
             closeCadernoModal.addEventListener('click', closeCadernoModalFunc);
             btnCancelCaderno.addEventListener('click', closeCadernoModalFunc);
             cadernoForm.addEventListener('submit', saveCaderno);
+            
+            // Checkbox repetir visita
+            repeatLastVisitaCheckbox.addEventListener('change', handleRepeatVisitaChange);
             
             // Modal arquivados
             closeArchivedModal.addEventListener('click', closeArchivedModalFunc);
@@ -1323,10 +1442,21 @@
                             </div>
                             <div class="horse-actions">
                                 ${isInVisita ? `
-                                    <label class="status-toggle">
-                                        <input type="checkbox" class="visit-status-checkbox" data-id="${horse.id}" ${visitaInfo.visited ? 'checked' : ''}>
-                                        <span class="toggle-slider"></span>
-                                    </label>
+                                    ${visitaInfo.visited ? `
+                                        <button class="btn-visit visited" disabled>
+                                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                <path d="M9 12L11 14L15 10M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                            </svg>
+                                            Visitado
+                                        </button>
+                                    ` : `
+                                        <button class="btn-visit" data-id="${horse.id}">
+                                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                <path d="M9 12L11 14L15 10M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                            </svg>
+                                            Marcar como Visitado
+                                        </button>
+                                    `}
                                     <button class="btn-remove" data-id="${horse.id}" title="Remover da visita">
                                         <svg width="12" height="12" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                             <path d="M18 6L6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
@@ -1334,8 +1464,8 @@
                                         </svg>
                                     </button>
                                 ` : `
-                                    <button class="btn-add" data-id="${horse.id}">
-                                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="margin-right: 4px;">
+                                    <button class="btn-add" data-id="${horse.id}" style="background: linear-gradient(135deg, var(--primary-blue) 0%, var(--secondary-blue) 100%); color: white; border: none; padding: 8px 16px; border-radius: 50px; font-size: 13px; font-weight: 600; cursor: pointer; transition: all 0.3s; box-shadow: 0 2px 10px rgba(44, 127, 184, 0.3); display: flex; align-items: center; gap: 6px;">
+                                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                             <path d="M12 5V19" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                                             <path d="M5 12H19" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                                         </svg>
@@ -1376,10 +1506,21 @@
                             </div>
                             <div class="horse-actions">
                                 ${isInVisita ? `
-                                    <label class="status-toggle">
-                                        <input type="checkbox" class="visit-status-checkbox" data-id="${horse.id}" ${visitaInfo.visited ? 'checked' : ''}>
-                                        <span class="toggle-slider"></span>
-                                    </label>
+                                    ${visitaInfo.visited ? `
+                                        <button class="btn-visit visited" disabled>
+                                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                <path d="M9 12L11 14L15 10M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                            </svg>
+                                            Visitado
+                                        </button>
+                                    ` : `
+                                        <button class="btn-visit" data-id="${horse.id}">
+                                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                <path d="M9 12L11 14L15 10M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                            </svg>
+                                            Marcar como Visitado
+                                        </button>
+                                    `}
                                     <button class="btn-remove" data-id="${horse.id}" title="Remover da visita">
                                         <svg width="12" height="12" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                             <path d="M18 6L6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
@@ -1387,8 +1528,8 @@
                                         </svg>
                                     </button>
                                 ` : `
-                                    <button class="btn-add" data-id="${horse.id}">
-                                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="margin-right: 4px;">
+                                    <button class="btn-add" data-id="${horse.id}" style="background: linear-gradient(135deg, var(--primary-blue) 0%, var(--secondary-blue) 100%); color: white; border: none; padding: 8px 16px; border-radius: 50px; font-size: 13px; font-weight: 600; cursor: pointer; transition: all 0.3s; box-shadow: 0 2px 10px rgba(44, 127, 184, 0.3); display: flex; align-items: center; gap: 6px;">
+                                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                             <path d="M12 5V19" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                                             <path d="M5 12H19" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                                         </svg>
@@ -1450,17 +1591,12 @@
                 });
             });
             
-            // Checkboxes de status
-            document.querySelectorAll('.visit-status-checkbox').forEach(checkbox => {
-                checkbox.addEventListener('change', function() {
+            // Botões marcar como visitado
+            document.querySelectorAll('.btn-visit:not(.visited)').forEach(btn => {
+                btn.addEventListener('click', function() {
                     const horseId = parseInt(this.getAttribute('data-id'));
-                    const isChecked = this.checked;
-                    updateVisitStatus(horseId, isChecked);
-                    
-                    const message = isChecked ? 
-                        'Cavalo marcado como visitado!' : 
-                        'Cavalo marcado como não visitado!';
-                    showNotification(message, 'success');
+                    markHorseAsVisited(horseId);
+                    showNotification('Cavalo marcado como visitado!', 'success');
                 });
             });
         }
@@ -1544,6 +1680,17 @@
             return hoje >= diaSeguinte;
         }
 
+        function getLastVisita() {
+            if (visitas.cadernosArquivados.length === 0) return null;
+            
+            // Ordenar por data decrescente e pegar a última
+            const cadernosOrdenados = [...visitas.cadernosArquivados].sort((a, b) => 
+                new Date(b.data) - new Date(a.data)
+            );
+            
+            return cadernosOrdenados[0];
+        }
+
         function addHorseToVisita(horseId) {
             if (!currentCaderno) return;
             
@@ -1576,14 +1723,15 @@
             }
         }
 
-        function updateVisitStatus(horseId, visited) {
+        function markHorseAsVisited(horseId) {
             if (!currentCaderno) return;
             
             const visita = currentCaderno.visitas.find(v => v.horseId === horseId);
-            if (visita) {
-                visita.visited = visited;
+            if (visita && !visita.visited) {
+                visita.visited = true;
+                visita.visitedAt = new Date().toISOString();
                 saveVisitasToStorage();
-                renderStatusCards();
+                renderVisitas();
             }
         }
 
@@ -1598,11 +1746,72 @@
         function openCadernoModal() {
             const today = new Date().toISOString().split('T')[0];
             document.getElementById('cadernoDate').value = today;
+            
+            // Resetar checkbox
+            repeatLastVisitaCheckbox.checked = false;
+            
+            // Renderizar listas de seleção
+            renderHorseSelectionLists();
+            
             cadernoModal.style.display = 'flex';
         }
 
         function closeCadernoModalFunc() {
             cadernoModal.style.display = 'none';
+        }
+
+        function handleRepeatVisitaChange() {
+            renderHorseSelectionLists();
+        }
+
+        function renderHorseSelectionLists() {
+            const repeatLast = repeatLastVisitaCheckbox.checked;
+            const lastVisita = repeatLast ? getLastVisita() : null;
+            const lastVisitaHorseIds = lastVisita ? 
+                new Set(lastVisita.visitas.map(v => v.horseId)) : 
+                new Set();
+            
+            // Separar cavalos por esquadrão
+            const cavalosHipo = allHorses.filter(h => h.esquadrao === 'Hipo');
+            const cavalosDH = allHorses.filter(h => h.esquadrao === 'DH');
+            
+            // Renderizar Hipo
+            hipoSelectionList.innerHTML = cavalosHipo.map(horse => {
+                const isChecked = repeatLast ? lastVisitaHorseIds.has(horse.id) : false;
+                
+                return `
+                    <div class="horse-select-item ${isChecked ? 'selected' : ''}">
+                        <input type="checkbox" class="horse-select-checkbox" data-id="${horse.id}" ${isChecked ? 'checked' : ''}>
+                        <div class="horse-select-name">${horse.name}</div>
+                        <div class="horse-select-esquadrao hipo">Hipo</div>
+                    </div>
+                `;
+            }).join('');
+            
+            // Renderizar DH
+            dhSelectionList.innerHTML = cavalosDH.map(horse => {
+                const isChecked = repeatLast ? lastVisitaHorseIds.has(horse.id) : false;
+                
+                return `
+                    <div class="horse-select-item ${isChecked ? 'selected' : ''}">
+                        <input type="checkbox" class="horse-select-checkbox" data-id="${horse.id}" ${isChecked ? 'checked' : ''}>
+                        <div class="horse-select-name">${horse.name}</div>
+                        <div class="horse-select-esquadrao dh">DH</div>
+                    </div>
+                `;
+            }).join('');
+            
+            // Adicionar event listeners aos checkboxes
+            document.querySelectorAll('.horse-select-checkbox').forEach(checkbox => {
+                checkbox.addEventListener('change', function() {
+                    const item = this.closest('.horse-select-item');
+                    if (this.checked) {
+                        item.classList.add('selected');
+                    } else {
+                        item.classList.remove('selected');
+                    }
+                });
+            });
         }
 
         function openArchivedModal(cadernoId) {
@@ -1703,7 +1912,7 @@
             archivedModal.style.display = 'none';
         }
 
-        function createCaderno(data) {
+        function createCaderno(data, selectedHorseIds) {
             if (visitas.cadernosAtivos.length > 0) {
                 if (!confirm('Já existe um caderno ativo. Deseja arquivá-lo e criar um novo?')) {
                     return;
@@ -1711,10 +1920,22 @@
                 archiveCurrentCaderno(true);
             }
             
+            // Criar visitas para os cavalos selecionados
+            const novasVisitas = selectedHorseIds.map(horseId => {
+                const horse = allHorses.find(h => h.id === horseId);
+                return {
+                    horseId: horse.id,
+                    name: horse.name,
+                    esquadrao: horse.esquadrao,
+                    visited: false,
+                    addedDate: new Date().toISOString()
+                };
+            });
+            
             const novoCaderno = {
                 id: Date.now(),
                 data: data,
-                visitas: [],
+                visitas: novasVisitas,
                 observacoes: '',
                 createdAt: new Date().toISOString()
             };
@@ -1784,7 +2005,16 @@
                 return;
             }
             
-            createCaderno(date);
+            // Coletar cavalos selecionados
+            const selectedCheckboxes = document.querySelectorAll('.horse-select-checkbox:checked');
+            const selectedHorseIds = Array.from(selectedCheckboxes).map(cb => parseInt(cb.getAttribute('data-id')));
+            
+            if (selectedHorseIds.length === 0) {
+                showNotification('Selecione pelo menos um cavalo para a visita.', 'error');
+                return;
+            }
+            
+            createCaderno(date, selectedHorseIds);
             closeCadernoModalFunc();
         }
 
