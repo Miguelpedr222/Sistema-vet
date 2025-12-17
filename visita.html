@@ -351,6 +351,18 @@
             box-shadow: 0 4px 15px rgba(149, 165, 166, 0.2);
         }
         
+        /* Botão para adicionar mais cavalos */
+        .btn-add-more {
+            background: linear-gradient(135deg, #9b59b6 0%, #8e44ad 100%);
+            color: white;
+            box-shadow: 0 4px 15px rgba(155, 89, 182, 0.3);
+        }
+        
+        .btn-add-more:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(155, 89, 182, 0.4);
+        }
+        
         /* Listas de cavalos lado a lado */
         .squadron-grid {
             display: grid;
@@ -601,6 +613,97 @@
             color: var(--primary-blue);
             font-size: 22px;
             font-weight: 700;
+        }
+        
+        /* Filtros para histórico */
+        .filters-container {
+            background: var(--light-blue);
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 25px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            align-items: end;
+        }
+        
+        .filter-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        
+        .filter-group label {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--primary-blue);
+        }
+        
+        .filter-input {
+            padding: 12px 15px;
+            border: 2px solid var(--gray-border);
+            border-radius: 10px;
+            font-size: 14px;
+            transition: all 0.3s;
+        }
+        
+        .filter-input:focus {
+            border-color: var(--primary-blue);
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(44, 127, 184, 0.1);
+        }
+        
+        .filter-select {
+            padding: 12px 15px;
+            border: 2px solid var(--gray-border);
+            border-radius: 10px;
+            font-size: 14px;
+            background: white;
+            transition: all 0.3s;
+        }
+        
+        .filter-select:focus {
+            border-color: var(--primary-blue);
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(44, 127, 184, 0.1);
+        }
+        
+        .filter-actions {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+        
+        .btn-filter {
+            padding: 12px 20px;
+            background: linear-gradient(135deg, var(--primary-blue) 0%, var(--secondary-blue) 100%);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+        
+        .btn-filter:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(44, 127, 184, 0.3);
+        }
+        
+        .btn-clear {
+            padding: 12px 20px;
+            background: linear-gradient(135deg, #95a5a6 0%, #7f8c8d 100%);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+        
+        .btn-clear:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(149, 165, 166, 0.3);
         }
         
         .archived-grid {
@@ -961,6 +1064,10 @@
                 gap: 15px;
                 align-items: flex-start;
             }
+            
+            .filters-container {
+                grid-template-columns: 1fr;
+            }
         }
         
         /* Estados vazios */
@@ -1063,6 +1170,12 @@
                     </svg>
                     Iniciar Nova Visita
                 </button>
+                <button class="btn btn-add-more" id="btnAddMoreHorses" style="display: none;">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M16 21V19C16 17.9391 15.5786 16.9217 14.8284 16.1716C14.0783 15.4214 13.0609 15 12 15H5C3.93913 15 2.92172 15.4214 2.17157 16.1716C1.42143 16.9217 1 17.9391 1 19V21M8.5 11C10.7091 11 12.5 9.20914 12.5 7C12.5 4.79086 10.7091 3 8.5 3C6.29086 3 4.5 4.79086 4.5 7C4.5 9.20914 6.29086 11 8.5 11ZM14 7H20M17 4V10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    Adicionar Mais Cavalos
+                </button>
                 <button class="btn btn-success" id="btnFinalizarVisita" disabled>
                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path d="M22 11.08V12C21.9988 14.1564 21.3005 16.2547 20.0093 17.9818C18.7182 19.709 16.9033 20.9725 14.8354 21.5839C12.7674 22.1953 10.5573 22.1219 8.53447 21.3746C6.51168 20.6273 4.78465 19.2461 3.61096 17.4371C2.43727 15.628 1.87979 13.4881 2.02168 11.3363C2.16356 9.18455 2.99721 7.13631 4.39828 5.49706C5.79935 3.85781 7.69279 2.71537 9.79619 2.24013C11.8996 1.7649 14.1003 1.98232 16.07 2.85999" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
@@ -1110,6 +1223,54 @@
                 <div class="section-header">
                     <div class="section-title">Histórico de Visitas</div>
                 </div>
+                
+                <!-- Filtros para histórico -->
+                <div class="filters-container" id="filtersContainer">
+                    <div class="filter-group">
+                        <label for="filterDate">Data</label>
+                        <input type="date" id="filterDate" class="filter-input">
+                    </div>
+                    
+                    <div class="filter-group">
+                        <label for="filterStatus">Status</label>
+                        <select id="filterStatus" class="filter-select">
+                            <option value="">Todos</option>
+                            <option value="completed">Completas</option>
+                            <option value="pending">Com Pendências</option>
+                        </select>
+                    </div>
+                    
+                    <div class="filter-group">
+                        <label for="filterEsquadrao">Esquadrão</label>
+                        <select id="filterEsquadrao" class="filter-select">
+                            <option value="">Todos</option>
+                            <option value="Hipo">Hipo</option>
+                            <option value="DH">DH</option>
+                        </select>
+                    </div>
+                    
+                    <div class="filter-group">
+                        <label for="filterMinVisitas">Mín. Visitados</label>
+                        <input type="number" id="filterMinVisitas" class="filter-input" placeholder="0" min="0">
+                    </div>
+                    
+                    <div class="filter-actions">
+                        <button class="btn-filter" id="btnApplyFilters">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="margin-right: 5px;">
+                                <path d="M22 3H2L10 12.46V19L14 21V12.46L22 3Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                            Filtrar
+                        </button>
+                        <button class="btn-clear" id="btnClearFilters">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="margin-right: 5px;">
+                                <path d="M18 6L6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M6 6L18 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                            Limpar
+                        </button>
+                    </div>
+                </div>
+                
                 <div class="archived-grid" id="archivedGrid">
                     <!-- Preenchido por JavaScript -->
                 </div>
@@ -1179,6 +1340,47 @@
         </div>
     </div>
     
+    <!-- Modal para Adicionar Mais Cavalos -->
+    <div class="modal" id="addHorsesModal">
+        <div class="modal-content large">
+            <div class="modal-header">
+                <h2 class="modal-title">➕ Adicionar Mais Cavalos à Visita</h2>
+                <button class="close-modal" id="closeAddHorsesModal">&times;</button>
+            </div>
+            
+            <div style="margin-bottom: 30px;">
+                <p style="color: #666; margin-bottom: 15px;">Selecione os cavalos que deseja adicionar à visita atual:</p>
+                
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px;">
+                    <!-- Hipo -->
+                    <div>
+                        <h3 style="color: var(--hipo-red); margin-bottom: 15px; font-size: 18px;">🎠 Esquadrão Hipo</h3>
+                        <div class="horse-list-container" style="max-height: 300px;">
+                            <div id="addHipoSelectionList">
+                                <!-- Preenchido por JavaScript -->
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- DH -->
+                    <div>
+                        <h3 style="color: var(--dh-green); margin-bottom: 15px; font-size: 18px;">🐎 Esquadrão DH</h3>
+                        <div class="horse-list-container" style="max-height: 300px;">
+                            <div id="addDhSelectionList">
+                                <!-- Preenchido por JavaScript -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="modal-actions">
+                <button type="button" class="btn btn-secondary" id="btnCancelAddHorses" style="background: linear-gradient(135deg, #95a5a6 0%, #7f8c8d 100%);">Cancelar</button>
+                <button type="button" class="btn btn-primary" id="btnConfirmAddHorses">Adicionar Cavalos Selecionados</button>
+            </div>
+        </div>
+    </div>
+    
     <!-- Modal para Visualizar Visita Arquivada -->
     <div class="modal" id="archivedModal">
         <div class="modal-content large">
@@ -1239,12 +1441,19 @@
         let visitas = loadVisitasFromStorage();
         let allHorses = loadHorsesFromStorage();
         let currentCaderno = null;
+        let currentFilters = {
+            date: '',
+            status: '',
+            esquadrao: '',
+            minVisitas: ''
+        };
 
         // ========== ELEMENTOS DO DOM ==========
         const loggedUser = document.getElementById('loggedUser');
         const btnVoltar = document.getElementById('btnVoltar');
         const statusCards = document.getElementById('statusCards');
         const btnNovoCaderno = document.getElementById('btnNovoCaderno');
+        const btnAddMoreHorses = document.getElementById('btnAddMoreHorses');
         const btnFinalizarVisita = document.getElementById('btnFinalizarVisita');
         const cadernoContent = document.getElementById('cadernoContent');
         const emptyState = document.getElementById('emptyState');
@@ -1253,12 +1462,24 @@
         const archivedSection = document.getElementById('archivedSection');
         const archivedGrid = document.getElementById('archivedGrid');
         
+        // Filtros
+        const filterDate = document.getElementById('filterDate');
+        const filterStatus = document.getElementById('filterStatus');
+        const filterEsquadrao = document.getElementById('filterEsquadrao');
+        const filterMinVisitas = document.getElementById('filterMinVisitas');
+        const btnApplyFilters = document.getElementById('btnApplyFilters');
+        const btnClearFilters = document.getElementById('btnClearFilters');
+        
         // Modais
         const cadernoModal = document.getElementById('cadernoModal');
+        const addHorsesModal = document.getElementById('addHorsesModal');
         const archivedModal = document.getElementById('archivedModal');
         const closeCadernoModal = document.getElementById('closeCadernoModal');
         const btnCancelCaderno = document.getElementById('btnCancelCaderno');
         const cadernoForm = document.getElementById('cadernoForm');
+        const closeAddHorsesModal = document.getElementById('closeAddHorsesModal');
+        const btnCancelAddHorses = document.getElementById('btnCancelAddHorses');
+        const btnConfirmAddHorses = document.getElementById('btnConfirmAddHorses');
         const closeArchivedModal = document.getElementById('closeArchivedModal');
         const modalArchivedTitle = document.getElementById('modalArchivedTitle');
         const modalArchivedContent = document.getElementById('modalArchivedContent');
@@ -1269,9 +1490,16 @@
         const repeatLastVisitaCheckbox = document.getElementById('repeatLastVisita');
         const hipoSelectionList = document.getElementById('hipoSelectionList');
         const dhSelectionList = document.getElementById('dhSelectionList');
+        
+        // Elementos do modal de adicionar cavalos
+        const addHipoSelectionList = document.getElementById('addHipoSelectionList');
+        const addDhSelectionList = document.getElementById('addDhSelectionList');
 
         // ========== FUNÇÕES PRINCIPAIS ==========
         function init() {
+            // Zerar histórico existente
+            clearHistory();
+            
             const userData = localStorage.getItem('vetSystemCurrentUser');
             if (userData) {
                 const user = JSON.parse(userData);
@@ -1282,11 +1510,25 @@
             setupEventListeners();
         }
 
+        function clearHistory() {
+            // Manter apenas os cadernos ativos, remover os arquivados
+            if (visitas.cadernosArquivados.length > 0) {
+                visitas.cadernosArquivados = [];
+                saveVisitasToStorage();
+                console.log('Histórico zerado');
+            }
+        }
+
         function setupEventListeners() {
             btnVoltar.addEventListener('click', voltarParaArquivos);
             btnNovoCaderno.addEventListener('click', openCadernoModal);
+            btnAddMoreHorses.addEventListener('click', openAddHorsesModal);
             btnFinalizarVisita.addEventListener('click', finalizarServicoVisitas);
             observacoesDia.addEventListener('input', saveObservacoes);
+            
+            // Filtros
+            btnApplyFilters.addEventListener('click', applyFilters);
+            btnClearFilters.addEventListener('click', clearFilters);
             
             // Modal caderno
             closeCadernoModal.addEventListener('click', closeCadernoModalFunc);
@@ -1296,12 +1538,18 @@
             // Checkbox repetir visita
             repeatLastVisitaCheckbox.addEventListener('change', handleRepeatVisitaChange);
             
+            // Modal adicionar cavalos
+            closeAddHorsesModal.addEventListener('click', closeAddHorsesModalFunc);
+            btnCancelAddHorses.addEventListener('click', closeAddHorsesModalFunc);
+            btnConfirmAddHorses.addEventListener('click', confirmAddHorses);
+            
             // Modal arquivados
             closeArchivedModal.addEventListener('click', closeArchivedModalFunc);
             
             // Fechar modais ao clicar fora
             window.addEventListener('click', (e) => {
                 if (e.target === cadernoModal) closeCadernoModalFunc();
+                if (e.target === addHorsesModal) closeAddHorsesModalFunc();
                 if (e.target === archivedModal) closeArchivedModalFunc();
             });
         }
@@ -1363,6 +1611,7 @@
                 `;
                 
                 btnFinalizarVisita.disabled = !canFinalize;
+                btnAddMoreHorses.style.display = 'flex';
             } else {
                 cardsHTML = `
                     <div class="status-card inactive">
@@ -1389,6 +1638,7 @@
                 `;
                 
                 btnFinalizarVisita.disabled = true;
+                btnAddMoreHorses.style.display = 'none';
             }
             
             statusCards.innerHTML = cardsHTML;
@@ -1463,15 +1713,7 @@
                                             <path d="M6 6L18 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                                         </svg>
                                     </button>
-                                ` : `
-                                    <button class="btn-add" data-id="${horse.id}" style="background: linear-gradient(135deg, var(--primary-blue) 0%, var(--secondary-blue) 100%); color: white; border: none; padding: 8px 16px; border-radius: 50px; font-size: 13px; font-weight: 600; cursor: pointer; transition: all 0.3s; box-shadow: 0 2px 10px rgba(44, 127, 184, 0.3); display: flex; align-items: center; gap: 6px;">
-                                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                            <path d="M12 5V19" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                            <path d="M5 12H19" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                        </svg>
-                                        Adicionar
-                                    </button>
-                                `}
+                                ` : ''}
                             </div>
                         </div>
                     `;
@@ -1527,15 +1769,7 @@
                                             <path d="M6 6L18 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                                         </svg>
                                     </button>
-                                ` : `
-                                    <button class="btn-add" data-id="${horse.id}" style="background: linear-gradient(135deg, var(--primary-blue) 0%, var(--secondary-blue) 100%); color: white; border: none; padding: 8px 16px; border-radius: 50px; font-size: 13px; font-weight: 600; cursor: pointer; transition: all 0.3s; box-shadow: 0 2px 10px rgba(44, 127, 184, 0.3); display: flex; align-items: center; gap: 6px;">
-                                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                            <path d="M12 5V19" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                            <path d="M5 12H19" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                        </svg>
-                                        Adicionar
-                                    </button>
-                                `}
+                                ` : ''}
                             </div>
                         </div>
                     `;
@@ -1573,15 +1807,6 @@
         }
 
         function addHorseEventListeners() {
-            // Botões adicionar
-            document.querySelectorAll('.btn-add').forEach(btn => {
-                btn.addEventListener('click', function() {
-                    const horseId = parseInt(this.getAttribute('data-id'));
-                    addHorseToVisita(horseId);
-                    showNotification('Cavalo adicionado à visita!', 'success');
-                });
-            });
-            
             // Botões remover
             document.querySelectorAll('.btn-remove').forEach(btn => {
                 btn.addEventListener('click', function() {
@@ -1601,6 +1826,35 @@
             });
         }
 
+        function applyFilters() {
+            currentFilters = {
+                date: filterDate.value,
+                status: filterStatus.value,
+                esquadrao: filterEsquadrao.value,
+                minVisitas: filterMinVisitas.value
+            };
+            
+            renderArchivedVisitas();
+            showNotification('Filtros aplicados!', 'success');
+        }
+
+        function clearFilters() {
+            filterDate.value = '';
+            filterStatus.value = '';
+            filterEsquadrao.value = '';
+            filterMinVisitas.value = '';
+            
+            currentFilters = {
+                date: '',
+                status: '',
+                esquadrao: '',
+                minVisitas: ''
+            };
+            
+            renderArchivedVisitas();
+            showNotification('Filtros removidos!', 'success');
+        }
+
         function renderArchivedVisitas() {
             if (visitas.cadernosArquivados.length === 0) {
                 archivedSection.style.display = 'none';
@@ -1609,11 +1863,63 @@
             
             archivedSection.style.display = 'block';
             
-            const cadernosOrdenados = [...visitas.cadernosArquivados].sort((a, b) => 
-                new Date(b.data) - new Date(a.data)
-            );
+            // Aplicar filtros
+            let filteredCadernos = [...visitas.cadernosArquivados];
             
-            archivedGrid.innerHTML = cadernosOrdenados.map(caderno => {
+            // Filtro por data
+            if (currentFilters.date) {
+                filteredCadernos = filteredCadernos.filter(caderno => 
+                    caderno.data === currentFilters.date
+                );
+            }
+            
+            // Filtro por status
+            if (currentFilters.status === 'completed') {
+                filteredCadernos = filteredCadernos.filter(caderno => 
+                    !caderno.visitas.some(v => !v.visited)
+                );
+            } else if (currentFilters.status === 'pending') {
+                filteredCadernos = filteredCadernos.filter(caderno => 
+                    caderno.visitas.some(v => !v.visited)
+                );
+            }
+            
+            // Filtro por esquadrão
+            if (currentFilters.esquadrao) {
+                filteredCadernos = filteredCadernos.filter(caderno => 
+                    caderno.visitas.some(v => v.esquadrao === currentFilters.esquadrao)
+                );
+            }
+            
+            // Filtro por mínimo de visitados
+            if (currentFilters.minVisitas) {
+                const minVisitas = parseInt(currentFilters.minVisitas);
+                filteredCadernos = filteredCadernos.filter(caderno => {
+                    const visitasRealizadas = caderno.visitas.filter(v => v.visited).length;
+                    return visitasRealizadas >= minVisitas;
+                });
+            }
+            
+            // Ordenar por data decrescente
+            filteredCadernos.sort((a, b) => new Date(b.data) - new Date(a.data));
+            
+            if (filteredCadernos.length === 0) {
+                archivedGrid.innerHTML = `
+                    <div style="grid-column: 1 / -1; text-align: center; padding: 60px 40px; color: #666; background: var(--gray-light); border-radius: 15px;">
+                        <svg width="60" height="60" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="margin-bottom: 15px; color: #ccc;">
+                            <path d="M21 21L15 15M17 10C17 13.866 13.866 17 10 17C6.13401 17 3 13.866 3 10C3 6.13401 6.13401 3 10 3C13.866 3 17 6.13401 17 10Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                        <h3 style="color: var(--primary-blue); margin-bottom: 10px;">Nenhuma visita encontrada</h3>
+                        <p>Nenhuma visita corresponde aos filtros aplicados.</p>
+                        <button class="btn-clear" id="btnResetFilters" style="margin-top: 20px; padding: 10px 20px;">Limpar Filtros</button>
+                    </div>
+                `;
+                
+                document.getElementById('btnResetFilters')?.addEventListener('click', clearFilters);
+                return;
+            }
+            
+            archivedGrid.innerHTML = filteredCadernos.map(caderno => {
                 const totalVisitas = caderno.visitas.length;
                 const visitasRealizadas = caderno.visitas.filter(v => v.visited).length;
                 const visitasPendentes = totalVisitas - visitasRealizadas;
@@ -1691,27 +1997,6 @@
             return cadernosOrdenados[0];
         }
 
-        function addHorseToVisita(horseId) {
-            if (!currentCaderno) return;
-            
-            const horse = allHorses.find(h => h.id === horseId);
-            if (!horse) return;
-            
-            if (currentCaderno.visitas.some(v => v.horseId === horseId)) return;
-            
-            const novaVisita = {
-                horseId: horse.id,
-                name: horse.name,
-                esquadrao: horse.esquadrao,
-                visited: false,
-                addedDate: new Date().toISOString()
-            };
-            
-            currentCaderno.visitas.push(novaVisita);
-            saveVisitasToStorage();
-            renderVisitas();
-        }
-
         function removeHorseFromVisita(horseId) {
             if (!currentCaderno) return;
             
@@ -1758,6 +2043,19 @@
 
         function closeCadernoModalFunc() {
             cadernoModal.style.display = 'none';
+        }
+
+        function openAddHorsesModal() {
+            if (!currentCaderno) return;
+            
+            // Renderizar listas de seleção para adicionar cavalos
+            renderAddHorsesSelectionLists();
+            
+            addHorsesModal.style.display = 'flex';
+        }
+
+        function closeAddHorsesModalFunc() {
+            addHorsesModal.style.display = 'none';
         }
 
         function handleRepeatVisitaChange() {
@@ -1812,6 +2110,85 @@
                     }
                 });
             });
+        }
+
+        function renderAddHorsesSelectionLists() {
+            // Separar cavalos por esquadrão
+            const cavalosHipo = allHorses.filter(h => h.esquadrao === 'Hipo');
+            const cavalosDH = allHorses.filter(h => h.esquadrao === 'DH');
+            
+            // IDs dos cavalos já na visita
+            const cavalosNaVisita = new Set(currentCaderno.visitas.map(v => v.horseId));
+            
+            // Renderizar Hipo (apenas cavalos não na visita)
+            const hipoNotInVisita = cavalosHipo.filter(h => !cavalosNaVisita.has(h.id));
+            
+            addHipoSelectionList.innerHTML = hipoNotInVisita.map(horse => {
+                return `
+                    <div class="horse-select-item">
+                        <input type="checkbox" class="add-horse-checkbox" data-id="${horse.id}">
+                        <div class="horse-select-name">${horse.name}</div>
+                        <div class="horse-select-esquadrao hipo">Hipo</div>
+                    </div>
+                `;
+            }).join('');
+            
+            // Renderizar DH (apenas cavalos não na visita)
+            const dhNotInVisita = cavalosDH.filter(h => !cavalosNaVisita.has(h.id));
+            
+            addDhSelectionList.innerHTML = dhNotInVisita.map(horse => {
+                return `
+                    <div class="horse-select-item">
+                        <input type="checkbox" class="add-horse-checkbox" data-id="${horse.id}">
+                        <div class="horse-select-name">${horse.name}</div>
+                        <div class="horse-select-esquadrao dh">DH</div>
+                    </div>
+                `;
+            }).join('');
+            
+            // Adicionar event listeners aos checkboxes
+            document.querySelectorAll('.add-horse-checkbox').forEach(checkbox => {
+                checkbox.addEventListener('change', function() {
+                    const item = this.closest('.horse-select-item');
+                    if (this.checked) {
+                        item.classList.add('selected');
+                    } else {
+                        item.classList.remove('selected');
+                    }
+                });
+            });
+        }
+
+        function confirmAddHorses() {
+            // Coletar cavalos selecionados
+            const selectedCheckboxes = document.querySelectorAll('.add-horse-checkbox:checked');
+            const selectedHorseIds = Array.from(selectedCheckboxes).map(cb => parseInt(cb.getAttribute('data-id')));
+            
+            if (selectedHorseIds.length === 0) {
+                showNotification('Selecione pelo menos um cavalo para adicionar.', 'error');
+                return;
+            }
+            
+            // Adicionar cavalos à visita
+            selectedHorseIds.forEach(horseId => {
+                const horse = allHorses.find(h => h.id === horseId);
+                if (horse) {
+                    const novaVisita = {
+                        horseId: horse.id,
+                        name: horse.name,
+                        esquadrao: horse.esquadrao,
+                        visited: false,
+                        addedDate: new Date().toISOString()
+                    };
+                    
+                    currentCaderno.visitas.push(novaVisita);
+                }
+            });
+            
+            saveVisitasToStorage();
+            renderVisitas();
+            closeAddHorsesModalFunc();
+            showNotification(`${selectedHorseIds.length} cavalo(s) adicionado(s) à visita!`, 'success');
         }
 
         function openArchivedModal(cadernoId) {
