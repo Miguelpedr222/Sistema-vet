@@ -1595,7 +1595,7 @@
                         </div>
                         <div class="card-title">Cavalos Visitados</div>
                         <div class="card-value">${visitasRealizadas}/${totalVisitas || 0}</div>
-                        <div class="card-date">${totalVisitas > 0 ? Math.round((visitasRealizadas / totalVisitas) * 100) + '% completo' : 'Nenhuma visita'}</div>
+                        <div class="card-date">${totalVisitas} cavalo(s) na visita</div>
                     </div>
                     
                     <div class="status-card">
@@ -1651,18 +1651,63 @@
                 
                 observacoesDia.value = currentCaderno.observacoes || '';
                 renderSquadronLists();
+                
+                // Adicionar mensagem informativa
+                if (!document.getElementById('infoMessage')) {
+                    const infoDiv = document.createElement('div');
+                    infoDiv.id = 'infoMessage';
+                    infoDiv.style.cssText = `
+                        margin-bottom: 20px;
+                        padding: 15px;
+                        background: var(--light-blue);
+                        border-radius: 12px;
+                        border-left: 4px solid var(--primary-blue);
+                        font-size: 14px;
+                        color: var(--primary-blue);
+                        display: flex;
+                        align-items: center;
+                        gap: 10px;
+                    `;
+                    infoDiv.innerHTML = `
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M13 16H12V12H11M12 8H12.01M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                        <div>
+                            <strong>Como usar:</strong> Marque os cavalos visitados clicando em "Marcar como Visitado". 
+                            Para adicionar mais cavalos à visita, use o botão "Adicionar Mais Cavalos".
+                        </div>
+                    `;
+                    
+                    // Inserir após os botões de ação
+                    const actionButtons = document.querySelector('.action-buttons');
+                    if (actionButtons) {
+                        actionButtons.parentNode.insertBefore(infoDiv, actionButtons.nextSibling);
+                    }
+                }
             } else {
                 emptyState.style.display = 'block';
                 cadernoContent.style.display = 'none';
+                
+                // Remover mensagem informativa se existir
+                const infoDiv = document.getElementById('infoMessage');
+                if (infoDiv) {
+                    infoDiv.remove();
+                }
             }
         }
 
         function renderSquadronLists() {
-            // Separar cavalos por esquadrão
-            const cavalosHipo = allHorses.filter(h => h.esquadrao === 'Hipo');
-            const cavalosDH = allHorses.filter(h => h.esquadrao === 'DH');
+            if (!currentCaderno) return;
             
-            const cavalosNaVisita = new Set(currentCaderno.visitas.map(v => v.horseId));
+            // Pegar apenas os cavalos que estão na visita atual
+            const cavalosNaVisita = currentCaderno.visitas.map(v => {
+                const horse = allHorses.find(h => h.id === v.horseId);
+                return { ...horse, ...v }; // Combina dados do cavalo com dados da visita
+            });
+            
+            // Separar por esquadrão
+            const cavalosHipo = cavalosNaVisita.filter(h => h.esquadrao === 'Hipo');
+            const cavalosDH = cavalosNaVisita.filter(h => h.esquadrao === 'DH');
             
             // Renderizar Hipo
             let hipoHTML = '';
@@ -1672,17 +1717,14 @@
                         <svg width="40" height="40" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path d="M12 8V12M12 16H12.01M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="#ccc" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                         </svg>
-                        <p>Nenhum cavalo do Hipo cadastrado</p>
+                        <p>Nenhum cavalo do Hipo nesta visita</p>
+                        <p style="font-size: 13px; margin-top: 10px;">Use o botão "Adicionar Mais Cavalos" para incluir cavalos</p>
                     </div>
                 `;
             } else {
                 hipoHTML = cavalosHipo.map(horse => {
-                    const isInVisita = cavalosNaVisita.has(horse.id);
-                    const visitaInfo = isInVisita ? 
-                        currentCaderno.visitas.find(v => v.horseId === horse.id) : null;
-                    
                     return `
-                        <div class="horse-item ${isInVisita && visitaInfo.visited ? 'visited' : (isInVisita ? 'pending' : '')}">
+                        <div class="horse-item ${horse.visited ? 'visited' : 'pending'}">
                             <div class="horse-info">
                                 <div class="horse-name">
                                     ${horse.name}
@@ -1691,29 +1733,27 @@
                                 <div class="horse-id">ID: ${horse.id}</div>
                             </div>
                             <div class="horse-actions">
-                                ${isInVisita ? `
-                                    ${visitaInfo.visited ? `
-                                        <button class="btn-visit visited" disabled>
-                                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                <path d="M9 12L11 14L15 10M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                            </svg>
-                                            Visitado
-                                        </button>
-                                    ` : `
-                                        <button class="btn-visit" data-id="${horse.id}">
-                                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                <path d="M9 12L11 14L15 10M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                            </svg>
-                                            Marcar como Visitado
-                                        </button>
-                                    `}
-                                    <button class="btn-remove" data-id="${horse.id}" title="Remover da visita">
-                                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                            <path d="M18 6L6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                            <path d="M6 6L18 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                ${horse.visited ? `
+                                    <button class="btn-visit visited" disabled>
+                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <path d="M9 12L11 14L15 10M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                                         </svg>
+                                        Visitado
                                     </button>
-                                ` : ''}
+                                ` : `
+                                    <button class="btn-visit" data-id="${horse.id}">
+                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <path d="M9 12L11 14L15 10M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                        </svg>
+                                        Marcar como Visitado
+                                    </button>
+                                `}
+                                <button class="btn-remove" data-id="${horse.id}" title="Remover da visita">
+                                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M18 6L6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                        <path d="M6 6L18 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                    </svg>
+                                </button>
                             </div>
                         </div>
                     `;
@@ -1728,17 +1768,14 @@
                         <svg width="40" height="40" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path d="M12 8V12M12 16H12.01M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="#ccc" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                         </svg>
-                        <p>Nenhum cavalo do DH cadastrado</p>
+                        <p>Nenhum cavalo do DH nesta visita</p>
+                        <p style="font-size: 13px; margin-top: 10px;">Use o botão "Adicionar Mais Cavalos" para incluir cavalos</p>
                     </div>
                 `;
             } else {
                 dhHTML = cavalosDH.map(horse => {
-                    const isInVisita = cavalosNaVisita.has(horse.id);
-                    const visitaInfo = isInVisita ? 
-                        currentCaderno.visitas.find(v => v.horseId === horse.id) : null;
-                    
                     return `
-                        <div class="horse-item ${isInVisita && visitaInfo.visited ? 'visited' : (isInVisita ? 'pending' : '')}">
+                        <div class="horse-item ${horse.visited ? 'visited' : 'pending'}">
                             <div class="horse-info">
                                 <div class="horse-name">
                                     ${horse.name}
@@ -1747,29 +1784,27 @@
                                 <div class="horse-id">ID: ${horse.id}</div>
                             </div>
                             <div class="horse-actions">
-                                ${isInVisita ? `
-                                    ${visitaInfo.visited ? `
-                                        <button class="btn-visit visited" disabled>
-                                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                <path d="M9 12L11 14L15 10M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                            </svg>
-                                            Visitado
-                                        </button>
-                                    ` : `
-                                        <button class="btn-visit" data-id="${horse.id}">
-                                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                <path d="M9 12L11 14L15 10M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                            </svg>
-                                            Marcar como Visitado
-                                        </button>
-                                    `}
-                                    <button class="btn-remove" data-id="${horse.id}" title="Remover da visita">
-                                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                            <path d="M18 6L6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                            <path d="M6 6L18 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                ${horse.visited ? `
+                                    <button class="btn-visit visited" disabled>
+                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <path d="M9 12L11 14L15 10M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                                         </svg>
+                                        Visitado
                                     </button>
-                                ` : ''}
+                                ` : `
+                                    <button class="btn-visit" data-id="${horse.id}">
+                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <path d="M9 12L11 14L15 10M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                        </svg>
+                                        Marcar como Visitado
+                                    </button>
+                                `}
+                                <button class="btn-remove" data-id="${horse.id}" title="Remover da visita">
+                                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M18 6L6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                        <path d="M6 6L18 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                    </svg>
+                                </button>
                             </div>
                         </div>
                     `;
@@ -1780,7 +1815,7 @@
                 <div class="squadron-card hipo">
                     <div class="squadron-header hipo">
                         <span>🎠 Esquadrão Hipo</span>
-                        <span class="squadron-count">${cavalosHipo.length} cavalos</span>
+                        <span class="squadron-count">${cavalosHipo.length} cavalo(s) na visita</span>
                     </div>
                     <div class="horse-list-container">
                         <div class="horse-list">
@@ -1792,7 +1827,7 @@
                 <div class="squadron-card dh">
                     <div class="squadron-header dh">
                         <span>🐎 Esquadrão DH</span>
-                        <span class="squadron-count">${cavalosDH.length} cavalos</span>
+                        <span class="squadron-count">${cavalosDH.length} cavalo(s) na visita</span>
                     </div>
                     <div class="horse-list-container">
                         <div class="horse-list">
@@ -2113,6 +2148,8 @@
         }
 
         function renderAddHorsesSelectionLists() {
+            if (!currentCaderno) return;
+            
             // Separar cavalos por esquadrão
             const cavalosHipo = allHorses.filter(h => h.esquadrao === 'Hipo');
             const cavalosDH = allHorses.filter(h => h.esquadrao === 'DH');
@@ -2126,12 +2163,23 @@
             addHipoSelectionList.innerHTML = hipoNotInVisita.map(horse => {
                 return `
                     <div class="horse-select-item">
-                        <input type="checkbox" class="add-horse-checkbox" data-id="${horse.id}">
+                        <input type="checkbox" class="add-horse-checkbox" data-id="${horse.id}" data-esquadrao="Hipo">
                         <div class="horse-select-name">${horse.name}</div>
                         <div class="horse-select-esquadrao hipo">Hipo</div>
                     </div>
                 `;
             }).join('');
+            
+            if (hipoNotInVisita.length === 0) {
+                addHipoSelectionList.innerHTML = `
+                    <div style="text-align: center; padding: 40px 20px; color: #666; font-style: italic;">
+                        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M9 12L11 14L15 10M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="#ccc" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                        <p>Todos os cavalos do Hipo já estão na visita</p>
+                    </div>
+                `;
+            }
             
             // Renderizar DH (apenas cavalos não na visita)
             const dhNotInVisita = cavalosDH.filter(h => !cavalosNaVisita.has(h.id));
@@ -2139,12 +2187,23 @@
             addDhSelectionList.innerHTML = dhNotInVisita.map(horse => {
                 return `
                     <div class="horse-select-item">
-                        <input type="checkbox" class="add-horse-checkbox" data-id="${horse.id}">
+                        <input type="checkbox" class="add-horse-checkbox" data-id="${horse.id}" data-esquadrao="DH">
                         <div class="horse-select-name">${horse.name}</div>
                         <div class="horse-select-esquadrao dh">DH</div>
                     </div>
                 `;
             }).join('');
+            
+            if (dhNotInVisita.length === 0) {
+                addDhSelectionList.innerHTML = `
+                    <div style="text-align: center; padding: 40px 20px; color: #666; font-style: italic;">
+                        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M9 12L11 14L15 10M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="#ccc" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                        <p>Todos os cavalos do DH já estão na visita</p>
+                    </div>
+                `;
+            }
             
             // Adicionar event listeners aos checkboxes
             document.querySelectorAll('.add-horse-checkbox').forEach(checkbox => {
@@ -2160,6 +2219,8 @@
         }
 
         function confirmAddHorses() {
+            if (!currentCaderno) return;
+            
             // Coletar cavalos selecionados
             const selectedCheckboxes = document.querySelectorAll('.add-horse-checkbox:checked');
             const selectedHorseIds = Array.from(selectedCheckboxes).map(cb => parseInt(cb.getAttribute('data-id')));
