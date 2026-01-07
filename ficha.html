@@ -213,9 +213,21 @@
             padding-right: 2.5rem;
         }
         
-        textarea.form-control {
+        /* TEXTAREA COM ALTURA DINÂMICA */
+        .auto-expand-textarea {
             min-height: 6rem;
+            resize: none;
+            overflow-y: hidden;
+            line-height: 1.5;
+            font-family: inherit;
+        }
+        
+        /* TEXTAREA DO MODAL */
+        .modal-textarea {
+            min-height: 8rem;
             resize: vertical;
+            line-height: 1.5;
+            font-family: inherit;
         }
         
         /* OPÇÕES DE ESQUADRÃO */
@@ -250,39 +262,95 @@
             border-color: #3b82f6;
         }
         
-        /* HISTÓRICO MÉDICO */
-        .history-list {
+        /* HISTÓRICO MÉDICO - ESTILO FEED */
+        .history-feed {
             display: flex;
             flex-direction: column;
-            gap: 0.75rem;
-        }
-        
-        .history-item {
-            padding: 1rem;
-            background: #f8fafc;
-            border: 1px solid #e2e8f0;
-            border-radius: 0.5rem;
-            display: flex;
-            align-items: flex-start;
             gap: 1rem;
         }
         
-        .history-date {
+        .history-item {
+            padding: 1.25rem;
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 0.75rem;
+            display: flex;
+            gap: 1rem;
+            transition: all 0.2s;
+            position: relative;
+        }
+        
+        .history-item:hover {
+            border-color: #cbd5e1;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        }
+        
+        .history-date-container {
             flex-shrink: 0;
-            min-width: 100px;
-            font-weight: 500;
+            width: 100px;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+        
+        .history-date {
+            font-weight: 600;
             color: #475569;
+            font-size: 0.875rem;
+            margin-bottom: 0.25rem;
+        }
+        
+        .history-time {
+            color: #94a3b8;
+            font-size: 0.75rem;
+        }
+        
+        .history-content-container {
+            flex: 1;
+            min-width: 0; /* Permite que o conteúdo quebre */
         }
         
         .history-content {
-            flex: 1;
             color: #1e293b;
+            line-height: 1.6;
+            white-space: pre-wrap; /* Mantém quebras de linha */
+            word-wrap: break-word; /* Quebra palavras longas */
+            overflow-wrap: break-word; /* Quebra palavras longas */
         }
         
         .history-actions {
             flex-shrink: 0;
             display: flex;
             gap: 0.375rem;
+            align-items: flex-start;
+        }
+        
+        /* LINHA CONECTORA DO FEED */
+        .history-feed {
+            position: relative;
+        }
+        
+        .history-feed::before {
+            content: '';
+            position: absolute;
+            left: 140px;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: linear-gradient(to bottom, transparent, #e2e8f0, transparent);
+        }
+        
+        .history-item::before {
+            content: '';
+            position: absolute;
+            left: 138px;
+            top: 24px;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #3b82f6;
+            border: 2px solid white;
+            box-shadow: 0 0 0 2px #3b82f6;
         }
         
         /* AÇÕES DO FORMULÁRIO */
@@ -313,11 +381,14 @@
         .modal-content {
             background: white;
             border-radius: 0.75rem;
-            max-width: 400px;
+            max-width: 500px;
             width: 100%;
+            max-height: 90vh;
             overflow: hidden;
             box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
             animation: modalSlideIn 0.3s ease-out;
+            display: flex;
+            flex-direction: column;
         }
         
         @keyframes modalSlideIn {
@@ -337,6 +408,7 @@
             display: flex;
             align-items: center;
             gap: 0.75rem;
+            flex-shrink: 0;
         }
         
         .modal-icon {
@@ -354,6 +426,8 @@
         
         .modal-body {
             padding: 1.5rem;
+            overflow-y: auto;
+            flex: 1;
         }
         
         .modal-footer {
@@ -362,6 +436,7 @@
             display: flex;
             justify-content: flex-end;
             gap: 0.75rem;
+            flex-shrink: 0;
         }
         
         /* BADGES */
@@ -423,6 +498,11 @@
             margin-bottom: 1.5rem;
         }
         
+        /* PÁGINA EXPANDINDO CONFORME NECESSÁRIO */
+        .page-content {
+            min-height: calc(100vh - 80px);
+        }
+        
         /* RESPONSIVIDADE */
         @media (max-width: 768px) {
             .container {
@@ -443,13 +523,23 @@
                 min-width: calc(33.333% - 0.5rem);
             }
             
+            /* FEED RESPONSIVO */
             .history-item {
                 flex-direction: column;
-                gap: 0.5rem;
+                gap: 0.75rem;
+                padding: 1rem;
             }
             
-            .history-date {
-                min-width: auto;
+            .history-date-container {
+                width: 100%;
+                flex-direction: row;
+                align-items: center;
+                justify-content: space-between;
+            }
+            
+            .history-feed::before,
+            .history-item::before {
+                display: none;
             }
             
             .history-actions {
@@ -481,6 +571,10 @@
             .esquadrao-option {
                 min-width: 100%;
             }
+            
+            .history-content {
+                font-size: 0.875rem;
+            }
         }
     </style>
 </head>
@@ -504,7 +598,7 @@
     </header>
 
     <!-- CONTEÚDO PRINCIPAL -->
-    <main class="container">
+    <main class="container page-content">
         <!-- CARD DE INFORMAÇÕES BÁSICAS -->
         <div class="form-card">
             <div class="card-header">
@@ -588,7 +682,7 @@
                 
                 <div class="form-group">
                     <label for="protocolDetails">Detalhes da Visita</label>
-                    <textarea id="protocolDetails" class="form-control" rows="3">Pós cirúrgico. Última consulta realizada em 15/11/2025</textarea>
+                    <textarea id="protocolDetails" class="form-control auto-expand-textarea" rows="3" placeholder="Digite os detalhes da visita...">Pós cirúrgico. Última consulta realizada em 15/11/2025. O animal apresentou boa recuperação após a cirurgia. Será necessário acompanhar a evolução nos próximos dias e realizar novo exame na próxima semana.</textarea>
                 </div>
             </div>
         </div>
@@ -600,11 +694,11 @@
                 <p class="card-subtitle">Registros de atendimentos e tratamentos</p>
             </div>
             <div class="card-body">
-                <div class="history-list" id="historyList">
+                <div class="history-feed" id="historyList">
                     <!-- Histórico será carregado aqui -->
                 </div>
                 
-                <button class="btn w-full mt-4" id="addHistoryBtn">
+                <button class="btn w-full mt-6" id="addHistoryBtn">
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path d="M12 5V19M5 12H19" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                     </svg>
@@ -646,7 +740,7 @@
                 </div>
                 <div class="form-group required">
                     <label for="historyDescription">Descrição</label>
-                    <textarea id="historyDescription" class="form-control" rows="4" placeholder="Descreva o histórico médico..."></textarea>
+                    <textarea id="historyDescription" class="form-control modal-textarea" rows="6" placeholder="Descreva o histórico médico..."></textarea>
                 </div>
             </div>
             <div class="modal-footer">
@@ -728,11 +822,32 @@
             esquadrao: "Hipo",
             origem: "",
             protocol: "Quarentena",
-            protocolDetails: "Pós cirúrgico. Última consulta realizada em 15/11/2025",
+            protocolDetails: "Pós cirúrgico. Última consulta realizada em 15/11/2025. O animal apresentou boa recuperação após a cirurgia. Será necessário acompanhar a evolução nos próximos dias e realizar novo exame na próxima semana.",
             history: [
-                { id: 1, date: "2025-11-15", description: "Pós cirúrgico. Última consulta" },
-                { id: 2, date: "2025-11-10", description: "Aplicação de vacina contra influenza" },
-                { id: 3, date: "2025-11-05", description: "Exame de sangue realizado - resultados normais" }
+                { 
+                    id: 1, 
+                    date: "2025-11-15", 
+                    time: "14:30",
+                    description: "Pós cirúrgico. Última consulta realizada. O animal apresentou boa recuperação após a cirurgia. A ferida está cicatrizando bem, sem sinais de infecção. Temperatura corporal: 38.2°C. Peso: 420kg. Aplicado analgésico e antibiótico conforme prescrição." 
+                },
+                { 
+                    id: 2, 
+                    date: "2025-11-10", 
+                    time: "09:15",
+                    description: "Aplicação de vacina contra influenza equina. O animal reagiu bem à vacinação. Também foi realizado exame de rotina: ausculta cardíaca normal, mucosas coradas, TPC normal. Vermifugação realizada com Ivermectina." 
+                },
+                { 
+                    id: 3, 
+                    date: "2025-11-05", 
+                    time: "16:45",
+                    description: "Exame de sangue realizado - resultados normais. Hemograma completo dentro dos parâmetros. Proteinograma normal. O animal está em bom estado nutricional. Fornecidas orientações sobre alimentação e suplementação vitamínica." 
+                },
+                { 
+                    id: 4, 
+                    date: "2025-10-28", 
+                    time: "11:00",
+                    description: "Cirurgia de correção de cólica realizada com sucesso. O animal foi anestesiado às 09:30. Procedimento durou 2 horas. Recuperação anestésica tranquila. Prescritos analgésicos e antibióticos para os próximos 7 dias." 
+                }
             ]
         };
 
@@ -784,10 +899,40 @@
         let currentHistoryId = null;
         let pendingAction = null;
 
-        // FORMATAR DATA PARA EXIBIÇÃO
+        // FUNÇÃO PARA AJUSTAR ALTURA DO TEXTAREA
+        function autoExpandTextarea(textarea) {
+            textarea.style.height = 'auto';
+            textarea.style.height = (textarea.scrollHeight) + 'px';
+            
+            // Limitar altura máxima (opcional)
+            if (textarea.scrollHeight > 300) {
+                textarea.style.height = '300px';
+                textarea.style.overflowY = 'auto';
+            } else {
+                textarea.style.overflowY = 'hidden';
+            }
+        }
+
+        // FORMATAR DATA E HORA PARA EXIBIÇÃO
         function formatDate(dateString) {
             const date = new Date(dateString);
-            return date.toLocaleDateString('pt-BR');
+            return date.toLocaleDateString('pt-BR', {
+                day: '2-digit',
+                month: 'short',
+                year: 'numeric'
+            });
+        }
+
+        function formatTime(timeString) {
+            if (!timeString) return '';
+            return timeString;
+        }
+
+        // GERAR HORA ALEATÓRIA PARA NOVOS HISTÓRICOS
+        function generateRandomTime() {
+            const hours = Math.floor(Math.random() * 12) + 8; // Entre 8h e 19h
+            const minutes = Math.floor(Math.random() * 60);
+            return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}`;
         }
 
         // INICIALIZAR FORMULÁRIO
@@ -799,6 +944,12 @@
             animalSex.value = currentAnimal.sex;
             animalProtocol.value = currentAnimal.protocol;
             protocolDetails.value = currentAnimal.protocolDetails;
+
+            // Configurar textarea auto-expansível
+            autoExpandTextarea(protocolDetails);
+            protocolDetails.addEventListener('input', function() {
+                autoExpandTextarea(this);
+            });
 
             // Configurar esquadrão
             esquadraoOptions.forEach(option => {
@@ -820,45 +971,59 @@
             const today = new Date().toISOString().split('T')[0];
             historyDate.value = today;
 
+            // Configurar textarea do modal
+            historyDescription.addEventListener('input', function() {
+                autoExpandTextarea(this);
+            });
+
             // Renderizar histórico
             renderHistory();
         }
 
-        // RENDERIZAR HISTÓRICO
+        // RENDERIZAR HISTÓRICO NO ESTILO FEED
         function renderHistory() {
             historyList.innerHTML = '';
 
             if (currentAnimal.history.length === 0) {
                 historyList.innerHTML = `
-                    <div style="text-align: center; padding: 2rem; color: #64748b;">
+                    <div style="text-align: center; padding: 3rem; color: #64748b; background: #f8fafc; border-radius: 0.75rem; border: 1px dashed #e2e8f0;">
+                        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="margin-bottom: 1rem;">
+                            <path d="M12 8V12M12 16H12.01M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="#94a3b8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
                         <p>Nenhum histórico médico registrado.</p>
+                        <p style="font-size: 0.875rem; margin-top: 0.5rem;">Clique em "Adicionar Histórico" para registrar o primeiro atendimento.</p>
                     </div>
                 `;
                 return;
             }
 
             // Ordenar histórico por data (mais recente primeiro)
-            const sortedHistory = [...currentAnimal.history].sort((a, b) => 
-                new Date(b.date) - new Date(a.date)
-            );
+            const sortedHistory = [...currentAnimal.history].sort((a, b) => {
+                const dateA = new Date(a.date + ' ' + (a.time || '00:00'));
+                const dateB = new Date(b.date + ' ' + (b.time || '00:00'));
+                return dateB - dateA;
+            });
 
             sortedHistory.forEach(item => {
                 const historyItem = document.createElement('div');
                 historyItem.className = 'history-item';
                 
                 historyItem.innerHTML = `
-                    <div class="history-date">
-                        <span class="badge badge-blue">${formatDate(item.date)}</span>
+                    <div class="history-date-container">
+                        <div class="history-date">${formatDate(item.date)}</div>
+                        ${item.time ? `<div class="history-time">${formatTime(item.time)}</div>` : ''}
                     </div>
-                    <div class="history-content">${item.description}</div>
+                    <div class="history-content-container">
+                        <div class="history-content">${item.description}</div>
+                    </div>
                     <div class="history-actions">
-                        <button class="btn btn-icon edit-history" data-id="${item.id}">
+                        <button class="btn btn-icon edit-history" data-id="${item.id}" title="Editar">
                             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <path d="M11 4H4C3.46957 4 2.96086 4.21071 2.58579 4.58579C2.21071 4.96086 2 5.46957 2 6V20C2 20.5304 2.21071 21.0391 2.58579 21.4142C2.96086 21.7893 3.46957 22 4 22H18C18.5304 22 19.0391 21.7893 19.4142 21.4142C19.7893 21.0391 20 20.5304 20 20V13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
                                 <path d="M18.5 2.5C18.8978 2.10217 19.4374 1.87868 20 1.87868C20.5626 1.87868 21.1022 2.10217 21.5 2.5C21.8978 2.89782 22.1213 3.43739 22.1213 4C22.1213 4.56261 21.8978 5.10217 21.5 5.5L12 15L8 16L9 12L18.5 2.5Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
                             </svg>
                         </button>
-                        <button class="btn btn-icon delete-history" data-id="${item.id}">
+                        <button class="btn btn-icon delete-history" data-id="${item.id}" title="Excluir">
                             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <path d="M3 6H5H21M8 6V4C8 3.46957 8.21071 2.96086 8.58579 2.58579C8.96086 2.21071 9.46957 2 10 2H14C14.5304 2 15.0391 2.21071 15.4142 2.58579C15.7893 2.96086 16 3.46957 16 4V6M19 6V20C19 20.5304 18.7893 21.0391 18.4142 21.4142C18.0391 21.7893 17.5304 22 17 22H7C6.46957 22 5.96086 21.7893 5.58579 21.4142C5.21071 21.0391 5 20.5304 5 20V6H19Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
                             </svg>
@@ -897,6 +1062,7 @@
                 if (historyItem) {
                     historyDate.value = historyItem.date;
                     historyDescription.value = historyItem.description;
+                    autoExpandTextarea(historyDescription);
                 }
             } else {
                 // Modo adição
@@ -908,9 +1074,12 @@
                 const today = new Date().toISOString().split('T')[0];
                 historyDate.value = today;
                 historyDescription.value = '';
+                historyDescription.style.height = 'auto';
             }
 
             historyModal.style.display = 'flex';
+            // Foco no campo de descrição
+            setTimeout(() => historyDescription.focus(), 100);
         }
 
         // FECHAR MODAL DE HISTÓRICO
@@ -920,6 +1089,7 @@
             currentHistoryId = null;
             historyDate.value = '';
             historyDescription.value = '';
+            historyDescription.style.height = 'auto';
         }
 
         // SALVAR HISTÓRICO
@@ -951,12 +1121,18 @@
                 currentAnimal.history.push({
                     id: newId,
                     date: dateValue,
+                    time: generateRandomTime(),
                     description: descriptionValue
                 });
             }
 
             closeHistoryModal();
             renderHistory();
+            
+            // Ajustar altura da página
+            setTimeout(() => {
+                document.body.style.height = 'auto';
+            }, 100);
         }
 
         // EDITAR HISTÓRICO
@@ -973,6 +1149,7 @@
 
             confirmTitle.textContent = 'Excluir Histórico';
             confirmMessage.textContent = 'Tem certeza que deseja excluir este histórico médico?';
+            confirmActionBtn.textContent = 'Excluir';
             confirmModal.style.display = 'flex';
         }
 
@@ -993,6 +1170,7 @@
 
             confirmTitle.textContent = 'Excluir Ficha';
             confirmMessage.textContent = '⚠️ ATENÇÃO!\n\nTem certeza que deseja excluir permanentemente esta ficha?\nTodos os dados serão perdidos.';
+            confirmActionBtn.textContent = 'Excluir';
             confirmModal.style.display = 'flex';
         }
 
@@ -1014,6 +1192,7 @@
 
             confirmTitle.textContent = 'Cancelar Edição';
             confirmMessage.textContent = 'Tem certeza que deseja cancelar a edição? Todas as alterações não salvas serão perdidas.';
+            confirmActionBtn.textContent = 'Cancelar Edição';
             confirmModal.style.display = 'flex';
         }
 
@@ -1139,6 +1318,7 @@
                     // Mostrar/ocultar campo de origem
                     if (option.getAttribute('data-value') === 'Outro') {
                         origemGroup.classList.remove('hidden');
+                        animalOrigem.focus();
                     } else {
                         origemGroup.classList.add('hidden');
                     }
@@ -1149,7 +1329,7 @@
             backBtn.addEventListener('click', goBack);
             cancelBtn.addEventListener('click', showCancelConfirmation);
             deleteBtn.addEventListener('click', showDeleteConfirmation);
-            saveBtn.addEventListener('click', showSaveConfirmation); // Alterado para mostrar confirmação
+            saveBtn.addEventListener('click', showSaveConfirmation);
             addHistoryBtn.addEventListener('click', () => openHistoryModal(false));
 
             // Event Listeners do modal de histórico
@@ -1230,6 +1410,10 @@
                     }
                 }
             });
+
+            // Permitir que a página se expanda com o conteúdo
+            document.body.style.minHeight = '100vh';
+            document.body.style.height = 'auto';
         }
 
         // INICIAR QUANDO O DOM ESTIVER PRONTO
