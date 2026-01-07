@@ -1497,8 +1497,8 @@
 
         // ========== FUNÇÕES PRINCIPAIS ==========
         function init() {
-            // Zerar histórico existente
-            clearHistory();
+            // NOTA IMPORTANTE: Removi a função clearHistory() que estava zerando o histórico
+            // O histórico agora será preservado permanentemente
             
             const userData = localStorage.getItem('vetSystemCurrentUser');
             if (userData) {
@@ -1508,15 +1508,6 @@
 
             renderVisitas();
             setupEventListeners();
-        }
-
-        function clearHistory() {
-            // Manter apenas os cadernos ativos, remover os arquivados
-            if (visitas.cadernosArquivados.length > 0) {
-                visitas.cadernosArquivados = [];
-                saveVisitasToStorage();
-                console.log('Histórico zerado');
-            }
         }
 
         function setupEventListeners() {
