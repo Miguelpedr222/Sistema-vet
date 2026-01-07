@@ -12,23 +12,37 @@
             box-sizing: border-box;
         }
         
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
-            background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
-            min-height: 100vh;
-            color: #1e293b;
-            line-height: 1.5;
+        :root {
+            --primary: #3b82f6;
+            --primary-dark: #2563eb;
+            --primary-light: #eff6ff;
+            --secondary: #10b981;
+            --danger: #ef4444;
+            --warning: #f59e0b;
+            --dark: #1e293b;
+            --light: #f8fafc;
+            --gray: #64748b;
+            --border: #e2e8f0;
+            --card-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --hover-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
         }
         
-        /* HEADER MINIMALISTA */
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            background: linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 100%);
+            min-height: 100vh;
+            color: var(--dark);
+            line-height: 1.6;
+        }
+        
+        /* HEADER PREMIUM */
         .header {
-            background: white;
-            border-bottom: 1px solid #e2e8f0;
-            padding: 1rem 2rem;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            padding: 1.25rem 2rem;
             position: sticky;
             top: 0;
             z-index: 100;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
         }
         
         .header-content {
@@ -46,157 +60,210 @@
         }
         
         .header-title h1 {
-            font-size: 1.25rem;
-            font-weight: 600;
-            color: #0f172a;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: white;
+            letter-spacing: -0.025em;
         }
         
         .header-title span {
-            color: #64748b;
-            font-size: 0.875rem;
-            font-weight: normal;
-        }
-        
-        .header-actions {
-            display: flex;
-            gap: 0.5rem;
-        }
-        
-        /* BOTÕES MINIMALISTAS */
-        .btn {
-            padding: 0.5rem 1rem;
-            border: 1px solid #e2e8f0;
-            background: white;
-            border-radius: 0.375rem;
+            color: rgba(255, 255, 255, 0.9);
             font-size: 0.875rem;
             font-weight: 500;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            backdrop-filter: blur(10px);
+        }
+        
+        /* BOTÕES PREMIUM */
+        .btn {
+            padding: 0.625rem 1.25rem;
+            border: none;
+            border-radius: 0.5rem;
+            font-size: 0.875rem;
+            font-weight: 600;
             cursor: pointer;
-            transition: all 0.2s;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             display: inline-flex;
             align-items: center;
-            gap: 0.375rem;
+            gap: 0.5rem;
+            letter-spacing: 0.025em;
         }
         
         .btn:hover {
-            border-color: #cbd5e1;
-            background: #f8fafc;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+        
+        .btn:active {
+            transform: translateY(0);
+        }
+        
+        .btn-outline {
+            background: transparent;
+            color: white;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+        }
+        
+        .btn-outline:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: white;
         }
         
         .btn-primary {
-            background: #3b82f6;
+            background: var(--primary);
             color: white;
-            border-color: #3b82f6;
+            box-shadow: 0 2px 4px rgba(59, 130, 246, 0.3);
         }
         
         .btn-primary:hover {
-            background: #2563eb;
-            border-color: #2563eb;
+            background: var(--primary-dark);
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4);
         }
         
         .btn-danger {
-            background: #ef4444;
+            background: var(--danger);
             color: white;
-            border-color: #ef4444;
+            box-shadow: 0 2px 4px rgba(239, 68, 68, 0.3);
         }
         
         .btn-danger:hover {
             background: #dc2626;
-            border-color: #dc2626;
+            box-shadow: 0 4px 12px rgba(239, 68, 68, 0.4);
         }
         
         .btn-success {
-            background: #10b981;
+            background: var(--secondary);
             color: white;
-            border-color: #10b981;
+            box-shadow: 0 2px 4px rgba(16, 185, 129, 0.3);
         }
         
         .btn-success:hover {
             background: #059669;
-            border-color: #059669;
+            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.4);
         }
         
         .btn-icon {
-            width: 2rem;
-            height: 2rem;
+            width: 2.5rem;
+            height: 2.5rem;
             padding: 0;
             justify-content: center;
+            border-radius: 0.5rem;
         }
         
         /* CONTEÚDO PRINCIPAL */
         .container {
             max-width: 1200px;
-            margin: 2rem auto;
+            margin: 2.5rem auto;
             padding: 0 2rem;
         }
         
-        /* CARD DO FORMULÁRIO */
+        /* CARD DO FORMULÁRIO PREMIUM */
         .form-card {
             background: white;
-            border-radius: 0.75rem;
-            border: 1px solid #e2e8f0;
+            border-radius: 1rem;
+            border: 1px solid var(--border);
             overflow: hidden;
-            margin-bottom: 1.5rem;
+            margin-bottom: 1.75rem;
+            box-shadow: var(--card-shadow);
+            transition: all 0.3s ease;
+        }
+        
+        .form-card:hover {
+            box-shadow: var(--hover-shadow);
         }
         
         .card-header {
             padding: 1.5rem;
-            border-bottom: 1px solid #e2e8f0;
-            background: #f8fafc;
+            border-bottom: 1px solid var(--border);
+            background: linear-gradient(to right, var(--primary-light), white);
+            position: relative;
+        }
+        
+        .card-header::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 4px;
+            background: var(--primary);
+            border-radius: 0 2px 2px 0;
         }
         
         .card-title {
-            font-size: 1.125rem;
-            font-weight: 600;
-            color: #0f172a;
-            margin-bottom: 0.5rem;
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--dark);
+            margin-bottom: 0.375rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .card-title::before {
+            content: '';
+            width: 8px;
+            height: 8px;
+            background: var(--primary);
+            border-radius: 50%;
+            display: inline-block;
         }
         
         .card-subtitle {
-            color: #64748b;
+            color: var(--gray);
             font-size: 0.875rem;
+            font-weight: 500;
         }
         
         .card-body {
-            padding: 1.5rem;
+            padding: 1.75rem;
         }
         
         /* GRID DO FORMULÁRIO */
         .form-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
             gap: 1.5rem;
         }
         
-        /* GRUPO DE FORMULÁRIO */
+        /* GRUPO DE FORMULÁRIO PREMIUM */
         .form-group {
             display: flex;
             flex-direction: column;
             gap: 0.5rem;
+            position: relative;
         }
         
         .form-group label {
             font-size: 0.875rem;
-            font-weight: 500;
-            color: #475569;
+            font-weight: 600;
+            color: var(--dark);
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
         }
         
         .form-group.required label::after {
             content: " *";
-            color: #ef4444;
+            color: var(--danger);
+            font-weight: bold;
         }
         
         .form-control {
-            padding: 0.625rem 0.875rem;
-            border: 1px solid #cbd5e1;
-            border-radius: 0.375rem;
+            padding: 0.75rem 1rem;
+            border: 2px solid var(--border);
+            border-radius: 0.5rem;
             font-size: 0.875rem;
-            transition: all 0.2s;
+            transition: all 0.3s;
             background: white;
+            font-family: inherit;
         }
         
         .form-control:focus {
             outline: none;
-            border-color: #3b82f6;
+            border-color: var(--primary);
             box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
         }
         
@@ -206,164 +273,233 @@
         
         select.form-control {
             appearance: none;
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%23475569'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E");
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%233b82f6'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E");
             background-repeat: no-repeat;
-            background-position: right 0.75rem center;
+            background-position: right 1rem center;
             background-size: 1rem;
             padding-right: 2.5rem;
         }
         
-        /* TEXTAREA COM ALTURA DINÂMICA */
+        /* TEXTAREA COM ALTURA DINÂMICA E ESTILO DASH */
         .auto-expand-textarea {
             min-height: 6rem;
             resize: none;
             overflow-y: hidden;
-            line-height: 1.5;
+            line-height: 1.7;
             font-family: inherit;
+            white-space: pre-wrap;
+            word-break: break-word;
         }
         
-        /* TEXTAREA DO MODAL */
+        /* ESTILO PARA LINHAS COM DASH */
+        .dash-list {
+            padding-left: 1.25rem;
+        }
+        
+        .dash-list .dash-line {
+            position: relative;
+            padding-left: 1rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .dash-list .dash-line::before {
+            content: "–";
+            position: absolute;
+            left: 0;
+            color: var(--primary);
+            font-weight: bold;
+        }
+        
+        /* MODAL TEXTAREA */
         .modal-textarea {
             min-height: 8rem;
             resize: vertical;
-            line-height: 1.5;
+            line-height: 1.7;
             font-family: inherit;
+            white-space: pre-wrap;
+            word-break: break-word;
         }
         
-        /* OPÇÕES DE ESQUADRÃO */
+        /* OPÇÕES DE ESQUADRÃO PREMIUM */
         .esquadrao-options {
-            display: flex;
-            gap: 0.5rem;
-            flex-wrap: wrap;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 0.75rem;
         }
         
         .esquadrao-option {
-            flex: 1;
-            min-width: 100px;
-            padding: 0.75rem;
+            padding: 1rem;
             text-align: center;
-            border: 1px solid #cbd5e1;
-            border-radius: 0.375rem;
+            border: 2px solid var(--border);
+            border-radius: 0.75rem;
             background: white;
             cursor: pointer;
-            transition: all 0.2s;
+            transition: all 0.3s;
             font-size: 0.875rem;
-            font-weight: 500;
+            font-weight: 600;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .esquadrao-option::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: var(--primary);
+            transform: translateY(-100%);
+            transition: transform 0.3s;
         }
         
         .esquadrao-option:hover {
-            border-color: #3b82f6;
-            background: #eff6ff;
+            border-color: var(--primary);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.1);
+        }
+        
+        .esquadrao-option:hover::before {
+            transform: translateY(0);
         }
         
         .esquadrao-option.selected {
-            background: #3b82f6;
-            color: white;
-            border-color: #3b82f6;
+            border-color: var(--primary);
+            background: var(--primary-light);
+            color: var(--primary);
         }
         
-        /* HISTÓRICO MÉDICO - ESTILO FEED */
-        .history-feed {
-            display: flex;
-            flex-direction: column;
-            gap: 1rem;
+        .esquadrao-option.selected::before {
+            transform: translateY(0);
         }
         
-        .history-item {
-            padding: 1.25rem;
-            background: white;
-            border: 1px solid #e2e8f0;
-            border-radius: 0.75rem;
-            display: flex;
-            gap: 1rem;
-            transition: all 0.2s;
+        /* FEED DE HISTÓRICO MÉDICO PREMIUM */
+        .history-timeline {
             position: relative;
+            padding: 1rem 0;
         }
         
-        .history-item:hover {
-            border-color: #cbd5e1;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-        }
-        
-        .history-date-container {
-            flex-shrink: 0;
-            width: 100px;
-            display: flex;
-            flex-direction: column;
-            align-items: flex-start;
-        }
-        
-        .history-date {
-            font-weight: 600;
-            color: #475569;
-            font-size: 0.875rem;
-            margin-bottom: 0.25rem;
-        }
-        
-        .history-time {
-            color: #94a3b8;
-            font-size: 0.75rem;
-        }
-        
-        .history-content-container {
-            flex: 1;
-            min-width: 0; /* Permite que o conteúdo quebre */
-        }
-        
-        .history-content {
-            color: #1e293b;
-            line-height: 1.6;
-            white-space: pre-wrap; /* Mantém quebras de linha */
-            word-wrap: break-word; /* Quebra palavras longas */
-            overflow-wrap: break-word; /* Quebra palavras longas */
-        }
-        
-        .history-actions {
-            flex-shrink: 0;
-            display: flex;
-            gap: 0.375rem;
-            align-items: flex-start;
-        }
-        
-        /* LINHA CONECTORA DO FEED */
-        .history-feed {
-            position: relative;
-        }
-        
-        .history-feed::before {
+        .history-timeline::before {
             content: '';
             position: absolute;
-            left: 140px;
+            left: 24px;
             top: 0;
             bottom: 0;
             width: 2px;
-            background: linear-gradient(to bottom, transparent, #e2e8f0, transparent);
+            background: linear-gradient(to bottom, 
+                transparent 0%, 
+                var(--primary) 10%, 
+                var(--primary) 90%, 
+                transparent 100%);
+        }
+        
+        .history-item {
+            display: flex;
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+            position: relative;
+            padding: 1.5rem;
+            background: white;
+            border-radius: 1rem;
+            border: 1px solid var(--border);
+            transition: all 0.3s;
+        }
+        
+        .history-item:hover {
+            transform: translateX(4px);
+            border-color: var(--primary);
+            box-shadow: var(--hover-shadow);
         }
         
         .history-item::before {
             content: '';
             position: absolute;
-            left: 138px;
+            left: -8px;
             top: 24px;
-            width: 8px;
-            height: 8px;
+            width: 16px;
+            height: 16px;
             border-radius: 50%;
-            background: #3b82f6;
-            border: 2px solid white;
-            box-shadow: 0 0 0 2px #3b82f6;
+            background: white;
+            border: 3px solid var(--primary);
+            z-index: 1;
+        }
+        
+        .history-timestamp {
+            flex-shrink: 0;
+            width: 100px;
+            text-align: right;
+        }
+        
+        .history-date {
+            font-weight: 700;
+            color: var(--dark);
+            font-size: 0.875rem;
+            margin-bottom: 0.25rem;
+        }
+        
+        .history-time {
+            color: var(--gray);
+            font-size: 0.75rem;
+            font-weight: 500;
+            background: var(--primary-light);
+            padding: 0.25rem 0.5rem;
+            border-radius: 0.375rem;
+            display: inline-block;
+        }
+        
+        .history-content-container {
+            flex: 1;
+            min-width: 0;
+        }
+        
+        .history-content {
+            color: var(--dark);
+            line-height: 1.7;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            font-size: 0.9375rem;
+        }
+        
+        /* DASH NAS LINHAS DO HISTÓRICO */
+        .history-content.dash-format {
+            padding-left: 1.25rem;
+        }
+        
+        .history-content.dash-format .dash-line {
+            position: relative;
+            padding-left: 1rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .history-content.dash-format .dash-line::before {
+            content: "–";
+            position: absolute;
+            left: 0;
+            color: var(--primary);
+            font-weight: bold;
+        }
+        
+        .history-actions {
+            flex-shrink: 0;
+            display: flex;
+            gap: 0.5rem;
+            align-items: flex-start;
         }
         
         /* AÇÕES DO FORMULÁRIO */
         .form-actions {
             display: flex;
             justify-content: flex-end;
-            gap: 0.75rem;
-            padding: 1.5rem;
-            border-top: 1px solid #e2e8f0;
-            background: #f8fafc;
+            gap: 1rem;
+            padding: 2rem;
+            border-top: 1px solid var(--border);
+            background: white;
+            border-radius: 1rem;
+            margin-top: 2rem;
+            box-shadow: var(--card-shadow);
         }
         
-        /* MODAL */
+        /* MODAIS PREMIUM */
         .modal {
             display: none;
             position: fixed;
@@ -371,22 +507,35 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background: rgba(15, 23, 42, 0.7);
+            background: rgba(15, 23, 42, 0.8);
+            backdrop-filter: blur(8px);
             z-index: 1000;
             align-items: center;
             justify-content: center;
             padding: 1rem;
+            animation: modalFadeIn 0.3s ease-out;
+        }
+        
+        @keyframes modalFadeIn {
+            from {
+                opacity: 0;
+                backdrop-filter: blur(0);
+            }
+            to {
+                opacity: 1;
+                backdrop-filter: blur(8px);
+            }
         }
         
         .modal-content {
             background: white;
-            border-radius: 0.75rem;
+            border-radius: 1rem;
             max-width: 500px;
             width: 100%;
             max-height: 90vh;
             overflow: hidden;
-            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
-            animation: modalSlideIn 0.3s ease-out;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            animation: modalSlideIn 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             display: flex;
             flex-direction: column;
         }
@@ -394,7 +543,111 @@
         @keyframes modalSlideIn {
             from {
                 opacity: 0;
-                transform: translateY(-20px);
+                transform: translateY(30px) scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+        
+        .modal-header {
+            padding: 1.5rem;
+            border-bottom: 1px solid var(--border);
+            background: linear-gradient(to right, var(--primary-light), white);
+            position: relative;
+        }
+        
+        .modal-header::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 4px;
+            background: var(--primary);
+        }
+        
+        .modal-title {
+            font-weight: 700;
+            color: var(--dark);
+            font-size: 1.25rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+        
+        .modal-title::before {
+            content: '';
+            width: 12px;
+            height: 12px;
+            background: var(--primary);
+            border-radius: 50%;
+            display: inline-block;
+        }
+        
+        .modal-body {
+            padding: 1.75rem;
+            overflow-y: auto;
+            flex: 1;
+        }
+        
+        .modal-footer {
+            padding: 1.5rem;
+            border-top: 1px solid var(--border);
+            display: flex;
+            justify-content: flex-end;
+            gap: 0.75rem;
+            flex-shrink: 0;
+        }
+        
+        /* BADGES PREMIUM */
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 0.375rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            letter-spacing: 0.025em;
+        }
+        
+        .badge-blue {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+        }
+        
+        .badge-red {
+            background: linear-gradient(135deg, var(--danger) 0%, #dc2626 100%);
+            color: white;
+        }
+        
+        .badge-green {
+            background: linear-gradient(135deg, var(--secondary) 0%, #059669 100%);
+            color: white;
+        }
+        
+        /* STATUS DE SALVAMENTO */
+        .save-status {
+            position: fixed;
+            bottom: 1.5rem;
+            right: 1.5rem;
+            padding: 0.75rem 1.25rem;
+            border-radius: 0.75rem;
+            font-size: 0.875rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            z-index: 100;
+            animation: slideUp 0.3s ease-out;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+        
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
             }
             to {
                 opacity: 1;
@@ -402,66 +655,19 @@
             }
         }
         
-        .modal-header {
-            padding: 1.25rem 1.5rem;
-            border-bottom: 1px solid #e2e8f0;
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-            flex-shrink: 0;
+        .save-status.saving {
+            background: var(--warning);
+            color: white;
         }
         
-        .modal-icon {
-            width: 24px;
-            height: 24px;
-            color: #3b82f6;
+        .save-status.saved {
+            background: var(--secondary);
+            color: white;
         }
         
-        .modal-title {
-            font-weight: 600;
-            color: #0f172a;
-            font-size: 1.125rem;
-            flex: 1;
-        }
-        
-        .modal-body {
-            padding: 1.5rem;
-            overflow-y: auto;
-            flex: 1;
-        }
-        
-        .modal-footer {
-            padding: 1.25rem 1.5rem;
-            border-top: 1px solid #e2e8f0;
-            display: flex;
-            justify-content: flex-end;
-            gap: 0.75rem;
-            flex-shrink: 0;
-        }
-        
-        /* BADGES */
-        .badge {
-            display: inline-flex;
-            align-items: center;
-            padding: 0.25rem 0.625rem;
-            border-radius: 9999px;
-            font-size: 0.75rem;
-            font-weight: 500;
-        }
-        
-        .badge-blue {
-            background: #dbeafe;
-            color: #1d4ed8;
-        }
-        
-        .badge-red {
-            background: #fee2e2;
-            color: #dc2626;
-        }
-        
-        .badge-green {
-            background: #dcfce7;
-            color: #15803d;
+        .save-status.error {
+            background: var(--danger);
+            color: white;
         }
         
         /* UTILIDADES */
@@ -473,40 +679,39 @@
         .w-full { width: 100%; }
         .hidden { display: none !important; }
         
-        /* MENSAGEM DE SUCESSO */
-        .success-message {
-            text-align: center;
-            padding: 2rem;
+        /* LOADING SPINNER */
+        .spinner {
+            width: 16px;
+            height: 16px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: white;
+            animation: spin 0.8s linear infinite;
         }
         
-        .success-icon {
-            width: 48px;
-            height: 48px;
-            color: #10b981;
-            margin: 0 auto 1rem;
-        }
-        
-        .success-title {
-            font-size: 1.25rem;
-            font-weight: 600;
-            color: #0f172a;
-            margin-bottom: 0.5rem;
-        }
-        
-        .success-text {
-            color: #64748b;
-            margin-bottom: 1.5rem;
-        }
-        
-        /* PÁGINA EXPANDINDO CONFORME NECESSÁRIO */
-        .page-content {
-            min-height: calc(100vh - 80px);
+        @keyframes spin {
+            to { transform: rotate(360deg); }
         }
         
         /* RESPONSIVIDADE */
-        @media (max-width: 768px) {
+        @media (max-width: 1024px) {
             .container {
-                padding: 0 1rem;
+                padding: 0 1.5rem;
+            }
+            
+            .form-grid {
+                grid-template-columns: 1fr;
+                gap: 1.25rem;
+            }
+            
+            .esquadrao-options {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .header {
+                padding: 1rem 1.5rem;
             }
             
             .header-content {
@@ -515,90 +720,106 @@
                 text-align: center;
             }
             
-            .form-grid {
-                grid-template-columns: 1fr;
+            .header-actions {
+                width: 100%;
+                justify-content: center;
             }
             
-            .esquadrao-option {
-                min-width: calc(33.333% - 0.5rem);
-            }
-            
-            /* FEED RESPONSIVO */
             .history-item {
                 flex-direction: column;
-                gap: 0.75rem;
-                padding: 1rem;
+                gap: 1rem;
+                padding: 1.25rem;
             }
             
-            .history-date-container {
-                width: 100%;
-                flex-direction: row;
-                align-items: center;
-                justify-content: space-between;
+            .history-timeline::before {
+                left: 20px;
             }
             
-            .history-feed::before,
             .history-item::before {
-                display: none;
+                left: 12px;
+                top: 20px;
             }
             
-            .history-actions {
-                align-self: flex-end;
+            .history-timestamp {
+                width: 100%;
+                text-align: left;
+                display: flex;
+                align-items: center;
+                gap: 1rem;
+            }
+            
+            .history-time {
+                margin-left: auto;
             }
             
             .form-actions {
                 flex-direction: column;
+                padding: 1.5rem;
             }
             
             .form-actions .btn {
                 width: 100%;
+                justify-content: center;
             }
         }
         
         @media (max-width: 480px) {
-            .header {
-                padding: 1rem;
+            .container {
+                padding: 0 1rem;
+                margin: 1.5rem auto;
             }
             
             .card-body {
-                padding: 1rem;
+                padding: 1.25rem;
             }
             
             .esquadrao-options {
-                flex-direction: column;
+                grid-template-columns: 1fr;
             }
             
-            .esquadrao-option {
-                min-width: 100%;
+            .modal-content {
+                margin: 1rem;
             }
             
-            .history-content {
-                font-size: 0.875rem;
+            .modal-body {
+                padding: 1.25rem;
+            }
+            
+            .save-status {
+                left: 1rem;
+                right: 1rem;
+                bottom: 1rem;
+                justify-content: center;
             }
         }
     </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
     <!-- HEADER -->
     <header class="header">
         <div class="header-content">
             <div class="header-title">
-                <h1>Editar Ficha</h1>
-                <span>• Sistema Veterinário 2°rcg</span>
+                <h1><i class="fas fa-paw" style="margin-right: 8px;"></i> Editar Ficha</h1>
+                <span>Sistema Veterinário 2°RCG</span>
             </div>
             <div class="header-actions">
-                <button class="btn" id="backBtn">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M19 12H5M12 19L5 12L12 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                    </svg>
+                <button class="btn btn-outline" id="backBtn">
+                    <i class="fas fa-arrow-left"></i>
                     Voltar
                 </button>
             </div>
         </div>
     </header>
 
+    <!-- STATUS DE SALVAMENTO -->
+    <div id="saveStatus" class="save-status hidden">
+        <i class="fas fa-check-circle"></i>
+        <span>Salvo automaticamente</span>
+    </div>
+
     <!-- CONTEÚDO PRINCIPAL -->
-    <main class="container page-content">
+    <main class="container">
         <!-- CARD DE INFORMAÇÕES BÁSICAS -->
         <div class="form-card">
             <div class="card-header">
@@ -608,24 +829,37 @@
             <div class="card-body">
                 <div class="form-grid">
                     <div class="form-group required">
-                        <label for="animalName">Nome do Animal</label>
-                        <input type="text" id="animalName" class="form-control" value="Gastador">
+                        <label for="animalName">
+                            <i class="fas fa-horse"></i>
+                            Nome do Animal
+                        </label>
+                        <input type="text" id="animalName" class="form-control" placeholder="Digite o nome do animal">
                     </div>
                     
                     <div class="form-group required">
-                        <label for="animalId">Identificação</label>
-                        <input type="text" id="animalId" class="form-control" value="001">
+                        <label for="animalId">
+                            <i class="fas fa-id-card"></i>
+                            Identificação
+                        </label>
+                        <input type="text" id="animalId" class="form-control" placeholder="Número de identificação">
                     </div>
                     
                     <div class="form-group required">
-                        <label for="animalColor">Pelagem</label>
-                        <input type="text" id="animalColor" class="form-control" value="Alazão">
+                        <label for="animalColor">
+                            <i class="fas fa-palette"></i>
+                            Pelagem
+                        </label>
+                        <input type="text" id="animalColor" class="form-control" placeholder="Cor da pelagem">
                     </div>
                     
                     <div class="form-group required">
-                        <label for="animalSex">Sexo</label>
+                        <label for="animalSex">
+                            <i class="fas fa-venus-mars"></i>
+                            Sexo
+                        </label>
                         <select id="animalSex" class="form-control">
-                            <option value="Macho" selected>Macho</option>
+                            <option value="">Selecione o sexo</option>
+                            <option value="Macho">Macho</option>
                             <option value="Fêmea">Fêmea</option>
                         </select>
                     </div>
@@ -641,22 +875,31 @@
             </div>
             <div class="card-body">
                 <div class="form-group required">
-                    <label>Esquadrão de origem</label>
+                    <label>
+                        <i class="fas fa-map-marker-alt"></i>
+                        Esquadrão de origem
+                    </label>
                     <div class="esquadrao-options">
-                        <div class="esquadrao-option selected" data-value="Hipo">
+                        <div class="esquadrao-option" data-value="Hipo">
+                            <i class="fas fa-horse-head"></i>
                             Hipo
                         </div>
                         <div class="esquadrao-option" data-value="DH">
+                            <i class="fas fa-shield-alt"></i>
                             D.H
                         </div>
                         <div class="esquadrao-option" data-value="Outro">
+                            <i class="fas fa-ellipsis-h"></i>
                             Outro
                         </div>
                     </div>
                 </div>
                 
                 <div class="form-group hidden" id="origemGroup">
-                    <label for="animalOrigem" class="required">Origem do animal</label>
+                    <label for="animalOrigem" class="required">
+                        <i class="fas fa-map-pin"></i>
+                        Origem do animal
+                    </label>
                     <input type="text" id="animalOrigem" class="form-control" placeholder="Digite a origem do animal">
                 </div>
             </div>
@@ -670,9 +913,13 @@
             </div>
             <div class="card-body">
                 <div class="form-group required">
-                    <label for="animalProtocol">Visita atual</label>
+                    <label for="animalProtocol">
+                        <i class="fas fa-clipboard-check"></i>
+                        Visita atual
+                    </label>
                     <select id="animalProtocol" class="form-control">
-                        <option value="Quarentena" selected>Quarentena - Pós cirúrgico</option>
+                        <option value="">Selecione o tipo de visita</option>
+                        <option value="Quarentena">Quarentena - Pós cirúrgico</option>
                         <option value="Suplementacao">Suplementação</option>
                         <option value="Controle">Controle</option>
                         <option value="Rotina">Rotina</option>
@@ -681,8 +928,14 @@
                 </div>
                 
                 <div class="form-group">
-                    <label for="protocolDetails">Detalhes da Visita</label>
-                    <textarea id="protocolDetails" class="form-control auto-expand-textarea" rows="3" placeholder="Digite os detalhes da visita...">Pós cirúrgico. Última consulta realizada em 15/11/2025. O animal apresentou boa recuperação após a cirurgia. Será necessário acompanhar a evolução nos próximos dias e realizar novo exame na próxima semana.</textarea>
+                    <label for="protocolDetails">
+                        <i class="fas fa-file-medical-alt"></i>
+                        Detalhes da Visita
+                    </label>
+                    <textarea id="protocolDetails" class="form-control auto-expand-textarea dash-list" rows="4" placeholder="Digite os detalhes da visita... (Use novas linhas para cada ponto)"></textarea>
+                    <small style="color: var(--gray); font-size: 0.75rem; margin-top: 0.25rem;">
+                        <i class="fas fa-info-circle"></i> Cada nova linha será exibida com um traço (–)
+                    </small>
                 </div>
             </div>
         </div>
@@ -694,14 +947,12 @@
                 <p class="card-subtitle">Registros de atendimentos e tratamentos</p>
             </div>
             <div class="card-body">
-                <div class="history-feed" id="historyList">
+                <div class="history-timeline" id="historyList">
                     <!-- Histórico será carregado aqui -->
                 </div>
                 
-                <button class="btn w-full mt-6" id="addHistoryBtn">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M12 5V19M5 12H19" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                    </svg>
+                <button class="btn btn-primary w-full mt-6" id="addHistoryBtn">
+                    <i class="fas fa-plus-circle"></i>
                     Adicionar Histórico
                 </button>
             </div>
@@ -709,20 +960,17 @@
 
         <!-- AÇÕES DO FORMULÁRIO -->
         <div class="form-actions">
-            <button class="btn" id="cancelBtn">Cancelar</button>
+            <button class="btn" id="cancelBtn">
+                <i class="fas fa-times"></i>
+                Cancelar
+            </button>
             <button class="btn btn-danger" id="deleteBtn">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M3 6H5H21M8 6V4C8 3.46957 8.21071 2.96086 8.58579 2.58579C8.96086 2.21071 9.46957 2 10 2H14C14.5304 2 15.0391 2.21071 15.4142 2.58579C15.7893 2.96086 16 3.46957 16 4V6M19 6V20C19 20.5304 18.7893 21.0391 18.4142 21.4142C18.0391 21.7893 17.5304 22 17 22H7C6.46957 22 5.96086 21.7893 5.58579 21.4142C5.21071 21.0391 5 20.5304 5 20V6H19Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
+                <i class="fas fa-trash-alt"></i>
                 Excluir Ficha
             </button>
             <button class="btn btn-primary" id="saveBtn">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M19 21H5C4.46957 21 3.96086 20.7893 3.58579 20.4142C3.21071 20.0391 3 19.5304 3 19V5C3 4.46957 3.21071 3.96086 3.58579 3.58579C3.96086 3.21071 4.46957 3 5 3H16L21 8V19C21 19.5304 20.7893 20.0391 20.4142 20.4142C20.0391 20.7893 19.5304 21 19 21Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                    <path d="M17 21V13H7V21" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                    <path d="M7 3V8H15" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
-                Salvar Alterações
+                <i class="fas fa-save"></i>
+                Salvar Agora
             </button>
         </div>
     </main>
@@ -731,21 +979,39 @@
     <div class="modal" id="historyModal">
         <div class="modal-content">
             <div class="modal-header">
-                <h3 class="modal-title" id="modalTitle">Adicionar Histórico</h3>
+                <h3 class="modal-title" id="modalTitle">
+                    <i class="fas fa-history"></i>
+                    Adicionar Histórico
+                </h3>
             </div>
             <div class="modal-body">
                 <div class="form-group required">
-                    <label for="historyDate">Data</label>
+                    <label for="historyDate">
+                        <i class="fas fa-calendar-alt"></i>
+                        Data
+                    </label>
                     <input type="date" id="historyDate" class="form-control">
                 </div>
                 <div class="form-group required">
-                    <label for="historyDescription">Descrição</label>
-                    <textarea id="historyDescription" class="form-control modal-textarea" rows="6" placeholder="Descreva o histórico médico..."></textarea>
+                    <label for="historyDescription">
+                        <i class="fas fa-sticky-note"></i>
+                        Descrição
+                    </label>
+                    <textarea id="historyDescription" class="form-control modal-textarea" rows="6" placeholder="Descreva o histórico médico... (Cada nova linha será exibida com um traço -)"></textarea>
+                    <small style="color: var(--gray); font-size: 0.75rem; margin-top: 0.25rem;">
+                        <i class="fas fa-lightbulb"></i> Dica: Pressione Enter para criar uma nova linha com traço
+                    </small>
                 </div>
             </div>
             <div class="modal-footer">
-                <button class="btn" id="cancelModalBtn">Cancelar</button>
-                <button class="btn btn-primary" id="saveModalBtn">Salvar</button>
+                <button class="btn" id="cancelModalBtn">
+                    <i class="fas fa-times"></i>
+                    Cancelar
+                </button>
+                <button class="btn btn-primary" id="saveModalBtn">
+                    <i class="fas fa-check"></i>
+                    Salvar
+                </button>
             </div>
         </div>
     </div>
@@ -754,102 +1020,34 @@
     <div class="modal" id="confirmModal">
         <div class="modal-content">
             <div class="modal-header">
-                <svg class="modal-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M12 9V12M12 15H12.01M5.07183 19H18.9282C20.4678 19 21.4301 17.3333 20.6603 16L13.7321 4C12.9623 2.66667 11.0377 2.66667 10.2679 4L3.33975 16C2.56995 17.3333 3.5322 19 5.07183 19Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
-                <h3 class="modal-title" id="confirmTitle">Confirmar Ação</h3>
+                <h3 class="modal-title" id="confirmTitle">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    Confirmar Ação
+                </h3>
             </div>
             <div class="modal-body">
                 <p id="confirmMessage">Tem certeza que deseja realizar esta ação?</p>
             </div>
             <div class="modal-footer">
-                <button class="btn" id="cancelConfirmBtn">Cancelar</button>
-                <button class="btn btn-primary" id="confirmActionBtn">Confirmar</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- MODAL DE CONFIRMAÇÃO DE SALVAMENTO -->
-    <div class="modal" id="saveConfirmModal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <svg class="modal-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M8 12H12V16M12 8V8.01M12 3C16.9706 3 21 7.02944 21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
-                <h3 class="modal-title">Salvar Alterações</h3>
-            </div>
-            <div class="modal-body">
-                <p>Tem certeza que deseja salvar as alterações realizadas nesta ficha?</p>
-                <p class="mt-4" style="color: #64748b; font-size: 0.875rem;">As informações serão atualizadas no sistema.</p>
-            </div>
-            <div class="modal-footer">
-                <button class="btn" id="cancelSaveBtn">Cancelar</button>
-                <button class="btn btn-primary" id="confirmSaveBtn">Salvar Alterações</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- MODAL DE SUCESSO -->
-    <div class="modal" id="successModal">
-        <div class="modal-content">
-            <div class="modal-body">
-                <div class="success-message">
-                    <svg class="success-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M22 11.08V12C21.9988 14.1564 21.3005 16.2547 20.0093 17.9818C18.7182 19.709 16.9033 20.9725 14.8354 21.5839C12.7674 22.1953 10.5573 22.1219 8.53447 21.3746C6.51168 20.6273 4.78465 19.2461 3.61096 17.4371C2.43727 15.628 1.87979 13.4881 2.02168 11.3363C2.16356 9.18455 2.99721 7.13631 4.39828 5.49706C5.79935 3.85781 7.69279 2.71537 9.79619 2.24013C11.8996 1.7649 14.1003 1.98232 16.07 2.85999" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                        <path d="M22 4L12 14.01L9 11.01" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                    </svg>
-                    <h3 class="success-title">Ficha salva com sucesso!</h3>
-                    <p class="success-text">As alterações foram salvas no sistema.</p>
-                    <button class="btn btn-success" id="continueBtn">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M9 5L16 12L9 19" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                        </svg>
-                        Continuar Editando
-                    </button>
-                </div>
+                <button class="btn" id="cancelConfirmBtn">
+                    <i class="fas fa-times"></i>
+                    Cancelar
+                </button>
+                <button class="btn btn-primary" id="confirmActionBtn">
+                    <i class="fas fa-check"></i>
+                    Confirmar
+                </button>
             </div>
         </div>
     </div>
 
     <script>
-        // DADOS DO ANIMAL EM EDIÇÃO
-        const currentAnimal = {
-            id: 1,
-            name: "Gastador",
-            animalId: "001",
-            color: "Alazão",
-            sex: "Macho",
-            esquadrao: "Hipo",
-            origem: "",
-            protocol: "Quarentena",
-            protocolDetails: "Pós cirúrgico. Última consulta realizada em 15/11/2025. O animal apresentou boa recuperação após a cirurgia. Será necessário acompanhar a evolução nos próximos dias e realizar novo exame na próxima semana.",
-            history: [
-                { 
-                    id: 1, 
-                    date: "2025-11-15", 
-                    time: "14:30",
-                    description: "Pós cirúrgico. Última consulta realizada. O animal apresentou boa recuperação após a cirurgia. A ferida está cicatrizando bem, sem sinais de infecção. Temperatura corporal: 38.2°C. Peso: 420kg. Aplicado analgésico e antibiótico conforme prescrição." 
-                },
-                { 
-                    id: 2, 
-                    date: "2025-11-10", 
-                    time: "09:15",
-                    description: "Aplicação de vacina contra influenza equina. O animal reagiu bem à vacinação. Também foi realizado exame de rotina: ausculta cardíaca normal, mucosas coradas, TPC normal. Vermifugação realizada com Ivermectina." 
-                },
-                { 
-                    id: 3, 
-                    date: "2025-11-05", 
-                    time: "16:45",
-                    description: "Exame de sangue realizado - resultados normais. Hemograma completo dentro dos parâmetros. Proteinograma normal. O animal está em bom estado nutricional. Fornecidas orientações sobre alimentação e suplementação vitamínica." 
-                },
-                { 
-                    id: 4, 
-                    date: "2025-10-28", 
-                    time: "11:00",
-                    description: "Cirurgia de correção de cólica realizada com sucesso. O animal foi anestesiado às 09:30. Procedimento durou 2 horas. Recuperação anestésica tranquila. Prescritos analgésicos e antibióticos para os próximos 7 dias." 
-                }
-            ]
-        };
+        // CONSTANTES
+        const STORAGE_KEY = 'veterinary_system_data';
+        const ANIMAL_ID = 1; // ID do animal sendo editado
+
+        // DADOS DO ANIMAL EM EDIÇÃO (serão carregados do localStorage)
+        let currentAnimal = null;
 
         // ELEMENTOS DO DOM
         const backBtn = document.getElementById('backBtn');
@@ -860,8 +1058,7 @@
         const historyList = document.getElementById('historyList');
         const historyModal = document.getElementById('historyModal');
         const confirmModal = document.getElementById('confirmModal');
-        const saveConfirmModal = document.getElementById('saveConfirmModal');
-        const successModal = document.getElementById('successModal');
+        const saveStatus = document.getElementById('saveStatus');
 
         // ELEMENTOS DO FORMULÁRIO
         const animalName = document.getElementById('animalName');
@@ -887,33 +1084,129 @@
         const cancelConfirmBtn = document.getElementById('cancelConfirmBtn');
         const confirmActionBtn = document.getElementById('confirmActionBtn');
 
-        // ELEMENTOS DO MODAL DE SALVAMENTO
-        const cancelSaveBtn = document.getElementById('cancelSaveBtn');
-        const confirmSaveBtn = document.getElementById('confirmSaveBtn');
-
-        // ELEMENTOS DO MODAL DE SUCESSO
-        const continueBtn = document.getElementById('continueBtn');
-
         // ESTADO DA APLICAÇÃO
         let isEditingHistory = false;
         let currentHistoryId = null;
         let pendingAction = null;
+        let autoSaveTimeout = null;
+        let hasUnsavedChanges = false;
+
+        // FUNÇÕES DE LOCALSTORAGE
+        function loadFromStorage() {
+            try {
+                const storedData = localStorage.getItem(STORAGE_KEY);
+                if (storedData) {
+                    const data = JSON.parse(storedData);
+                    
+                    // Verificar se existe um animal com ID 1
+                    if (data.animals && data.animals[ANIMAL_ID]) {
+                        return data.animals[ANIMAL_ID];
+                    }
+                }
+            } catch (error) {
+                console.error('Erro ao carregar dados:', error);
+            }
+            
+            // Retornar dados padrão se não houver salvos
+            return getDefaultAnimalData();
+        }
+
+        function getDefaultAnimalData() {
+            return {
+                id: ANIMAL_ID,
+                name: "Gastador",
+                animalId: "001",
+                color: "Alazão",
+                sex: "Macho",
+                esquadrao: "Hipo",
+                origem: "",
+                protocol: "Quarentena",
+                protocolDetails: "Pós cirúrgico. Última consulta realizada em 15/11/2025\n- Animal apresentou boa recuperação após a cirurgia\n- Ferida está cicatrizando bem, sem sinais de infecção\n- Temperatura corporal: 38.2°C\n- Peso: 420kg\n- Aplicado analgésico e antibiótico conforme prescrição",
+                history: [
+                    { 
+                        id: 1, 
+                        date: "2025-11-15", 
+                        time: "14:30",
+                        description: "- Pós cirúrgico. Última consulta realizada\n- Animal apresentou boa recuperação após a cirurgia\n- Ferida está cicatrizando bem, sem sinais de infecção\n- Temperatura corporal: 38.2°C\n- Peso: 420kg\n- Aplicado analgésico e antibiótico conforme prescrição"
+                    },
+                    { 
+                        id: 2, 
+                        date: "2025-11-10", 
+                        time: "09:15",
+                        description: "- Aplicação de vacina contra influenza equina\n- Animal reagiu bem à vacinação\n- Ausculta cardíaca normal\n- Mucosas coradas\n- TPC normal\n- Vermifugação realizada com Ivermectina"
+                    },
+                    { 
+                        id: 3, 
+                        date: "2025-11-05", 
+                        time: "16:45",
+                        description: "- Exame de sangue realizado\n- Resultados normais\n- Hemograma completo dentro dos parâmetros\n- Proteinograma normal\n- Animal em bom estado nutricional\n- Fornecidas orientações sobre alimentação"
+                    }
+                ],
+                lastUpdated: new Date().toISOString()
+            };
+        }
+
+        function saveToStorage() {
+            try {
+                const data = {
+                    animals: {
+                        [ANIMAL_ID]: currentAnimal
+                    },
+                    lastSync: new Date().toISOString()
+                };
+                
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+                return true;
+            } catch (error) {
+                console.error('Erro ao salvar dados:', error);
+                return false;
+            }
+        }
 
         // FUNÇÃO PARA AJUSTAR ALTURA DO TEXTAREA
         function autoExpandTextarea(textarea) {
             textarea.style.height = 'auto';
-            textarea.style.height = (textarea.scrollHeight) + 'px';
-            
-            // Limitar altura máxima (opcional)
-            if (textarea.scrollHeight > 300) {
-                textarea.style.height = '300px';
-                textarea.style.overflowY = 'auto';
-            } else {
-                textarea.style.overflowY = 'hidden';
-            }
+            const newHeight = Math.min(textarea.scrollHeight, 300);
+            textarea.style.height = newHeight + 'px';
+            textarea.style.overflowY = textarea.scrollHeight > 300 ? 'auto' : 'hidden';
         }
 
-        // FORMATAR DATA E HORA PARA EXIBIÇÃO
+        // FUNÇÃO PARA FORMATAR TEXTO COM DASH
+        function formatTextWithDash(text) {
+            if (!text) return '';
+            
+            // Se já começar com dash, não modifica
+            if (text.trim().startsWith('-')) {
+                return text;
+            }
+            
+            // Divide por linhas e adiciona dash no início de cada uma
+            const lines = text.split('\n').filter(line => line.trim() !== '');
+            return lines.map(line => {
+                const trimmedLine = line.trim();
+                // Se a linha já começa com dash, mantém
+                if (trimmedLine.startsWith('-')) {
+                    return trimmedLine;
+                }
+                // Adiciona dash se necessário
+                return `- ${trimmedLine}`;
+            }).join('\n');
+        }
+
+        // FUNÇÃO PARA FORMATAR TEXTO COM HTML
+        function formatTextWithDashHTML(text) {
+            if (!text) return '';
+            
+            const lines = text.split('\n').filter(line => line.trim() !== '');
+            return lines.map(line => {
+                const trimmedLine = line.trim();
+                // Remove o dash se já existir (vamos adicionar via CSS)
+                const cleanLine = trimmedLine.startsWith('-') ? trimmedLine.substring(1).trim() : trimmedLine;
+                return `<div class="dash-line">${cleanLine}</div>`;
+            }).join('');
+        }
+
+        // FORMATAR DATA E HORA
         function formatDate(dateString) {
             const date = new Date(dateString);
             return date.toLocaleDateString('pt-BR', {
@@ -928,27 +1221,116 @@
             return timeString;
         }
 
-        // GERAR HORA ALEATÓRIA PARA NOVOS HISTÓRICOS
+        // GERAR HORA ALEATÓRIA
         function generateRandomTime() {
             const hours = Math.floor(Math.random() * 12) + 8; // Entre 8h e 19h
             const minutes = Math.floor(Math.random() * 60);
             return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}`;
         }
 
+        // MOSTRAR STATUS DE SALVAMENTO
+        function showSaveStatus(type, message) {
+            const icon = saveStatus.querySelector('i');
+            const text = saveStatus.querySelector('span');
+            
+            saveStatus.className = 'save-status ' + type;
+            text.textContent = message;
+            
+            switch(type) {
+                case 'saving':
+                    icon.className = 'fas fa-sync-alt fa-spin';
+                    break;
+                case 'saved':
+                    icon.className = 'fas fa-check-circle';
+                    break;
+                case 'error':
+                    icon.className = 'fas fa-exclamation-circle';
+                    break;
+            }
+            
+            saveStatus.classList.remove('hidden');
+            
+            setTimeout(() => {
+                saveStatus.classList.add('hidden');
+            }, 3000);
+        }
+
+        // SALVAR AUTOMATICAMENTE
+        function autoSave() {
+            if (autoSaveTimeout) {
+                clearTimeout(autoSaveTimeout);
+            }
+            
+            showSaveStatus('saving', 'Salvando...');
+            
+            autoSaveTimeout = setTimeout(() => {
+                if (validateForm()) {
+                    saveAnimalData();
+                    showSaveStatus('saved', 'Salvo automaticamente');
+                    hasUnsavedChanges = false;
+                } else {
+                    showSaveStatus('error', 'Erro ao salvar: dados inválidos');
+                }
+            }, 1000);
+        }
+
+        // SALVAR DADOS DO ANIMAL
+        function saveAnimalData() {
+            // Coletar dados do formulário
+            const updatedAnimal = {
+                ...currentAnimal,
+                name: animalName.value.trim(),
+                animalId: animalId.value.trim(),
+                color: animalColor.value.trim(),
+                sex: animalSex.value,
+                protocol: animalProtocol.value,
+                protocolDetails: protocolDetails.value.trim(),
+                history: [...currentAnimal.history],
+                lastUpdated: new Date().toISOString()
+            };
+
+            // Obter esquadrão selecionado
+            esquadraoOptions.forEach(option => {
+                if (option.classList.contains('selected')) {
+                    updatedAnimal.esquadrao = option.getAttribute('data-value');
+                }
+            });
+
+            // Se for "Outro", obter origem
+            if (updatedAnimal.esquadrao === 'Outro') {
+                updatedAnimal.origem = animalOrigem.value.trim();
+            } else {
+                updatedAnimal.origem = '';
+            }
+
+            // Atualizar dados locais
+            Object.assign(currentAnimal, updatedAnimal);
+            
+            // Salvar no localStorage
+            saveToStorage();
+            
+            return true;
+        }
+
         // INICIALIZAR FORMULÁRIO
         function initForm() {
+            // Carregar dados do localStorage
+            currentAnimal = loadFromStorage();
+            
             // Preencher campos básicos
-            animalName.value = currentAnimal.name;
-            animalId.value = currentAnimal.animalId;
-            animalColor.value = currentAnimal.color;
-            animalSex.value = currentAnimal.sex;
-            animalProtocol.value = currentAnimal.protocol;
-            protocolDetails.value = currentAnimal.protocolDetails;
-
+            animalName.value = currentAnimal.name || '';
+            animalId.value = currentAnimal.animalId || '';
+            animalColor.value = currentAnimal.color || '';
+            animalSex.value = currentAnimal.sex || '';
+            animalProtocol.value = currentAnimal.protocol || '';
+            protocolDetails.value = currentAnimal.protocolDetails || '';
+            
             // Configurar textarea auto-expansível
             autoExpandTextarea(protocolDetails);
             protocolDetails.addEventListener('input', function() {
                 autoExpandTextarea(this);
+                hasUnsavedChanges = true;
+                autoSave();
             });
 
             // Configurar esquadrão
@@ -960,7 +1342,7 @@
                     // Mostrar/ocultar campo de origem
                     if (currentAnimal.esquadrao === 'Outro') {
                         origemGroup.classList.remove('hidden');
-                        animalOrigem.value = currentAnimal.origem;
+                        animalOrigem.value = currentAnimal.origem || '';
                     } else {
                         origemGroup.classList.add('hidden');
                     }
@@ -978,20 +1360,24 @@
 
             // Renderizar histórico
             renderHistory();
+            
+            // Mostrar última atualização
+            if (currentAnimal.lastUpdated) {
+                const lastUpdate = new Date(currentAnimal.lastUpdated).toLocaleString('pt-BR');
+                console.log(`Última atualização: ${lastUpdate}`);
+            }
         }
 
-        // RENDERIZAR HISTÓRICO NO ESTILO FEED
+        // RENDERIZAR HISTÓRICO
         function renderHistory() {
             historyList.innerHTML = '';
 
-            if (currentAnimal.history.length === 0) {
+            if (!currentAnimal.history || currentAnimal.history.length === 0) {
                 historyList.innerHTML = `
-                    <div style="text-align: center; padding: 3rem; color: #64748b; background: #f8fafc; border-radius: 0.75rem; border: 1px dashed #e2e8f0;">
-                        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="margin-bottom: 1rem;">
-                            <path d="M12 8V12M12 16H12.01M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="#94a3b8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                        </svg>
-                        <p>Nenhum histórico médico registrado.</p>
-                        <p style="font-size: 0.875rem; margin-top: 0.5rem;">Clique em "Adicionar Histórico" para registrar o primeiro atendimento.</p>
+                    <div style="text-align: center; padding: 3rem; color: var(--gray); background: linear-gradient(135deg, var(--primary-light), white); border-radius: 1rem; border: 2px dashed var(--border);">
+                        <i class="fas fa-history" style="font-size: 3rem; color: var(--primary); margin-bottom: 1rem; opacity: 0.5;"></i>
+                        <h3 style="font-size: 1.125rem; font-weight: 600; margin-bottom: 0.5rem;">Nenhum histórico registrado</h3>
+                        <p style="font-size: 0.875rem;">Clique em "Adicionar Histórico" para registrar o primeiro atendimento.</p>
                     </div>
                 `;
                 return;
@@ -1009,24 +1395,21 @@
                 historyItem.className = 'history-item';
                 
                 historyItem.innerHTML = `
-                    <div class="history-date-container">
+                    <div class="history-timestamp">
                         <div class="history-date">${formatDate(item.date)}</div>
-                        ${item.time ? `<div class="history-time">${formatTime(item.time)}</div>` : ''}
+                        ${item.time ? `<div class="history-time"><i class="fas fa-clock"></i> ${formatTime(item.time)}</div>` : ''}
                     </div>
                     <div class="history-content-container">
-                        <div class="history-content">${item.description}</div>
+                        <div class="history-content dash-format">
+                            ${formatTextWithDashHTML(item.description)}
+                        </div>
                     </div>
                     <div class="history-actions">
                         <button class="btn btn-icon edit-history" data-id="${item.id}" title="Editar">
-                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M11 4H4C3.46957 4 2.96086 4.21071 2.58579 4.58579C2.21071 4.96086 2 5.46957 2 6V20C2 20.5304 2.21071 21.0391 2.58579 21.4142C2.96086 21.7893 3.46957 22 4 22H18C18.5304 22 19.0391 21.7893 19.4142 21.4142C19.7893 21.0391 20 20.5304 20 20V13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                                <path d="M18.5 2.5C18.8978 2.10217 19.4374 1.87868 20 1.87868C20.5626 1.87868 21.1022 2.10217 21.5 2.5C21.8978 2.89782 22.1213 3.43739 22.1213 4C22.1213 4.56261 21.8978 5.10217 21.5 5.5L12 15L8 16L9 12L18.5 2.5Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                            </svg>
+                            <i class="fas fa-edit"></i>
                         </button>
                         <button class="btn btn-icon delete-history" data-id="${item.id}" title="Excluir">
-                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M3 6H5H21M8 6V4C8 3.46957 8.21071 2.96086 8.58579 2.58579C8.96086 2.21071 9.46957 2 10 2H14C14.5304 2 15.0391 2.21071 15.4142 2.58579C15.7893 2.96086 16 3.46957 16 4V6M19 6V20C19 20.5304 18.7893 21.0391 18.4142 21.4142C18.0391 21.7893 17.5304 22 17 22H7C6.46957 22 5.96086 21.7893 5.58579 21.4142C5.21071 21.0391 5 20.5304 5 20V6H19Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                            </svg>
+                            <i class="fas fa-trash-alt"></i>
                         </button>
                     </div>
                 `;
@@ -1034,7 +1417,7 @@
                 historyList.appendChild(historyItem);
             });
 
-            // Adicionar event listeners para os botões de histórico
+            // Adicionar event listeners
             document.querySelectorAll('.edit-history').forEach(btn => {
                 btn.addEventListener('click', () => {
                     const id = parseInt(btn.getAttribute('data-id'));
@@ -1054,7 +1437,7 @@
         function openHistoryModal(editing = false, id = null) {
             if (editing && id) {
                 // Modo edição
-                modalTitle.textContent = 'Editar Histórico';
+                modalTitle.innerHTML = '<i class="fas fa-edit"></i> Editar Histórico';
                 isEditingHistory = true;
                 currentHistoryId = id;
 
@@ -1066,7 +1449,7 @@
                 }
             } else {
                 // Modo adição
-                modalTitle.textContent = 'Adicionar Histórico';
+                modalTitle.innerHTML = '<i class="fas fa-plus-circle"></i> Adicionar Histórico';
                 isEditingHistory = false;
                 currentHistoryId = null;
 
@@ -1078,7 +1461,6 @@
             }
 
             historyModal.style.display = 'flex';
-            // Foco no campo de descrição
             setTimeout(() => historyDescription.focus(), 100);
         }
 
@@ -1095,12 +1477,15 @@
         // SALVAR HISTÓRICO
         function saveHistory() {
             const dateValue = historyDate.value;
-            const descriptionValue = historyDescription.value.trim();
+            let descriptionValue = historyDescription.value.trim();
 
             if (!dateValue || !descriptionValue) {
                 showAlertModal('Aviso', 'Por favor, preencha todos os campos obrigatórios.');
                 return;
             }
+
+            // Formatar texto com dash
+            descriptionValue = formatTextWithDash(descriptionValue);
 
             if (isEditingHistory && currentHistoryId) {
                 // Editar histórico existente
@@ -1128,11 +1513,8 @@
 
             closeHistoryModal();
             renderHistory();
-            
-            // Ajustar altura da página
-            setTimeout(() => {
-                document.body.style.height = 'auto';
-            }, 100);
+            hasUnsavedChanges = true;
+            autoSave();
         }
 
         // EDITAR HISTÓRICO
@@ -1147,9 +1529,9 @@
                 id: id
             };
 
-            confirmTitle.textContent = 'Excluir Histórico';
-            confirmMessage.textContent = 'Tem certeza que deseja excluir este histórico médico?';
-            confirmActionBtn.textContent = 'Excluir';
+            confirmTitle.innerHTML = '<i class="fas fa-trash-alt"></i> Excluir Histórico';
+            confirmMessage.textContent = 'Tem certeza que deseja excluir este histórico médico? Esta ação não pode ser desfeita.';
+            confirmActionBtn.innerHTML = '<i class="fas fa-trash-alt"></i> Excluir';
             confirmModal.style.display = 'flex';
         }
 
@@ -1159,6 +1541,8 @@
             if (index !== -1) {
                 currentAnimal.history.splice(index, 1);
                 renderHistory();
+                hasUnsavedChanges = true;
+                autoSave();
             }
         }
 
@@ -1168,32 +1552,42 @@
                 type: 'deleteAnimal'
             };
 
-            confirmTitle.textContent = 'Excluir Ficha';
-            confirmMessage.textContent = '⚠️ ATENÇÃO!\n\nTem certeza que deseja excluir permanentemente esta ficha?\nTodos os dados serão perdidos.';
-            confirmActionBtn.textContent = 'Excluir';
+            confirmTitle.innerHTML = '<i class="fas fa-exclamation-triangle"></i> Excluir Ficha';
+            confirmMessage.innerHTML = '⚠️ <strong>ATENÇÃO!</strong><br><br>Tem certeza que deseja excluir permanentemente esta ficha?<br><br>Todos os dados serão perdidos e esta ação <strong>não pode ser desfeita</strong>.';
+            confirmActionBtn.innerHTML = '<i class="fas fa-trash-alt"></i> Excluir Permanentemente';
             confirmModal.style.display = 'flex';
         }
 
         // EXCLUIR FICHA
         function deleteAnimal() {
-            // Em um sistema real, aqui você faria uma requisição para excluir no servidor
-            showAlertModal('Sucesso', 'Ficha excluída permanentemente!');
-            setTimeout(() => {
-                // Não redirecionar para login - voltar para sistema
-                window.location.href = 'sistema.html';
-            }, 1500);
+            try {
+                // Remover do localStorage
+                localStorage.removeItem(STORAGE_KEY);
+                
+                showAlertModal('Sucesso', 'Ficha excluída permanentemente!');
+                
+                setTimeout(() => {
+                    window.location.href = 'sistema.html';
+                }, 2000);
+            } catch (error) {
+                showAlertModal('Erro', 'Ocorreu um erro ao excluir a ficha.');
+            }
         }
 
         // MOSTRAR CONFIRMAÇÃO DE CANCELAMENTO
         function showCancelConfirmation() {
-            pendingAction = {
-                type: 'cancelEdit'
-            };
+            if (hasUnsavedChanges) {
+                pendingAction = {
+                    type: 'cancelEdit'
+                };
 
-            confirmTitle.textContent = 'Cancelar Edição';
-            confirmMessage.textContent = 'Tem certeza que deseja cancelar a edição? Todas as alterações não salvas serão perdidas.';
-            confirmActionBtn.textContent = 'Cancelar Edição';
-            confirmModal.style.display = 'flex';
+                confirmTitle.innerHTML = '<i class="fas fa-exclamation-triangle"></i> Alterações Não Salvas';
+                confirmMessage.textContent = 'Você tem alterações não salvas. Tem certeza que deseja cancelar a edição? Todas as alterações não salvas serão perdidas.';
+                confirmActionBtn.innerHTML = '<i class="fas fa-sign-out-alt"></i> Descartar Alterações';
+                confirmModal.style.display = 'flex';
+            } else {
+                cancelEdit();
+            }
         }
 
         // CANCELAR EDIÇÃO
@@ -1214,7 +1608,7 @@
                 return false;
             }
 
-            // Verificar se um esquadrão foi selecionado
+            // Verificar esquadrão selecionado
             let selectedEsquadrao = '';
             esquadraoOptions.forEach(option => {
                 if (option.classList.contains('selected')) {
@@ -1241,70 +1635,66 @@
 
         // MOSTRAR MODAL DE ALERTA
         function showAlertModal(title, message) {
-            confirmTitle.textContent = title;
+            confirmTitle.innerHTML = `<i class="fas fa-info-circle"></i> ${title}`;
             confirmMessage.textContent = message;
-            confirmActionBtn.textContent = 'OK';
+            confirmActionBtn.innerHTML = '<i class="fas fa-check"></i> OK';
             pendingAction = { type: 'alert' };
             confirmModal.style.display = 'flex';
         }
 
-        // MOSTRAR MODAL DE CONFIRMAÇÃO DE SALVAMENTO
-        function showSaveConfirmation() {
+        // SALVAR MANUALMENTE
+        function saveManual() {
             if (!validateForm()) {
                 return;
             }
-            saveConfirmModal.style.display = 'flex';
+            
+            showSaveStatus('saving', 'Salvando...');
+            
+            setTimeout(() => {
+                if (saveAnimalData()) {
+                    showSaveStatus('saved', 'Alterações salvas com sucesso!');
+                    hasUnsavedChanges = false;
+                } else {
+                    showSaveStatus('error', 'Erro ao salvar as alterações');
+                }
+            }, 500);
         }
 
-        // SALVAR ALTERAÇÕES
-        function saveChanges() {
-            // Coletar dados do formulário
-            const updatedAnimal = {
-                ...currentAnimal,
-                name: animalName.value.trim(),
-                animalId: animalId.value.trim(),
-                color: animalColor.value.trim(),
-                sex: animalSex.value,
-                protocol: animalProtocol.value,
-                protocolDetails: protocolDetails.value.trim(),
-                history: [...currentAnimal.history]
-            };
+        // VOLTAR
+        function goBack() {
+            showCancelConfirmation();
+        }
 
-            // Obter esquadrão selecionado
-            esquadraoOptions.forEach(option => {
-                if (option.classList.contains('selected')) {
-                    updatedAnimal.esquadrao = option.getAttribute('data-value');
+        // ADICIONAR EVENT LISTENERS PARA INPUTS
+        function addInputListeners() {
+            const inputs = [
+                animalName,
+                animalId,
+                animalColor,
+                animalSex,
+                animalProtocol,
+                animalOrigem
+            ];
+            
+            inputs.forEach(input => {
+                if (input) {
+                    input.addEventListener('input', () => {
+                        hasUnsavedChanges = true;
+                        autoSave();
+                    });
+                    
+                    input.addEventListener('change', () => {
+                        hasUnsavedChanges = true;
+                        autoSave();
+                    });
                 }
             });
-
-            // Se for "Outro", obter origem
-            if (updatedAnimal.esquadrao === 'Outro') {
-                updatedAnimal.origem = animalOrigem.value.trim();
-            } else {
-                updatedAnimal.origem = '';
-            }
-
-            // Em um sistema real, aqui você faria uma requisição para salvar no servidor
-            console.log('Dados salvos:', updatedAnimal);
-            
-            // Fechar modal de confirmação
-            saveConfirmModal.style.display = 'none';
-            
-            // Mostrar modal de sucesso
-            successModal.style.display = 'flex';
-            
-            // Atualizar dados locais (em um sistema real, isso viria do servidor)
-            Object.assign(currentAnimal, updatedAnimal);
-        }
-
-        // VOLTAR PARA A TELA PRINCIPAL
-        function goBack() {
-            window.location.href = 'sistema.html';
         }
 
         // INICIALIZAR APLICAÇÃO
         function init() {
             initForm();
+            addInputListeners();
 
             // Event Listeners para opções de esquadrão
             esquadraoOptions.forEach(option => {
@@ -1322,6 +1712,9 @@
                     } else {
                         origemGroup.classList.add('hidden');
                     }
+                    
+                    hasUnsavedChanges = true;
+                    autoSave();
                 });
             });
 
@@ -1329,7 +1722,7 @@
             backBtn.addEventListener('click', goBack);
             cancelBtn.addEventListener('click', showCancelConfirmation);
             deleteBtn.addEventListener('click', showDeleteConfirmation);
-            saveBtn.addEventListener('click', showSaveConfirmation);
+            saveBtn.addEventListener('click', saveManual);
             addHistoryBtn.addEventListener('click', () => openHistoryModal(false));
 
             // Event Listeners do modal de histórico
@@ -1363,18 +1756,6 @@
                 pendingAction = null;
             });
 
-            // Event Listeners do modal de salvamento
-            cancelSaveBtn.addEventListener('click', () => {
-                saveConfirmModal.style.display = 'none';
-            });
-
-            confirmSaveBtn.addEventListener('click', saveChanges);
-
-            // Event Listeners do modal de sucesso
-            continueBtn.addEventListener('click', () => {
-                successModal.style.display = 'none';
-            });
-
             // Fechar modais ao clicar fora
             window.addEventListener('click', (e) => {
                 if (e.target === historyModal) {
@@ -1383,12 +1764,6 @@
                 if (e.target === confirmModal) {
                     confirmModal.style.display = 'none';
                     pendingAction = null;
-                }
-                if (e.target === saveConfirmModal) {
-                    saveConfirmModal.style.display = 'none';
-                }
-                if (e.target === successModal) {
-                    successModal.style.display = 'none';
                 }
             });
 
@@ -1402,18 +1777,36 @@
                         confirmModal.style.display = 'none';
                         pendingAction = null;
                     }
-                    if (saveConfirmModal.style.display === 'flex') {
-                        saveConfirmModal.style.display = 'none';
-                    }
-                    if (successModal.style.display === 'flex') {
-                        successModal.style.display = 'none';
-                    }
                 }
             });
 
-            // Permitir que a página se expanda com o conteúdo
-            document.body.style.minHeight = '100vh';
-            document.body.style.height = 'auto';
+            // Avisar antes de sair se houver alterações não salvas
+            window.addEventListener('beforeunload', (e) => {
+                if (hasUnsavedChanges) {
+                    e.preventDefault();
+                    e.returnValue = 'Você tem alterações não salvas. Tem certeza que deseja sair?';
+                }
+            });
+
+            // Adicionar dash quando pressionar Enter no textarea
+            historyDescription.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter' && !e.shiftKey) {
+                    e.preventDefault();
+                    const start = historyDescription.selectionStart;
+                    const end = historyDescription.selectionEnd;
+                    const value = historyDescription.value;
+                    
+                    // Adicionar nova linha com dash
+                    historyDescription.value = value.substring(0, start) + '\n- ' + value.substring(end);
+                    
+                    // Posicionar cursor após o dash
+                    const newCursorPos = start + 3;
+                    historyDescription.selectionStart = newCursorPos;
+                    historyDescription.selectionEnd = newCursorPos;
+                    
+                    autoExpandTextarea(historyDescription);
+                }
+            });
         }
 
         // INICIAR QUANDO O DOM ESTIVER PRONTO
