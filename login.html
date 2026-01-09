@@ -319,7 +319,7 @@
     <div class="login-container">
         <div class="logo">
             <div class="logo-image">
-                <img src="2-rcg-926x926 (1).jpg" alt="Logo Veterinária">
+                <img src="2-rcg-926x926 (1).jpg" alt="Logo Veterinária" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTIwIiBoZWlnaHQ9IjEyMCIgdmlld0JveD0iMCAwIDEyMCAxMjAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSIxMjAiIGhlaWdodD0iMTIwIiByeD0iNjAiIGZpbGw9IiMyYzdmYjgiLz4KPHRleHQgeD0iNjAiIHk9IjYwIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iNDgiIGZpbGw9IndoaXRlIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBkeT0iLjNlbSI+VmV0PC90ZXh0Pgo8L3N2Zz4K'">
             </div>
             <h1>Vet 2°rcg System</h1>
             <p>Sistema de Gestão Veterinária</p>
@@ -443,14 +443,12 @@
         
         // ========== FUNÇÕES DE LOGIN ==========
         
-        // Inicializar a página
         function initLoginPage() {
-            // Limpar localStorage se estiver na página de login
-            if (window.location.pathname.includes('login.html')) {
-                localStorage.removeItem('userRole');
-                localStorage.removeItem('userPermissions');
-                localStorage.removeItem('currentUser');
-            }
+            // Sempre focar no campo de cargo ao carregar a página
+            roleSelect.focus();
+            
+            // Limpar mensagens
+            hideMessages();
             
             // Adicionar evento para mudança de cargo
             roleSelect.addEventListener('change', handleRoleChange);
@@ -479,8 +477,15 @@
             usernameInput.addEventListener('input', hideMessages);
             passwordInput.addEventListener('input', hideMessages);
             
-            // Focar no primeiro campo
-            roleSelect.focus();
+            // Permitir login com Enter
+            document.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter' && !e.target.matches('select')) {
+                    loginForm.dispatchEvent(new Event('submit'));
+                }
+            });
+            
+            // Exibir mensagem de boas-vindas
+            console.log('Sistema Veterinário - Tela de Login carregada');
         }
         
         function handleRoleChange() {
@@ -595,6 +600,9 @@
                     loginContainer.classList.add('fade-out');
                 }
                 
+                // Mensagem de log
+                console.log(`Login realizado: ${username} (${role})`);
+                
                 // Redirecionar para a tela do sistema após 1 segundo
                 setTimeout(function() {
                     window.location.href = 'sistema.html';
@@ -610,6 +618,9 @@
                     passwordInput.focus();
                     passwordInput.select();
                 }, 500);
+                
+                // Log de tentativa falha
+                console.warn(`Tentativa de login falhou para: ${username} (${role})`);
             }
         }
         
@@ -712,7 +723,7 @@
             const permissions = JSON.parse(localStorage.getItem('userPermissions') || '{}');
             const loginTime = localStorage.getItem('loginTime');
             
-            // Verificar se o login é válido
+            // Se não tem informações de login, retorna null
             if (!userRole || !permissions || !loginTime) {
                 return null;
             }
@@ -751,14 +762,7 @@
         };
         
         // Inicializar a página quando carregar
-        window.addEventListener('DOMContentLoaded', initLoginPage);
-        
-        // Permitir login com Enter
-        document.addEventListener('keypress', function(e) {
-            if (e.key === 'Enter' && !e.target.matches('select')) {
-                loginForm.dispatchEvent(new Event('submit'));
-            }
-        });
+        document.addEventListener('DOMContentLoaded', initLoginPage);
     </script>
 </body>
 </html>
