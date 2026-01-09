@@ -5,30 +5,792 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Editar Ficha - Sistema Veterinário</title>
     <style>
-        /* (todo o CSS permanece exatamente o mesmo) */
+        /* RESET E ESTILOS GERAIS */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
         
-        /* ESTILOS ADICIONAIS PARA PERMISSÕES */
-        .permission-warning {
-            background: linear-gradient(135deg, #f39c12 0%, #e67e22 100%);
+        :root {
+            --primary: #3b82f6;
+            --primary-dark: #2563eb;
+            --primary-light: #eff6ff;
+            --secondary: #10b981;
+            --danger: #ef4444;
+            --warning: #f59e0b;
+            --dark: #1e293b;
+            --light: #f8fafc;
+            --gray: #64748b;
+            --border: #e2e8f0;
+            --card-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --hover-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+        
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            background: linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 100%);
+            min-height: 100vh;
+            color: var(--dark);
+            line-height: 1.6;
+        }
+        
+        /* HEADER PREMIUM */
+        .header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            padding: 1.25rem 2rem;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+        
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .header-title {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+        
+        .header-title h1 {
+            font-size: 1.5rem;
+            font-weight: 700;
             color: white;
-            padding: 15px;
-            border-radius: 10px;
-            margin: 20px 0;
-            text-align: center;
+            letter-spacing: -0.025em;
+        }
+        
+        .header-title span {
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 0.875rem;
+            font-weight: 500;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            backdrop-filter: blur(10px);
+        }
+        
+        /* BOTÕES PREMIUM */
+        .btn {
+            padding: 0.625rem 1.25rem;
+            border: none;
+            border-radius: 0.5rem;
+            font-size: 0.875rem;
             font-weight: 600;
-            box-shadow: 0 4px 15px rgba(243, 156, 18, 0.3);
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            letter-spacing: 0.025em;
         }
         
-        .readonly-field {
-            background-color: #f8f9fa !important;
-            border-color: #ddd !important;
-            color: #666 !important;
-            cursor: not-allowed !important;
+        .btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
         }
         
-        .readonly-field:focus {
-            box-shadow: none !important;
-            border-color: #ddd !important;
+        .btn:active {
+            transform: translateY(0);
+        }
+        
+        .btn-outline {
+            background: transparent;
+            color: white;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+        }
+        
+        .btn-outline:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: white;
+        }
+        
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+            box-shadow: 0 2px 4px rgba(59, 130, 246, 0.3);
+        }
+        
+        .btn-primary:hover {
+            background: var(--primary-dark);
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4);
+        }
+        
+        .btn-danger {
+            background: var(--danger);
+            color: white;
+            box-shadow: 0 2px 4px rgba(239, 68, 68, 0.3);
+        }
+        
+        .btn-danger:hover {
+            background: #dc2626;
+            box-shadow: 0 4px 12px rgba(239, 68, 68, 0.4);
+        }
+        
+        .btn-success {
+            background: var(--secondary);
+            color: white;
+            box-shadow: 0 2px 4px rgba(16, 185, 129, 0.3);
+        }
+        
+        .btn-success:hover {
+            background: #059669;
+            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.4);
+        }
+        
+        .btn-icon {
+            width: 2.5rem;
+            height: 2.5rem;
+            padding: 0;
+            justify-content: center;
+            border-radius: 0.5rem;
+        }
+        
+        /* CONTEÚDO PRINCIPAL */
+        .container {
+            max-width: 1200px;
+            margin: 2.5rem auto;
+            padding: 0 2rem;
+        }
+        
+        /* CARD DO FORMULÁRIO PREMIUM */
+        .form-card {
+            background: white;
+            border-radius: 1rem;
+            border: 1px solid var(--border);
+            overflow: hidden;
+            margin-bottom: 1.75rem;
+            box-shadow: var(--card-shadow);
+            transition: all 0.3s ease;
+        }
+        
+        .form-card:hover {
+            box-shadow: var(--hover-shadow);
+        }
+        
+        .card-header {
+            padding: 1.5rem;
+            border-bottom: 1px solid var(--border);
+            background: linear-gradient(to right, var(--primary-light), white);
+            position: relative;
+        }
+        
+        .card-header::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 4px;
+            background: var(--primary);
+            border-radius: 0 2px 2px 0;
+        }
+        
+        .card-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--dark);
+            margin-bottom: 0.375rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .card-title::before {
+            content: '';
+            width: 8px;
+            height: 8px;
+            background: var(--primary);
+            border-radius: 50%;
+            display: inline-block;
+        }
+        
+        .card-subtitle {
+            color: var(--gray);
+            font-size: 0.875rem;
+            font-weight: 500;
+        }
+        
+        .card-body {
+            padding: 1.75rem;
+        }
+        
+        /* GRID DO FORMULÁRIO */
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+        }
+        
+        /* GRUPO DE FORMULÁRIO PREMIUM */
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            position: relative;
+        }
+        
+        .form-group label {
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: var(--dark);
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+        }
+        
+        .form-group.required label::after {
+            content: " *";
+            color: var(--danger);
+            font-weight: bold;
+        }
+        
+        .form-control {
+            padding: 0.75rem 1rem;
+            border: 2px solid var(--border);
+            border-radius: 0.5rem;
+            font-size: 0.875rem;
+            transition: all 0.3s;
+            background: white;
+            font-family: inherit;
+        }
+        
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+        
+        .form-control::placeholder {
+            color: #94a3b8;
+        }
+        
+        select.form-control {
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%233b82f6'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 1rem center;
+            background-size: 1rem;
+            padding-right: 2.5rem;
+        }
+        
+        /* TEXTAREA COM ALTURA DINÂMICA E ESTILO DASH */
+        .auto-expand-textarea {
+            min-height: 6rem;
+            resize: none;
+            overflow-y: hidden;
+            line-height: 1.7;
+            font-family: inherit;
+            white-space: pre-wrap;
+            word-break: break-word;
+        }
+        
+        /* ESTILO PARA LINHAS COM DASH */
+        .dash-list {
+            padding-left: 1.25rem;
+        }
+        
+        .dash-list .dash-line {
+            position: relative;
+            padding-left: 1rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .dash-list .dash-line::before {
+            content: "–";
+            position: absolute;
+            left: 0;
+            color: var(--primary);
+            font-weight: bold;
+        }
+        
+        /* MODAL TEXTAREA */
+        .modal-textarea {
+            min-height: 8rem;
+            resize: vertical;
+            line-height: 1.7;
+            font-family: inherit;
+            white-space: pre-wrap;
+            word-break: break-word;
+        }
+        
+        /* OPÇÕES DE ESQUADRÃO PREMIUM */
+        .esquadrao-options {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 0.75rem;
+        }
+        
+        .esquadrao-option {
+            padding: 1rem;
+            text-align: center;
+            border: 2px solid var(--border);
+            border-radius: 0.75rem;
+            background: white;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 0.875rem;
+            font-weight: 600;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .esquadrao-option::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: var(--primary);
+            transform: translateY(-100%);
+            transition: transform 0.3s;
+        }
+        
+        .esquadrao-option:hover {
+            border-color: var(--primary);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.1);
+        }
+        
+        .esquadrao-option:hover::before {
+            transform: translateY(0);
+        }
+        
+        .esquadrao-option.selected {
+            border-color: var(--primary);
+            background: var(--primary-light);
+            color: var(--primary);
+        }
+        
+        .esquadrao-option.selected::before {
+            transform: translateY(0);
+        }
+        
+        /* FEED DE HISTÓRICO MÉDICO PREMIUM */
+        .history-timeline {
+            position: relative;
+            padding: 1rem 0;
+        }
+        
+        .history-timeline::before {
+            content: '';
+            position: absolute;
+            left: 24px;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: linear-gradient(to bottom, 
+                transparent 0%, 
+                var(--primary) 10%, 
+                var(--primary) 90%, 
+                transparent 100%);
+        }
+        
+        .history-item {
+            display: flex;
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+            position: relative;
+            padding: 1.5rem;
+            background: white;
+            border-radius: 1rem;
+            border: 1px solid var(--border);
+            transition: all 0.3s;
+        }
+        
+        .history-item:hover {
+            transform: translateX(4px);
+            border-color: var(--primary);
+            box-shadow: var(--hover-shadow);
+        }
+        
+        .history-item::before {
+            content: '';
+            position: absolute;
+            left: -8px;
+            top: 24px;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: white;
+            border: 3px solid var(--primary);
+            z-index: 1;
+        }
+        
+        .history-timestamp {
+            flex-shrink: 0;
+            width: 100px;
+            text-align: right;
+        }
+        
+        .history-date {
+            font-weight: 700;
+            color: var(--dark);
+            font-size: 0.875rem;
+            margin-bottom: 0.25rem;
+        }
+        
+        .history-time {
+            color: var(--gray);
+            font-size: 0.75rem;
+            font-weight: 500;
+            background: var(--primary-light);
+            padding: 0.25rem 0.5rem;
+            border-radius: 0.375rem;
+            display: inline-block;
+        }
+        
+        .history-content-container {
+            flex: 1;
+            min-width: 0;
+        }
+        
+        .history-content {
+            color: var(--dark);
+            line-height: 1.7;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            font-size: 0.9375rem;
+        }
+        
+        /* DASH NAS LINHAS DO HISTÓRICO */
+        .history-content.dash-format {
+            padding-left: 1.25rem;
+        }
+        
+        .history-content.dash-format .dash-line {
+            position: relative;
+            padding-left: 1rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .history-content.dash-format .dash-line::before {
+            content: "–";
+            position: absolute;
+            left: 0;
+            color: var(--primary);
+            font-weight: bold;
+        }
+        
+        .history-actions {
+            flex-shrink: 0;
+            display: flex;
+            gap: 0.5rem;
+            align-items: flex-start;
+        }
+        
+        /* AÇÕES DO FORMULÁRIO */
+        .form-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 1rem;
+            padding: 2rem;
+            border-top: 1px solid var(--border);
+            background: white;
+            border-radius: 1rem;
+            margin-top: 2rem;
+            box-shadow: var(--card-shadow);
+        }
+        
+        /* MODAIS PREMIUM */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(15, 23, 42, 0.8);
+            backdrop-filter: blur(8px);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+            animation: modalFadeIn 0.3s ease-out;
+        }
+        
+        @keyframes modalFadeIn {
+            from {
+                opacity: 0;
+                backdrop-filter: blur(0);
+            }
+            to {
+                opacity: 1;
+                backdrop-filter: blur(8px);
+            }
+        }
+        
+        .modal-content {
+            background: white;
+            border-radius: 1rem;
+            max-width: 500px;
+            width: 100%;
+            max-height: 90vh;
+            overflow: hidden;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            animation: modalSlideIn 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            flex-direction: column;
+        }
+        
+        @keyframes modalSlideIn {
+            from {
+                opacity: 0;
+                transform: translateY(30px) scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+        
+        .modal-header {
+            padding: 1.5rem;
+            border-bottom: 1px solid var(--border);
+            background: linear-gradient(to right, var(--primary-light), white);
+            position: relative;
+        }
+        
+        .modal-header::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 4px;
+            background: var(--primary);
+        }
+        
+        .modal-title {
+            font-weight: 700;
+            color: var(--dark);
+            font-size: 1.25rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+        
+        .modal-title::before {
+            content: '';
+            width: 12px;
+            height: 12px;
+            background: var(--primary);
+            border-radius: 50%;
+            display: inline-block;
+        }
+        
+        .modal-body {
+            padding: 1.75rem;
+            overflow-y: auto;
+            flex: 1;
+        }
+        
+        .modal-footer {
+            padding: 1.5rem;
+            border-top: 1px solid var(--border);
+            display: flex;
+            justify-content: flex-end;
+            gap: 0.75rem;
+            flex-shrink: 0;
+        }
+        
+        /* BADGES PREMIUM */
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 0.375rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            letter-spacing: 0.025em;
+        }
+        
+        .badge-blue {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+        }
+        
+        .badge-red {
+            background: linear-gradient(135deg, var(--danger) 0%, #dc2626 100%);
+            color: white;
+        }
+        
+        .badge-green {
+            background: linear-gradient(135deg, var(--secondary) 0%, #059669 100%);
+            color: white;
+        }
+        
+        /* STATUS DE SALVAMENTO */
+        .save-status {
+            position: fixed;
+            bottom: 1.5rem;
+            right: 1.5rem;
+            padding: 0.75rem 1.25rem;
+            border-radius: 0.75rem;
+            font-size: 0.875rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            z-index: 100;
+            animation: slideUp 0.3s ease-out;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+        
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .save-status.saving {
+            background: var(--warning);
+            color: white;
+        }
+        
+        .save-status.saved {
+            background: var(--secondary);
+            color: white;
+        }
+        
+        .save-status.error {
+            background: var(--danger);
+            color: white;
+        }
+        
+        /* UTILIDADES */
+        .mb-4 { margin-bottom: 1rem; }
+        .mb-6 { margin-bottom: 1.5rem; }
+        .mt-2 { margin-top: 0.5rem; }
+        .mt-4 { margin-top: 1rem; }
+        .mt-6 { margin-top: 1.5rem; }
+        .w-full { width: 100%; }
+        .hidden { display: none !important; }
+        
+        /* LOADING SPINNER */
+        .spinner {
+            width: 16px;
+            height: 16px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: white;
+            animation: spin 0.8s linear infinite;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        /* RESPONSIVIDADE */
+        @media (max-width: 1024px) {
+            .container {
+                padding: 0 1.5rem;
+            }
+            
+            .form-grid {
+                grid-template-columns: 1fr;
+                gap: 1.25rem;
+            }
+            
+            .esquadrao-options {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .header {
+                padding: 1rem 1.5rem;
+            }
+            
+            .header-content {
+                flex-direction: column;
+                gap: 1rem;
+                text-align: center;
+            }
+            
+            .header-actions {
+                width: 100%;
+                justify-content: center;
+            }
+            
+            .history-item {
+                flex-direction: column;
+                gap: 1rem;
+                padding: 1.25rem;
+            }
+            
+            .history-timeline::before {
+                left: 20px;
+            }
+            
+            .history-item::before {
+                left: 12px;
+                top: 20px;
+            }
+            
+            .history-timestamp {
+                width: 100%;
+                text-align: left;
+                display: flex;
+                align-items: center;
+                gap: 1rem;
+            }
+            
+            .history-time {
+                margin-left: auto;
+            }
+            
+            .form-actions {
+                flex-direction: column;
+                padding: 1.5rem;
+            }
+            
+            .form-actions .btn {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .container {
+                padding: 0 1rem;
+                margin: 1.5rem auto;
+            }
+            
+            .card-body {
+                padding: 1.25rem;
+            }
+            
+            .esquadrao-options {
+                grid-template-columns: 1fr;
+            }
+            
+            .modal-content {
+                margin: 1rem;
+            }
+            
+            .modal-body {
+                padding: 1.25rem;
+            }
+            
+            .save-status {
+                left: 1rem;
+                right: 1rem;
+                bottom: 1rem;
+                justify-content: center;
+            }
         }
     </style>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -39,7 +801,7 @@
         <div class="header-content">
             <div class="header-title">
                 <h1><i class="fas fa-paw" style="margin-right: 8px;"></i> Editar Ficha</h1>
-                <span id="permissionBadge">Carregando permissões...</span>
+                <span>Sistema Veterinário 2°RCG</span>
             </div>
             <div class="header-actions">
                 <button class="btn btn-outline" id="backBtn">
@@ -54,12 +816,6 @@
     <div id="saveStatus" class="save-status hidden">
         <i class="fas fa-check-circle"></i>
         <span>Salvo automaticamente</span>
-    </div>
-
-    <!-- AVISO DE PERMISSÃO -->
-    <div id="permissionWarning" class="permission-warning" style="display: none;">
-        <i class="fas fa-exclamation-triangle"></i>
-        <span id="warningMessage">Você tem permissões limitadas nesta ficha.</span>
     </div>
 
     <!-- CONTEÚDO PRINCIPAL -->
@@ -80,124 +836,488 @@
                         <input type="text" id="animalName" class="form-control" placeholder="Digite o nome do animal">
                     </div>
                     
-                    <!-- (restante dos campos permanece igual) -->
+                    <div class="form-group required">
+                        <label for="animalId">
+                            <i class="fas fa-id-card"></i>
+                            Identificação
+                        </label>
+                        <input type="text" id="animalId" class="form-control" placeholder="Número de identificação">
+                    </div>
+                    
+                    <div class="form-group required">
+                        <label for="animalColor">
+                            <i class="fas fa-palette"></i>
+                            Pelagem
+                        </label>
+                        <input type="text" id="animalColor" class="form-control" placeholder="Cor da pelagem">
+                    </div>
+                    
+                    <div class="form-group required">
+                        <label for="animalSex">
+                            <i class="fas fa-venus-mars"></i>
+                            Sexo
+                        </label>
+                        <select id="animalSex" class="form-control">
+                            <option value="">Selecione o sexo</option>
+                            <option value="Macho">Macho</option>
+                            <option value="Fêmea">Fêmea</option>
+                        </select>
+                    </div>
                 </div>
             </div>
         </div>
 
-        <!-- (restante do HTML permanece exatamente o mesmo) -->
+        <!-- CARD DE ESQUADRÃO -->
+        <div class="form-card">
+            <div class="card-header">
+                <h2 class="card-title">Esquadrão</h2>
+                <p class="card-subtitle">Selecione a origem do animal</p>
+            </div>
+            <div class="card-body">
+                <div class="form-group required">
+                    <label>
+                        <i class="fas fa-map-marker-alt"></i>
+                        Esquadrão de origem
+                    </label>
+                    <div class="esquadrao-options">
+                        <div class="esquadrao-option" data-value="Hipo">
+                            <i class="fas fa-horse-head"></i>
+                            Hipo
+                        </div>
+                        <div class="esquadrao-option" data-value="DH">
+                            <i class="fas fa-shield-alt"></i>
+                            D.H
+                        </div>
+                        <div class="esquadrao-option" data-value="Outro">
+                            <i class="fas fa-ellipsis-h"></i>
+                            Outro
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-group hidden" id="origemGroup">
+                    <label for="animalOrigem" class="required">
+                        <i class="fas fa-map-pin"></i>
+                        Origem do animal
+                    </label>
+                    <input type="text" id="animalOrigem" class="form-control" placeholder="Digite a origem do animal">
+                </div>
+            </div>
+        </div>
 
+        <!-- CARD DE PROTOCOLO -->
+        <div class="form-card">
+            <div class="card-header">
+                <h2 class="card-title">Visita</h2>
+                <p class="card-subtitle">Visita médica do animal</p>
+            </div>
+            <div class="card-body">
+                <div class="form-group required">
+                    <label for="animalProtocol">
+                        <i class="fas fa-clipboard-check"></i>
+                        Visita atual
+                    </label>
+                    <select id="animalProtocol" class="form-control">
+                        <option value="">Selecione o tipo de visita</option>
+                        <option value="Quarentena">Quarentena - Pós cirúrgico</option>
+                        <option value="Suplementacao">Suplementação</option>
+                        <option value="Controle">Controle</option>
+                        <option value="Rotina">Rotina</option>
+                        <option value="Emergencia">Emergência</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="protocolDetails">
+                        <i class="fas fa-file-medical-alt"></i>
+                        Detalhes da Visita
+                    </label>
+                    <textarea id="protocolDetails" class="form-control auto-expand-textarea dash-list" rows="4" placeholder="Digite os detalhes da visita... (Use novas linhas para cada ponto)"></textarea>
+                    <small style="color: var(--gray); font-size: 0.75rem; margin-top: 0.25rem;">
+                        <i class="fas fa-info-circle"></i> Cada nova linha será exibida com um traço (–)
+                    </small>
+                </div>
+            </div>
+        </div>
+
+        <!-- CARD DE HISTÓRICO MÉDICO -->
+        <div class="form-card">
+            <div class="card-header">
+                <h2 class="card-title">Histórico Médico</h2>
+                <p class="card-subtitle">Registros de atendimentos e tratamentos</p>
+            </div>
+            <div class="card-body">
+                <div class="history-timeline" id="historyList">
+                    <!-- Histórico será carregado aqui -->
+                </div>
+                
+                <button class="btn btn-primary w-full mt-6" id="addHistoryBtn">
+                    <i class="fas fa-plus-circle"></i>
+                    Adicionar Histórico
+                </button>
+            </div>
+        </div>
+
+        <!-- AÇÕES DO FORMULÁRIO -->
+        <div class="form-actions">
+            <button class="btn" id="cancelBtn">
+                <i class="fas fa-times"></i>
+                Cancelar
+            </button>
+            <button class="btn btn-danger" id="deleteBtn">
+                <i class="fas fa-trash-alt"></i>
+                Excluir Ficha
+            </button>
+            <button class="btn btn-primary" id="saveBtn">
+                <i class="fas fa-save"></i>
+                Salvar Agora
+            </button>
+        </div>
     </main>
 
-    <!-- (modais permanecem exatamente os mesmos) -->
+    <!-- MODAL PARA ADICIONAR/EDITAR HISTÓRICO -->
+    <div class="modal" id="historyModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title" id="modalTitle">
+                    <i class="fas fa-history"></i>
+                    Adicionar Histórico
+                </h3>
+            </div>
+            <div class="modal-body">
+                <div class="form-group required">
+                    <label for="historyDate">
+                        <i class="fas fa-calendar-alt"></i>
+                        Data
+                    </label>
+                    <input type="date" id="historyDate" class="form-control">
+                </div>
+                <div class="form-group required">
+                    <label for="historyDescription">
+                        <i class="fas fa-sticky-note"></i>
+                        Descrição
+                    </label>
+                    <textarea id="historyDescription" class="form-control modal-textarea" rows="6" placeholder="Descreva o histórico médico... (Cada nova linha será exibida com um traço -)"></textarea>
+                    <small style="color: var(--gray); font-size: 0.75rem; margin-top: 0.25rem;">
+                        <i class="fas fa-lightbulb"></i> Dica: Pressione Enter para criar uma nova linha com traço
+                    </small>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn" id="cancelModalBtn">
+                    <i class="fas fa-times"></i>
+                    Cancelar
+                </button>
+                <button class="btn btn-primary" id="saveModalBtn">
+                    <i class="fas fa-check"></i>
+                    Salvar
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL DE CONFIRMAÇÃO -->
+    <div class="modal" id="confirmModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title" id="confirmTitle">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    Confirmar Ação
+                </h3>
+            </div>
+            <div class="modal-body">
+                <p id="confirmMessage">Tem certeza que deseja realizar esta ação?</p>
+            </div>
+            <div class="modal-footer">
+                <button class="btn" id="cancelConfirmBtn">
+                    <i class="fas fa-times"></i>
+                    Cancelar
+                </button>
+                <button class="btn btn-primary" id="confirmActionBtn">
+                    <i class="fas fa-check"></i>
+                    Confirmar
+                </button>
+            </div>
+        </div>
+    </div>
 
     <script>
-        // ========== VERIFICAÇÃO DE PERMISSÕES ==========
-        function checkPermissions() {
-            const userRole = localStorage.getItem('userRole');
-            const permissions = JSON.parse(localStorage.getItem('userPermissions') || '{}');
-            
-            if (!userRole || !permissions) {
-                window.location.href = 'login.html';
-                return null;
-            }
-            
-            return { role: userRole, permissions: permissions };
-        }
-        
-        function applyPermissionsToForm() {
-            const userInfo = checkPermissions();
-            if (!userInfo) return;
-            
-            const { role, permissions } = userInfo;
-            
-            // Atualizar badge no header
-            const permissionBadge = document.getElementById('permissionBadge');
-            if (permissionBadge) {
-                permissionBadge.textContent = permissions.name || userInfo.role;
-            }
-            
-            // Mostrar aviso de permissão
-            const permissionWarning = document.getElementById('permissionWarning');
-            const warningMessage = document.getElementById('warningMessage');
-            
-            if (role === 'visitante') {
-                if (permissionWarning) {
-                    permissionWarning.style.display = 'block';
-                    warningMessage.textContent = 'VISITANTE: Você só pode visualizar esta ficha. Edições bloqueadas.';
-                    permissionWarning.style.background = 'linear-gradient(135deg, #e74c3c 0%, #c0392b 100%)';
+        // CONSTANTES
+        const STORAGE_KEY = 'veterinary_system_data';
+        const ANIMAL_ID = 1; // ID do animal sendo editado
+
+        // DADOS DO ANIMAL EM EDIÇÃO (serão carregados do localStorage)
+        let currentAnimal = null;
+
+        // ELEMENTOS DO DOM
+        const backBtn = document.getElementById('backBtn');
+        const cancelBtn = document.getElementById('cancelBtn');
+        const deleteBtn = document.getElementById('deleteBtn');
+        const saveBtn = document.getElementById('saveBtn');
+        const addHistoryBtn = document.getElementById('addHistoryBtn');
+        const historyList = document.getElementById('historyList');
+        const historyModal = document.getElementById('historyModal');
+        const confirmModal = document.getElementById('confirmModal');
+        const saveStatus = document.getElementById('saveStatus');
+
+        // ELEMENTOS DO FORMULÁRIO
+        const animalName = document.getElementById('animalName');
+        const animalId = document.getElementById('animalId');
+        const animalColor = document.getElementById('animalColor');
+        const animalSex = document.getElementById('animalSex');
+        const animalProtocol = document.getElementById('animalProtocol');
+        const protocolDetails = document.getElementById('protocolDetails');
+        const esquadraoOptions = document.querySelectorAll('.esquadrao-option');
+        const origemGroup = document.getElementById('origemGroup');
+        const animalOrigem = document.getElementById('animalOrigem');
+
+        // ELEMENTOS DO MODAL DE HISTÓRICO
+        const modalTitle = document.getElementById('modalTitle');
+        const historyDate = document.getElementById('historyDate');
+        const historyDescription = document.getElementById('historyDescription');
+        const cancelModalBtn = document.getElementById('cancelModalBtn');
+        const saveModalBtn = document.getElementById('saveModalBtn');
+
+        // ELEMENTOS DO MODAL DE CONFIRMAÇÃO
+        const confirmTitle = document.getElementById('confirmTitle');
+        const confirmMessage = document.getElementById('confirmMessage');
+        const cancelConfirmBtn = document.getElementById('cancelConfirmBtn');
+        const confirmActionBtn = document.getElementById('confirmActionBtn');
+
+        // ESTADO DA APLICAÇÃO
+        let isEditingHistory = false;
+        let currentHistoryId = null;
+        let pendingAction = null;
+        let autoSaveTimeout = null;
+        let hasUnsavedChanges = false;
+
+        // FUNÇÕES DE LOCALSTORAGE
+        function loadFromStorage() {
+            try {
+                const storedData = localStorage.getItem(STORAGE_KEY);
+                if (storedData) {
+                    const data = JSON.parse(storedData);
+                    
+                    // Verificar se existe um animal com ID 1
+                    if (data.animals && data.animals[ANIMAL_ID]) {
+                        return data.animals[ANIMAL_ID];
+                    }
                 }
-                makeFormReadOnly();
-                hideAllEditButtons();
-            } else if (role === 'moderador') {
-                if (permissionWarning) {
-                    permissionWarning.style.display = 'block';
-                    warningMessage.textContent = 'MODERADOR: Você pode visualizar mas não pode editar esta ficha.';
-                }
-                makeFormReadOnly();
-                hideAllEditButtons();
+            } catch (error) {
+                console.error('Erro ao carregar dados:', error);
             }
-            // Admin não tem restrições
+            
+            // Retornar dados padrão se não houver salvos
+            return getDefaultAnimalData();
         }
-        
-        function makeFormReadOnly() {
-            // Tornar todos os campos de entrada readonly
-            const formControls = document.querySelectorAll('input, select, textarea');
-            formControls.forEach(control => {
-                control.classList.add('readonly-field');
-                control.setAttribute('readonly', true);
-                control.setAttribute('disabled', true);
-            });
+
+        function getDefaultAnimalData() {
+            return {
+                id: ANIMAL_ID,
+                name: "Gastador",
+                animalId: "001",
+                color: "Alazão",
+                sex: "Macho",
+                esquadrao: "Hipo",
+                origem: "",
+                protocol: "Quarentena",
+                protocolDetails: "Pós cirúrgico. Última consulta realizada em 15/11/2025\n- Animal apresentou boa recuperação após a cirurgia\n- Ferida está cicatrizando bem, sem sinais de infecção\n- Temperatura corporal: 38.2°C\n- Peso: 420kg\n- Aplicado analgésico e antibiótico conforme prescrição",
+                history: [
+                    { 
+                        id: 1, 
+                        date: "2025-11-15", 
+                        time: "14:30",
+                        description: "- Pós cirúrgico. Última consulta realizada\n- Animal apresentou boa recuperação após a cirurgia\n- Ferida está cicatrizando bem, sem sinais de infecção\n- Temperatura corporal: 38.2°C\n- Peso: 420kg\n- Aplicado analgésico e antibiótico conforme prescrição"
+                    },
+                    { 
+                        id: 2, 
+                        date: "2025-11-10", 
+                        time: "09:15",
+                        description: "- Aplicação de vacina contra influenza equina\n- Animal reagiu bem à vacinação\n- Ausculta cardíaca normal\n- Mucosas coradas\n- TPC normal\n- Vermifugação realizada com Ivermectina"
+                    },
+                    { 
+                        id: 3, 
+                        date: "2025-11-05", 
+                        time: "16:45",
+                        description: "- Exame de sangue realizado\n- Resultados normais\n- Hemograma completo dentro dos parâmetros\n- Proteinograma normal\n- Animal em bom estado nutricional\n- Fornecidas orientações sobre alimentação"
+                    }
+                ],
+                lastUpdated: new Date().toISOString()
+            };
+        }
+
+        function saveToStorage() {
+            try {
+                const data = {
+                    animals: {
+                        [ANIMAL_ID]: currentAnimal
+                    },
+                    lastSync: new Date().toISOString()
+                };
+                
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+                return true;
+            } catch (error) {
+                console.error('Erro ao salvar dados:', error);
+                return false;
+            }
+        }
+
+        // FUNÇÃO PARA AJUSTAR ALTURA DO TEXTAREA
+        function autoExpandTextarea(textarea) {
+            textarea.style.height = 'auto';
+            const newHeight = Math.min(textarea.scrollHeight, 300);
+            textarea.style.height = newHeight + 'px';
+            textarea.style.overflowY = textarea.scrollHeight > 300 ? 'auto' : 'hidden';
+        }
+
+        // FUNÇÃO PARA FORMATAR TEXTO COM DASH
+        function formatTextWithDash(text) {
+            if (!text) return '';
             
-            // Remover eventos de input que salvam automaticamente
-            const inputs = document.querySelectorAll('input, select, textarea');
-            inputs.forEach(input => {
-                input.removeEventListener('input', autoSave);
-                input.removeEventListener('change', autoSave);
-            });
+            // Se já começar com dash, não modifica
+            if (text.trim().startsWith('-')) {
+                return text;
+            }
             
-            // Desabilitar opções de esquadrão
-            const esquadraoOptions = document.querySelectorAll('.esquadrao-option');
+            // Divide por linhas e adiciona dash no início de cada uma
+            const lines = text.split('\n').filter(line => line.trim() !== '');
+            return lines.map(line => {
+                const trimmedLine = line.trim();
+                // Se a linha já começa com dash, mantém
+                if (trimmedLine.startsWith('-')) {
+                    return trimmedLine;
+                }
+                // Adiciona dash se necessário
+                return `- ${trimmedLine}`;
+            }).join('\n');
+        }
+
+        // FUNÇÃO PARA FORMATAR TEXTO COM HTML
+        function formatTextWithDashHTML(text) {
+            if (!text) return '';
+            
+            const lines = text.split('\n').filter(line => line.trim() !== '');
+            return lines.map(line => {
+                const trimmedLine = line.trim();
+                // Remove o dash se já existir (vamos adicionar via CSS)
+                const cleanLine = trimmedLine.startsWith('-') ? trimmedLine.substring(1).trim() : trimmedLine;
+                return `<div class="dash-line">${cleanLine}</div>`;
+            }).join('');
+        }
+
+        // FORMATAR DATA E HORA
+        function formatDate(dateString) {
+            const date = new Date(dateString);
+            return date.toLocaleDateString('pt-BR', {
+                day: '2-digit',
+                month: 'short',
+                year: 'numeric'
+            });
+        }
+
+        function formatTime(timeString) {
+            if (!timeString) return '';
+            return timeString;
+        }
+
+        // GERAR HORA ALEATÓRIA
+        function generateRandomTime() {
+            const hours = Math.floor(Math.random() * 12) + 8; // Entre 8h e 19h
+            const minutes = Math.floor(Math.random() * 60);
+            return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}`;
+        }
+
+        // MOSTRAR STATUS DE SALVAMENTO
+        function showSaveStatus(type, message) {
+            const icon = saveStatus.querySelector('i');
+            const text = saveStatus.querySelector('span');
+            
+            saveStatus.className = 'save-status ' + type;
+            text.textContent = message;
+            
+            switch(type) {
+                case 'saving':
+                    icon.className = 'fas fa-sync-alt fa-spin';
+                    break;
+                case 'saved':
+                    icon.className = 'fas fa-check-circle';
+                    break;
+                case 'error':
+                    icon.className = 'fas fa-exclamation-circle';
+                    break;
+            }
+            
+            saveStatus.classList.remove('hidden');
+            
+            setTimeout(() => {
+                saveStatus.classList.add('hidden');
+            }, 3000);
+        }
+
+        // SALVAR AUTOMATICAMENTE
+        function autoSave() {
+            if (autoSaveTimeout) {
+                clearTimeout(autoSaveTimeout);
+            }
+            
+            showSaveStatus('saving', 'Salvando...');
+            
+            autoSaveTimeout = setTimeout(() => {
+                if (validateForm()) {
+                    saveAnimalData();
+                    showSaveStatus('saved', 'Salvo automaticamente');
+                    hasUnsavedChanges = false;
+                } else {
+                    showSaveStatus('error', 'Erro ao salvar: dados inválidos');
+                }
+            }, 1000);
+        }
+
+        // SALVAR DADOS DO ANIMAL
+        function saveAnimalData() {
+            // Coletar dados do formulário
+            const updatedAnimal = {
+                ...currentAnimal,
+                name: animalName.value.trim(),
+                animalId: animalId.value.trim(),
+                color: animalColor.value.trim(),
+                sex: animalSex.value,
+                protocol: animalProtocol.value,
+                protocolDetails: protocolDetails.value.trim(),
+                history: [...currentAnimal.history],
+                lastUpdated: new Date().toISOString()
+            };
+
+            // Obter esquadrão selecionado
             esquadraoOptions.forEach(option => {
-                option.style.pointerEvents = 'none';
-                option.style.opacity = '0.6';
+                if (option.classList.contains('selected')) {
+                    updatedAnimal.esquadrao = option.getAttribute('data-value');
+                }
             });
-        }
-        
-        function hideAllEditButtons() {
-            // Esconder botões de ação
-            const actionButtons = ['#saveBtn', '#deleteBtn', '#addHistoryBtn', '.edit-history', '.delete-history'];
-            actionButtons.forEach(selector => {
-                const buttons = document.querySelectorAll(selector);
-                buttons.forEach(btn => {
-                    btn.style.display = 'none';
-                });
-            });
-        }
-        
-        // ========== MODIFICAÇÕES NA INICIALIZAÇÃO ==========
-        function init() {
-            // Verificar permissões primeiro
-            applyPermissionsToForm();
-            
-            // Só inicializar o formulário se o usuário tiver permissão para editar
-            const userInfo = checkPermissions();
-            if (userInfo && (userInfo.role === 'admin')) {
-                // Inicializar normalmente para admin
-                initForm();
-                addInputListeners();
-                setupEventListeners();
-            } else if (userInfo && (userInfo.role === 'moderador' || userInfo.role === 'visitante')) {
-                // Para moderador e visitante, apenas carregar os dados para visualização
-                loadDataForViewOnly();
+
+            // Se for "Outro", obter origem
+            if (updatedAnimal.esquadrao === 'Outro') {
+                updatedAnimal.origem = animalOrigem.value.trim();
+            } else {
+                updatedAnimal.origem = '';
             }
+
+            // Atualizar dados locais
+            Object.assign(currentAnimal, updatedAnimal);
+            
+            // Salvar no localStorage
+            saveToStorage();
+            
+            return true;
         }
-        
-        function loadDataForViewOnly() {
+
+        // INICIALIZAR FORMULÁRIO
+        function initForm() {
             // Carregar dados do localStorage
             currentAnimal = loadFromStorage();
             
-            // Preencher campos apenas para leitura
+            // Preencher campos básicos
             animalName.value = currentAnimal.name || '';
             animalId.value = currentAnimal.animalId || '';
             animalColor.value = currentAnimal.color || '';
@@ -205,35 +1325,51 @@
             animalProtocol.value = currentAnimal.protocol || '';
             protocolDetails.value = currentAnimal.protocolDetails || '';
             
-            // Configurar esquadrão (apenas visualização)
+            // Configurar textarea auto-expansível
+            autoExpandTextarea(protocolDetails);
+            protocolDetails.addEventListener('input', function() {
+                autoExpandTextarea(this);
+                hasUnsavedChanges = true;
+                autoSave();
+            });
+
+            // Configurar esquadrão
             esquadraoOptions.forEach(option => {
+                option.classList.remove('selected');
                 if (option.getAttribute('data-value') === currentAnimal.esquadrao) {
                     option.classList.add('selected');
                     
+                    // Mostrar/ocultar campo de origem
                     if (currentAnimal.esquadrao === 'Outro') {
                         origemGroup.classList.remove('hidden');
                         animalOrigem.value = currentAnimal.origem || '';
-                        animalOrigem.classList.add('readonly-field');
-                        animalOrigem.setAttribute('readonly', true);
+                    } else {
+                        origemGroup.classList.add('hidden');
                     }
                 }
             });
+
+            // Definir data atual como padrão no modal
+            const today = new Date().toISOString().split('T')[0];
+            historyDate.value = today;
+
+            // Configurar textarea do modal
+            historyDescription.addEventListener('input', function() {
+                autoExpandTextarea(this);
+            });
+
+            // Renderizar histórico
+            renderHistory();
             
-            // Configurar textarea como readonly
-            protocolDetails.classList.add('readonly-field');
-            protocolDetails.setAttribute('readonly', true);
-            
-            // Renderizar histórico (somente leitura)
-            renderHistoryForViewOnly();
-            
-            // Configurar botão voltar
-            backBtn.addEventListener('click', goBack);
-            
-            // Remover evento beforeunload
-            window.removeEventListener('beforeunload', () => {});
+            // Mostrar última atualização
+            if (currentAnimal.lastUpdated) {
+                const lastUpdate = new Date(currentAnimal.lastUpdated).toLocaleString('pt-BR');
+                console.log(`Última atualização: ${lastUpdate}`);
+            }
         }
-        
-        function renderHistoryForViewOnly() {
+
+        // RENDERIZAR HISTÓRICO
+        function renderHistory() {
             historyList.innerHTML = '';
 
             if (!currentAnimal.history || currentAnimal.history.length === 0) {
@@ -241,12 +1377,13 @@
                     <div style="text-align: center; padding: 3rem; color: var(--gray); background: linear-gradient(135deg, var(--primary-light), white); border-radius: 1rem; border: 2px dashed var(--border);">
                         <i class="fas fa-history" style="font-size: 3rem; color: var(--primary); margin-bottom: 1rem; opacity: 0.5;"></i>
                         <h3 style="font-size: 1.125rem; font-weight: 600; margin-bottom: 0.5rem;">Nenhum histórico registrado</h3>
-                        <p style="font-size: 0.875rem;">Nenhum histórico disponível para visualização.</p>
+                        <p style="font-size: 0.875rem;">Clique em "Adicionar Histórico" para registrar o primeiro atendimento.</p>
                     </div>
                 `;
                 return;
             }
 
+            // Ordenar histórico por data (mais recente primeiro)
             const sortedHistory = [...currentAnimal.history].sort((a, b) => {
                 const dateA = new Date(a.date + ' ' + (a.time || '00:00'));
                 const dateB = new Date(b.date + ' ' + (b.time || '00:00'));
@@ -267,25 +1404,246 @@
                             ${formatTextWithDashHTML(item.description)}
                         </div>
                     </div>
-                    <!-- Removidos os botões de ação -->
+                    <div class="history-actions">
+                        <button class="btn btn-icon edit-history" data-id="${item.id}" title="Editar">
+                            <i class="fas fa-edit"></i>
+                        </button>
+                        <button class="btn btn-icon delete-history" data-id="${item.id}" title="Excluir">
+                            <i class="fas fa-trash-alt"></i>
+                        </button>
+                    </div>
                 `;
                 
                 historyList.appendChild(historyItem);
             });
+
+            // Adicionar event listeners
+            document.querySelectorAll('.edit-history').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const id = parseInt(btn.getAttribute('data-id'));
+                    editHistory(id);
+                });
+            });
+
+            document.querySelectorAll('.delete-history').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const id = parseInt(btn.getAttribute('data-id'));
+                    showDeleteHistoryConfirmation(id);
+                });
+            });
         }
-        
-        // ========== MODIFICAÇÕES NAS FUNÇÕES EXISTENTES ==========
-        
-        // Modificar função de salvar para verificar permissões
-        function saveManual() {
-            const userInfo = checkPermissions();
-            if (!userInfo) return;
-            
-            if (userInfo.role === 'visitante' || userInfo.role === 'moderador') {
-                showPermissionAlert(`${userInfo.role === 'visitante' ? 'Visitante' : 'Moderador'} não tem permissão para salvar alterações.`);
+
+        // ABRIR MODAL DE HISTÓRICO
+        function openHistoryModal(editing = false, id = null) {
+            if (editing && id) {
+                // Modo edição
+                modalTitle.innerHTML = '<i class="fas fa-edit"></i> Editar Histórico';
+                isEditingHistory = true;
+                currentHistoryId = id;
+
+                const historyItem = currentAnimal.history.find(item => item.id === id);
+                if (historyItem) {
+                    historyDate.value = historyItem.date;
+                    historyDescription.value = historyItem.description;
+                    autoExpandTextarea(historyDescription);
+                }
+            } else {
+                // Modo adição
+                modalTitle.innerHTML = '<i class="fas fa-plus-circle"></i> Adicionar Histórico';
+                isEditingHistory = false;
+                currentHistoryId = null;
+
+                // Definir data atual como padrão
+                const today = new Date().toISOString().split('T')[0];
+                historyDate.value = today;
+                historyDescription.value = '';
+                historyDescription.style.height = 'auto';
+            }
+
+            historyModal.style.display = 'flex';
+            setTimeout(() => historyDescription.focus(), 100);
+        }
+
+        // FECHAR MODAL DE HISTÓRICO
+        function closeHistoryModal() {
+            historyModal.style.display = 'none';
+            isEditingHistory = false;
+            currentHistoryId = null;
+            historyDate.value = '';
+            historyDescription.value = '';
+            historyDescription.style.height = 'auto';
+        }
+
+        // SALVAR HISTÓRICO
+        function saveHistory() {
+            const dateValue = historyDate.value;
+            let descriptionValue = historyDescription.value.trim();
+
+            if (!dateValue || !descriptionValue) {
+                showAlertModal('Aviso', 'Por favor, preencha todos os campos obrigatórios.');
                 return;
             }
-            
+
+            // Formatar texto com dash
+            descriptionValue = formatTextWithDash(descriptionValue);
+
+            if (isEditingHistory && currentHistoryId) {
+                // Editar histórico existente
+                const index = currentAnimal.history.findIndex(item => item.id === currentHistoryId);
+                if (index !== -1) {
+                    currentAnimal.history[index] = {
+                        ...currentAnimal.history[index],
+                        date: dateValue,
+                        description: descriptionValue
+                    };
+                }
+            } else {
+                // Adicionar novo histórico
+                const newId = currentAnimal.history.length > 0 
+                    ? Math.max(...currentAnimal.history.map(item => item.id)) + 1 
+                    : 1;
+                
+                currentAnimal.history.push({
+                    id: newId,
+                    date: dateValue,
+                    time: generateRandomTime(),
+                    description: descriptionValue
+                });
+            }
+
+            closeHistoryModal();
+            renderHistory();
+            hasUnsavedChanges = true;
+            autoSave();
+        }
+
+        // EDITAR HISTÓRICO
+        function editHistory(id) {
+            openHistoryModal(true, id);
+        }
+
+        // MOSTRAR CONFIRMAÇÃO DE EXCLUSÃO DE HISTÓRICO
+        function showDeleteHistoryConfirmation(id) {
+            pendingAction = {
+                type: 'deleteHistory',
+                id: id
+            };
+
+            confirmTitle.innerHTML = '<i class="fas fa-trash-alt"></i> Excluir Histórico';
+            confirmMessage.textContent = 'Tem certeza que deseja excluir este histórico médico? Esta ação não pode ser desfeita.';
+            confirmActionBtn.innerHTML = '<i class="fas fa-trash-alt"></i> Excluir';
+            confirmModal.style.display = 'flex';
+        }
+
+        // EXCLUIR HISTÓRICO
+        function deleteHistory(id) {
+            const index = currentAnimal.history.findIndex(item => item.id === id);
+            if (index !== -1) {
+                currentAnimal.history.splice(index, 1);
+                renderHistory();
+                hasUnsavedChanges = true;
+                autoSave();
+            }
+        }
+
+        // MOSTRAR CONFIRMAÇÃO DE EXCLUSÃO DA FICHA
+        function showDeleteConfirmation() {
+            pendingAction = {
+                type: 'deleteAnimal'
+            };
+
+            confirmTitle.innerHTML = '<i class="fas fa-exclamation-triangle"></i> Excluir Ficha';
+            confirmMessage.innerHTML = '⚠️ <strong>ATENÇÃO!</strong><br><br>Tem certeza que deseja excluir permanentemente esta ficha?<br><br>Todos os dados serão perdidos e esta ação <strong>não pode ser desfeita</strong>.';
+            confirmActionBtn.innerHTML = '<i class="fas fa-trash-alt"></i> Excluir Permanentemente';
+            confirmModal.style.display = 'flex';
+        }
+
+        // EXCLUIR FICHA
+        function deleteAnimal() {
+            try {
+                // Remover do localStorage
+                localStorage.removeItem(STORAGE_KEY);
+                
+                showAlertModal('Sucesso', 'Ficha excluída permanentemente!');
+                
+                setTimeout(() => {
+                    window.location.href = 'sistema.html';
+                }, 2000);
+            } catch (error) {
+                showAlertModal('Erro', 'Ocorreu um erro ao excluir a ficha.');
+            }
+        }
+
+        // MOSTRAR CONFIRMAÇÃO DE CANCELAMENTO
+        function showCancelConfirmation() {
+            if (hasUnsavedChanges) {
+                pendingAction = {
+                    type: 'cancelEdit'
+                };
+
+                confirmTitle.innerHTML = '<i class="fas fa-exclamation-triangle"></i> Alterações Não Salvas';
+                confirmMessage.textContent = 'Você tem alterações não salvas. Tem certeza que deseja cancelar a edição? Todas as alterações não salvas serão perdidas.';
+                confirmActionBtn.innerHTML = '<i class="fas fa-sign-out-alt"></i> Descartar Alterações';
+                confirmModal.style.display = 'flex';
+            } else {
+                cancelEdit();
+            }
+        }
+
+        // CANCELAR EDIÇÃO
+        function cancelEdit() {
+            window.location.href = 'sistema.html';
+        }
+
+        // VALIDAR FORMULÁRIO
+        function validateForm() {
+            const name = animalName.value.trim();
+            const animalIdValue = animalId.value.trim();
+            const color = animalColor.value.trim();
+            const sex = animalSex.value;
+            const protocol = animalProtocol.value;
+
+            if (!name || !animalIdValue || !color || !sex || !protocol) {
+                showAlertModal('Validação', 'Por favor, preencha todos os campos obrigatórios.');
+                return false;
+            }
+
+            // Verificar esquadrão selecionado
+            let selectedEsquadrao = '';
+            esquadraoOptions.forEach(option => {
+                if (option.classList.contains('selected')) {
+                    selectedEsquadrao = option.getAttribute('data-value');
+                }
+            });
+
+            if (!selectedEsquadrao) {
+                showAlertModal('Validação', 'Por favor, selecione um esquadrão.');
+                return false;
+            }
+
+            // Se for "Outro", validar origem
+            if (selectedEsquadrao === 'Outro') {
+                const origem = animalOrigem.value.trim();
+                if (!origem) {
+                    showAlertModal('Validação', 'Por favor, digite a origem do animal.');
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
+        // MOSTRAR MODAL DE ALERTA
+        function showAlertModal(title, message) {
+            confirmTitle.innerHTML = `<i class="fas fa-info-circle"></i> ${title}`;
+            confirmMessage.textContent = message;
+            confirmActionBtn.innerHTML = '<i class="fas fa-check"></i> OK';
+            pendingAction = { type: 'alert' };
+            confirmModal.style.display = 'flex';
+        }
+
+        // SALVAR MANUALMENTE
+        function saveManual() {
             if (!validateForm()) {
                 return;
             }
@@ -301,130 +1659,158 @@
                 }
             }, 500);
         }
-        
-        // Modificar função de deletar para verificar permissões
-        function deleteAnimal() {
-            const userInfo = checkPermissions();
-            if (!userInfo) return;
-            
-            if (userInfo.role === 'visitante' || userInfo.role === 'moderador') {
-                showPermissionAlert(`${userInfo.role === 'visitante' ? 'Visitante' : 'Moderador'} não tem permissão para excluir fichas.`);
-                return;
-            }
-            
-            try {
-                localStorage.removeItem(STORAGE_KEY);
-                showAlertModal('Sucesso', 'Ficha excluída permanentemente!');
-                
-                setTimeout(() => {
-                    window.location.href = 'sistema.html';
-                }, 2000);
-            } catch (error) {
-                showAlertModal('Erro', 'Ocorreu um erro ao excluir a ficha.');
-            }
+
+        // VOLTAR
+        function goBack() {
+            showCancelConfirmation();
         }
-        
-        // Modificar função de adicionar histórico
-        function openHistoryModal(editing = false, id = null) {
-            const userInfo = checkPermissions();
-            if (!userInfo) return;
+
+        // ADICIONAR EVENT LISTENERS PARA INPUTS
+        function addInputListeners() {
+            const inputs = [
+                animalName,
+                animalId,
+                animalColor,
+                animalSex,
+                animalProtocol,
+                animalOrigem
+            ];
             
-            if (userInfo.role === 'visitante' || userInfo.role === 'moderador') {
-                showPermissionAlert(`${userInfo.role === 'visitante' ? 'Visitante' : 'Moderador'} não tem permissão para adicionar ou editar histórico.`);
-                return;
-            }
-            
-            // Resto da função permanece igual para admin
-            // ...
-        }
-        
-        // Função para mostrar alerta de permissão
-        function showPermissionAlert(message) {
-            const alertDiv = document.createElement('div');
-            alertDiv.className = 'permission-alert';
-            alertDiv.style.cssText = `
-                position: fixed;
-                top: 20px;
-                right: 20px;
-                background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
-                color: white;
-                padding: 15px 20px;
-                border-radius: 10px;
-                box-shadow: 0 5px 20px rgba(231, 76, 60, 0.4);
-                z-index: 9999;
-                display: flex;
-                align-items: center;
-                gap: 10px;
-                animation: slideInRight 0.3s ease;
-                max-width: 400px;
-            `;
-            
-            alertDiv.innerHTML = `
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M12 9V11M12 15H12.01M5.07183 19H18.9282C20.4678 19 21.4301 17.3333 20.6603 16L13.7321 4C12.9623 2.66667 11.0378 2.66667 10.268 4L3.33978 16C2.56998 17.3333 3.53223 19 5.07183 19Z" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
-                <span>${message}</span>
-                <button class="permission-alert-close">&times;</button>
-            `;
-            
-            document.body.appendChild(alertDiv);
-            
-            alertDiv.querySelector('.permission-alert-close').addEventListener('click', () => {
-                alertDiv.remove();
+            inputs.forEach(input => {
+                if (input) {
+                    input.addEventListener('input', () => {
+                        hasUnsavedChanges = true;
+                        autoSave();
+                    });
+                    
+                    input.addEventListener('change', () => {
+                        hasUnsavedChanges = true;
+                        autoSave();
+                    });
+                }
             });
-            
-            setTimeout(() => {
-                if (alertDiv.parentNode) {
-                    alertDiv.style.animation = 'slideInRight 0.3s ease reverse';
-                    setTimeout(() => {
-                        if (alertDiv.parentNode) {
-                            alertDiv.remove();
-                        }
-                    }, 300);
-                }
-            }, 5000);
         }
-        
-        // Adicionar CSS para animação
-        const style = document.createElement('style');
-        style.textContent = `
-            @keyframes slideInRight {
-                from {
-                    transform: translateX(100%);
-                    opacity: 0;
+
+        // INICIALIZAR APLICAÇÃO
+        function init() {
+            initForm();
+            addInputListeners();
+
+            // Event Listeners para opções de esquadrão
+            esquadraoOptions.forEach(option => {
+                option.addEventListener('click', () => {
+                    // Remover seleção de todas as opções
+                    esquadraoOptions.forEach(opt => opt.classList.remove('selected'));
+                    
+                    // Selecionar a opção clicada
+                    option.classList.add('selected');
+                    
+                    // Mostrar/ocultar campo de origem
+                    if (option.getAttribute('data-value') === 'Outro') {
+                        origemGroup.classList.remove('hidden');
+                        animalOrigem.focus();
+                    } else {
+                        origemGroup.classList.add('hidden');
+                    }
+                    
+                    hasUnsavedChanges = true;
+                    autoSave();
+                });
+            });
+
+            // Event Listeners principais
+            backBtn.addEventListener('click', goBack);
+            cancelBtn.addEventListener('click', showCancelConfirmation);
+            deleteBtn.addEventListener('click', showDeleteConfirmation);
+            saveBtn.addEventListener('click', saveManual);
+            addHistoryBtn.addEventListener('click', () => openHistoryModal(false));
+
+            // Event Listeners do modal de histórico
+            cancelModalBtn.addEventListener('click', closeHistoryModal);
+            saveModalBtn.addEventListener('click', saveHistory);
+
+            // Event Listeners do modal de confirmação
+            cancelConfirmBtn.addEventListener('click', () => {
+                confirmModal.style.display = 'none';
+                pendingAction = null;
+            });
+
+            confirmActionBtn.addEventListener('click', () => {
+                if (pendingAction) {
+                    switch (pendingAction.type) {
+                        case 'deleteHistory':
+                            deleteHistory(pendingAction.id);
+                            break;
+                        case 'deleteAnimal':
+                            deleteAnimal();
+                            break;
+                        case 'cancelEdit':
+                            cancelEdit();
+                            break;
+                        case 'alert':
+                            // Apenas fechar o modal para alertas
+                            break;
+                    }
                 }
-                to {
-                    transform: translateX(0);
-                    opacity: 1;
+                confirmModal.style.display = 'none';
+                pendingAction = null;
+            });
+
+            // Fechar modais ao clicar fora
+            window.addEventListener('click', (e) => {
+                if (e.target === historyModal) {
+                    closeHistoryModal();
                 }
-            }
-            
-            .permission-alert-close {
-                background: rgba(255, 255, 255, 0.2);
-                border: none;
-                color: white;
-                width: 24px;
-                height: 24px;
-                border-radius: 50%;
-                cursor: pointer;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                margin-left: auto;
-                flex-shrink: 0;
-            }
-            
-            .permission-alert-close:hover {
-                background: rgba(255, 255, 255, 0.3);
-            }
-        `;
-        document.head.appendChild(style);
-        
+                if (e.target === confirmModal) {
+                    confirmModal.style.display = 'none';
+                    pendingAction = null;
+                }
+            });
+
+            // Fechar modais com ESC
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape') {
+                    if (historyModal.style.display === 'flex') {
+                        closeHistoryModal();
+                    }
+                    if (confirmModal.style.display === 'flex') {
+                        confirmModal.style.display = 'none';
+                        pendingAction = null;
+                    }
+                }
+            });
+
+            // Avisar antes de sair se houver alterações não salvas
+            window.addEventListener('beforeunload', (e) => {
+                if (hasUnsavedChanges) {
+                    e.preventDefault();
+                    e.returnValue = 'Você tem alterações não salvas. Tem certeza que deseja sair?';
+                }
+            });
+
+            // Adicionar dash quando pressionar Enter no textarea
+            historyDescription.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter' && !e.shiftKey) {
+                    e.preventDefault();
+                    const start = historyDescription.selectionStart;
+                    const end = historyDescription.selectionEnd;
+                    const value = historyDescription.value;
+                    
+                    // Adicionar nova linha com dash
+                    historyDescription.value = value.substring(0, start) + '\n- ' + value.substring(end);
+                    
+                    // Posicionar cursor após o dash
+                    const newCursorPos = start + 3;
+                    historyDescription.selectionStart = newCursorPos;
+                    historyDescription.selectionEnd = newCursorPos;
+                    
+                    autoExpandTextarea(historyDescription);
+                }
+            });
+        }
+
         // INICIAR QUANDO O DOM ESTIVER PRONTO
         document.addEventListener('DOMContentLoaded', init);
-        
-        // Resto do código JavaScript permanece o mesmo...
-        // (todas as outras funções permanecem inalteradas)
     </script>
 </body>
 </html>
