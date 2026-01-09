@@ -398,12 +398,12 @@
         <div class="permissions-info">
             <h3>Permissões do Sistema</h3>
             <ul>
-                <li><strong>Administrador (Ten):</strong> Acesso total ao sistema</li>
-                <li><strong>Moderador (Aux, Enf):</strong> Acesso a fichas e registros entretanto não consegue editar fichas e nem criar. Somente editar e criar caderno de visitas.</li>
-                <li><strong>Visitante (Estagiário):</strong> Acesso limitado para consulta. Não tem acesso para editar nada, somente olhar.</li>
+                <li><strong>Administrador (Ten):</strong> Acesso total - Pode tudo</li>
+                <li><strong>Moderador (Aux, Enf):</strong> Só visualiza fichas - Edita/cria caderno de visitas</li>
+                <li><strong>Visitante (Estagiário):</strong> Apenas consulta - Não edita nada</li>
             </ul>
             <p style="margin-top: 10px; font-size: 12px; color: #666;">
-                <strong>Nota:</strong> Tentativas de alteração não permitidas exibirão uma mensagem de erro.
+                <strong>Aviso:</strong> Ações não permitidas mostrarão mensagem de erro.
             </p>
         </div>
         
@@ -421,11 +421,11 @@
             'visitante': 'estag789'
         };
         
-        // Dicas de senha para cada cargo
+        // Dicas de senha para cada cargo (SEM MOSTRAR A SENHA)
         const passwordHints = {
-            'admin': 'Senha: admin123',
-            'moderador': 'Senha: mod456',
-            'visitante': 'Senha: estag789'
+            'admin': 'Digite a senha do Administrador',
+            'moderador': 'Digite a senha do Moderador',
+            'visitante': 'Digite a senha do Visitante'
         };
         
         // ========== ELEMENTOS DO DOM ==========
@@ -494,7 +494,7 @@
             // Limpar mensagens de erro/sucesso
             hideMessages();
             
-            // Atualizar dica de senha
+            // Atualizar dica de senha (SEM MOSTRAR A SENHA)
             if (selectedRole && passwordHints[selectedRole]) {
                 passwordHint.textContent = passwordHints[selectedRole];
             } else {
