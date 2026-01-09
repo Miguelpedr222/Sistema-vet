@@ -5,32 +5,1120 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Visitas Veterinárias - Vet 2°rcg System</title>
     <style>
-        /* (todo o CSS permanece exatamente o mesmo) */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
         
-        /* ESTILOS ADICIONAIS PARA PERMISSÕES */
-        .permission-badge {
-            display: inline-block;
+        :root {
+            --primary-blue: #2c7fb8;
+            --secondary-blue: #5dade2;
+            --light-blue: #e6f7ff;
+            --hipo-red: #e74c3c;
+            --hipo-light-red: #fdeaea;
+            --dh-green: #2ecc71;
+            --dh-light-green: #eafaf1;
+            --warning-orange: #f39c12;
+            --success-green: #27ae60;
+            --gray-light: #f8f9fa;
+            --gray-border: #e0e0e0;
+            --shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+            --shadow-hover: 0 15px 40px rgba(0, 0, 0, 0.12);
+        }
+        
+        body {
+            background: linear-gradient(135deg, #f0f8ff 0%, #e6f7ff 100%);
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+        
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                radial-gradient(circle at 10% 20%, rgba(44, 127, 184, 0.05) 0%, transparent 20%),
+                radial-gradient(circle at 90% 80%, rgba(46, 204, 113, 0.05) 0%, transparent 20%);
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        /* ESTILOS DA TELA DE VISITAS */
+        #filesPage {
+            display: block;
+            min-height: 100vh;
+            padding: 20px;
+            animation: fadeIn 0.8s ease;
+        }
+        
+        /* Cabeçalho melhorado */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 40px;
+            padding: 20px;
+            background: white;
+            border-radius: 20px;
+            box-shadow: var(--shadow);
+            border-left: 5px solid var(--primary-blue);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 200px;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(44, 127, 184, 0.1));
+            pointer-events: none;
+        }
+        
+        .logo-section {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+        
+        .logo-image-small {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            border: 3px solid var(--primary-blue);
+            overflow: hidden;
+            background: white;
+            padding: 5px;
+            box-shadow: 0 4px 15px rgba(44, 127, 184, 0.2);
+        }
+        
+        .logo-image-small img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 50%;
+        }
+        
+        .logo-text h1 {
+            color: var(--primary-blue);
+            font-size: 28px;
+            margin-bottom: 5px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+        }
+        
+        .logo-text p {
+            color: #666;
+            font-size: 14px;
+            max-width: 400px;
+        }
+        
+        .user-info {
+            text-align: right;
+        }
+        
+        .user-info span {
+            color: var(--primary-blue);
+            font-weight: 700;
+            background: var(--light-blue);
             padding: 4px 12px;
             border-radius: 20px;
-            font-size: 12px;
+            display: inline-block;
+            margin-bottom: 5px;
+        }
+        
+        .btn-voltar {
+            background: linear-gradient(135deg, #f39c12 0%, #e67e22 100%);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 50px;
+            cursor: pointer;
+            font-size: 14px;
             font-weight: 600;
-            margin-left: 10px;
-            vertical-align: middle;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 4px 15px rgba(243, 156, 18, 0.3);
         }
         
-        .permission-badge.admin {
-            background: linear-gradient(135deg, #2c7fb8 0%, #1d5f8a 100%);
+        .btn-voltar:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(243, 156, 18, 0.4);
+        }
+        
+        /* Container principal */
+        .main-container {
+            background-color: white;
+            border-radius: 25px;
+            box-shadow: var(--shadow);
+            padding: 40px;
+            max-width: 1400px;
+            margin: 0 auto;
+            border: 1px solid rgba(44, 127, 184, 0.1);
+        }
+        
+        .page-title {
+            color: var(--primary-blue);
+            margin-bottom: 30px;
+            font-size: 32px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            position: relative;
+            padding-bottom: 15px;
+        }
+        
+        .page-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100px;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary-blue), var(--secondary-blue));
+            border-radius: 2px;
+        }
+        
+        .page-title svg {
+            width: 36px;
+            height: 36px;
+            filter: drop-shadow(0 2px 4px rgba(44, 127, 184, 0.3));
+        }
+        
+        /* Cards de status */
+        .status-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .status-card {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: var(--shadow);
+            border: 1px solid rgba(44, 127, 184, 0.1);
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .status-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-hover);
+        }
+        
+        .status-card.active {
+            border-top: 4px solid var(--success-green);
+        }
+        
+        .status-card.pending {
+            border-top: 4px solid var(--warning-orange);
+        }
+        
+        .status-card.inactive {
+            border-top: 4px solid #95a5a6;
+        }
+        
+        .card-icon {
+            width: 50px;
+            height: 50px;
+            background: var(--light-blue);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 15px;
+        }
+        
+        .card-icon svg {
+            width: 24px;
+            height: 24px;
+            color: var(--primary-blue);
+        }
+        
+        .card-title {
+            font-size: 16px;
+            color: #666;
+            margin-bottom: 10px;
+        }
+        
+        .card-value {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--primary-blue);
+            margin-bottom: 5px;
+        }
+        
+        .card-date {
+            font-size: 14px;
+            color: #95a5a6;
+        }
+        
+        /* Botões principais */
+        .action-buttons {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+        
+        .btn {
+            padding: 14px 28px;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: all 0.3s;
+            font-size: 15px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .btn::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 5px;
+            height: 5px;
+            background: rgba(255, 255, 255, 0.5);
+            opacity: 0;
+            border-radius: 100%;
+            transform: scale(1, 1) translate(-50%);
+            transform-origin: 50% 50%;
+        }
+        
+        .btn:focus:not(:active)::after {
+            animation: ripple 1s ease-out;
+        }
+        
+        @keyframes ripple {
+            0% {
+                transform: scale(0, 0);
+                opacity: 0.5;
+            }
+            20% {
+                transform: scale(25, 25);
+                opacity: 0.3;
+            }
+            100% {
+                opacity: 0;
+                transform: scale(40, 40);
+            }
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary-blue) 0%, var(--secondary-blue) 100%);
             color: white;
+            box-shadow: 0 4px 15px rgba(44, 127, 184, 0.3);
         }
         
-        .permission-badge.moderador {
-            background: linear-gradient(135deg, #7fcdbb 0%, #5bbfa5 100%);
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(44, 127, 184, 0.4);
+        }
+        
+        .btn-success {
+            background: linear-gradient(135deg, var(--success-green) 0%, #2ecc71 100%);
             color: white;
+            box-shadow: 0 4px 15px rgba(39, 174, 96, 0.3);
         }
         
-        .permission-badge.visitante {
+        .btn-success:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(39, 174, 96, 0.4);
+        }
+        
+        .btn-success:disabled {
+            background: linear-gradient(135deg, #95a5a6 0%, #bdc3c7 100%);
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: 0 4px 15px rgba(149, 165, 166, 0.2);
+        }
+        
+        /* Botão para adicionar mais cavalos */
+        .btn-add-more {
+            background: linear-gradient(135deg, #9b59b6 0%, #8e44ad 100%);
+            color: white;
+            box-shadow: 0 4px 15px rgba(155, 89, 182, 0.3);
+        }
+        
+        .btn-add-more:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(155, 89, 182, 0.4);
+        }
+        
+        /* Listas de cavalos lado a lado */
+        .squadron-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+        
+        @media (max-width: 1024px) {
+            .squadron-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        .squadron-card {
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            border: 1px solid rgba(0, 0, 0, 0.05);
+            transition: all 0.3s;
+        }
+        
+        .squadron-card:hover {
+            box-shadow: var(--shadow-hover);
+        }
+        
+        .squadron-card.hipo {
+            border-top: 5px solid var(--hipo-red);
+        }
+        
+        .squadron-card.dh {
+            border-top: 5px solid var(--dh-green);
+        }
+        
+        .squadron-header {
+            padding: 25px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: white;
+            font-weight: 700;
+            font-size: 20px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .squadron-header.hipo {
+            background: linear-gradient(135deg, var(--hipo-red) 0%, #c0392b 100%);
+        }
+        
+        .squadron-header.dh {
+            background: linear-gradient(135deg, var(--dh-green) 0%, #27ae60 100%);
+        }
+        
+        .squadron-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 100px;
+            height: 100px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            transform: translate(30px, -30px);
+        }
+        
+        .squadron-count {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 8px 16px;
+            border-radius: 50px;
+            font-size: 14px;
+            backdrop-filter: blur(10px);
+        }
+        
+        .horse-list-container {
+            max-height: 500px;
+            overflow-y: auto;
+            padding: 0;
+        }
+        
+        .horse-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            padding: 20px;
+        }
+        
+        .horse-item {
+            padding: 20px;
+            border-radius: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.3s;
+            position: relative;
+            border: 1px solid rgba(0, 0, 0, 0.05);
+            background: white;
+        }
+        
+        .horse-item:hover {
+            transform: translateX(5px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .horse-item.visited {
+            border-left: 4px solid var(--success-green);
+            background: linear-gradient(to right, rgba(39, 174, 96, 0.05), white);
+        }
+        
+        .horse-item.pending {
+            border-left: 4px solid var(--warning-orange);
+            background: linear-gradient(to right, rgba(243, 156, 18, 0.05), white);
+        }
+        
+        .horse-info {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            flex: 1;
+        }
+        
+        .horse-name {
+            font-weight: 700;
+            color: var(--primary-blue);
+            font-size: 16px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .horse-id {
+            font-size: 13px;
+            color: #666;
+            background: var(--gray-light);
+            padding: 4px 10px;
+            border-radius: 20px;
+            display: inline-block;
+            width: fit-content;
+        }
+        
+        .horse-actions {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .btn-visit {
+            background: linear-gradient(135deg, var(--success-green) 0%, #2ecc71 100%);
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 50px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 2px 10px rgba(39, 174, 96, 0.3);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        
+        .btn-visit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(39, 174, 96, 0.4);
+        }
+        
+        .btn-visit.visited {
+            background: linear-gradient(135deg, #95a5a6 0%, #7f8c8d 100%);
+            cursor: not-allowed;
+        }
+        
+        .btn-visit.visited:hover {
+            transform: none;
+            box-shadow: 0 2px 10px rgba(149, 165, 166, 0.3);
+        }
+        
+        .btn-remove {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+            border: none;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 2px 10px rgba(231, 76, 60, 0.3);
+        }
+        
+        .btn-remove:hover {
+            transform: rotate(90deg) scale(1.1);
+            box-shadow: 0 4px 15px rgba(231, 76, 60, 0.4);
+        }
+        
+        /* Seção de observações */
+        .observacoes-section {
+            margin-bottom: 40px;
+        }
+        
+        .observacoes-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 15px;
+            color: var(--primary-blue);
+            font-size: 18px;
+            font-weight: 600;
+        }
+        
+        .observacoes-textarea {
+            width: 100%;
+            padding: 20px;
+            border: 2px solid var(--gray-border);
+            border-radius: 15px;
+            font-size: 15px;
+            resize: vertical;
+            min-height: 120px;
+            transition: all 0.3s;
+            background: var(--gray-light);
+        }
+        
+        .observacoes-textarea:focus {
+            border-color: var(--primary-blue);
+            background: white;
+            box-shadow: 0 0 0 4px rgba(44, 127, 184, 0.1);
+            outline: none;
+        }
+        
+        /* Seção de visitas arquivadas */
+        .archived-section {
+            margin-top: 50px;
+            padding-top: 30px;
+            border-top: 2px solid var(--gray-border);
+        }
+        
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+        
+        .section-title {
+            color: var(--primary-blue);
+            font-size: 22px;
+            font-weight: 700;
+        }
+        
+        /* Filtros para histórico */
+        .filters-container {
+            background: var(--light-blue);
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 25px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            align-items: end;
+        }
+        
+        .filter-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        
+        .filter-group label {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--primary-blue);
+        }
+        
+        .filter-input {
+            padding: 12px 15px;
+            border: 2px solid var(--gray-border);
+            border-radius: 10px;
+            font-size: 14px;
+            transition: all 0.3s;
+        }
+        
+        .filter-input:focus {
+            border-color: var(--primary-blue);
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(44, 127, 184, 0.1);
+        }
+        
+        .filter-select {
+            padding: 12px 15px;
+            border: 2px solid var(--gray-border);
+            border-radius: 10px;
+            font-size: 14px;
+            background: white;
+            transition: all 0.3s;
+        }
+        
+        .filter-select:focus {
+            border-color: var(--primary-blue);
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(44, 127, 184, 0.1);
+        }
+        
+        .filter-actions {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+        
+        .btn-filter {
+            padding: 12px 20px;
+            background: linear-gradient(135deg, var(--primary-blue) 0%, var(--secondary-blue) 100%);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+        
+        .btn-filter:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(44, 127, 184, 0.3);
+        }
+        
+        .btn-clear {
+            padding: 12px 20px;
             background: linear-gradient(135deg, #95a5a6 0%, #7f8c8d 100%);
             color: white;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+        
+        .btn-clear:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(149, 165, 166, 0.3);
+        }
+        
+        .archived-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+        }
+        
+        .archived-card {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: var(--shadow);
+            border: 1px solid rgba(0, 0, 0, 0.05);
+            cursor: pointer;
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .archived-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-hover);
+        }
+        
+        .archived-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: linear-gradient(90deg, var(--primary-blue), var(--secondary-blue));
+        }
+        
+        .archived-card.warning::before {
+            background: linear-gradient(90deg, var(--hipo-red), #f39c12);
+        }
+        
+        .archived-date {
+            font-weight: 700;
+            color: var(--primary-blue);
+            font-size: 18px;
+            margin-bottom: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .warning-badge {
+            background: var(--hipo-red);
+            color: white;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 14px;
+            box-shadow: 0 2px 10px rgba(231, 76, 60, 0.3);
+        }
+        
+        .archived-stats {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+        
+        .stat {
+            text-align: center;
+            flex: 1;
+        }
+        
+        .stat-number {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--primary-blue);
+        }
+        
+        .stat-label {
+            font-size: 12px;
+            color: #666;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .progress-bar {
+            height: 8px;
+            background: var(--gray-light);
+            border-radius: 4px;
+            overflow: hidden;
+            margin: 15px 0;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--dh-green), var(--success-green));
+            transition: width 0.5s ease;
+        }
+        
+        .progress-fill.warning {
+            background: linear-gradient(90deg, var(--warning-orange), var(--hipo-red));
+        }
+        
+        .no-caderno {
+            text-align: center;
+            padding: 60px 40px;
+            color: #666;
+        }
+        
+        .no-caderno-icon {
+            width: 80px;
+            height: 80px;
+            background: var(--light-blue);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+        }
+        
+        .no-caderno h3 {
+            color: var(--primary-blue);
+            margin-bottom: 10px;
+            font-size: 22px;
+        }
+        
+        /* Modal estilizado */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(5px);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            animation: fadeIn 0.3s ease;
+        }
+        
+        .modal-content {
+            background: white;
+            border-radius: 25px;
+            width: 90%;
+            max-width: 800px;
+            max-height: 90vh;
+            overflow-y: auto;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            animation: slideUp 0.4s ease;
+            position: relative;
+        }
+        
+        .modal-content.large {
+            max-width: 900px;
+        }
+        
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid var(--gray-border);
+        }
+        
+        .modal-title {
+            color: var(--primary-blue);
+            font-size: 24px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .close-modal {
+            background: none;
+            border: none;
+            font-size: 32px;
+            cursor: pointer;
+            color: #666;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+        }
+        
+        .close-modal:hover {
+            background: var(--gray-light);
+            color: var(--hipo-red);
+            transform: rotate(90deg);
+        }
+        
+        /* Estilos para checkboxes no modal de criação */
+        .horse-select-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 15px;
+            border-radius: 10px;
+            transition: all 0.3s;
+            border: 1px solid var(--gray-border);
+            margin-bottom: 8px;
+        }
+        
+        .horse-select-item:hover {
+            background: var(--light-blue);
+            transform: translateX(5px);
+        }
+        
+        .horse-select-item.selected {
+            background: linear-gradient(to right, rgba(44, 127, 184, 0.1), white);
+            border-color: var(--primary-blue);
+        }
+        
+        .horse-select-checkbox {
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+        }
+        
+        .horse-select-name {
+            font-weight: 600;
+            color: var(--primary-blue);
+            flex: 1;
+        }
+        
+        .horse-select-esquadrao {
+            font-size: 12px;
+            color: white;
+            padding: 3px 10px;
+            border-radius: 12px;
+            font-weight: 600;
+        }
+        
+        .horse-select-esquadrao.hipo {
+            background: linear-gradient(135deg, var(--hipo-red) 0%, #c0392b 100%);
+        }
+        
+        .horse-select-esquadrao.dh {
+            background: linear-gradient(135deg, var(--dh-green) 0%, #27ae60 100%);
+        }
+        
+        .modal-actions {
+            display: flex;
+            gap: 15px;
+            justify-content: flex-end;
+            margin-top: 30px;
+        }
+        
+        .modal-section {
+            margin-bottom: 30px;
+        }
+        
+        .modal-section-title {
+            font-size: 18px;
+            color: var(--primary-blue);
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--gray-border);
+        }
+        
+        .repeat-visita-option {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 20px;
+            padding: 15px;
+            background: var(--light-blue);
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .repeat-visita-option:hover {
+            background: #d6ecff;
+        }
+        
+        .repeat-visita-option input {
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+        }
+        
+        .repeat-visita-label {
+            font-weight: 600;
+            color: var(--primary-blue);
+        }
+        
+        .repeat-visita-description {
+            font-size: 13px;
+            color: #666;
+            margin-top: 3px;
+        }
+        
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        /* Animações */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+        
+        .pulse-animation {
+            animation: pulse 2s infinite;
+        }
+        
+        /* Responsividade */
+        @media (max-width: 768px) {
+            .header {
+                flex-direction: column;
+                gap: 20px;
+                text-align: center;
+            }
+            
+            .user-info {
+                text-align: center;
+            }
+            
+            .action-buttons {
+                justify-content: center;
+            }
+            
+            .btn {
+                padding: 12px 20px;
+                font-size: 14px;
+            }
+            
+            .modal-content {
+                padding: 25px;
+            }
+            
+            .section-header {
+                flex-direction: column;
+                gap: 15px;
+                align-items: flex-start;
+            }
+            
+            .filters-container {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        /* Estados vazios */
+        .empty-state {
+            text-align: center;
+            padding: 40px 20px;
+            color: #666;
+        }
+        
+        .empty-state svg {
+            width: 60px;
+            height: 60px;
+            color: #ddd;
+            margin-bottom: 15px;
+        }
+        
+        /* Notificações flutuantes */
+        .notification {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: white;
+            padding: 20px 25px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            z-index: 1001;
+            animation: slideLeft 0.3s ease;
+            border-left: 4px solid var(--success-green);
+            max-width: 400px;
+        }
+        
+        .notification.warning {
+            border-left-color: var(--warning-orange);
+        }
+        
+        .notification.error {
+            border-left-color: var(--hipo-red);
+        }
+        
+        @keyframes slideLeft {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
         }
     </style>
 </head>
@@ -66,290 +1154,352 @@
                     <path d="M19 21V5C19 3.89543 18.1046 3 17 3H7C5.89543 3 5 3.89543 5 5V21M19 21L21 21M19 21H14M5 21L3 21M5 21H10M9 6.99998H15M9 11H15M9 15H13" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                 </svg>
                 Diário de Visitas Veterinárias
-                <span id="userPermissionBadge" class="permission-badge">Carregando...</span>
             </h1>
             
-            <!-- (restante do HTML permanece exatamente o mesmo) -->
+            <!-- Cards de status -->
+            <div class="status-cards" id="statusCards">
+                <!-- Preenchido por JavaScript -->
+            </div>
+            
+            <!-- Botões de ação -->
+            <div class="action-buttons">
+                <button class="btn btn-primary" id="btnNovoCaderno">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M12 5V19" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M5 12H19" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    Iniciar Nova Visita
+                </button>
+                <button class="btn btn-add-more" id="btnAddMoreHorses" style="display: none;">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M16 21V19C16 17.9391 15.5786 16.9217 14.8284 16.1716C14.0783 15.4214 13.0609 15 12 15H5C3.93913 15 2.92172 15.4214 2.17157 16.1716C1.42143 16.9217 1 17.9391 1 19V21M8.5 11C10.7091 11 12.5 9.20914 12.5 7C12.5 4.79086 10.7091 3 8.5 3C6.29086 3 4.5 4.79086 4.5 7C4.5 9.20914 6.29086 11 8.5 11ZM14 7H20M17 4V10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    Adicionar Mais Cavalos
+                </button>
+                <button class="btn btn-success" id="btnFinalizarVisita" disabled>
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M22 11.08V12C21.9988 14.1564 21.3005 16.2547 20.0093 17.9818C18.7182 19.709 16.9033 20.9725 14.8354 21.5839C12.7674 22.1953 10.5573 22.1219 8.53447 21.3746C6.51168 20.6273 4.78465 19.2461 3.61096 17.4371C2.43727 15.628 1.87979 13.4881 2.02168 11.3363C2.16356 9.18455 2.99721 7.13631 4.39828 5.49706C5.79935 3.85781 7.69279 2.71537 9.79619 2.24013C11.8996 1.7649 14.1003 1.98232 16.07 2.85999" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M22 4L12 14.01L9 11.01" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    Finalizar Serviço
+                </button>
+            </div>
+            
+            <!-- Conteúdo do caderno atual -->
+            <div id="cadernoContent" style="display: none;">
+                <!-- Listas de cavalos -->
+                <div class="squadron-grid" id="squadronGrid">
+                    <!-- Preenchido por JavaScript -->
+                </div>
+                
+                <!-- Observações -->
+                <div class="observacoes-section">
+                    <div class="observacoes-header">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M11 5H7C5.89543 5 5 5.89543 5 7V19C5 20.1046 5.89543 21 7 21H17C18.1046 21 19 20.1046 19 19V13" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M14 5C14 3.89543 14.8954 3 16 3H20C21.1046 3 22 3.89543 22 5V9C22 10.1046 21.1046 11 20 11H16C14.8954 11 14 10.1046 14 9V5Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M11 14H15" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M11 10H13" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                        Observações do Dia
+                    </div>
+                    <textarea class="observacoes-textarea" id="observacoesDia" placeholder="Registre aqui observações importantes sobre as visitas do dia, condições dos cavalos, tratamentos especiais, etc..."></textarea>
+                </div>
+            </div>
+            
+            <!-- Estado vazio -->
+            <div id="emptyState" class="no-caderno">
+                <div class="no-caderno-icon">
+                    <svg width="40" height="40" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M19 21V5C19 3.89543 18.1046 3 17 3H7C5.89543 3 5 3.89543 5 5V21M19 21L21 21M19 21H14M5 21L3 21M5 21H10" stroke="#2c7fb8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </div>
+                <h3>Nenhum caderno de visitas ativo</h3>
+                <p>Clique em "Iniciar Nova Visita" para começar o diário do dia</p>
+            </div>
+            
+            <!-- Visitas arquivadas -->
+            <div class="archived-section" id="archivedSection" style="display: none;">
+                <div class="section-header">
+                    <div class="section-title">Histórico de Visitas</div>
+                </div>
+                
+                <!-- Filtros para histórico -->
+                <div class="filters-container" id="filtersContainer">
+                    <div class="filter-group">
+                        <label for="filterDate">Data</label>
+                        <input type="date" id="filterDate" class="filter-input">
+                    </div>
+                    
+                    <div class="filter-group">
+                        <label for="filterStatus">Status</label>
+                        <select id="filterStatus" class="filter-select">
+                            <option value="">Todos</option>
+                            <option value="completed">Completas</option>
+                            <option value="pending">Com Pendências</option>
+                        </select>
+                    </div>
+                    
+                    <div class="filter-group">
+                        <label for="filterEsquadrao">Esquadrão</label>
+                        <select id="filterEsquadrao" class="filter-select">
+                            <option value="">Todos</option>
+                            <option value="Hipo">Hipo</option>
+                            <option value="DH">DH</option>
+                        </select>
+                    </div>
+                    
+                    <div class="filter-group">
+                        <label for="filterMinVisitas">Mín. Visitados</label>
+                        <input type="number" id="filterMinVisitas" class="filter-input" placeholder="0" min="0">
+                    </div>
+                    
+                    <div class="filter-actions">
+                        <button class="btn-filter" id="btnApplyFilters">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="margin-right: 5px;">
+                                <path d="M22 3H2L10 12.46V19L14 21V12.46L22 3Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                            Filtrar
+                        </button>
+                        <button class="btn-clear" id="btnClearFilters">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="margin-right: 5px;">
+                                <path d="M18 6L6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M6 6L18 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                            Limpar
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="archived-grid" id="archivedGrid">
+                    <!-- Preenchido por JavaScript -->
+                </div>
+            </div>
         </div>
     </div>
     
-    <!-- (modais permanecem exatamente os mesmos) -->
+    <!-- Modal para Criar Novo Caderno -->
+    <div class="modal" id="cadernoModal">
+        <div class="modal-content large">
+            <div class="modal-header">
+                <h2 class="modal-title">📅 Criar Nova Visita</h2>
+                <button class="close-modal" id="closeCadernoModal">&times;</button>
+            </div>
+            
+            <form id="cadernoForm">
+                <div class="modal-section">
+                    <div class="modal-section-title">1. Data da Visita</div>
+                    <div style="margin-bottom: 20px;">
+                        <label for="cadernoDate">Selecione a data da visita:</label>
+                        <input type="date" id="cadernoDate" required style="width: 100%; padding: 15px; font-size: 16px; border-radius: 12px; border: 2px solid var(--gray-border); margin-top: 10px;">
+                    </div>
+                </div>
+                
+                <div class="modal-section">
+                    <div class="modal-section-title">2. Configuração dos Cavalos</div>
+                    
+                    <!-- Opção de repetir visita anterior -->
+                    <div class="repeat-visita-option" id="repeatVisitaOption">
+                        <input type="checkbox" id="repeatLastVisita">
+                        <div>
+                            <div class="repeat-visita-label">Repetir cavalos da última visita</div>
+                            <div class="repeat-visita-description">Se marcado, todos os cavalos da última visita serão automaticamente selecionados. Você ainda poderá ajustar a seleção.</div>
+                        </div>
+                    </div>
+                    
+                    <div style="margin-top: 20px;">
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px;">
+                            <!-- Hipo -->
+                            <div>
+                                <h3 style="color: var(--hipo-red); margin-bottom: 15px; font-size: 18px;">🎠 Esquadrão Hipo</h3>
+                                <div class="horse-list-container" style="max-height: 300px;">
+                                    <div id="hipoSelectionList">
+                                        <!-- Preenchido por JavaScript -->
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- DH -->
+                            <div>
+                                <h3 style="color: var(--dh-green); margin-bottom: 15px; font-size: 18px;">🐎 Esquadrão DH</h3>
+                                <div class="horse-list-container" style="max-height: 300px;">
+                                    <div id="dhSelectionList">
+                                        <!-- Preenchido por JavaScript -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="modal-actions">
+                    <button type="button" class="btn btn-secondary" id="btnCancelCaderno" style="background: linear-gradient(135deg, #95a5a6 0%, #7f8c8d 100%);">Cancelar</button>
+                    <button type="submit" class="btn btn-primary">Criar Diário de Visitas</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    
+    <!-- Modal para Adicionar Mais Cavalos -->
+    <div class="modal" id="addHorsesModal">
+        <div class="modal-content large">
+            <div class="modal-header">
+                <h2 class="modal-title">➕ Adicionar Mais Cavalos à Visita</h2>
+                <button class="close-modal" id="closeAddHorsesModal">&times;</button>
+            </div>
+            
+            <div style="margin-bottom: 30px;">
+                <p style="color: #666; margin-bottom: 15px;">Selecione os cavalos que deseja adicionar à visita atual:</p>
+                
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px;">
+                    <!-- Hipo -->
+                    <div>
+                        <h3 style="color: var(--hipo-red); margin-bottom: 15px; font-size: 18px;">🎠 Esquadrão Hipo</h3>
+                        <div class="horse-list-container" style="max-height: 300px;">
+                            <div id="addHipoSelectionList">
+                                <!-- Preenchido por JavaScript -->
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- DH -->
+                    <div>
+                        <h3 style="color: var(--dh-green); margin-bottom: 15px; font-size: 18px;">🐎 Esquadrão DH</h3>
+                        <div class="horse-list-container" style="max-height: 300px;">
+                            <div id="addDhSelectionList">
+                                <!-- Preenchido por JavaScript -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="modal-actions">
+                <button type="button" class="btn btn-secondary" id="btnCancelAddHorses" style="background: linear-gradient(135deg, #95a5a6 0%, #7f8c8d 100%);">Cancelar</button>
+                <button type="button" class="btn btn-primary" id="btnConfirmAddHorses">Adicionar Cavalos Selecionados</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Modal para Visualizar Visita Arquivada -->
+    <div class="modal" id="archivedModal">
+        <div class="modal-content large">
+            <div class="modal-header">
+                <h2 class="modal-title" id="modalArchivedTitle">📋 Visita Arquivada</h2>
+                <button class="close-modal" id="closeArchivedModal">&times;</button>
+            </div>
+            
+            <div id="modalArchivedContent">
+                <!-- Preenchido por JavaScript -->
+            </div>
+        </div>
+    </div>
+    
+    <!-- Notificações -->
+    <div id="notificationContainer"></div>
 
     <script>
-        // ========== SISTEMA DE PERMISSÕES ==========
-        function checkUserPermissions() {
-            const userRole = localStorage.getItem('userRole');
-            const permissions = JSON.parse(localStorage.getItem('userPermissions') || '{}');
-            
-            if (!userRole || !permissions) {
-                window.location.href = 'login.html';
-                return null;
+        // ========== DADOS DAS VISITAS ==========
+        function loadVisitasFromStorage() {
+            const storedVisitas = localStorage.getItem('vetSystemVisitas');
+            if (storedVisitas) {
+                return JSON.parse(storedVisitas);
+            } else {
+                return {
+                    cadernosAtivos: [],
+                    cadernosArquivados: []
+                };
             }
-            
-            return { role: userRole, permissions: permissions };
         }
-        
-        function applyPermissionsToVisitaPage() {
-            const userInfo = checkUserPermissions();
-            if (!userInfo) return;
-            
-            const { role, permissions } = userInfo;
-            const currentUser = localStorage.getItem('currentUser');
-            
-            // Atualizar informações do usuário
-            const loggedUser = document.getElementById('loggedUser');
-            const permissionBadge = document.getElementById('userPermissionBadge');
-            
-            if (loggedUser) {
-                loggedUser.textContent = currentUser;
-            }
-            
-            if (permissionBadge) {
-                permissionBadge.textContent = role === 'admin' ? 'Administrador' : 
-                                           role === 'moderador' ? 'Moderador' : 'Visitante';
-                permissionBadge.className = `permission-badge ${role}`;
-            }
-            
-            // Aplicar restrições baseadas no papel
-            if (role === 'visitante') {
-                // Visitante não pode criar ou editar cadernos de visita
-                disableVisitaCreateButtons();
-                showPermissionAlert('Visitante: Acesso apenas para consulta. Não pode criar ou editar cadernos de visita.', 'warning');
-            }
-            // Moderador e Admin têm todas as permissões para caderno de visitas
+
+        function saveVisitasToStorage() {
+            localStorage.setItem('vetSystemVisitas', JSON.stringify(visitas));
         }
-        
-        function disableVisitaCreateButtons() {
-            const createButtons = ['#btnNovoCaderno', '#btnAddMoreHorses', '#btnFinalizarVisita'];
-            createButtons.forEach(selector => {
-                const button = document.querySelector(selector);
-                if (button) {
-                    button.classList.add('btn-disabled');
-                    button.setAttribute('title', 'Visitante não tem permissão para esta ação');
-                    button.addEventListener('click', function(e) {
-                        e.preventDefault();
-                        e.stopPropagation();
-                        showPermissionAlert('Visitante não tem permissão para criar ou gerenciar cadernos de visita.');
-                    });
-                }
-            });
+
+        function loadHorsesFromStorage() {
+            const storedHorses = localStorage.getItem('vetSystemHorses');
+            if (storedHorses) {
+                return JSON.parse(storedHorses);
+            }
             
-            // Também desabilitar botões de marcar como visitado
-            setTimeout(() => {
-                const visitButtons = document.querySelectorAll('.btn-visit:not(.visited)');
-                visitButtons.forEach(btn => {
-                    btn.classList.add('btn-disabled');
-                    btn.setAttribute('title', 'Visitante não tem permissão para marcar visitas');
-                    btn.addEventListener('click', function(e) {
-                        e.preventDefault();
-                        e.stopPropagation();
-                        showPermissionAlert('Visitante não tem permissão para marcar cavalos como visitados.');
-                    });
-                });
-            }, 1000);
+            // Dados de exemplo para teste
+            return [
+                { id: 1, name: 'Átila', esquadrao: 'Hipo', pelagem: 'Alazão' },
+                { id: 2, name: 'Thor', esquadrao: 'Hipo', pelagem: 'Tordilho' },
+                { id: 3, name: 'Odin', esquadrao: 'Hipo', pelagem: 'Preto' },
+                { id: 4, name: 'Zeus', esquadrao: 'Hipo', pelagem: 'Baio' },
+                { id: 5, name: 'Apolo', esquadrao: 'Hipo', pelagem: 'Alazão' },
+                { id: 6, name: 'Pégaso', esquadrao: 'DH', pelagem: 'Tordilho' },
+                { id: 7, name: 'Aquiles', esquadrao: 'DH', pelagem: 'Alazão' },
+                { id: 8, name: 'Hércules', esquadrao: 'DH', pelagem: 'Baio' },
+                { id: 9, name: 'Trovão', esquadrao: 'DH', pelagem: 'Preto' },
+                { id: 10, name: 'Relâmpago', esquadrao: 'DH', pelagem: 'Tordilho' }
+            ];
         }
+
+        // ========== ESTADO DA APLICAÇÃO ==========
+        let visitas = loadVisitasFromStorage();
+        let allHorses = loadHorsesFromStorage();
+        let currentCaderno = null;
+        let currentFilters = {
+            date: '',
+            status: '',
+            esquadrao: '',
+            minVisitas: ''
+        };
+
+        // ========== ELEMENTOS DO DOM ==========
+        const loggedUser = document.getElementById('loggedUser');
+        const btnVoltar = document.getElementById('btnVoltar');
+        const statusCards = document.getElementById('statusCards');
+        const btnNovoCaderno = document.getElementById('btnNovoCaderno');
+        const btnAddMoreHorses = document.getElementById('btnAddMoreHorses');
+        const btnFinalizarVisita = document.getElementById('btnFinalizarVisita');
+        const cadernoContent = document.getElementById('cadernoContent');
+        const emptyState = document.getElementById('emptyState');
+        const squadronGrid = document.getElementById('squadronGrid');
+        const observacoesDia = document.getElementById('observacoesDia');
+        const archivedSection = document.getElementById('archivedSection');
+        const archivedGrid = document.getElementById('archivedGrid');
         
-        function showPermissionAlert(message, type = 'error') {
-            // Remover alertas anteriores
-            const existingAlerts = document.querySelectorAll('.permission-alert');
-            existingAlerts.forEach(alert => alert.remove());
-            
-            const alertDiv = document.createElement('div');
-            alertDiv.className = `permission-alert ${type}`;
-            alertDiv.style.cssText = `
-                position: fixed;
-                top: 20px;
-                right: 20px;
-                background: ${type === 'warning' ? 'linear-gradient(135deg, #f39c12 0%, #e67e22 100%)' : 'linear-gradient(135deg, #e74c3c 0%, #c0392b 100%)'};
-                color: white;
-                padding: 15px 20px;
-                border-radius: 10px;
-                box-shadow: 0 5px 20px rgba(0, 0, 0, 0.4);
-                z-index: 9999;
-                display: flex;
-                align-items: center;
-                gap: 10px;
-                animation: slideInRight 0.3s ease;
-                max-width: 400px;
-            `;
-            
-            alertDiv.innerHTML = `
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M12 9V11M12 15H12.01M5.07183 19H18.9282C20.4678 19 21.4301 17.3333 20.6603 16L13.7321 4C12.9623 2.66667 11.0378 2.66667 10.268 4L3.33978 16C2.56998 17.3333 3.53223 19 5.07183 19Z" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
-                <span>${message}</span>
-                <button class="permission-alert-close">&times;</button>
-            `;
-            
-            document.body.appendChild(alertDiv);
-            
-            alertDiv.querySelector('.permission-alert-close').addEventListener('click', () => {
-                alertDiv.remove();
-            });
-            
-            setTimeout(() => {
-                if (alertDiv.parentNode) {
-                    alertDiv.style.animation = 'slideInRight 0.3s ease reverse';
-                    setTimeout(() => {
-                        if (alertDiv.parentNode) {
-                            alertDiv.remove();
-                        }
-                    }, 300);
-                }
-            }, 5000);
-        }
+        // Filtros
+        const filterDate = document.getElementById('filterDate');
+        const filterStatus = document.getElementById('filterStatus');
+        const filterEsquadrao = document.getElementById('filterEsquadrao');
+        const filterMinVisitas = document.getElementById('filterMinVisitas');
+        const btnApplyFilters = document.getElementById('btnApplyFilters');
+        const btnClearFilters = document.getElementById('btnClearFilters');
         
-        // Adicionar CSS para animação
-        const style = document.createElement('style');
-        style.textContent = `
-            @keyframes slideInRight {
-                from {
-                    transform: translateX(100%);
-                    opacity: 0;
-                }
-                to {
-                    transform: translateX(0);
-                    opacity: 1;
-                }
-            }
-            
-            .permission-alert-close {
-                background: rgba(255, 255, 255, 0.2);
-                border: none;
-                color: white;
-                width: 24px;
-                height: 24px;
-                border-radius: 50%;
-                cursor: pointer;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                margin-left: auto;
-                flex-shrink: 0;
-            }
-            
-            .permission-alert-close:hover {
-                background: rgba(255, 255, 255, 0.3);
-            }
-            
-            .btn-disabled {
-                opacity: 0.5;
-                cursor: not-allowed !important;
-                position: relative;
-            }
-            
-            .btn-disabled::after {
-                content: "🔒";
-                position: absolute;
-                top: -5px;
-                right: -5px;
-                font-size: 12px;
-                background: rgba(0,0,0,0.7);
-                color: white;
-                width: 20px;
-                height: 20px;
-                border-radius: 50%;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-            }
-        `;
-        document.head.appendChild(style);
+        // Modais
+        const cadernoModal = document.getElementById('cadernoModal');
+        const addHorsesModal = document.getElementById('addHorsesModal');
+        const archivedModal = document.getElementById('archivedModal');
+        const closeCadernoModal = document.getElementById('closeCadernoModal');
+        const btnCancelCaderno = document.getElementById('btnCancelCaderno');
+        const cadernoForm = document.getElementById('cadernoForm');
+        const closeAddHorsesModal = document.getElementById('closeAddHorsesModal');
+        const btnCancelAddHorses = document.getElementById('btnCancelAddHorses');
+        const btnConfirmAddHorses = document.getElementById('btnConfirmAddHorses');
+        const closeArchivedModal = document.getElementById('closeArchivedModal');
+        const modalArchivedTitle = document.getElementById('modalArchivedTitle');
+        const modalArchivedContent = document.getElementById('modalArchivedContent');
+        const notificationContainer = document.getElementById('notificationContainer');
         
-        // ========== MODIFICAÇÕES NAS FUNÇÕES EXISTENTES ==========
+        // Elementos do modal de criação
+        const repeatVisitaOption = document.getElementById('repeatVisitaOption');
+        const repeatLastVisitaCheckbox = document.getElementById('repeatLastVisita');
+        const hipoSelectionList = document.getElementById('hipoSelectionList');
+        const dhSelectionList = document.getElementById('dhSelectionList');
         
-        // Modificar função de criar novo caderno
-        btnNovoCaderno.addEventListener('click', () => {
-            const userInfo = checkUserPermissions();
-            if (!userInfo) return;
-            
-            const { role } = userInfo;
-            
-            if (role === 'visitante') {
-                showPermissionAlert('Visitante não tem permissão para criar cadernos de visitas.');
-                return;
-            }
-            
-            openCadernoModal();
-        });
-        
-        // Modificar função de adicionar mais cavalos
-        btnAddMoreHorses.addEventListener('click', () => {
-            const userInfo = checkUserPermissions();
-            if (!userInfo) return;
-            
-            const { role } = userInfo;
-            
-            if (role === 'visitante') {
-                showPermissionAlert('Visitante não tem permissão para adicionar cavalos à visita.');
-                return;
-            }
-            
-            openAddHorsesModal();
-        });
-        
-        // Modificar função de finalizar serviço
-        btnFinalizarVisita.addEventListener('click', () => {
-            const userInfo = checkUserPermissions();
-            if (!userInfo) return;
-            
-            const { role } = userInfo;
-            
-            if (role === 'visitante') {
-                showPermissionAlert('Visitante não tem permissão para finalizar visitas.');
-                return;
-            }
-            
-            finalizarServicoVisitas();
-        });
-        
-        // Modificar função de marcar cavalo como visitado
-        function addHorseEventListeners() {
-            // Botões remover
-            document.querySelectorAll('.btn-remove').forEach(btn => {
-                btn.addEventListener('click', function() {
-                    const userInfo = checkUserPermissions();
-                    if (!userInfo) return;
-                    
-                    const { role } = userInfo;
-                    
-                    if (role === 'visitante') {
-                        showPermissionAlert('Visitante não tem permissão para remover cavalos da visita.');
-                        return;
-                    }
-                    
-                    const horseId = parseInt(this.getAttribute('data-id'));
-                    removeHorseFromVisita(horseId);
-                    showNotification('Cavalo removido da visita!', 'warning');
-                });
-            });
-            
-            // Botões marcar como visitado
-            document.querySelectorAll('.btn-visit:not(.visited)').forEach(btn => {
-                btn.addEventListener('click', function() {
-                    const userInfo = checkUserPermissions();
-                    if (!userInfo) return;
-                    
-                    const { role } = userInfo;
-                    
-                    if (role === 'visitante') {
-                        showPermissionAlert('Visitante não tem permissão para marcar cavalos como visitados.');
-                        return;
-                    }
-                    
-                    const horseId = parseInt(this.getAttribute('data-id'));
-                    markHorseAsVisited(horseId);
-                    showNotification('Cavalo marcado como visitado!', 'success');
-                });
-            });
-        }
-        
-        // ========== INICIALIZAÇÃO MODIFICADA ==========
+        // Elementos do modal de adicionar cavalos
+        const addHipoSelectionList = document.getElementById('addHipoSelectionList');
+        const addDhSelectionList = document.getElementById('addDhSelectionList');
+
+        // ========== FUNÇÕES PRINCIPAIS ==========
         function init() {
-            // Verificar e aplicar permissões
-            applyPermissionsToVisitaPage();
+            // NOTA IMPORTANTE: Removi a função clearHistory() que estava zerando o histórico
+            // O histórico agora será preservado permanentemente
             
-            // Resto da inicialização permanece
             const userData = localStorage.getItem('vetSystemCurrentUser');
             if (userData) {
                 const user = JSON.parse(userData);
@@ -359,12 +1509,989 @@
             renderVisitas();
             setupEventListeners();
         }
-        
-        // Iniciar a aplicação
+
+        function setupEventListeners() {
+            btnVoltar.addEventListener('click', voltarParaArquivos);
+            btnNovoCaderno.addEventListener('click', openCadernoModal);
+            btnAddMoreHorses.addEventListener('click', openAddHorsesModal);
+            btnFinalizarVisita.addEventListener('click', finalizarServicoVisitas);
+            observacoesDia.addEventListener('input', saveObservacoes);
+            
+            // Filtros
+            btnApplyFilters.addEventListener('click', applyFilters);
+            btnClearFilters.addEventListener('click', clearFilters);
+            
+            // Modal caderno
+            closeCadernoModal.addEventListener('click', closeCadernoModalFunc);
+            btnCancelCaderno.addEventListener('click', closeCadernoModalFunc);
+            cadernoForm.addEventListener('submit', saveCaderno);
+            
+            // Checkbox repetir visita
+            repeatLastVisitaCheckbox.addEventListener('change', handleRepeatVisitaChange);
+            
+            // Modal adicionar cavalos
+            closeAddHorsesModal.addEventListener('click', closeAddHorsesModalFunc);
+            btnCancelAddHorses.addEventListener('click', closeAddHorsesModalFunc);
+            btnConfirmAddHorses.addEventListener('click', confirmAddHorses);
+            
+            // Modal arquivados
+            closeArchivedModal.addEventListener('click', closeArchivedModalFunc);
+            
+            // Fechar modais ao clicar fora
+            window.addEventListener('click', (e) => {
+                if (e.target === cadernoModal) closeCadernoModalFunc();
+                if (e.target === addHorsesModal) closeAddHorsesModalFunc();
+                if (e.target === archivedModal) closeArchivedModalFunc();
+            });
+        }
+
+        function voltarParaArquivos() {
+            // Redireciona diretamente para sistema.html
+            window.location.href = 'sistema.html';
+        }
+
+        function renderVisitas() {
+            currentCaderno = visitas.cadernosAtivos.length > 0 ? visitas.cadernosAtivos[0] : null;
+            
+            renderStatusCards();
+            renderCadernoContent();
+            renderArchivedVisitas();
+        }
+
+        function renderStatusCards() {
+            let cardsHTML = '';
+            
+            if (currentCaderno) {
+                const totalVisitas = currentCaderno.visitas.length;
+                const visitasRealizadas = currentCaderno.visitas.filter(v => v.visited).length;
+                const canFinalize = canFinalizeVisita();
+                
+                cardsHTML = `
+                    <div class="status-card ${canFinalize ? 'active' : 'pending'}">
+                        <div class="card-icon">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M9 12L11 14L15 10M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </div>
+                        <div class="card-title">Status da Visita</div>
+                        <div class="card-value">${canFinalize ? 'Pronto para Finalizar' : 'Em Andamento'}</div>
+                        <div class="card-date">${formatDate(currentCaderno.data)}</div>
+                    </div>
+                    
+                    <div class="status-card">
+                        <div class="card-icon">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M16 21V19C16 17.9391 15.5786 16.9217 14.8284 16.1716C14.0783 15.4214 13.0609 15 12 15H5C3.93913 15 2.92172 15.4214 2.17157 16.1716C1.42143 16.9217 1 17.9391 1 19V21M12 7C12 9.20914 10.2091 11 8 11C5.79086 11 4 9.20914 4 7C4 4.79086 5.79086 3 8 3C10.2091 3 12 4.79086 12 7Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </div>
+                        <div class="card-title">Cavalos Visitados</div>
+                        <div class="card-value">${visitasRealizadas}/${totalVisitas || 0}</div>
+                        <div class="card-date">${totalVisitas} cavalo(s) na visita</div>
+                    </div>
+                    
+                    <div class="status-card">
+                        <div class="card-icon">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M8 7V3M16 7V3M7 11H17M5 21H19C20.1046 21 21 20.1046 21 19V7C21 5.89543 20.1046 5 19 5H5C3.89543 5 3 5.89543 3 7V19C3 20.1046 3.89543 21 5 21Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </div>
+                        <div class="card-title">Próxima Finalização</div>
+                        <div class="card-value">${canFinalize ? 'Já Disponível' : 'Amanhã às 6:00'}</div>
+                        <div class="card-date">${canFinalize ? 'Pode finalizar agora' : 'Aguardando período'}</div>
+                    </div>
+                `;
+                
+                btnFinalizarVisita.disabled = !canFinalize;
+                btnAddMoreHorses.style.display = 'flex';
+            } else {
+                cardsHTML = `
+                    <div class="status-card inactive">
+                        <div class="card-icon">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M19 21V5C19 3.89543 18.1046 3 17 3H7C5.89543 3 5 3.89543 5 5V21M19 21L21 21M19 21H14M5 21L3 21M5 21H10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </div>
+                        <div class="card-title">Status da Visita</div>
+                        <div class="card-value">Nenhum caderno ativo</div>
+                        <div class="card-date">Clique para iniciar uma visita</div>
+                    </div>
+                    
+                    <div class="status-card inactive">
+                        <div class="card-icon">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M12 8V12L15 15M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </div>
+                        <div class="card-title">Período de Finalização</div>
+                        <div class="card-value">Somente nas passagens de serviço!</div>
+                        <div class="card-date">Regra de negócio do sistema</div>
+                    </div>
+                `;
+                
+                btnFinalizarVisita.disabled = true;
+                btnAddMoreHorses.style.display = 'none';
+            }
+            
+            statusCards.innerHTML = cardsHTML;
+        }
+
+        function renderCadernoContent() {
+            if (currentCaderno) {
+                emptyState.style.display = 'none';
+                cadernoContent.style.display = 'block';
+                
+                observacoesDia.value = currentCaderno.observacoes || '';
+                renderSquadronLists();
+                
+                // Adicionar mensagem informativa
+                if (!document.getElementById('infoMessage')) {
+                    const infoDiv = document.createElement('div');
+                    infoDiv.id = 'infoMessage';
+                    infoDiv.style.cssText = `
+                        margin-bottom: 20px;
+                        padding: 15px;
+                        background: var(--light-blue);
+                        border-radius: 12px;
+                        border-left: 4px solid var(--primary-blue);
+                        font-size: 14px;
+                        color: var(--primary-blue);
+                        display: flex;
+                        align-items: center;
+                        gap: 10px;
+                    `;
+                    infoDiv.innerHTML = `
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M13 16H12V12H11M12 8H12.01M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                        <div>
+                            <strong>Como usar:</strong> Marque os cavalos visitados clicando em "Marcar como Visitado". 
+                            Para adicionar mais cavalos à visita, use o botão "Adicionar Mais Cavalos".
+                        </div>
+                    `;
+                    
+                    // Inserir após os botões de ação
+                    const actionButtons = document.querySelector('.action-buttons');
+                    if (actionButtons) {
+                        actionButtons.parentNode.insertBefore(infoDiv, actionButtons.nextSibling);
+                    }
+                }
+            } else {
+                emptyState.style.display = 'block';
+                cadernoContent.style.display = 'none';
+                
+                // Remover mensagem informativa se existir
+                const infoDiv = document.getElementById('infoMessage');
+                if (infoDiv) {
+                    infoDiv.remove();
+                }
+            }
+        }
+
+        function renderSquadronLists() {
+            if (!currentCaderno) return;
+            
+            // Pegar apenas os cavalos que estão na visita atual
+            const cavalosNaVisita = currentCaderno.visitas.map(v => {
+                const horse = allHorses.find(h => h.id === v.horseId);
+                return { ...horse, ...v }; // Combina dados do cavalo com dados da visita
+            });
+            
+            // Separar por esquadrão
+            const cavalosHipo = cavalosNaVisita.filter(h => h.esquadrao === 'Hipo');
+            const cavalosDH = cavalosNaVisita.filter(h => h.esquadrao === 'DH');
+            
+            // Renderizar Hipo
+            let hipoHTML = '';
+            if (cavalosHipo.length === 0) {
+                hipoHTML = `
+                    <div class="empty-state">
+                        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M12 8V12M12 16H12.01M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="#ccc" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                        <p>Nenhum cavalo do Hipo nesta visita</p>
+                        <p style="font-size: 13px; margin-top: 10px;">Use o botão "Adicionar Mais Cavalos" para incluir cavalos</p>
+                    </div>
+                `;
+            } else {
+                hipoHTML = cavalosHipo.map(horse => {
+                    return `
+                        <div class="horse-item ${horse.visited ? 'visited' : 'pending'}">
+                            <div class="horse-info">
+                                <div class="horse-name">
+                                    ${horse.name}
+                                    ${horse.pelagem ? `<span style="font-size: 12px; color: #666; background: #f0f0f0; padding: 2px 8px; border-radius: 10px;">${horse.pelagem}</span>` : ''}
+                                </div>
+                                <div class="horse-id">ID: ${horse.id}</div>
+                            </div>
+                            <div class="horse-actions">
+                                ${horse.visited ? `
+                                    <button class="btn-visit visited" disabled>
+                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <path d="M9 12L11 14L15 10M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                        </svg>
+                                        Visitado
+                                    </button>
+                                ` : `
+                                    <button class="btn-visit" data-id="${horse.id}">
+                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <path d="M9 12L11 14L15 10M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                        </svg>
+                                        Marcar como Visitado
+                                    </button>
+                                `}
+                                <button class="btn-remove" data-id="${horse.id}" title="Remover da visita">
+                                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M18 6L6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                        <path d="M6 6L18 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+            }
+            
+            // Renderizar DH
+            let dhHTML = '';
+            if (cavalosDH.length === 0) {
+                dhHTML = `
+                    <div class="empty-state">
+                        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M12 8V12M12 16H12.01M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="#ccc" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                        <p>Nenhum cavalo do DH nesta visita</p>
+                        <p style="font-size: 13px; margin-top: 10px;">Use o botão "Adicionar Mais Cavalos" para incluir cavalos</p>
+                    </div>
+                `;
+            } else {
+                dhHTML = cavalosDH.map(horse => {
+                    return `
+                        <div class="horse-item ${horse.visited ? 'visited' : 'pending'}">
+                            <div class="horse-info">
+                                <div class="horse-name">
+                                    ${horse.name}
+                                    ${horse.pelagem ? `<span style="font-size: 12px; color: #666; background: #f0f0f0; padding: 2px 8px; border-radius: 10px;">${horse.pelagem}</span>` : ''}
+                                </div>
+                                <div class="horse-id">ID: ${horse.id}</div>
+                            </div>
+                            <div class="horse-actions">
+                                ${horse.visited ? `
+                                    <button class="btn-visit visited" disabled>
+                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <path d="M9 12L11 14L15 10M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                        </svg>
+                                        Visitado
+                                    </button>
+                                ` : `
+                                    <button class="btn-visit" data-id="${horse.id}">
+                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <path d="M9 12L11 14L15 10M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                        </svg>
+                                        Marcar como Visitado
+                                    </button>
+                                `}
+                                <button class="btn-remove" data-id="${horse.id}" title="Remover da visita">
+                                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M18 6L6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                        <path d="M6 6L18 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+            }
+            
+            squadronGrid.innerHTML = `
+                <div class="squadron-card hipo">
+                    <div class="squadron-header hipo">
+                        <span>🎠 Esquadrão Hipo</span>
+                        <span class="squadron-count">${cavalosHipo.length} cavalo(s) na visita</span>
+                    </div>
+                    <div class="horse-list-container">
+                        <div class="horse-list">
+                            ${hipoHTML}
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="squadron-card dh">
+                    <div class="squadron-header dh">
+                        <span>🐎 Esquadrão DH</span>
+                        <span class="squadron-count">${cavalosDH.length} cavalo(s) na visita</span>
+                    </div>
+                    <div class="horse-list-container">
+                        <div class="horse-list">
+                            ${dhHTML}
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            // Adicionar event listeners
+            addHorseEventListeners();
+        }
+
+        function addHorseEventListeners() {
+            // Botões remover
+            document.querySelectorAll('.btn-remove').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const horseId = parseInt(this.getAttribute('data-id'));
+                    removeHorseFromVisita(horseId);
+                    showNotification('Cavalo removido da visita!', 'warning');
+                });
+            });
+            
+            // Botões marcar como visitado
+            document.querySelectorAll('.btn-visit:not(.visited)').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const horseId = parseInt(this.getAttribute('data-id'));
+                    markHorseAsVisited(horseId);
+                    showNotification('Cavalo marcado como visitado!', 'success');
+                });
+            });
+        }
+
+        function applyFilters() {
+            currentFilters = {
+                date: filterDate.value,
+                status: filterStatus.value,
+                esquadrao: filterEsquadrao.value,
+                minVisitas: filterMinVisitas.value
+            };
+            
+            renderArchivedVisitas();
+            showNotification('Filtros aplicados!', 'success');
+        }
+
+        function clearFilters() {
+            filterDate.value = '';
+            filterStatus.value = '';
+            filterEsquadrao.value = '';
+            filterMinVisitas.value = '';
+            
+            currentFilters = {
+                date: '',
+                status: '',
+                esquadrao: '',
+                minVisitas: ''
+            };
+            
+            renderArchivedVisitas();
+            showNotification('Filtros removidos!', 'success');
+        }
+
+        function renderArchivedVisitas() {
+            if (visitas.cadernosArquivados.length === 0) {
+                archivedSection.style.display = 'none';
+                return;
+            }
+            
+            archivedSection.style.display = 'block';
+            
+            // Aplicar filtros
+            let filteredCadernos = [...visitas.cadernosArquivados];
+            
+            // Filtro por data
+            if (currentFilters.date) {
+                filteredCadernos = filteredCadernos.filter(caderno => 
+                    caderno.data === currentFilters.date
+                );
+            }
+            
+            // Filtro por status
+            if (currentFilters.status === 'completed') {
+                filteredCadernos = filteredCadernos.filter(caderno => 
+                    !caderno.visitas.some(v => !v.visited)
+                );
+            } else if (currentFilters.status === 'pending') {
+                filteredCadernos = filteredCadernos.filter(caderno => 
+                    caderno.visitas.some(v => !v.visited)
+                );
+            }
+            
+            // Filtro por esquadrão
+            if (currentFilters.esquadrao) {
+                filteredCadernos = filteredCadernos.filter(caderno => 
+                    caderno.visitas.some(v => v.esquadrao === currentFilters.esquadrao)
+                );
+            }
+            
+            // Filtro por mínimo de visitados
+            if (currentFilters.minVisitas) {
+                const minVisitas = parseInt(currentFilters.minVisitas);
+                filteredCadernos = filteredCadernos.filter(caderno => {
+                    const visitasRealizadas = caderno.visitas.filter(v => v.visited).length;
+                    return visitasRealizadas >= minVisitas;
+                });
+            }
+            
+            // Ordenar por data decrescente
+            filteredCadernos.sort((a, b) => new Date(b.data) - new Date(a.data));
+            
+            if (filteredCadernos.length === 0) {
+                archivedGrid.innerHTML = `
+                    <div style="grid-column: 1 / -1; text-align: center; padding: 60px 40px; color: #666; background: var(--gray-light); border-radius: 15px;">
+                        <svg width="60" height="60" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="margin-bottom: 15px; color: #ccc;">
+                            <path d="M21 21L15 15M17 10C17 13.866 13.866 17 10 17C6.13401 17 3 13.866 3 10C3 6.13401 6.13401 3 10 3C13.866 3 17 6.13401 17 10Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                        <h3 style="color: var(--primary-blue); margin-bottom: 10px;">Nenhuma visita encontrada</h3>
+                        <p>Nenhuma visita corresponde aos filtros aplicados.</p>
+                        <button class="btn-clear" id="btnResetFilters" style="margin-top: 20px; padding: 10px 20px;">Limpar Filtros</button>
+                    </div>
+                `;
+                
+                document.getElementById('btnResetFilters')?.addEventListener('click', clearFilters);
+                return;
+            }
+            
+            archivedGrid.innerHTML = filteredCadernos.map(caderno => {
+                const totalVisitas = caderno.visitas.length;
+                const visitasRealizadas = caderno.visitas.filter(v => v.visited).length;
+                const visitasPendentes = totalVisitas - visitasRealizadas;
+                const porcentagem = totalVisitas > 0 ? Math.round((visitasRealizadas / totalVisitas) * 100) : 0;
+                const hasPending = visitasPendentes > 0;
+                
+                return `
+                    <div class="archived-card ${hasPending ? 'warning' : ''}" data-id="${caderno.id}">
+                        <div class="archived-date">
+                            ${formatDate(caderno.data)}
+                            ${hasPending ? '<div class="warning-badge">!</div>' : ''}
+                        </div>
+                        
+                        <div class="archived-stats">
+                            <div class="stat">
+                                <div class="stat-number">${totalVisitas}</div>
+                                <div class="stat-label">Total</div>
+                            </div>
+                            <div class="stat">
+                                <div class="stat-number" style="color: ${hasPending ? '#e74c3c' : '#27ae60'};">${visitasRealizadas}</div>
+                                <div class="stat-label">Visitados</div>
+                            </div>
+                            <div class="stat">
+                                <div class="stat-number" style="color: ${hasPending ? '#f39c12' : '#666'};">${visitasPendentes}</div>
+                                <div class="stat-label">Pendentes</div>
+                            </div>
+                        </div>
+                        
+                        <div class="progress-bar">
+                            <div class="progress-fill ${hasPending ? 'warning' : ''}" style="width: ${porcentagem}%"></div>
+                        </div>
+                        
+                        <div style="font-size: 14px; color: #666; margin-top: 15px;">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="vertical-align: middle; margin-right: 5px;">
+                                <path d="M12 8V12M12 16H12.01M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                            Clique para ver detalhes
+                        </div>
+                    </div>
+                `;
+            }).join('');
+            
+            // Adicionar event listeners aos cards arquivados
+            document.querySelectorAll('.archived-card').forEach(card => {
+                card.addEventListener('click', function() {
+                    const cadernoId = parseInt(this.getAttribute('data-id'));
+                    openArchivedModal(cadernoId);
+                });
+            });
+        }
+
+        // ========== FUNÇÕES DE NEGÓCIO ==========
+        function canFinalizeVisita() {
+            if (!currentCaderno) return false;
+            
+            const hoje = new Date();
+            const dataCaderno = new Date(currentCaderno.data);
+            
+            // Verificar se é dia seguinte
+            const diaSeguinte = new Date(dataCaderno);
+            diaSeguinte.setDate(diaSeguinte.getDate() + 1);
+            diaSeguinte.setHours(6, 0, 0, 0);
+            
+            return hoje >= diaSeguinte;
+        }
+
+        function getLastVisita() {
+            if (visitas.cadernosArquivados.length === 0) return null;
+            
+            // Ordenar por data decrescente e pegar a última
+            const cadernosOrdenados = [...visitas.cadernosArquivados].sort((a, b) => 
+                new Date(b.data) - new Date(a.data)
+            );
+            
+            return cadernosOrdenados[0];
+        }
+
+        function removeHorseFromVisita(horseId) {
+            if (!currentCaderno) return;
+            
+            const index = currentCaderno.visitas.findIndex(v => v.horseId === horseId);
+            if (index !== -1) {
+                currentCaderno.visitas.splice(index, 1);
+                saveVisitasToStorage();
+                renderVisitas();
+            }
+        }
+
+        function markHorseAsVisited(horseId) {
+            if (!currentCaderno) return;
+            
+            const visita = currentCaderno.visitas.find(v => v.horseId === horseId);
+            if (visita && !visita.visited) {
+                visita.visited = true;
+                visita.visitedAt = new Date().toISOString();
+                saveVisitasToStorage();
+                renderVisitas();
+            }
+        }
+
+        function saveObservacoes() {
+            if (!currentCaderno) return;
+            
+            currentCaderno.observacoes = observacoesDia.value;
+            saveVisitasToStorage();
+        }
+
+        // ========== FUNÇÕES DE MODAL ==========
+        function openCadernoModal() {
+            const today = new Date().toISOString().split('T')[0];
+            document.getElementById('cadernoDate').value = today;
+            
+            // Resetar checkbox
+            repeatLastVisitaCheckbox.checked = false;
+            
+            // Renderizar listas de seleção
+            renderHorseSelectionLists();
+            
+            cadernoModal.style.display = 'flex';
+        }
+
+        function closeCadernoModalFunc() {
+            cadernoModal.style.display = 'none';
+        }
+
+        function openAddHorsesModal() {
+            if (!currentCaderno) return;
+            
+            // Renderizar listas de seleção para adicionar cavalos
+            renderAddHorsesSelectionLists();
+            
+            addHorsesModal.style.display = 'flex';
+        }
+
+        function closeAddHorsesModalFunc() {
+            addHorsesModal.style.display = 'none';
+        }
+
+        function handleRepeatVisitaChange() {
+            renderHorseSelectionLists();
+        }
+
+        function renderHorseSelectionLists() {
+            const repeatLast = repeatLastVisitaCheckbox.checked;
+            const lastVisita = repeatLast ? getLastVisita() : null;
+            const lastVisitaHorseIds = lastVisita ? 
+                new Set(lastVisita.visitas.map(v => v.horseId)) : 
+                new Set();
+            
+            // Separar cavalos por esquadrão
+            const cavalosHipo = allHorses.filter(h => h.esquadrao === 'Hipo');
+            const cavalosDH = allHorses.filter(h => h.esquadrao === 'DH');
+            
+            // Renderizar Hipo
+            hipoSelectionList.innerHTML = cavalosHipo.map(horse => {
+                const isChecked = repeatLast ? lastVisitaHorseIds.has(horse.id) : false;
+                
+                return `
+                    <div class="horse-select-item ${isChecked ? 'selected' : ''}">
+                        <input type="checkbox" class="horse-select-checkbox" data-id="${horse.id}" ${isChecked ? 'checked' : ''}>
+                        <div class="horse-select-name">${horse.name}</div>
+                        <div class="horse-select-esquadrao hipo">Hipo</div>
+                    </div>
+                `;
+            }).join('');
+            
+            // Renderizar DH
+            dhSelectionList.innerHTML = cavalosDH.map(horse => {
+                const isChecked = repeatLast ? lastVisitaHorseIds.has(horse.id) : false;
+                
+                return `
+                    <div class="horse-select-item ${isChecked ? 'selected' : ''}">
+                        <input type="checkbox" class="horse-select-checkbox" data-id="${horse.id}" ${isChecked ? 'checked' : ''}>
+                        <div class="horse-select-name">${horse.name}</div>
+                        <div class="horse-select-esquadrao dh">DH</div>
+                    </div>
+                `;
+            }).join('');
+            
+            // Adicionar event listeners aos checkboxes
+            document.querySelectorAll('.horse-select-checkbox').forEach(checkbox => {
+                checkbox.addEventListener('change', function() {
+                    const item = this.closest('.horse-select-item');
+                    if (this.checked) {
+                        item.classList.add('selected');
+                    } else {
+                        item.classList.remove('selected');
+                    }
+                });
+            });
+        }
+
+        function renderAddHorsesSelectionLists() {
+            if (!currentCaderno) return;
+            
+            // Separar cavalos por esquadrão
+            const cavalosHipo = allHorses.filter(h => h.esquadrao === 'Hipo');
+            const cavalosDH = allHorses.filter(h => h.esquadrao === 'DH');
+            
+            // IDs dos cavalos já na visita
+            const cavalosNaVisita = new Set(currentCaderno.visitas.map(v => v.horseId));
+            
+            // Renderizar Hipo (apenas cavalos não na visita)
+            const hipoNotInVisita = cavalosHipo.filter(h => !cavalosNaVisita.has(h.id));
+            
+            addHipoSelectionList.innerHTML = hipoNotInVisita.map(horse => {
+                return `
+                    <div class="horse-select-item">
+                        <input type="checkbox" class="add-horse-checkbox" data-id="${horse.id}" data-esquadrao="Hipo">
+                        <div class="horse-select-name">${horse.name}</div>
+                        <div class="horse-select-esquadrao hipo">Hipo</div>
+                    </div>
+                `;
+            }).join('');
+            
+            if (hipoNotInVisita.length === 0) {
+                addHipoSelectionList.innerHTML = `
+                    <div style="text-align: center; padding: 40px 20px; color: #666; font-style: italic;">
+                        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M9 12L11 14L15 10M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="#ccc" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                        <p>Todos os cavalos do Hipo já estão na visita</p>
+                    </div>
+                `;
+            }
+            
+            // Renderizar DH (apenas cavalos não na visita)
+            const dhNotInVisita = cavalosDH.filter(h => !cavalosNaVisita.has(h.id));
+            
+            addDhSelectionList.innerHTML = dhNotInVisita.map(horse => {
+                return `
+                    <div class="horse-select-item">
+                        <input type="checkbox" class="add-horse-checkbox" data-id="${horse.id}" data-esquadrao="DH">
+                        <div class="horse-select-name">${horse.name}</div>
+                        <div class="horse-select-esquadrao dh">DH</div>
+                    </div>
+                `;
+            }).join('');
+            
+            if (dhNotInVisita.length === 0) {
+                addDhSelectionList.innerHTML = `
+                    <div style="text-align: center; padding: 40px 20px; color: #666; font-style: italic;">
+                        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M9 12L11 14L15 10M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="#ccc" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                        <p>Todos os cavalos do DH já estão na visita</p>
+                    </div>
+                `;
+            }
+            
+            // Adicionar event listeners aos checkboxes
+            document.querySelectorAll('.add-horse-checkbox').forEach(checkbox => {
+                checkbox.addEventListener('change', function() {
+                    const item = this.closest('.horse-select-item');
+                    if (this.checked) {
+                        item.classList.add('selected');
+                    } else {
+                        item.classList.remove('selected');
+                    }
+                });
+            });
+        }
+
+        function confirmAddHorses() {
+            if (!currentCaderno) return;
+            
+            // Coletar cavalos selecionados
+            const selectedCheckboxes = document.querySelectorAll('.add-horse-checkbox:checked');
+            const selectedHorseIds = Array.from(selectedCheckboxes).map(cb => parseInt(cb.getAttribute('data-id')));
+            
+            if (selectedHorseIds.length === 0) {
+                showNotification('Selecione pelo menos um cavalo para adicionar.', 'error');
+                return;
+            }
+            
+            // Adicionar cavalos à visita
+            selectedHorseIds.forEach(horseId => {
+                const horse = allHorses.find(h => h.id === horseId);
+                if (horse) {
+                    const novaVisita = {
+                        horseId: horse.id,
+                        name: horse.name,
+                        esquadrao: horse.esquadrao,
+                        visited: false,
+                        addedDate: new Date().toISOString()
+                    };
+                    
+                    currentCaderno.visitas.push(novaVisita);
+                }
+            });
+            
+            saveVisitasToStorage();
+            renderVisitas();
+            closeAddHorsesModalFunc();
+            showNotification(`${selectedHorseIds.length} cavalo(s) adicionado(s) à visita!`, 'success');
+        }
+
+        function openArchivedModal(cadernoId) {
+            const caderno = visitas.cadernosArquivados.find(c => c.id === cadernoId);
+            if (!caderno) return;
+            
+            const totalVisitas = caderno.visitas.length;
+            const visitasRealizadas = caderno.visitas.filter(v => v.visited).length;
+            const visitasPendentes = totalVisitas - visitasRealizadas;
+            
+            const hipoVisitas = caderno.visitas.filter(v => v.esquadrao === 'Hipo');
+            const dhVisitas = caderno.visitas.filter(v => v.esquadrao === 'DH');
+            
+            modalArchivedTitle.textContent = `📋 Visita do dia ${formatDate(caderno.data)}`;
+            
+            modalArchivedContent.innerHTML = `
+                <div style="margin-bottom: 30px;">
+                    <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-bottom: 25px;">
+                        <div class="stat-box" style="padding: 20px; background: #f8f9fa; border-radius: 12px; text-align: center;">
+                            <div style="font-size: 32px; font-weight: 700; color: #2c7fb8; margin-bottom: 5px;">${totalVisitas}</div>
+                            <div style="font-size: 13px; color: #666;">Total de Cavalos</div>
+                        </div>
+                        <div class="stat-box" style="padding: 20px; background: #f8f9fa; border-radius: 12px; text-align: center;">
+                            <div style="font-size: 32px; font-weight: 700; color: #27ae60; margin-bottom: 5px;">${visitasRealizadas}</div>
+                            <div style="font-size: 13px; color: #666;">Visitados</div>
+                        </div>
+                        <div class="stat-box" style="padding: 20px; background: #f8f9fa; border-radius: 12px; text-align: center;">
+                            <div style="font-size: 32px; font-weight: 700; color: ${visitasPendentes > 0 ? '#e74c3c' : '#95a5a6'}; margin-bottom: 5px;">${visitasPendentes}</div>
+                            <div style="font-size: 13px; color: #666;">Pendentes</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="squadron-grid">
+                    <div class="squadron-card hipo">
+                        <div class="squadron-header hipo">
+                            <span>🎠 Esquadrão Hipo</span>
+                            <span class="squadron-count">${hipoVisitas.length} cavalos</span>
+                        </div>
+                        <div class="horse-list-container">
+                            <div class="horse-list">
+                                ${renderModalHorseList(hipoVisitas)}
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="squadron-card dh">
+                        <div class="squadron-header dh">
+                            <span>🐎 Esquadrão DH</span>
+                            <span class="squadron-count">${dhVisitas.length} cavalos</span>
+                        </div>
+                        <div class="horse-list-container">
+                            <div class="horse-list">
+                                ${renderModalHorseList(dhVisitas)}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                ${caderno.observacoes ? `
+                    <div style="margin-top: 30px; padding: 25px; background: #f8f9fa; border-radius: 15px;">
+                        <h4 style="color: #2c7fb8; margin-bottom: 15px; font-size: 16px; display: flex; align-items: center; gap: 8px;">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M11 5H7C5.89543 5 5 5.89543 5 7V19C5 20.1046 5.89543 21 7 21H17C18.1046 21 19 20.1046 19 19V13" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M14 5C14 3.89543 14.8954 3 16 3H20C21.1046 3 22 3.89543 22 5V9C22 10.1046 21.1046 11 20 11H16C14.8954 11 14 10.1046 14 9V5Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                            Observações do dia
+                        </h4>
+                        <p style="color: #666; line-height: 1.6; white-space: pre-wrap;">${caderno.observacoes}</p>
+                    </div>
+                ` : ''}
+            `;
+            
+            archivedModal.style.display = 'flex';
+        }
+
+        function renderModalHorseList(visitas) {
+            if (visitas.length === 0) {
+                return '<div style="text-align: center; padding: 40px 20px; color: #666;">Nenhum cavalo nesta visita</div>';
+            }
+            
+            return visitas.map(visita => `
+                <div class="horse-item ${visita.visited ? 'visited' : 'pending'}">
+                    <div class="horse-info">
+                        <div class="horse-name">${visita.name}</div>
+                        <div class="horse-id">ID: ${visita.horseId}</div>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 10px;">
+                        <span style="color: ${visita.visited ? '#27ae60' : '#e74c3c'}; font-weight: 600; font-size: 14px;">
+                            ${visita.visited ? '✓ Visitado' : '✗ Não visitado'}
+                        </span>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function closeArchivedModalFunc() {
+            archivedModal.style.display = 'none';
+        }
+
+        function createCaderno(data, selectedHorseIds) {
+            if (visitas.cadernosAtivos.length > 0) {
+                if (!confirm('Já existe um caderno ativo. Deseja arquivá-lo e criar um novo?')) {
+                    return;
+                }
+                archiveCurrentCaderno(true);
+            }
+            
+            // Criar visitas para os cavalos selecionados
+            const novasVisitas = selectedHorseIds.map(horseId => {
+                const horse = allHorses.find(h => h.id === horseId);
+                return {
+                    horseId: horse.id,
+                    name: horse.name,
+                    esquadrao: horse.esquadrao,
+                    visited: false,
+                    addedDate: new Date().toISOString()
+                };
+            });
+            
+            const novoCaderno = {
+                id: Date.now(),
+                data: data,
+                visitas: novasVisitas,
+                observacoes: '',
+                createdAt: new Date().toISOString()
+            };
+            
+            visitas.cadernosAtivos.push(novoCaderno);
+            saveVisitasToStorage();
+            currentCaderno = novoCaderno;
+            renderVisitas();
+            
+            showNotification('Diário de visitas criado com sucesso!', 'success');
+        }
+
+        function finalizarServicoVisitas() {
+            if (!currentCaderno) return;
+            
+            if (!canFinalizeVisita()) {
+                showNotification('A visita só pode ser finalizada no dia seguinte, a partir das 6:00 da manhã.', 'error');
+                return;
+            }
+            
+            const visitasRealizadas = currentCaderno.visitas.filter(v => v.visited).length;
+            const totalVisitas = currentCaderno.visitas.length;
+            const pendentes = totalVisitas - visitasRealizadas;
+            
+            if (pendentes > 0) {
+                if (!confirm(`⚠️ Atenção!\n\n${pendentes} cavalo(s) não foram visitados.\n\nEsta visita será arquivada com um alerta (!).\n\nDeseja continuar?`)) {
+                    return;
+                }
+            }
+            
+            archiveCurrentCaderno(false);
+            showNotification(`Visita finalizada e arquivada!${pendentes > 0 ? ' (Com pendências)' : ''}`, pendentes > 0 ? 'warning' : 'success');
+        }
+
+        function archiveCurrentCaderno(silent = false) {
+            if (!currentCaderno) return;
+            
+            const index = visitas.cadernosAtivos.findIndex(c => c.id === currentCaderno.id);
+            if (index !== -1) {
+                currentCaderno.archivedAt = new Date().toISOString();
+                currentCaderno.archivedWithPending = currentCaderno.visitas.some(v => !v.visited);
+                
+                visitas.cadernosAtivos.splice(index, 1);
+                visitas.cadernosArquivados.push(currentCaderno);
+                saveVisitasToStorage();
+                currentCaderno = null;
+                renderVisitas();
+            }
+        }
+
+        function saveCaderno(e) {
+            e.preventDefault();
+            
+            const date = document.getElementById('cadernoDate').value;
+            
+            if (!date) {
+                showNotification('Por favor, selecione uma data.', 'error');
+                return;
+            }
+            
+            const selectedDate = new Date(date);
+            const today = new Date();
+            today.setHours(0, 0, 0, 0);
+            
+            if (selectedDate > today) {
+                showNotification('Não é possível criar um caderno para uma data futura.', 'error');
+                return;
+            }
+            
+            // Coletar cavalos selecionados
+            const selectedCheckboxes = document.querySelectorAll('.horse-select-checkbox:checked');
+            const selectedHorseIds = Array.from(selectedCheckboxes).map(cb => parseInt(cb.getAttribute('data-id')));
+            
+            if (selectedHorseIds.length === 0) {
+                showNotification('Selecione pelo menos um cavalo para a visita.', 'error');
+                return;
+            }
+            
+            createCaderno(date, selectedHorseIds);
+            closeCadernoModalFunc();
+        }
+
+        // ========== FUNÇÕES AUXILIARES ==========
+        function formatDate(dateString) {
+            const date = new Date(dateString);
+            return date.toLocaleDateString('pt-BR', {
+                weekday: 'long',
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+            });
+        }
+
+        function showNotification(message, type = 'success') {
+            const notification = document.createElement('div');
+            notification.className = `notification ${type}`;
+            
+            let icon = '';
+            switch(type) {
+                case 'success':
+                    icon = '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M9 12L11 14L15 10M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="#27ae60" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+                    break;
+                case 'warning':
+                    icon = '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 9V11M12 15H12.01M5.07183 19H18.9282C20.4678 19 21.4301 17.3333 20.6603 16L13.7321 4C12.9623 2.66667 11.0378 2.66667 10.268 4L3.33978 16C2.56998 17.3333 3.53223 19 5.07183 19Z" stroke="#f39c12" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+                    break;
+                case 'error':
+                    icon = '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M10 14L12 12M12 12L14 10M12 12L10 10M12 12L14 14M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="#e74c3c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+                    break;
+            }
+            
+            notification.innerHTML = `
+                ${icon}
+                <div>${message}</div>
+            `;
+            
+            notificationContainer.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.style.animation = 'slideLeft 0.3s ease reverse';
+                setTimeout(() => {
+                    notification.remove();
+                }, 300);
+            }, 3000);
+        }
+
+        // ========== INICIALIZAÇÃO ==========
         document.addEventListener('DOMContentLoaded', init);
-        
-        // Resto do código JavaScript permanece o mesmo...
-        // (todas as outras funções permanecem inalteradas)
     </script>
 </body>
 </html>
