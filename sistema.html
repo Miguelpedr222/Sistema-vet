@@ -206,6 +206,15 @@
             font-weight: 600;
         }
         
+        .user-role {
+            background: #7fcdbb;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+        
         .btn-logout {
             background: #e74c3c;
             color: white;
@@ -313,6 +322,14 @@
         .btn-secondary:hover {
             background: #5bbfa5;
             transform: translateY(-2px);
+        }
+        
+        .btn:disabled, .btn.disabled {
+            background: #cccccc;
+            color: #666666;
+            cursor: not-allowed;
+            transform: none !important;
+            box-shadow: none !important;
         }
         
         /* NOVO ESTILO PARA BOTÃO VISITA - POSICIONADO NA BARRA DE AÇÕES */
@@ -423,6 +440,13 @@
             align-items: center;
             gap: 5px;
             transition: all 0.3s;
+        }
+        
+        .btn-small:disabled, .btn-small.disabled {
+            background: #cccccc;
+            color: #666666;
+            cursor: not-allowed;
+            transform: none !important;
         }
         
         .btn-edit {
@@ -1087,6 +1111,13 @@
             transform: translateY(-2px);
         }
         
+        .btn-colica:disabled, .btn-colica.disabled {
+            background: #cccccc;
+            color: #666666;
+            cursor: not-allowed;
+            transform: none !important;
+        }
+        
         .btn-colica.new {
             background: #e74c3c;
         }
@@ -1559,6 +1590,62 @@
             box-shadow: 0 5px 15px rgba(231, 76, 60, 0.4);
         }
         
+        /* ALERTA DE PERMISSÃO - HERDADO DA PÁGINA DE LOGIN */
+        .permission-alert {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+            color: white;
+            padding: 15px 20px;
+            border-radius: 10px;
+            box-shadow: 0 5px 20px rgba(231, 76, 60, 0.4);
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            animation: slideInRight 0.3s ease;
+            max-width: 400px;
+        }
+        
+        .permission-alert.warning {
+            background: linear-gradient(135deg, #f39c12 0%, #e67e22 100%);
+        }
+        
+        .permission-alert.info {
+            background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
+        }
+        
+        @keyframes slideInRight {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+        
+        .permission-alert-close {
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            color: white;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-left: auto;
+            flex-shrink: 0;
+        }
+        
+        .permission-alert-close:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+        
         @media (max-width: 768px) {
             .header {
                 flex-direction: column;
@@ -1707,6 +1794,7 @@
             </div>
             <div class="user-info">
                 <p>Logado como: <span id="loggedUser">Administrador</span></p>
+                <span class="user-role" id="userRoleBadge"></span>
                 <button class="btn-logout" id="btnLogout">
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path d="M9 21H5C4.46957 21 3.96086 20.7893 3.58579 20.4142C3.21071 20.0391 3 19.5304 3 19V5C3 4.46957 3.21071 3.96086 3.58579 3.58579C3.96086 3.21071 4.46957 3 5 3H9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
@@ -2309,6 +2397,7 @@
         const horseForm = document.getElementById('horseForm');
         const btnLogout = document.getElementById('btnLogout');
         const loggedUser = document.getElementById('loggedUser');
+        const userRoleBadge = document.getElementById('userRoleBadge');
         const btnVisita = document.getElementById('btnVisita'); // Botão Visita agora na barra de ações
         
         // Detalhes do cavalo
@@ -2358,6 +2447,8 @@
         let currentHorseId = null;
         let currentFilter = 'all';
         let currentUser = '';
+        let currentUserRole = '';
+        let currentUserPermissions = null;
         let isEditingHistory = false;
         let activeWindows = [];
         let horseToDelete = null;
@@ -2365,17 +2456,114 @@
         let selectedSeverity = null;
         let selectedTreatments = [];
         
-        // ========== VERIFICAÇÃO DE LOGIN ==========
+        // ========== VERIFICAÇÃO DE LOGIN E PERMISSÕES ==========
         function checkLogin() {
             const storedUser = localStorage.getItem('currentUser');
             const storedRole = localStorage.getItem('userRole');
+            const storedPermissions = localStorage.getItem('userPermissions');
             
-            if (!storedUser || !storedRole) {
+            if (!storedUser || !storedRole || !storedPermissions) {
                 // Redirecionar para a página de login se não estiver logado
                 window.location.href = 'login.html';
                 return false;
             }
+            
+            currentUser = storedUser;
+            currentUserRole = storedRole;
+            currentUserPermissions = JSON.parse(storedPermissions);
             return true;
+        }
+        
+        // Função para verificar permissões (herdada da página de login)
+        function hasPermission(permissionName) {
+            if (!currentUserPermissions) return false;
+            return currentUserPermissions[permissionName] || false;
+        }
+        
+        // Função para bloquear ação se não tiver permissão
+        function blockIfNoPermission(permissionName, actionName) {
+            if (!hasPermission(permissionName)) {
+                window.showPermissionAlert(
+                    `Você não possui permissão para ${actionName}. Contate um administrador.`,
+                    'error'
+                );
+                return true; // Bloqueado
+            }
+            return false; // Permissão concedida
+        }
+        
+        // Função para mostrar alerta de permissão (herdada da página de login)
+        window.showPermissionAlert = function(message, type = 'error') {
+            // Remover alertas anteriores
+            const existingAlerts = document.querySelectorAll('.permission-alert');
+            existingAlerts.forEach(alert => alert.remove());
+            
+            const alertDiv = document.createElement('div');
+            alertDiv.className = `permission-alert ${type}`;
+            alertDiv.innerHTML = `
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M12 9V11M12 15H12.01M5.07183 19H18.9282C20.4678 19 21.4301 17.3333 20.6603 16L13.7321 4C12.9623 2.66667 11.0378 2.66667 10.268 4L3.33978 16C2.56998 17.3333 3.53223 19 5.07183 19Z" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                <span>${message}</span>
+                <button class="permission-alert-close">&times;</button>
+            `;
+            
+            document.body.appendChild(alertDiv);
+            
+            alertDiv.querySelector('.permission-alert-close').addEventListener('click', () => {
+                alertDiv.remove();
+            });
+            
+            setTimeout(() => {
+                if (alertDiv.parentNode) {
+                    alertDiv.style.animation = 'slideInRight 0.3s ease reverse';
+                    setTimeout(() => {
+                        if (alertDiv.parentNode) {
+                            alertDiv.remove();
+                        }
+                    }, 300);
+                }
+            }, 5000);
+        };
+        
+        // ========== APLICAR PERMISSÕES NA INTERFACE ==========
+        function applyPermissionsToInterface() {
+            // Atualizar badge do cargo
+            userRoleBadge.textContent = currentUserPermissions.roleName;
+            
+            // Verificar permissões e habilitar/desabilitar botões
+            const canCreateFichas = hasPermission('canCreateFichas');
+            const canExportData = hasPermission('canExportData');
+            const canDeleteFichas = hasPermission('canDeleteFichas');
+            const canCreateColica = hasPermission('canCreateColica');
+            
+            // Botão Adicionar Cavalo
+            if (!canCreateFichas) {
+                btnAddHorse.disabled = true;
+                btnAddHorse.classList.add('disabled');
+                btnAddHorse.title = "Você não tem permissão para adicionar cavalos";
+            }
+            
+            // Botão Exportar Todos
+            if (!canExportData) {
+                btnExportAll.disabled = true;
+                btnExportAll.classList.add('disabled');
+                btnExportAll.title = "Você não tem permissão para exportar dados";
+            }
+            
+            // Botão Nova Cólica
+            if (!canCreateColica) {
+                btnNovaColica.disabled = true;
+                btnNovaColica.classList.add('disabled');
+                btnNovaColica.title = "Você não tem permissão para registrar cólicas";
+            }
+            
+            // Botão Relatório de Cólicas
+            if (!canExportData) {
+                btnRelatorioColicas.disabled = true;
+                btnRelatorioColicas.classList.add('disabled');
+                btnRelatorioColicas.title = "Você não tem permissão para gerar relatórios";
+            }
         }
         
         // ========== FUNÇÕES DE TRANSIÇÃO ==========
@@ -2392,6 +2580,10 @@
             welcomePage.style.display = 'none';
             filesPage.style.display = 'block';
             loggedUser.textContent = currentUser;
+            
+            // Aplicar permissões na interface
+            applyPermissionsToInterface();
+            
             generateAlphabetFilter();
             renderHorses();
             renderColicas();
@@ -2487,6 +2679,11 @@
                 else if (horse.esquadrao === 'DH') badgeClass = 'dh';
                 else badgeClass = 'outro';
                 
+                // Verificar permissões para botões
+                const canEditFichas = hasPermission('canEditFichas');
+                const canDeleteFichas = hasPermission('canDeleteFichas');
+                const canExportData = hasPermission('canExportData');
+                
                 horseCard.innerHTML = `
                     <h3 class="horse-name">
                         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -2505,14 +2702,14 @@
                         <div><strong>Protocolo:</strong> ${horse.protocolo || 'Nenhum'}</div>
                     </div>
                     <div class="file-actions">
-                        <button class="btn-small btn-edit" data-id="${horse.id}">
+                        <button class="btn-small btn-edit" data-id="${horse.id}" ${!canEditFichas ? 'disabled' : ''}>
                             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <path d="M11 4H4C3.46957 4 2.96086 4.21071 2.58579 4.58579C2.21071 4.96086 2 5.46957 2 6V20C2 20.5304 2.21071 21.0391 2.58579 21.4142C2.96086 21.7893 3.46957 22 4 22H18C18.5304 22 19.0391 21.7893 19.4142 21.4142C19.7893 21.0391 20 20.5304 20 20V13" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                                 <path d="M18.5 2.5C18.8978 2.10217 19.4374 1.87868 20 1.87868C20.5626 1.87868 21.1022 2.10217 21.5 2.5C21.8978 2.89782 22.1213 3.43739 22.1213 4C22.1213 4.56261 21.8978 5.10217 21.5 5.5L12 15L8 16L9 12L18.5 2.5Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                             </svg>
                             Editar
                         </button>
-                        <button class="btn-small btn-pdf" data-id="${horse.id}">
+                        <button class="btn-small btn-pdf" data-id="${horse.id}" ${!canExportData ? 'disabled' : ''}>
                             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <path d="M14 2H6C5.46957 2 4.96086 2.21071 4.58579 2.58579C4.21071 2.96086 4 3.46957 4 4V20C4 20.5304 4.21071 21.0391 4.58579 21.4142C4.96086 21.7893 5.46957 22 6 22H18C18.5304 22 19.0391 21.7893 19.4142 21.4142C19.7893 21.0391 20 20.5304 20 20V8L14 2Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                                 <path d="M14 2V8H20" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
@@ -2522,7 +2719,7 @@
                             </svg>
                             PDF
                         </button>
-                        <button class="btn-small btn-delete-horse" data-id="${horse.id}">
+                        <button class="btn-small btn-delete-horse" data-id="${horse.id}" ${!canDeleteFichas ? 'disabled' : ''}>
                             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <path d="M3 6H5H21" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                                 <path d="M8 6V4C8 3.46957 8.21071 2.96086 8.58579 2.58579C8.96086 2.21071 9.46957 2 10 2H14C14.5304 2 15.0391 2.21071 15.4142 2.58579C15.7893 2.96086 16 3.46957 16 4V6M19 6V20C19 20.5304 18.7893 21.0391 18.4142 21.4142C18.0391 21.7893 17.5304 22 17 22H7C6.46957 22 5.96086 21.7893 5.58579 21.4142C5.21071 21.0391 5 20.5304 5 20V6H19Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
@@ -2545,6 +2742,12 @@
             document.querySelectorAll('.btn-edit').forEach(btn => {
                 btn.addEventListener('click', (e) => {
                     e.stopPropagation();
+                    
+                    // Verificar permissão para editar
+                    if (blockIfNoPermission('canEditFichas', 'editar fichas')) {
+                        return;
+                    }
+                    
                     const horseId = parseInt(e.currentTarget.getAttribute('data-id'));
                     redirectToFicha(horseId);
                 });
@@ -2553,6 +2756,12 @@
             document.querySelectorAll('.btn-pdf').forEach(btn => {
                 btn.addEventListener('click', (e) => {
                     e.stopPropagation();
+                    
+                    // Verificar permissão para exportar
+                    if (blockIfNoPermission('canExportData', 'exportar para PDF')) {
+                        return;
+                    }
+                    
                     const horseId = parseInt(e.currentTarget.getAttribute('data-id'));
                     exportToPDF(horseId);
                 });
@@ -2561,6 +2770,12 @@
             document.querySelectorAll('.btn-delete-horse').forEach(btn => {
                 btn.addEventListener('click', (e) => {
                     e.stopPropagation();
+                    
+                    // Verificar permissão para excluir
+                    if (blockIfNoPermission('canDeleteFichas', 'excluir cavalos')) {
+                        return;
+                    }
+                    
                     const horseId = parseInt(e.currentTarget.getAttribute('data-id'));
                     showCustomConfirm(horseId);
                 });
@@ -2884,6 +3099,11 @@
         
         // Abrir modal para nova cólica
         function openColicaModal() {
+            // Verificar permissão para criar cólicas
+            if (blockIfNoPermission('canCreateColica', 'registrar novas cólicas')) {
+                return;
+            }
+            
             // Preencher select de cavalos
             const horseSelect = document.getElementById('colicaHorse');
             horseSelect.innerHTML = '<option value="">Selecione o cavalo</option>';
@@ -3009,6 +3229,11 @@
         
         // Gerar relatório de cólicas
         function gerarRelatorioColicas() {
+            // Verificar permissão para exportar
+            if (blockIfNoPermission('canExportData', 'gerar relatórios')) {
+                return;
+            }
+            
             // Em um sistema real, aqui geraríamos um PDF
             // Por enquanto, vamos mostrar um resumo
             
@@ -3197,6 +3422,11 @@
         
         // ========== FUNÇÕES DO MODAL ADICIONAR CAVALO ==========
         function openAddModal() {
+            // Verificar permissão para criar fichas
+            if (blockIfNoPermission('canCreateFichas', 'adicionar novos cavalos')) {
+                return;
+            }
+            
             horseForm.reset();
             esquadraoOrigem.style.display = 'none';
             historyEntriesContainer.innerHTML = '';
@@ -3409,6 +3639,22 @@
                 });
             });
             
+            // Aplicar permissões aos botões do modal de detalhes
+            const canEditFichas = hasPermission('canEditFichas');
+            const canDeleteFichas = hasPermission('canDeleteFichas');
+            
+            if (!canEditFichas) {
+                btnEditHorse.disabled = true;
+                btnEditHorse.classList.add('disabled');
+                btnEditHorse.title = "Você não tem permissão para editar fichas";
+            }
+            
+            if (!canDeleteFichas) {
+                btnDeleteHorse.disabled = true;
+                btnDeleteHorse.classList.add('disabled');
+                btnDeleteHorse.title = "Você não tem permissão para excluir cavalos";
+            }
+            
             horseDetailModal.style.display = 'flex';
         }
         
@@ -3522,6 +3768,11 @@
         }
         
         function exportAllToPDF() {
+            // Verificar permissão para exportar
+            if (blockIfNoPermission('canExportData', 'exportar todos os dados')) {
+                return;
+            }
+            
             alert('Exportando todas as fichas para PDF...\n\nEm um sistema real, isso geraria um arquivo ZIP com PDFs de todos os cavalos.');
         }
         
@@ -3533,6 +3784,7 @@
             if (confirm('Tem certeza que deseja sair do sistema?')) {
                 localStorage.removeItem('currentUser');
                 localStorage.removeItem('userRole');
+                localStorage.removeItem('userPermissions');
                 showLoginPage();
             }
         }
@@ -3544,6 +3796,8 @@
             }
             
             currentUser = localStorage.getItem('currentUser');
+            currentUserRole = localStorage.getItem('userRole');
+            currentUserPermissions = JSON.parse(localStorage.getItem('userPermissions'));
             
             // Event Listeners da tela de arquivos
             btnAddHorse.addEventListener('click', openAddModal);
@@ -3561,11 +3815,17 @@
             
             // Event Listener para o botão "Editar Ficha" no modal de detalhes
             btnEditHorse.addEventListener('click', () => {
+                if (blockIfNoPermission('canEditFichas', 'editar fichas')) {
+                    return;
+                }
                 redirectToFicha(currentHorseId);
             });
             
             // Event Listener para excluir cavalo no modal de detalhes
             btnDeleteHorse.addEventListener('click', () => {
+                if (blockIfNoPermission('canDeleteFichas', 'excluir cavalos')) {
+                    return;
+                }
                 showCustomConfirm(currentHorseId);
             });
             
