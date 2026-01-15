@@ -179,6 +179,114 @@
             height: 20px;
         }
         
+        /* Modal para senha do laboratório */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .modal-content {
+            background-color: white;
+            border-radius: 15px;
+            padding: 30px;
+            width: 90%;
+            max-width: 400px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            position: relative;
+        }
+        
+        .modal-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .modal-header h3 {
+            color: #8e44ad;
+            font-size: 20px;
+            margin: 0;
+        }
+        
+        .modal-icon {
+            width: 30px;
+            height: 30px;
+            background-color: #8e44ad;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+        }
+        
+        .modal-body {
+            margin-bottom: 25px;
+        }
+        
+        .modal-message {
+            color: #666;
+            margin-bottom: 20px;
+            font-size: 15px;
+            line-height: 1.5;
+        }
+        
+        .lab-password-container {
+            position: relative;
+            margin-bottom: 15px;
+        }
+        
+        .btn-modal {
+            width: 100%;
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 10px;
+        }
+        
+        .btn-modal-primary {
+            background: linear-gradient(to right, #8e44ad, #9b59b6);
+            color: white;
+            box-shadow: 0 4px 10px rgba(142, 68, 173, 0.3);
+        }
+        
+        .btn-modal-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(142, 68, 173, 0.4);
+        }
+        
+        .btn-modal-secondary {
+            background-color: #f8f9fa;
+            color: #666;
+            border: 1px solid #ddd;
+        }
+        
+        .btn-modal-secondary:hover {
+            background-color: #e9ecef;
+        }
+        
+        .modal-error {
+            color: #e74c3c;
+            font-size: 14px;
+            text-align: center;
+            margin-top: 10px;
+            display: none;
+            padding: 10px;
+            background-color: #ffeaea;
+            border-radius: 5px;
+        }
+        
         .permissions-info {
             margin-top: 25px;
             padding: 18px;
@@ -262,6 +370,10 @@
             .logo h1 {
                 font-size: 22px;
             }
+            
+            .modal-content {
+                padding: 20px;
+            }
         }
         
         /* Estilo para alerta de permissão */
@@ -340,6 +452,22 @@
             0%, 100% { transform: translateX(0); }
             10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
             20%, 40%, 60%, 80% { transform: translateX(5px); }
+        }
+        
+        @keyframes modalFadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .modal-show {
+            display: flex;
+            animation: modalFadeIn 0.3s ease;
         }
     </style>
 </head>
@@ -437,7 +565,7 @@
                 <li><strong>Administrador (Ten):</strong> Acesso total</li>
                 <li><strong>Moderador (Aux, Enf):</strong> Acesso limitado</li>
                 <li><strong>Visitante (Estagiário):</strong> Apenas consulta</li>
-                <li><strong>Ten. Andressa:</strong> Acesso especial ao Laboratório</li>
+                <li><strong>Ten. Andressa:</strong> Acesso especial ao Laboratório (senha: lab123)</li>
             </ul>
             <p style="margin-top: 10px; font-size: 12px; color: #666;">
                 <strong>Aviso:</strong> Ações não permitidas mostrarão mensagem de erro. Em caso de alguma alteração, entre em contato com o oficial veterinário de serviço.
@@ -449,6 +577,48 @@
         </div>
     </div>
 
+    <!-- Modal para senha do laboratório -->
+    <div class="modal-overlay" id="labPasswordModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="modal-icon">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M19.428 15.428C19.148 15.148 18.776 15 18.389 15H9L7 21H5V23H19V21H17L15.6 17.8L19.428 13.972C20.19 13.21 20.19 12.046 19.428 11.284L16.716 8.572C15.954 7.81 14.79 7.81 14.028 8.572L10 12.6V5C10 4.447 9.553 4 9 4H7V2H5V4H3C2.447 4 2 4.447 2 5V14C2 14.553 2.447 15 3 15H5V19.5C5 20.881 6.119 22 7.5 22C8.881 22 10 20.881 10 19.5V15.7L14.428 11.272C14.79 10.91 15.298 10.91 15.66 11.272L18.372 13.984C18.734 14.346 18.734 14.854 18.372 15.216L15.06 18.528C15.345 19.384 15.11 20.354 14.428 21.036C13.518 21.946 12.052 21.946 11.142 21.036C10.232 20.126 10.232 18.66 11.142 17.75C11.486 17.406 11.91 17.176 12.372 17.06L13.5 15.932V14H15.5V18.432L14.372 19.56C13.976 19.956 13.976 20.552 14.372 20.948C14.768 21.344 15.364 21.344 15.76 20.948C16.156 20.552 16.156 19.956 15.76 19.56L14.9 18.7C15.298 18.302 15.5 17.756 15.5 17.2V15.2L17.5 13.2V15H19.5V11.2L21.5 9.2V13C21.5 13.828 22.172 14.5 23 14.5C23.828 14.5 24.5 13.828 24.5 13V7C24.5 5.619 23.381 4.5 22 4.5H20V6.5H22C22.276 6.5 22.5 6.724 22.5 7V9C22.5 9.276 22.276 9.5 22 9.5H20V11.5H18V9.5H16C15.724 9.5 15.5 9.276 15.5 9V7C15.5 6.724 15.724 6.5 16 6.5H18V4.5H16C14.619 4.5 13.5 5.619 13.5 7V8.5L11.5 10.5V5C11.5 3.619 12.619 2.5 14 2.5H16V0.5H18V2.5H20C21.381 2.5 22.5 3.619 22.5 5V7C22.5 8.381 21.381 9.5 20 9.5H18V11.5H16V13.5H18V15.5H20V17.5H18V19.5H16V21.5H18V23.5H20V25.5H22V27.5H24V13C24 11.619 22.881 10.5 21.5 10.5H19.5V8.5H17.5V10.5H15.5V12.5H13.5V14.5H11.5V16.5H13.5V18.5H15.5V20.5H13.5V22.5H15.5V24.5H17.5V22.5H19.5V20.5H21.5V18.5H19.5V16.5H17.5V14.5H19.5V12.5H21.5V10.5Z" fill="white"/>
+                    </svg>
+                </div>
+                <h3>Acesso ao Laboratório</h3>
+            </div>
+            <div class="modal-body">
+                <div class="modal-message">
+                    Para acessar o módulo de Laboratório, digite a senha especial de acesso.
+                </div>
+                <div class="form-group">
+                    <label for="labPassword">Senha do Laboratório</label>
+                    <div class="lab-password-container">
+                        <input type="password" id="labPassword" placeholder="Digite a senha lab123">
+                        <button type="button" class="toggle-password" id="toggleLabPassword">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M1 12C1 12 5 4 12 4C19 4 23 12 23 12C23 12 19 20 12 20C5 20 1 12 1 12Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M12 15C13.6569 15 15 13.6569 15 12C15 10.3431 13.6569 9 12 9C10.3431 9 9 10.3431 9 12C9 13.6569 10.3431 15 12 15Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+                <div class="modal-error" id="labPasswordError">
+                    Senha do laboratório incorreta. Tente novamente.
+                </div>
+            </div>
+            <div>
+                <button type="button" class="btn-modal btn-modal-primary" id="btnConfirmLabPassword">
+                    Acessar Laboratório
+                </button>
+                <button type="button" class="btn-modal btn-modal-secondary" id="btnCancelLabPassword">
+                    Cancelar
+                </button>
+            </div>
+        </div>
+    </div>
+
     <script>
         // ========== CONFIGURAÇÕES DE LOGIN ==========
         // Senhas para cada tipo de permissão
@@ -457,6 +627,9 @@
             'moderador': 'mod456',
             'visitante': 'estag789'
         };
+        
+        // Senha para acessar o laboratório
+        const LAB_PASSWORD = 'lab123';
         
         // Dicas de senha para cada cargo (SEM MOSTRAR A SENHA)
         const passwordHints = {
@@ -478,6 +651,14 @@
         const loginForm = document.getElementById('loginForm');
         const loginContainer = document.querySelector('.login-container');
         const btnLaboratorio = document.getElementById('btnLaboratorio');
+        
+        // Elementos do modal
+        const labPasswordModal = document.getElementById('labPasswordModal');
+        const labPasswordInput = document.getElementById('labPassword');
+        const toggleLabPassword = document.getElementById('toggleLabPassword');
+        const btnConfirmLabPassword = document.getElementById('btnConfirmLabPassword');
+        const btnCancelLabPassword = document.getElementById('btnCancelLabPassword');
+        const labPasswordError = document.getElementById('labPasswordError');
         
         // ========== FUNÇÕES DE LOGIN ==========
         
@@ -524,7 +705,29 @@
             
             passwordInput.addEventListener('input', hideMessages);
             
-            // Permitir login com Enter
+            // Configurar modal do laboratório
+            toggleLabPassword.addEventListener('click', function() {
+                toggleLabPasswordVisibility();
+            });
+            
+            btnConfirmLabPassword.addEventListener('click', handleConfirmLabPassword);
+            btnCancelLabPassword.addEventListener('click', handleCancelLabPassword);
+            
+            // Fechar modal ao clicar fora
+            labPasswordModal.addEventListener('click', function(e) {
+                if (e.target === labPasswordModal) {
+                    closeLabPasswordModal();
+                }
+            });
+            
+            // Permitir login com Enter no modal
+            labPasswordInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    handleConfirmLabPassword();
+                }
+            });
+            
+            // Permitir login com Enter na tela principal
             document.addEventListener('keypress', function(e) {
                 if (e.key === 'Enter' && !e.target.matches('select')) {
                     loginForm.dispatchEvent(new Event('submit'));
@@ -596,6 +799,28 @@
         function togglePasswordVisibility() {
             const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
             passwordInput.setAttribute('type', type);
+            
+            // Alterar ícone do olho
+            if (type === 'text') {
+                this.innerHTML = `
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M17.94 17.94C16.2306 19.243 14.1491 19.9649 12 20C5 20 1 12 1 12C2.24389 9.68192 3.96914 7.65663 6.06 6.06006M9.9 4.24006C10.5883 4.0789 11.2931 3.99836 12 4.00006C19 4.00006 23 12 23 12C22.393 13.1356 21.6691 14.2048 20.84 15.19M14.12 14.12C13.8454 14.4148 13.5141 14.6512 13.1462 14.8151C12.7782 14.9791 12.3809 15.0673 11.9781 15.0744C11.5753 15.0815 11.1752 15.0074 10.8016 14.8565C10.4281 14.7056 10.0887 14.4811 9.80385 14.1962C9.51897 13.9113 9.29439 13.572 9.14351 13.1984C8.99262 12.8249 8.91853 12.4247 8.92563 12.0219C8.93274 11.6191 8.02091 11.2219 8.18488 10.8539C8.34884 10.4859 8.58525 10.1547 8.88 9.88006" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M1 1L23 23" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                `;
+            } else {
+                this.innerHTML = `
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M1 12C1 12 5 4 12 4C19 4 23 12 23 12C23 12 19 20 12 20C5 20 1 12 1 12Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M12 15C13.6569 15 15 13.6569 15 12C15 10.3431 13.6569 9 12 9C10.3431 9 9 10.3431 9 12C9 13.6569 10.3431 15 12 15Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                `;
+            }
+        }
+        
+        function toggleLabPasswordVisibility() {
+            const type = labPasswordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+            labPasswordInput.setAttribute('type', type);
             
             // Alterar ícone do olho
             if (type === 'text') {
@@ -700,11 +925,56 @@
                            moderadorUsersSelect.value;
             
             if (username === 'Ten. Andressa') {
-                // Salvar informação especial
+                // Abrir modal para senha do laboratório
+                openLabPasswordModal();
+            }
+        }
+        
+        function openLabPasswordModal() {
+            // Limpar campos do modal
+            labPasswordInput.value = '';
+            labPasswordError.style.display = 'none';
+            
+            // Mostrar modal
+            labPasswordModal.classList.add('modal-show');
+            
+            // Focar no campo de senha
+            setTimeout(() => {
+                labPasswordInput.focus();
+            }, 300);
+        }
+        
+        function closeLabPasswordModal() {
+            labPasswordModal.classList.remove('modal-show');
+        }
+        
+        function handleConfirmLabPassword() {
+            const labPassword = labPasswordInput.value;
+            
+            if (!labPassword) {
+                labPasswordError.textContent = 'Por favor, digite a senha do laboratório.';
+                labPasswordError.style.display = 'block';
+                labPasswordInput.focus();
+                return;
+            }
+            
+            if (labPassword === LAB_PASSWORD) {
+                // Senha correta
+                labPasswordError.style.display = 'none';
+                
+                // Salvar informações de acesso ao laboratório
+                const username = usernameInput.value || 
+                               adminUsersSelect.value || 
+                               moderadorUsersSelect.value;
+                
                 localStorage.setItem('labUser', username);
                 localStorage.setItem('labAccessTime', new Date().toISOString());
+                localStorage.setItem('labPasswordValidated', 'true');
                 
-                // Mostrar mensagem de redirecionamento
+                // Fechar modal
+                closeLabPasswordModal();
+                
+                // Mostrar mensagem de sucesso
                 showSuccessMessage('Acessando Laboratório...');
                 
                 // Efeito visual
@@ -714,12 +984,30 @@
                 
                 // Redirecionar para o laboratório após 1 segundo
                 setTimeout(function() {
-                    // Aqui você pode redirecionar para a página do laboratório
-                    // Por enquanto, vamos redirecionar para o sistema com uma flag
                     localStorage.setItem('goToLab', 'true');
                     window.location.href = 'sistema.html';
                 }, 1000);
+                
+                console.log(`Acesso ao laboratório concedido para: ${username}`);
+            } else {
+                // Senha incorreta
+                labPasswordError.textContent = 'Senha do laboratório incorreta. Tente novamente.';
+                labPasswordError.style.display = 'block';
+                
+                // Efeito de shake
+                labPasswordInput.style.animation = 'shake 0.5s';
+                setTimeout(() => {
+                    labPasswordInput.style.animation = '';
+                    labPasswordInput.focus();
+                    labPasswordInput.select();
+                }, 500);
+                
+                console.warn(`Tentativa de acesso ao laboratório com senha incorreta para: ${username}`);
             }
+        }
+        
+        function handleCancelLabPassword() {
+            closeLabPasswordModal();
         }
         
         function getPermissionsByRole(role, username) {
@@ -864,7 +1152,8 @@
                 role: userRole, 
                 permissions: permissions,
                 username: localStorage.getItem('currentUser'),
-                hasLabAccess: localStorage.getItem('hasLabAccess') === 'true'
+                hasLabAccess: localStorage.getItem('hasLabAccess') === 'true',
+                labPasswordValidated: localStorage.getItem('labPasswordValidated') === 'true'
             };
         };
         
@@ -897,7 +1186,8 @@
         // Nova função para verificar acesso ao laboratório
         window.hasLabAccess = function() {
             const userData = window.checkUserPermissions();
-            return userData ? userData.hasLabAccess || userData.permissions.canAccessLab : false;
+            return userData ? (userData.hasLabAccess && userData.labPasswordValidated) || 
+                            (userData.permissions.canAccessLab && userData.labPasswordValidated) : false;
         };
         
         // Inicializar a página quando carregar
