@@ -724,14 +724,14 @@
             console.log(`Login realizado: ${username} (${role})${isLabAccess ? ' com acesso ao laboratório' : ''}`);
             
             // Redirecionar após 1 segundo
-            // Redirecionar após 1 segundo
-setTimeout(function() {
-    if (isLabAccess) {
-        window.location.href = 'lab.html';  // Vai para laboratório
-    } else {
-        window.location.href = 'sistema.html';  // Vai para sistema normal
-    }
-}, 1000);
+            setTimeout(function() {
+                if (isLabAccess) {
+                    window.location.href = 'lab.html';  // Vai para laboratório
+                } else {
+                    window.location.href = 'sistema.html';  // Vai para sistema normal
+                }
+            }, 1000);
+        }
         
         function getPermissionsByRole(role, username) {
             let permissions = {
