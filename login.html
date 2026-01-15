@@ -151,6 +151,34 @@
             box-shadow: 0 6px 15px rgba(44, 127, 184, 0.4);
         }
         
+        .btn-laboratorio {
+            background: linear-gradient(to right, #8e44ad, #9b59b6);
+            color: white;
+            border: none;
+            padding: 14px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 10px;
+            box-shadow: 0 4px 10px rgba(142, 68, 173, 0.3);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        
+        .btn-laboratorio:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(142, 68, 173, 0.4);
+        }
+        
+        .btn-laboratorio svg {
+            width: 20px;
+            height: 20px;
+        }
+        
         .permissions-info {
             margin-top: 25px;
             padding: 18px;
@@ -386,6 +414,14 @@
             
             <button type="submit" class="btn-login">Entrar no Sistema</button>
             
+            <!-- Botão para acessar o laboratório (visível apenas para Ten. Andressa) -->
+            <button type="button" class="btn-laboratorio" id="btnLaboratorio">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M19.428 15.428C19.148 15.148 18.776 15 18.389 15H9L7 21H5V23H19V21H17L15.6 17.8L19.428 13.972C20.19 13.21 20.19 12.046 19.428 11.284L16.716 8.572C15.954 7.81 14.79 7.81 14.028 8.572L10 12.6V5C10 4.447 9.553 4 9 4H7V2H5V4H3C2.447 4 2 4.447 2 5V14C2 14.553 2.447 15 3 15H5V19.5C5 20.881 6.119 22 7.5 22C8.881 22 10 20.881 10 19.5V15.7L14.428 11.272C14.79 10.91 15.298 10.91 15.66 11.272L18.372 13.984C18.734 14.346 18.734 14.854 18.372 15.216L15.06 18.528C15.345 19.384 15.11 20.354 14.428 21.036C13.518 21.946 12.052 21.946 11.142 21.036C10.232 20.126 10.232 18.66 11.142 17.75C11.486 17.406 11.91 17.176 12.372 17.06L13.5 15.932V14H15.5V18.432L14.372 19.56C13.976 19.956 13.976 20.552 14.372 20.948C14.768 21.344 15.364 21.344 15.76 20.948C16.156 20.552 16.156 19.956 15.76 19.56L14.9 18.7C15.298 18.302 15.5 17.756 15.5 17.2V15.2L17.5 13.2V15H19.5V11.2L21.5 9.2V13C21.5 13.828 22.172 14.5 23 14.5C23.828 14.5 24.5 13.828 24.5 13V7C24.5 5.619 23.381 4.5 22 4.5H20V6.5H22C22.276 6.5 22.5 6.724 22.5 7V9C22.5 9.276 22.276 9.5 22 9.5H20V11.5H18V9.5H16C15.724 9.5 15.5 9.276 15.5 9V7C15.5 6.724 15.724 6.5 16 6.5H18V4.5H16C14.619 4.5 13.5 5.619 13.5 7V8.5L11.5 10.5V5C11.5 3.619 12.619 2.5 14 2.5H16V0.5H18V2.5H20C21.381 2.5 22.5 3.619 22.5 5V7C22.5 8.381 21.381 9.5 20 9.5H18V11.5H16V13.5H18V15.5H20V17.5H18V19.5H16V21.5H18V23.5H20V25.5H22V27.5H24V13C24 11.619 22.881 10.5 21.5 10.5H19.5V8.5H17.5V10.5H15.5V12.5H13.5V14.5H11.5V16.5H13.5V18.5H15.5V20.5H13.5V22.5H15.5V24.5H17.5V22.5H19.5V20.5H21.5V18.5H19.5V16.5H17.5V14.5H19.5V12.5H21.5V10.5Z" fill="white"/>
+                </svg>
+                Acessar Laboratório
+            </button>
+            
             <div class="error-message" id="errorMessage">
                 Senha incorreta para este cargo. Tente novamente.
             </div>
@@ -400,10 +436,11 @@
             <ul>
                 <li><strong>Administrador (Ten):</strong> Acesso total</li>
                 <li><strong>Moderador (Aux, Enf):</strong> Acesso limitado</li>
-                <li><strong>Visitante (Estagiário):</strong> Apenas consulta </li>
+                <li><strong>Visitante (Estagiário):</strong> Apenas consulta</li>
+                <li><strong>Ten. Andressa:</strong> Acesso especial ao Laboratório</li>
             </ul>
             <p style="margin-top: 10px; font-size: 12px; color: #666;">
-                <strong>Aviso:</strong> Ações não permitidas mostrarão mensagem de erro. Em caso de alguma alteração, entre em contato com o oficial veterinario de serviço.
+                <strong>Aviso:</strong> Ações não permitidas mostrarão mensagem de erro. Em caso de alguma alteração, entre em contato com o oficial veterinário de serviço.
             </p>
         </div>
         
@@ -440,6 +477,7 @@
         const successMessage = document.getElementById('successMessage');
         const loginForm = document.getElementById('loginForm');
         const loginContainer = document.querySelector('.login-container');
+        const btnLaboratorio = document.getElementById('btnLaboratorio');
         
         // ========== FUNÇÕES DE LOGIN ==========
         
@@ -457,6 +495,7 @@
             adminUsersSelect.addEventListener('change', function() {
                 if (this.value) {
                     usernameInput.value = this.value;
+                    checkAndressaAccess();
                 }
             });
             
@@ -464,6 +503,7 @@
             moderadorUsersSelect.addEventListener('change', function() {
                 if (this.value) {
                     usernameInput.value = this.value;
+                    checkAndressaAccess();
                 }
             });
             
@@ -473,8 +513,15 @@
             // Processar o formulário de login
             loginForm.addEventListener('submit', handleLoginSubmit);
             
+            // Botão do laboratório
+            btnLaboratorio.addEventListener('click', handleLaboratorioClick);
+            
             // Limpar mensagens quando o usuário começar a digitar
-            usernameInput.addEventListener('input', hideMessages);
+            usernameInput.addEventListener('input', function() {
+                hideMessages();
+                checkAndressaAccess();
+            });
+            
             passwordInput.addEventListener('input', hideMessages);
             
             // Permitir login com Enter
@@ -512,6 +559,9 @@
             adminUsersSelect.value = '';
             moderadorUsersSelect.value = '';
             
+            // Esconder botão do laboratório
+            btnLaboratorio.style.display = 'none';
+            
             // Mostrar o select apropriado baseado no cargo
             if (selectedRole === 'admin') {
                 usernameInput.style.display = 'none';
@@ -527,6 +577,19 @@
                 moderadorUsersSelect.focus();
             } else {
                 usernameInput.focus();
+            }
+        }
+        
+        function checkAndressaAccess() {
+            const selectedUser = usernameInput.value || 
+                                adminUsersSelect.value || 
+                                moderadorUsersSelect.value;
+            
+            // Mostrar botão do laboratório apenas para Ten. Andressa
+            if (selectedUser === 'Ten. Andressa') {
+                btnLaboratorio.style.display = 'flex';
+            } else {
+                btnLaboratorio.style.display = 'none';
             }
         }
         
@@ -589,8 +652,15 @@
                 localStorage.setItem('userRole', role);
                 localStorage.setItem('loginTime', new Date().toISOString());
                 
+                // Salvar informação especial se for a Ten. Andressa
+                if (username === 'Ten. Andressa') {
+                    localStorage.setItem('hasLabAccess', 'true');
+                } else {
+                    localStorage.removeItem('hasLabAccess');
+                }
+                
                 // Definir permissões baseadas no cargo
-                const permissions = getPermissionsByRole(role);
+                const permissions = getPermissionsByRole(role, username);
                 
                 // Salvar permissões no localStorage
                 localStorage.setItem('userPermissions', JSON.stringify(permissions));
@@ -624,7 +694,35 @@
             }
         }
         
-        function getPermissionsByRole(role) {
+        function handleLaboratorioClick() {
+            const username = usernameInput.value || 
+                           adminUsersSelect.value || 
+                           moderadorUsersSelect.value;
+            
+            if (username === 'Ten. Andressa') {
+                // Salvar informação especial
+                localStorage.setItem('labUser', username);
+                localStorage.setItem('labAccessTime', new Date().toISOString());
+                
+                // Mostrar mensagem de redirecionamento
+                showSuccessMessage('Acessando Laboratório...');
+                
+                // Efeito visual
+                if (loginContainer) {
+                    loginContainer.classList.add('fade-out');
+                }
+                
+                // Redirecionar para o laboratório após 1 segundo
+                setTimeout(function() {
+                    // Aqui você pode redirecionar para a página do laboratório
+                    // Por enquanto, vamos redirecionar para o sistema com uma flag
+                    localStorage.setItem('goToLab', 'true');
+                    window.location.href = 'sistema.html';
+                }, 1000);
+            }
+        }
+        
+        function getPermissionsByRole(role, username) {
             let permissions = {
                 canEditFichas: false,
                 canCreateFichas: false,
@@ -638,6 +736,7 @@
                 canViewAll: false,
                 canExportData: false,
                 canManageUsers: false,
+                canAccessLab: false,
                 roleName: ''
             };
             
@@ -655,6 +754,7 @@
                     canViewAll: true,
                     canExportData: true,
                     canManageUsers: true,
+                    canAccessLab: username === 'Ten. Andressa',
                     roleName: 'Administrador (Ten)'
                 };
             } else if (role === 'moderador') {
@@ -671,6 +771,7 @@
                     canViewAll: true,
                     canExportData: false,
                     canManageUsers: false,
+                    canAccessLab: false,
                     roleName: 'Moderador (Aux, Enf)'
                 };
             } else if (role === 'visitante') {
@@ -687,6 +788,7 @@
                     canViewAll: true,
                     canExportData: false,
                     canManageUsers: false,
+                    canAccessLab: false,
                     roleName: 'Visitante (Estagiário)'
                 };
             }
@@ -698,6 +800,12 @@
             errorMessage.textContent = message;
             errorMessage.style.display = 'block';
             successMessage.style.display = 'none';
+        }
+        
+        function showSuccessMessage(message) {
+            successMessage.textContent = message;
+            successMessage.style.display = 'block';
+            errorMessage.style.display = 'none';
         }
         
         function hideMessages() {
@@ -755,7 +863,8 @@
             return { 
                 role: userRole, 
                 permissions: permissions,
-                username: localStorage.getItem('currentUser')
+                username: localStorage.getItem('currentUser'),
+                hasLabAccess: localStorage.getItem('hasLabAccess') === 'true'
             };
         };
         
@@ -783,6 +892,12 @@
         window.getUserRoleName = function() {
             const userData = window.checkUserPermissions();
             return userData ? userData.permissions.roleName : 'Não autenticado';
+        };
+        
+        // Nova função para verificar acesso ao laboratório
+        window.hasLabAccess = function() {
+            const userData = window.checkUserPermissions();
+            return userData ? userData.hasLabAccess || userData.permissions.canAccessLab : false;
         };
         
         // Inicializar a página quando carregar
