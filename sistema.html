@@ -741,8 +741,280 @@
             transform: scale(1.1);
         }
         
+        /* JANELAS FLUTUANTES PARA PRESCRIÇÕES MÉDICAS - NOVO DESIGN */
+        .prescription-window {
+            position: fixed;
+            z-index: 2000;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+            border: 2px solid #2c7fb8;
+            min-width: 400px;
+            max-width: 600px;
+            animation: slideIn 0.3s ease;
+            resize: both;
+            overflow: hidden;
+            max-height: 80vh;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        @keyframes slideIn {
+            from {
+                transform: translateY(30px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+        
+        .prescription-window-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 20px;
+            background: linear-gradient(135deg, #2c7fb8 0%, #1d5f8a 100%);
+            color: white;
+            border-radius: 10px 10px 0 0;
+            cursor: move;
+        }
+        
+        .prescription-window-title {
+            font-weight: 700;
+            font-size: 16px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .prescription-window-title svg {
+            width: 20px;
+            height: 20px;
+        }
+        
+        .prescription-window-close {
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            color: white;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            transition: all 0.3s;
+        }
+        
+        .prescription-window-close:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: scale(1.1);
+        }
+        
+        .prescription-window-content {
+            padding: 20px;
+            flex-grow: 1;
+            overflow-y: auto;
+            background: #f8f9fa;
+        }
+        
+        .prescription-medication {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+            border-left: 5px solid #2c7fb8;
+        }
+        
+        .prescription-medication-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #f0f0f0;
+        }
+        
+        .prescription-medication-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: #2c7fb8;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .prescription-medication-id {
+            background: #e74c3c;
+            color: white;
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+        
+        .prescription-details {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .prescription-detail-item {
+            background: #f8f9fa;
+            padding: 12px;
+            border-radius: 8px;
+        }
+        
+        .prescription-detail-label {
+            font-size: 12px;
+            color: #666;
+            font-weight: 600;
+            margin-bottom: 5px;
+            text-transform: uppercase;
+        }
+        
+        .prescription-detail-value {
+            font-size: 14px;
+            color: #333;
+            font-weight: 600;
+        }
+        
+        .prescription-schedule {
+            background: white;
+            border-radius: 10px;
+            padding: 15px;
+            margin-top: 15px;
+            border: 2px solid #e0e0e0;
+        }
+        
+        .prescription-schedule-title {
+            font-size: 16px;
+            font-weight: 700;
+            color: #e74c3c;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .prescription-days-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 8px;
+            margin-top: 10px;
+        }
+        
+        .prescription-day-box {
+            width: 40px;
+            height: 40px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 14px;
+            position: relative;
+            transition: all 0.3s;
+        }
+        
+        .prescription-day-box.applied {
+            background: linear-gradient(135deg, #27ae60 0%, #2ecc71 100%);
+            color: white;
+            border-color: #27ae60;
+            box-shadow: 0 4px 10px rgba(39, 174, 96, 0.3);
+        }
+        
+        .prescription-day-box.not-applied {
+            background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+            color: white;
+            border-color: #e74c3c;
+            box-shadow: 0 4px 10px rgba(231, 76, 60, 0.3);
+        }
+        
+        .prescription-day-box.pending {
+            background: linear-gradient(135deg, #f39c12 0%, #e67e22 100%);
+            color: white;
+            border-color: #f39c12;
+            box-shadow: 0 4px 10px rgba(243, 156, 18, 0.3);
+        }
+        
+        .prescription-day-box.today {
+            border: 3px solid #2c7fb8;
+            transform: scale(1.1);
+        }
+        
+        .prescription-day-status {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 10px;
+            font-weight: bold;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
+        
+        .prescription-day-status.applied {
+            background: #27ae60;
+            color: white;
+        }
+        
+        .prescription-day-status.not-applied {
+            background: #e74c3c;
+            color: white;
+        }
+        
+        .prescription-no-data {
+            text-align: center;
+            padding: 30px;
+            color: #666;
+            font-style: italic;
+        }
+        
+        .prescription-window-footer {
+            padding: 15px 20px;
+            background: #f8f9fa;
+            border-top: 1px solid #e0e0e0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .prescription-date-info {
+            font-size: 12px;
+            color: #666;
+        }
+        
+        .prescription-status-badge {
+            display: inline-block;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+        
+        .prescription-status-active {
+            background: #27ae60;
+            color: white;
+        }
+        
+        .prescription-status-completed {
+            background: #7f8c8d;
+            color: white;
+        }
+        
         /* JANELAS FLUTUANTES PARA HISTÓRICO MÉDICO */
-        .floating-window {
+        .history-window {
             display: none;
             position: fixed;
             z-index: 2000;
@@ -758,7 +1030,7 @@
             max-height: 80vh;
         }
         
-        .floating-window.active {
+        .history-window.active {
             display: block;
         }
         
@@ -1721,7 +1993,25 @@
                 left: -20px;
             }
             
-            .floating-window {
+            .prescription-window {
+                min-width: 300px;
+                max-width: 350px;
+            }
+            
+            .prescription-details {
+                grid-template-columns: 1fr;
+            }
+            
+            .prescription-days-grid {
+                grid-template-columns: repeat(5, 1fr);
+            }
+            
+            .prescription-day-box {
+                width: 35px;
+                height: 35px;
+            }
+            
+            .history-window {
                 min-width: 250px;
                 max-width: 300px;
             }
@@ -2455,6 +2745,50 @@
         let currentEsquadraoFilter = 'todos';
         let selectedSeverity = null;
         let selectedTreatments = [];
+        let prescriptionWindows = [];
+        
+        // ========== SISTEMA DE ATUALIZAÇÃO EM TEMPO REAL ==========
+        // Verificar atualizações no localStorage a cada 2 segundos
+        function startLiveUpdates() {
+            setInterval(() => {
+                checkForUpdates();
+            }, 2000);
+        }
+        
+        function checkForUpdates() {
+            // Verificar se houve mudanças nos dados dos cavalos
+            const currentHorsesJSON = JSON.stringify(horses);
+            const storedHorsesJSON = localStorage.getItem('vetSystemHorses');
+            
+            if (currentHorsesJSON !== storedHorsesJSON) {
+                console.log('Atualizando dados dos cavalos...');
+                horses = loadHorsesFromStorage();
+                
+                // Se estiver visualizando detalhes de um cavalo, atualizar
+                if (currentHorseId && horseDetailModal.style.display === 'flex') {
+                    openHorseDetail(currentHorseId);
+                }
+                
+                // Atualizar a lista de cavalos
+                renderHorses();
+            }
+            
+            // Verificar se houve mudanças nas cólicas
+            const currentColicasJSON = JSON.stringify(colicas);
+            const storedColicasJSON = localStorage.getItem('vetSystemColicas');
+            
+            if (currentColicasJSON !== storedColicasJSON) {
+                console.log('Atualizando dados de cólicas...');
+                colicas = loadColicasFromStorage();
+                
+                // Se estiver na aba de cólicas, atualizar
+                if (document.getElementById('colicasTab').classList.contains('active')) {
+                    renderColicas();
+                    renderColicaStats();
+                    initCharts();
+                }
+            }
+        }
         
         // ========== VERIFICAÇÃO DE LOGIN E PERMISSÕES ==========
         function checkLogin() {
@@ -2583,6 +2917,9 @@
             
             // Aplicar permissões na interface
             applyPermissionsToInterface();
+            
+            // Iniciar sistema de atualização em tempo real
+            startLiveUpdates();
             
             generateAlphabetFilter();
             renderHorses();
@@ -3261,120 +3598,514 @@
                 RECOMENDAÇÕES:
                 1. Monitorar alimentação dos cavalos com histórico de cólicas
                 2. Revisar protocolos de ração e suplementação
-                3. Aumentar vigilância nos meses com maior incidência
-                4. Manter registros detalhados para análise de padrões
+                                3. Aumentar exercícios para cavalos em regime de quarentena
+                4. Agendar exames preventivos para cavalos com múltiplas ocorrências
                 
-                Gerado em: ${new Date().toLocaleDateString('pt-BR')}
+                Gerado em: ${formatDate(new Date())}
                 Responsável: ${currentUser}
+                Sistema: Vet 2°rcg System
             `;
             
-            alert('Relatório gerado! Em um sistema real, isso criaria um arquivo PDF.\n\n' + relatorio);
+            // Criar arquivo de texto para download
+            const blob = new Blob([relatorio], { type: 'text/plain' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `relatorio-colicas-${formatDate(new Date())}.txt`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            window.URL.revokeObjectURL(url);
+            
+            window.showPermissionAlert('Relatório gerado com sucesso!', 'info');
         }
         
         function getDistribuicaoPorEsquadrao() {
             const distribuicao = {};
             colicas.forEach(colica => {
-                distribuicao[colica.esquadrao] = (distribuicao[colica.esquadrao] || 0) + 1;
+                const esquadrao = colica.esquadrao;
+                distribuicao[esquadrao] = (distribuicao[esquadrao] || 0) + 1;
             });
             
             let resultado = '';
-            for (const [esquadrao, count] of Object.entries(distribuicao)) {
-                const percentual = ((count / colicas.length) * 100).toFixed(1);
-                resultado += `- ${esquadrao}: ${count} (${percentual}%)\n`;
+            for (const [esquadrao, quantidade] of Object.entries(distribuicao)) {
+                const percentual = ((quantidade / colicas.length) * 100).toFixed(1);
+                resultado += `- ${esquadrao}: ${quantidade} (${percentual}%)\n`;
             }
             return resultado;
         }
         
         function getUltimosRegistros() {
-            const ultimas = colicas.slice(0, 5);
+            const ultimos = colicas.slice(0, 5);
             let resultado = '';
-            ultimas.forEach(colica => {
-                resultado += `- ${colica.date}: ${colica.horseName} (${colica.severity})\n`;
+            ultimos.forEach((colica, index) => {
+                resultado += `${index + 1}. ${colica.date} - ${colica.horseName} (${colica.severity})\n`;
             });
             return resultado;
         }
-        
-        // ========== FUNÇÕES DE NAVEGAÇÃO ==========
-        function switchTab(tabName) {
-            // Atualizar botões de navegação
-            navTabs.forEach(tab => {
-                tab.classList.remove('active');
-                if (tab.getAttribute('data-tab') === tabName) {
-                    tab.classList.add('active');
-                }
-            });
+
+        // ========== FUNÇÕES DO MODAL DE ADICIONAR CAVALO ==========
+        function openAddHorseModal() {
+            // Verificar permissão para criar fichas
+            if (blockIfNoPermission('canCreateFichas', 'adicionar novos cavalos')) {
+                return;
+            }
             
-            // Atualizar conteúdo das abas
-            tabContents.forEach(content => {
-                content.classList.remove('active');
-                if (content.id === `${tabName}Tab`) {
-                    content.classList.add('active');
-                    
-                    // Se for a aba de cólicas, atualizar gráficos
-                    if (tabName === 'colicas') {
-                        setTimeout(() => {
-                            initCharts();
-                        }, 100);
-                    }
-                }
+            horseForm.reset();
+            historyEntriesContainer.innerHTML = '';
+            currentHorseId = null;
+            isEditingHistory = false;
+            
+            // Resetar seleção de esquadrão
+            document.querySelectorAll('.esquadrao-option').forEach(option => {
+                option.classList.remove('selected');
             });
+            esquadraoOrigem.style.display = 'none';
+            
+            horseModal.style.display = 'flex';
         }
         
-        // ========== FUNÇÕES DO HISTÓRICO MÉDICO - JANELA FLUTUANTE ==========
-        function openHistoryWindow(horseId, historyIndex) {
+        function closeModalFunc() {
+            horseModal.style.display = 'none';
+        }
+        
+        function openHorseDetail(horseId) {
+            currentHorseId = horseId;
             const horse = horses.find(h => h.id === horseId);
-            if (!horse || !horse.history || horse.history.length === 0) return;
             
-            const historyItem = horse.history[historyIndex];
+            if (!horse) return;
             
-            // Fechar janelas existentes
-            activeWindows.forEach(window => window.remove());
-            activeWindows = [];
+            horseDetailTitle.innerHTML = `
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M14 16H9M14 12H11M12 21C12.9465 21 13.8734 20.7716 14.7087 20.3343C15.544 19.897 16.2623 19.2643 16.8 18.492C17.7895 17.1277 19.8333 14.8 21 13C21.3333 12.3333 22 10.8 22 8.5C22 5.5 20.5 3 17.5 3C15.8333 3 14.5 4.5 14.5 4.5C14.5 4.5 13.5 3 11.5 3C9.5 3 8.5 4 8.5 6C8.5 6 7.5 5 5.5 5C3.5 5 2 7 2 9.5C2 12.5 3.5 14.5 5.5 16.5C7.5 18.5 9.66667 19.3333 11 19.5C11.5 19.6 12 19.5 12 19.5Z" stroke="#2c7fb8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                ${horse.name}
+            `;
             
-            // Criar nova janela
-            const windowId = `history-window-${horseId}-${historyIndex}`;
-            const floatingWindow = document.createElement('div');
-            floatingWindow.className = 'floating-window active';
-            floatingWindow.id = windowId;
-            floatingWindow.style.position = 'fixed';
-            floatingWindow.style.top = '100px';
-            floatingWindow.style.left = '100px';
-            floatingWindow.style.zIndex = '2000';
+            // Determinar a classe do badge baseado no esquadrão
+            let badgeClass = '';
+            if (horse.esquadrao === 'Hipo') badgeClass = 'hipo';
+            else if (horse.esquadrao === 'DH') badgeClass = 'dh';
+            else badgeClass = 'outro';
             
-            floatingWindow.innerHTML = `
-                <div class="window-header">
-                    <div class="window-title">Histórico Médico - ${horse.name}</div>
-                    <button class="window-close" data-window-id="${windowId}">&times;</button>
-                </div>
-                <div class="window-content">
-                    <div class="history-detail">
-                        <div class="history-detail-date">${historyItem.date}</div>
-                        <div class="history-detail-description">${historyItem.description}</div>
-                    </div>
-                    <div style="margin-top: 15px; font-size: 12px; color: #666;">
-                        <strong>Cavalo:</strong> ${horse.name} (${horse.color})<br>
-                        <strong>Esquadrão:</strong> ${horse.esquadrao}<br>
-                        <strong>Registrado em:</strong> ${new Date().toLocaleDateString('pt-BR')}
+            // Informações básicas
+            const infoBasica = `
+                <div class="detail-section">
+                    <h3>
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M12 21C16.9706 21 21 16.9706 21 12C21 7.02944 16.9706 3 12 3C7.02944 3 3 7.02944 3 12C3 16.9706 7.02944 21 12 21Z" stroke="#2c7fb8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M12 8V12" stroke="#2c7fb8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M12 16H12.01" stroke="#2c7fb8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                        Informações Básicas
+                    </h3>
+                    <div class="detail-info">
+                        <p><strong>Nome:</strong> ${horse.name}</p>
+                        <p><strong>Identificação:</strong> ${horse.id}</p>
+                        <p><strong>Pelagem:</strong> ${horse.color}</p>
+                        <p><strong>Sexo:</strong> ${horse.sex}</p>
+                        <p><strong>Esquadrão:</strong> 
+                            <span class="esquadrao-badge ${badgeClass}">
+                                ${horse.esquadrao}${horse.origem ? ` (${horse.origem})` : ''}
+                            </span>
+                        </p>
+                        <p><strong>Protocolo/Tratamento Atual:</strong> ${horse.protocolo || 'Nenhum'}</p>
                     </div>
                 </div>
             `;
             
-            document.body.appendChild(floatingWindow);
-            activeWindows.push(floatingWindow);
+            // Histórico médico
+            let historyHtml = '<p>Nenhum histórico registrado.</p>';
+            if (horse.history && horse.history.length > 0) {
+                historyHtml = `
+                    <div class="timeline-section">
+                        <div class="timeline-container">
+                            ${horse.history.map(entry => `
+                                <div class="timeline-item" data-date="${entry.date}" data-description="${entry.description}">
+                                    <div class="timeline-header">
+                                        <span class="timeline-date">${entry.date}</span>
+                                        <button class="timeline-expand">+</button>
+                                    </div>
+                                    <p>${entry.description.substring(0, 80)}${entry.description.length > 80 ? '...' : ''}</p>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                `;
+            }
             
-            // Tornar a janela arrastável
-            makeWindowDraggable(floatingWindow);
+            const historicoMedico = `
+                <div class="detail-section">
+                    <h3>
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M19 14C19 14.5304 18.7893 15.0391 18.4142 15.4142C18.0391 15.7893 17.5304 16 17 16H7C6.46957 16 5.96086 15.7893 5.58579 15.4142C5.21071 15.0391 5 14.5304 5 14V6C5 5.46957 5.21071 4.96086 5.58579 4.58579C5.96086 4.21071 6.46957 4 7 4H12L19 11V14Z" stroke="#2c7fb8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M9 12L11 14L15 10" stroke="#2c7fb8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                        Histórico Médico
+                    </h3>
+                    <div class="detail-info">
+                        ${historyHtml}
+                    </div>
+                </div>
+            `;
             
-            // Evento para fechar a janela
-            const closeBtn = floatingWindow.querySelector('.window-close');
-            closeBtn.addEventListener('click', () => {
-                floatingWindow.remove();
-                activeWindows = activeWindows.filter(w => w !== floatingWindow);
+            // Cólicas registradas para este cavalo
+            const colicasCavalo = colicas.filter(c => c.horseId === horseId);
+            let colicasHtml = '<p>Nenhuma cólica registrada.</p>';
+            if (colicasCavalo.length > 0) {
+                colicasHtml = `
+                    <div style="margin-top: 15px;">
+                        <table style="width: 100%; border-collapse: collapse;">
+                            <thead>
+                                <tr style="background: #f0f0f0;">
+                                    <th style="padding: 8px; text-align: left;">Data</th>
+                                    <th style="padding: 8px; text-align: left;">Gravidade</th>
+                                    <th style="padding: 8px; text-align: left;">Tratamento</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                ${colicasCavalo.map(colica => {
+                                    const severityText = colica.severity === 'alta' ? 'Alta' : 
+                                                       colica.severity === 'media' ? 'Média' : 'Baixa';
+                                    const severityClass = `severity-${colica.severity}`;
+                                    return `
+                                        <tr style="border-bottom: 1px solid #eee;">
+                                            <td style="padding: 8px;">${colica.date}</td>
+                                            <td style="padding: 8px;">
+                                                <span class="severity-badge ${severityClass}" style="font-size: 11px;">
+                                                    ${severityText}
+                                                </span>
+                                            </td>
+                                            <td style="padding: 8px;">
+                                                ${colica.treatment.map(t => 
+                                                    `<span class="treatment-badge treatment-${t}" style="font-size: 10px; margin-right: 3px;">
+                                                        ${t === 'clinico' ? 'Clínico' : t === 'cirurgico' ? 'Cirúrgico' : 'Medicamento'}
+                                                    </span>`
+                                                ).join('')}
+                                            </td>
+                                        </tr>
+                                    `;
+                                }).join('')}
+                            </tbody>
+                        </table>
+                    </div>
+                `;
+            }
+            
+            const colicasSection = `
+                <div class="detail-section">
+                    <h3>
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z" stroke="#2c7fb8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M12 8V12" stroke="#2c7fb8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M12 16H12.01" stroke="#2c7fb8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                        Histórico de Cólicas
+                    </h3>
+                    <div class="detail-info">
+                        <p><strong>Total de cólicas registradas:</strong> ${colicasCavalo.length}</p>
+                        ${colicasHtml}
+                    </div>
+                </div>
+            `;
+            
+            // Ações recentes
+            const acoesRecentes = `
+                <div class="detail-section">
+                    <h3>
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M12 8V12L15 15" stroke="#2c7fb8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z" stroke="#2c7fb8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                        Últimas Atualizações
+                    </h3>
+                    <div class="detail-info">
+                        <p><strong>Ficha criada em:</strong> ${horse.createdAt ? formatDate(new Date(horse.createdAt)) : 'Data não disponível'}</p>
+                        <p><strong>Última atualização:</strong> ${horse.updatedAt ? formatDate(new Date(horse.updatedAt)) : 'Nunca'}</p>
+                        <p><strong>Visitado em consulta:</strong> ${horse.selectedForVisit ? 'Sim' : 'Não'}</p>
+                        <p><strong>Prescrições ativas:</strong> ${horse.prescriptions ? horse.prescriptions.filter(p => {
+                            // Verificar se há dias pendentes
+                            const today = new Date();
+                            const startDate = new Date(p.startDate);
+                            const daysPassed = Math.floor((today - startDate) / (1000 * 60 * 60 * 24));
+                            return daysPassed < p.duration;
+                        }).length : 0}</p>
+                    </div>
+                </div>
+            `;
+            
+            horseDetailContent.innerHTML = `
+                <div>${infoBasica}</div>
+                <div>${historicoMedico}</div>
+                <div>${colicasSection}</div>
+                <div>${acoesRecentes}</div>
+            `;
+            
+            // Adicionar eventos aos itens do histórico
+            document.querySelectorAll('.timeline-expand').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    const timelineItem = e.target.closest('.timeline-item');
+                    const date = timelineItem.getAttribute('data-date');
+                    const description = timelineItem.getAttribute('data-description');
+                    openHistoryWindow(date, description);
+                });
+            });
+            
+            // Habilitar/desabilitar botões baseado em permissões
+            const canEditFichas = hasPermission('canEditFichas');
+            const canDeleteFichas = hasPermission('canDeleteFichas');
+            
+            btnEditHorse.disabled = !canEditFichas;
+            btnDeleteHorse.disabled = !canDeleteFichas;
+            
+            if (!canEditFichas) {
+                btnEditHorse.classList.add('disabled');
+                btnEditHorse.title = "Você não tem permissão para editar fichas";
+            }
+            
+            if (!canDeleteFichas) {
+                btnDeleteHorse.classList.add('disabled');
+                btnDeleteHorse.title = "Você não tem permissão para excluir cavalos";
+            }
+            
+            horseDetailModal.style.display = 'flex';
+        }
+        
+        function closeDetailModalFunc() {
+            horseDetailModal.style.display = 'none';
+            closeAllPrescriptionWindows();
+        }
+        
+        // ========== JANELAS FLUTUANTES ==========
+        function openHistoryWindow(date, description) {
+            // Remover janelas anteriores do mesmo tipo
+            document.querySelectorAll('.history-window').forEach(window => {
+                window.remove();
+            });
+            
+            const windowId = 'history-' + Date.now();
+            
+            const historyWindow = document.createElement('div');
+            historyWindow.className = 'history-window active';
+            historyWindow.id = windowId;
+            historyWindow.style.top = Math.random() * 200 + 50 + 'px';
+            historyWindow.style.left = Math.random() * 300 + 50 + 'px';
+            
+            historyWindow.innerHTML = `
+                <div class="window-header">
+                    <div class="window-title">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M19 14C19 14.5304 18.7893 15.0391 18.4142 15.4142C18.0391 15.7893 17.5304 16 17 16H7C6.46957 16 5.96086 15.7893 5.58579 15.4142C5.21071 15.0391 5 14.5304 5 14V6C5 5.46957 5.21071 4.96086 5.58579 4.58579C5.96086 4.21071 6.46957 4 7 4H12L19 11V14Z" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M9 12L11 14L15 10" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                        Histórico Médico - ${date}
+                    </div>
+                    <button class="window-close">&times;</button>
+                </div>
+                <div class="window-content">
+                    <div class="history-detail">
+                        <div class="history-detail-date">${date}</div>
+                        <div class="history-detail-description">${description}</div>
+                    </div>
+                </div>
+            `;
+            
+            document.body.appendChild(historyWindow);
+            
+            // Adicionar funcionalidade de arrastar
+            makeWindowDraggable(historyWindow);
+            
+            // Adicionar evento para fechar
+            historyWindow.querySelector('.window-close').addEventListener('click', () => {
+                historyWindow.remove();
+            });
+            
+            activeWindows.push(historyWindow);
+        }
+        
+        function openPrescriptionWindows() {
+            // Verificar permissões para visualizar prescrições
+            if (blockIfNoPermission('canViewPrescriptions', 'visualizar prescrições')) {
+                return;
+            }
+            
+            const horse = horses.find(h => h.id === currentHorseId);
+            if (!horse || !horse.prescriptions || horse.prescriptions.length === 0) {
+                window.showPermissionAlert('Este cavalo não possui prescrições médicas registradas.', 'info');
+                return;
+            }
+            
+            // Fechar todas as janelas de prescrição abertas anteriormente
+            closeAllPrescriptionWindows();
+            
+            // Criar janelas para cada prescrição
+            horse.prescriptions.forEach((prescription, index) => {
+                createPrescriptionWindow(prescription, horse.name, index);
+            });
+        }
+        
+        function closeAllPrescriptionWindows() {
+            prescriptionWindows.forEach(window => {
+                if (window && window.parentNode) {
+                    window.parentNode.removeChild(window);
+                }
+            });
+            prescriptionWindows = [];
+        }
+        
+        function createPrescriptionWindow(prescription, horseName, index) {
+            const windowId = 'prescription-' + Date.now() + '-' + index;
+            
+            // Calcular estatísticas da prescrição
+            const appliedDays = prescription.medicationDays.filter(d => d.status === 'applied').length;
+            const notAppliedDays = prescription.medicationDays.filter(d => d.status === 'not-applied').length;
+            const pendingDays = prescription.medicationDays.filter(d => d.status === null).length;
+            
+            // Determinar status geral
+            const today = new Date();
+            const startDate = new Date(prescription.startDate);
+            const daysPassed = Math.floor((today - startDate) / (1000 * 60 * 60 * 24));
+            const isCompleted = daysPassed >= prescription.duration;
+            
+            // Gerar grid de dias
+            let daysGridHtml = '';
+            const startDateObj = new Date(prescription.startDate);
+            
+            for (let i = 0; i < prescription.duration; i++) {
+                const currentDate = new Date(startDateObj);
+                currentDate.setDate(startDateObj.getDate() + i);
+                
+                const isToday = currentDate.toDateString() === today.toDateString();
+                const dayStatus = prescription.medicationDays[i] ? prescription.medicationDays[i].status : null;
+                let statusClass = '';
+                let statusText = '';
+                
+                if (dayStatus === 'applied') {
+                    statusClass = 'applied';
+                    statusText = '✓';
+                } else if (dayStatus === 'not-applied') {
+                    statusClass = 'not-applied';
+                    statusText = '✗';
+                } else if (currentDate < today) {
+                    statusClass = 'not-applied';
+                    statusText = '✗';
+                } else {
+                    statusClass = 'pending';
+                }
+                
+                daysGridHtml += `
+                    <div class="prescription-day-box ${statusClass} ${isToday ? 'today' : ''}">
+                        ${i + 1}
+                        ${statusText ? `<div class="prescription-day-status ${statusClass}">${statusText}</div>` : ''}
+                    </div>
+                `;
+            }
+            
+            const window = document.createElement('div');
+            window.className = 'prescription-window';
+            window.id = windowId;
+            window.style.top = (100 + index * 50) + 'px';
+            window.style.left = (100 + index * 50) + 'px';
+            
+            window.innerHTML = `
+                <div class="prescription-window-header">
+                    <div class="prescription-window-title">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M19.14 12.94C18.8 12.94 18.5 12.64 18.5 12.3V10.83C18.5 9.22 17.22 7.94 15.61 7.94H14.15C13.81 7.94 13.51 7.64 13.51 7.3C13.51 6.96 13.81 6.66 14.15 6.66H15.61C17.78 6.66 19.5 8.38 19.5 10.55V12.02C19.5 12.36 19.2 12.66 18.86 12.66H19.14V12.94Z" fill="white"/>
+                            <path d="M5 12.94C4.66 12.94 4.36 12.64 4.36 12.3V10.83C4.36 9.22 5.64 7.94 7.25 7.94H8.71C9.05 7.94 9.35 7.64 9.35 7.3C9.35 6.96 9.05 6.66 8.71 6.66H7.25C5.08 6.66 3.36 8.38 3.36 10.55V12.02C3.36 12.36 3.66 12.66 4 12.66H5V12.94Z" fill="white"/>
+                            <path d="M16.21 10.75H7.79C5.65 10.75 4.25 9.35 4.25 7.21V7.14C4.25 4.99 5.65 3.59 7.79 3.59H16.2C18.34 3.59 19.74 4.99 19.74 7.14V7.21C19.75 9.35 18.35 10.75 16.21 10.75ZM7.79 4.84C6.5 4.84 5.5 5.84 5.5 7.14V7.21C5.5 8.5 6.5 9.5 7.79 9.5H16.2C17.49 9.5 18.49 8.5 18.49 7.21V7.14C18.49 5.85 17.49 4.85 16.2 4.85H7.79V4.84Z" fill="white"/>
+                            <path d="M12 14.75C11.59 14.75 11.25 14.41 11.25 14V11C11.25 10.59 11.59 10.25 12 10.25C12.41 10.25 12.75 10.59 12.75 11V14C12.75 14.41 12.41 14.75 12 14.75Z" fill="white"/>
+                            <path d="M12 18.75C11.59 18.75 11.25 18.41 11.25 18V15C11.25 14.59 11.59 14.25 12 14.25C12.41 14.25 12.75 14.59 12.75 15V18C12.75 18.41 12.41 18.75 12 18.75Z" fill="white"/>
+                            <path d="M15 22.75H9C4.59 22.75 2.25 20.41 2.25 16V14C2.25 13.04 3.04 12.25 4 12.25H20C20.96 12.25 21.75 13.04 21.75 14V16C21.75 20.41 19.41 22.75 15 22.75ZM4 13.75C3.86 13.75 3.75 13.86 3.75 14V16C3.75 19.58 5.42 21.25 9 21.25H15C18.58 21.25 20.25 19.58 20.25 16V14C20.25 13.86 20.14 13.75 20 13.75H4Z" fill="white"/>
+                        </svg>
+                        Prescrição Médica - ${horseName}
+                    </div>
+                    <button class="prescription-window-close">&times;</button>
+                </div>
+                <div class="prescription-window-content">
+                    <div class="prescription-medication">
+                        <div class="prescription-medication-header">
+                            <div class="prescription-medication-title">
+                                ${prescription.medication}
+                                <span class="prescription-medication-id">ID: ${prescription.id}</span>
+                            </div>
+                        </div>
+                        
+                        <div class="prescription-details">
+                            <div class="prescription-detail-item">
+                                <div class="prescription-detail-label">Dosagem</div>
+                                <div class="prescription-detail-value">${prescription.dosage}</div>
+                            </div>
+                            <div class="prescription-detail-item">
+                                <div class="prescription-detail-label">Frequência</div>
+                                <div class="prescription-detail-value">${prescription.frequency}</div>
+                            </div>
+                            <div class="prescription-detail-item">
+                                <div class="prescription-detail-label">Duração</div>
+                                <div class="prescription-detail-value">${prescription.duration} dias</div>
+                            </div>
+                            <div class="prescription-detail-item">
+                                <div class="prescription-detail-label">Início</div>
+                                <div class="prescription-detail-value">${formatDate(new Date(prescription.startDate))}</div>
+                            </div>
+                        </div>
+                        
+                        <div class="prescription-schedule">
+                            <div class="prescription-schedule-title">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M8 2V6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                    <path d="M16 2V6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                    <path d="M3 10H21" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                    <path d="M19 4H5C3.89543 4 3 4.89543 3 6V20C3 21.1046 3.89543 22 5 22H19C20.1046 22 21 21.1046 21 20V6C21 4.89543 20.1046 4 19 4Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                                Cronograma de Aplicação
+                            </div>
+                            
+                            <div class="prescription-days-grid">
+                                ${daysGridHtml}
+                            </div>
+                            
+                            <div style="margin-top: 15px; display: flex; justify-content: space-between; font-size: 12px;">
+                                <div>
+                                    <span style="color: #27ae60;">● Aplicado: ${appliedDays}</span>
+                                    <span style="margin-left: 10px; color: #e74c3c;">● Não aplicado: ${notAppliedDays}</span>
+                                    <span style="margin-left: 10px; color: #f39c12;">● Pendente: ${pendingDays}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="prescription-window-footer">
+                    <div class="prescription-date-info">
+                        Última atualização: ${formatDate(new Date())}
+                    </div>
+                    <div class="prescription-status-badge ${isCompleted ? 'prescription-status-completed' : 'prescription-status-active'}">
+                        ${isCompleted ? 'CONCLUÍDO' : 'EM ANDAMENTO'}
+                    </div>
+                </div>
+            `;
+            
+            document.body.appendChild(window);
+            prescriptionWindows.push(window);
+            
+            // Adicionar funcionalidade de arrastar
+            makeWindowDraggable(window);
+            
+            // Adicionar redimensionamento
+            makeWindowResizable(window);
+            
+            // Adicionar evento para fechar
+            window.querySelector('.prescription-window-close').addEventListener('click', () => {
+                window.remove();
+                prescriptionWindows = prescriptionWindows.filter(w => w !== window);
             });
         }
         
         function makeWindowDraggable(windowElement) {
-            const header = windowElement.querySelector('.window-header');
+            const header = windowElement.querySelector('.window-header') || windowElement.querySelector('.prescription-window-header');
+            if (!header) return;
+            
             let isDragging = false;
             let currentX;
             let currentY;
@@ -3393,6 +4124,14 @@
                 
                 if (e.target === header || header.contains(e.target)) {
                     isDragging = true;
+                    windowElement.style.zIndex = '9999';
+                    
+                    // Trazer todas as janelas para frente
+                    document.querySelectorAll('.prescription-window, .history-window').forEach(w => {
+                        if (w !== windowElement) {
+                            w.style.zIndex = '9998';
+                        }
+                    });
                 }
             }
             
@@ -3410,7 +4149,7 @@
             }
             
             function setTranslate(xPos, yPos, el) {
-                el.style.transform = `translate3d(${xPos}px, ${yPos}px, 0)`;
+                el.style.transform = `translate(${xPos}px, ${yPos}px)`;
             }
             
             function dragEnd() {
@@ -3420,31 +4159,53 @@
             }
         }
         
-        // ========== FUNÇÕES DO MODAL ADICIONAR CAVALO ==========
-        function openAddModal() {
-            // Verificar permissão para criar fichas
-            if (blockIfNoPermission('canCreateFichas', 'adicionar novos cavalos')) {
-                return;
+        function makeWindowResizable(windowElement) {
+            let isResizing = false;
+            let startX, startY, startWidth, startHeight;
+            
+            const handleSize = 10;
+            const bottomRight = document.createElement('div');
+            bottomRight.style.width = `${handleSize}px`;
+            bottomRight.style.height = `${handleSize}px`;
+            bottomRight.style.position = 'absolute';
+            bottomRight.style.right = '0';
+            bottomRight.style.bottom = '0';
+            bottomRight.style.cursor = 'se-resize';
+            bottomRight.style.background = 'transparent';
+            
+            windowElement.appendChild(bottomRight);
+            
+            bottomRight.addEventListener('mousedown', initResize);
+            
+            function initResize(e) {
+                isResizing = true;
+                startX = e.clientX;
+                startY = e.clientY;
+                startWidth = parseInt(getComputedStyle(windowElement).width, 10);
+                startHeight = parseInt(getComputedStyle(windowElement).height, 10);
+                
+                document.addEventListener('mousemove', resize);
+                document.addEventListener('mouseup', stopResize);
             }
             
-            horseForm.reset();
-            esquadraoOrigem.style.display = 'none';
-            historyEntriesContainer.innerHTML = '';
+            function resize(e) {
+                if (isResizing) {
+                    const width = startWidth + (e.clientX - startX);
+                    const height = startHeight + (e.clientY - startY);
+                    
+                    windowElement.style.width = `${width}px`;
+                    windowElement.style.height = `${height}px`;
+                }
+            }
             
-            esquadraoOptions.forEach(option => {
-                option.classList.remove('selected');
-            });
-            
-            // Definir data atual no campo de data do histórico
-            const hoje = new Date();
-            const dia = String(hoje.getDate()).padStart(2, '0');
-            const mes = String(hoje.getMonth() + 1).padStart(2, '0');
-            const ano = hoje.getFullYear();
-            historyDate.value = `${dia}/${mes}/${ano}`;
-            
-            horseModal.style.display = 'flex';
+            function stopResize() {
+                isResizing = false;
+                document.removeEventListener('mousemove', resize);
+                document.removeEventListener('mouseup', stopResize);
+            }
         }
         
+        // ========== GESTÃO DE HISTÓRICO NO MODAL DE ADICIONAR CAVALO ==========
         function addHistoryEntry() {
             const date = historyDate.value.trim();
             const description = historyDescription.value.trim();
@@ -3454,70 +4215,163 @@
                 return;
             }
             
-            // Validar formato da data
+            // Validar formato da data (DD/MM/AAAA)
             const dateRegex = /^\d{2}\/\d{2}\/\d{4}$/;
             if (!dateRegex.test(date)) {
-                alert('Formato de data inválido! Use DD/MM/AAAA');
+                alert('Data deve estar no formato DD/MM/AAAA');
                 return;
             }
             
-            // Criar elemento de histórico
-            const entryId = Date.now(); // ID único baseado no timestamp
-            const entryElement = document.createElement('div');
-            entryElement.className = 'history-entry';
-            entryElement.dataset.id = entryId;
-            entryElement.innerHTML = `
+            const entryDiv = document.createElement('div');
+            entryDiv.className = 'history-entry';
+            entryDiv.innerHTML = `
                 <div class="history-entry-text">
                     <span class="history-entry-date">${date}</span>
-                    <span>${description}</span>
+                    ${description}
                 </div>
                 <div class="history-entry-actions">
-                    <button type="button" class="btn-remove-history" data-id="${entryId}">
-                        &times;
+                    <button class="btn-remove-history" type="button">
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M18 6L6 18" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M6 6L18 18" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
                     </button>
                 </div>
             `;
             
-            historyEntriesContainer.appendChild(entryElement);
+            historyEntriesContainer.appendChild(entryDiv);
+            
+            // Adicionar evento para remover
+            entryDiv.querySelector('.btn-remove-history').addEventListener('click', () => {
+                entryDiv.remove();
+            });
             
             // Limpar campos
+            historyDate.value = '';
             historyDescription.value = '';
-            
-            // Definir data para amanhã
-            const tomorrow = new Date();
-            tomorrow.setDate(tomorrow.getDate() + 1);
-            const diaAmanha = String(tomorrow.getDate()).padStart(2, '0');
-            const mesAmanha = String(tomorrow.getMonth() + 1).padStart(2, '0');
-            const anoAmanha = tomorrow.getFullYear();
-            historyDate.value = `${diaAmanha}/${mesAmanha}/${anoAmanha}`;
-            
-            // Adicionar evento para remover o histórico
-            const removeBtn = entryElement.querySelector('.btn-remove-history');
-            removeBtn.addEventListener('click', () => {
-                entryElement.remove();
-            });
         }
         
-        // ========== NOVO BALÃO DE CONFIRMAÇÃO PERSONALIZADO ==========
+        function getHistoryEntries() {
+            const entries = [];
+            document.querySelectorAll('.history-entry').forEach(entry => {
+                const date = entry.querySelector('.history-entry-date').textContent;
+                const text = entry.querySelector('.history-entry-text').textContent.replace(date, '').trim();
+                entries.push({ date, description: text });
+            });
+            return entries;
+        }
+        
+        // ========== ESQUADRÃO - NOVA LÓGICA ==========
+        esquadraoOptions.forEach(option => {
+            option.addEventListener('click', () => {
+                esquadraoOptions.forEach(opt => opt.classList.remove('selected'));
+                option.classList.add('selected');
+                
+                if (option.getAttribute('data-value') === 'Outro') {
+                    esquadraoOrigem.style.display = 'block';
+                    document.getElementById('horseOrigem').required = true;
+                } else {
+                    esquadraoOrigem.style.display = 'none';
+                    document.getElementById('horseOrigem').required = false;
+                }
+            });
+        });
+        
+        // ========== SALVAR CAVALO ==========
+        function saveHorse(e) {
+            e.preventDefault();
+            
+            // Verificar permissão para criar/editar fichas
+            if (blockIfNoPermission('canCreateFichas', currentHorseId ? 'editar fichas' : 'criar novas fichas')) {
+                return;
+            }
+            
+            const horseName = document.getElementById('horseName').value;
+            const horseColor = document.getElementById('horseColor').value;
+            const horseSex = document.getElementById('horseSex').value;
+            const horseProtocolo = document.getElementById('horseProtocolo').value;
+            const horseOrigem = document.getElementById('horseOrigem').value;
+            
+            const selectedEsquadrao = document.querySelector('.esquadrao-option.selected');
+            if (!selectedEsquadrao) {
+                alert('Selecione um esquadrão!');
+                return;
+            }
+            
+            const esquadrao = selectedEsquadrao.getAttribute('data-value');
+            
+            // Coletar histórico
+            const historyEntries = getHistoryEntries();
+            
+            if (currentHorseId) {
+                // Editar cavalo existente
+                const horseIndex = horses.findIndex(h => h.id === currentHorseId);
+                if (horseIndex !== -1) {
+                    horses[horseIndex] = {
+                        ...horses[horseIndex],
+                        name: horseName,
+                        color: horseColor,
+                        sex: horseSex,
+                        esquadrao: esquadrao,
+                        origem: esquadrao === 'Outro' ? horseOrigem : '',
+                        history: historyEntries,
+                        protocolo: horseProtocolo,
+                        updatedAt: new Date().toISOString()
+                    };
+                    
+                    alert('Cavalo atualizado com sucesso!');
+                }
+            } else {
+                // Adicionar novo cavalo
+                const newHorse = {
+                    id: horses.length > 0 ? Math.max(...horses.map(h => h.id)) + 1 : 1,
+                    name: horseName,
+                    color: horseColor,
+                    sex: horseSex,
+                    esquadrao: esquadrao,
+                    origem: esquadrao === 'Outro' ? horseOrigem : '',
+                    history: historyEntries,
+                    prescriptions: [],
+                    protocolo: horseProtocolo,
+                    selectedForVisit: false,
+                    createdAt: new Date().toISOString(),
+                    updatedAt: new Date().toISOString()
+                };
+                
+                horses.push(newHorse);
+                alert('Cavalo adicionado com sucesso!');
+            }
+            
+            // Salvar no localStorage
+            saveHorsesToStorage();
+            
+            // Atualizar a exibição
+            renderHorses();
+            
+            // Fechar modal
+            closeModalFunc();
+        }
+        
+        // ========== BALÃO DE CONFIRMAÇÃO PERSONALIZADO ==========
         function showCustomConfirm(horseId) {
+            horseToDelete = horseId;
             const horse = horses.find(h => h.id === horseId);
+            
             if (!horse) return;
             
-            horseToDelete = horseId;
-            
-            const confirmDetails = customConfirmBox.querySelector('.confirm-details');
-            confirmDetails.innerHTML = `
+            // Atualizar detalhes no balão de confirmação
+            document.querySelector('.confirm-details').innerHTML = `
                 <p>
                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M12 21C16.9706 21 21 16.9706 21 12C21 7.02944 16.9706 3 12 3C7.02944 3 3 7.02944 3 12C3 16.9706 7.02944 21 12 21Z" stroke="#e74c3c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                        <path d="M12 8V12" stroke="#e74c3c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                        <path d="M12 16H12.01" stroke="#e74c3c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M12 9V11M12 15H12.01M5.07183 19H18.9282C20.4678 19 21.4301 17.3333 20.6603 16L13.7321 4C12.9623 2.66667 11.0378 2.66667 10.268 4L3.33978 16C2.56998 17.3333 3.53223 19 5.07183 19Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                     </svg>
-                    <strong>Você está excluindo o cavalo:</strong>
+                    <strong>CONFIRMAR EXCLUSÃO DO CAVALO:</strong>
                 </p>
-                <p style="margin-left: 28px; font-size: 16px; color: #e74c3c; font-weight: bold;">${horse.name}</p>
+                <p style="margin-left: 28px; font-size: 16px; color: #e74c3c; font-weight: bold;">"${horse.name}"</p>
                 <p style="margin-left: 28px;">• ${horse.color} - ${horse.sex}</p>
-                <p style="margin-left: 28px;">• Esquadrão: ${horse.esquadrao}</p>
+                <p style="margin-left: 28px;">• Esquadrão: ${horse.esquadrao}${horse.origem ? ` (${horse.origem})` : ''}</p>
+                <p style="margin-left: 28px;">• Histórico médico: ${horse.history ? horse.history.length : 0} registros</p>
+                <p style="margin-left: 28px;">• Prescrições: ${horse.prescriptions ? horse.prescriptions.length : 0} ativas</p>
             `;
             
             customConfirmOverlay.style.display = 'flex';
@@ -3528,243 +4382,98 @@
             horseToDelete = null;
         }
         
-        function confirmDelete() {
-            if (horseToDelete) {
-                deleteHorse(horseToDelete);
+        function deleteHorseConfirmed() {
+            if (!horseToDelete) return;
+            
+            // Verificar permissão para excluir
+            if (blockIfNoPermission('canDeleteFichas', 'excluir cavalos')) {
                 hideCustomConfirm();
-            }
-        }
-        
-        // ========== FUNÇÕES RESTANTES ==========
-        function openHorseDetail(horseId) {
-            const horse = horses.find(h => h.id === horseId);
-            if (!horse) return;
-            
-            currentHorseId = horseId;
-            horseDetailTitle.innerHTML = `
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M14 16H9M14 12H11M12 21C12.9465 21 13.8734 20.7716 14.7087 20.3343C15.544 19.897 16.2623 19.2643 16.8 18.492C17.7895 17.1277 19.8333 14.8 21 13C21.3333 12.3333 22 10.8 22 8.5C22 5.5 20.5 3 17.5 3C15.8333 3 14.5 4.5 14.5 4.5C14.5 4.5 13.5 3 11.5 3C9.5 3 8.5 4 8.5 6C8.5 6 7.5 5 5.5 5C3.5 5 2 7 2 9.5C2 12.5 3.5 14.5 5.5 16.5C7.5 18.5 9.66667 19.3333 11 19.5C11.5 19.6 12 19.5 12 19.5Z" stroke="#2c7fb8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
-                Detalhes - ${horse.name}
-            `;
-            
-            let badgeClass = '';
-            if (horse.esquadrao === 'Hipo') badgeClass = 'hipo';
-            else if (horse.esquadrao === 'DH') badgeClass = 'dh';
-            else badgeClass = 'outro';
-            
-            let detailContent = `
-                <div class="detail-section">
-                    <h3>
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M20 21V19C20 17.9391 19.5786 16.9217 18.8284 16.1716C18.0783 15.4214 17.0609 15 16 15H8C6.93913 15 5.92172 15.4214 5.17157 16.1716C4.42143 16.9217 4 17.9391 4 19V21" stroke="#2c7fb8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                            <path d="M12 11C14.2091 11 16 9.20914 16 7C16 4.79086 14.2091 3 12 3C9.79086 3 8 4.79086 8 7C8 9.20914 9.79086 11 12 11Z" stroke="#2c7fb8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                        </svg>
-                        Informações Básicas
-                    </h3>
-                    <div class="detail-info">
-                        <p><strong>Nome:</strong> ${horse.name}</p>
-                        <p><strong>Identificação:</strong> ${horse.id}</p>
-                        <p><strong>Cor:</strong> ${horse.color}</p>
-                        <p><strong>Sexo:</strong> ${horse.sex}</p>
-                        <p><strong>Esquadrão:</strong> 
-                            <span class="esquadrao-badge ${badgeClass}">
-                                ${horse.esquadrao}${horse.origem ? ` (${horse.origem})` : ''}
-                            </span>
-                        </p>
-                        <p><strong>Protocolo:</strong> ${horse.protocolo || 'Nenhum'}</p>
-                    </div>
-                </div>
-                
-                <div class="detail-section">
-                    <h3>
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M14 2H6C5.46957 2 4.96086 2.21071 4.58579 2.58579C4.21071 2.96086 4 3.46957 4 4V20C4 20.5304 4.21071 21.0391 4.58579 21.4142C4.96086 21.7893 5.46957 22 6 22H18C18.5304 22 19.0391 21.7893 19.4142 21.4142C19.7893 21.0391 20 20.5304 20 20V8L14 2Z" stroke="#2c7fb8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                            <path d="M14 2V8H20" stroke="#2c7fb8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                            <path d="M16 13H8" stroke="#2c7fb8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                            <path d="M16 17H8" stroke="#2c7fb8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                            <path d="M10 9H9H8" stroke="#2c7fb8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                        </svg>
-                        Histórico Médico
-                    </h3>
-                    <div class="timeline-section">
-                        <div class="timeline-container">
-            `;
-            
-            if (horse.history && horse.history.length > 0) {
-                const sortedHistory = [...horse.history].sort((a, b) => {
-                    const dateA = a.date.split('/').reverse().join('-');
-                    const dateB = b.date.split('/').reverse().join('-');
-                    return new Date(dateB) - new Date(dateA);
-                });
-                
-                sortedHistory.forEach((item, index) => {
-                    detailContent += `
-                        <div class="timeline-item" data-history-index="${index}">
-                            <div class="timeline-header">
-                                <div class="timeline-date">${item.date}</div>
-                                <button class="timeline-expand" data-history-index="${index}">+</button>
-                            </div>
-                        </div>
-                    `;
-                });
-            } else {
-                detailContent += `
-                    <div class="timeline-item">
-                        <div class="timeline-header">
-                            <div class="timeline-date">Nenhum registro</div>
-                        </div>
-                    </div>
-                `;
+                return;
             }
             
-            detailContent += `
-                        </div>
-                    </div>
-                </div>
-            `;
-            
-            horseDetailContent.innerHTML = detailContent;
-            
-            // Limpar janelas existentes
-            activeWindows.forEach(window => window.remove());
-            activeWindows = [];
-            
-            // Adicionar eventos para expandir histórico
-            document.querySelectorAll('.timeline-expand').forEach(btn => {
-                btn.addEventListener('click', (e) => {
-                    e.stopPropagation();
-                    const historyIndex = parseInt(e.currentTarget.getAttribute('data-history-index'));
-                    openHistoryWindow(horseId, historyIndex);
-                });
-            });
-            
-            // Aplicar permissões aos botões do modal de detalhes
-            const canEditFichas = hasPermission('canEditFichas');
-            const canDeleteFichas = hasPermission('canDeleteFichas');
-            
-            if (!canEditFichas) {
-                btnEditHorse.disabled = true;
-                btnEditHorse.classList.add('disabled');
-                btnEditHorse.title = "Você não tem permissão para editar fichas";
-            }
-            
-            if (!canDeleteFichas) {
-                btnDeleteHorse.disabled = true;
-                btnDeleteHorse.classList.add('disabled');
-                btnDeleteHorse.title = "Você não tem permissão para excluir cavalos";
-            }
-            
-            horseDetailModal.style.display = 'flex';
-        }
-        
-        function deleteHorse(horseId) {
-            const horseIndex = horses.findIndex(h => h.id === horseId);
+            // Encontrar e remover o cavalo
+            const horseIndex = horses.findIndex(h => h.id === horseToDelete);
             if (horseIndex !== -1) {
-                // Remover também registros de cólicas associados
-                colicas = colicas.filter(c => c.horseId !== horseId);
-                
+                const horseName = horses[horseIndex].name;
                 horses.splice(horseIndex, 1);
                 
+                // Remover também todas as cólicas associadas a este cavalo
+                colicas = colicas.filter(c => c.horseId !== horseToDelete);
+                
+                // Salvar alterações
                 saveHorsesToStorage();
                 saveColicasToStorage();
                 
-                if (currentHorseId === horseId) {
-                    closeHorseDetailModal();
-                }
-                
+                // Atualizar a exibição
                 renderHorses();
                 renderColicas();
                 renderColicaStats();
                 initCharts();
                 
-                alert('Cavalo excluído permanentemente!');
-            }
-        }
-        
-        function closeHorseModal() {
-            horseModal.style.display = 'none';
-        }
-        
-        function closeHorseDetailModal() {
-            activeWindows.forEach(window => window.remove());
-            activeWindows = [];
-            
-            horseDetailModal.style.display = 'none';
-            isEditingHistory = false;
-        }
-        
-        function saveHorse(e) {
-            e.preventDefault();
-            
-            const horseName = document.getElementById('horseName').value;
-            const horseId = document.getElementById('horseId').value;
-            const horseColor = document.getElementById('horseColor').value;
-            const horseSex = document.getElementById('horseSex').value;
-            const horseProtocolo = document.getElementById('horseProtocolo').value;
-            
-            let selectedEsquadrao = '';
-            let origem = '';
-            
-            esquadraoOptions.forEach(option => {
-                if (option.classList.contains('selected')) {
-                    selectedEsquadrao = option.getAttribute('data-value');
+                // Fechar modais se estiverem abertos
+                if (horseDetailModal.style.display === 'flex') {
+                    closeDetailModalFunc();
                 }
-            });
-            
-            if (selectedEsquadrao === 'Outro') {
-                origem = document.getElementById('horseOrigem').value;
-                if (!origem) {
-                    alert('Por favor, digite a origem do animal.');
-                    return;
-                }
+                
+                window.showPermissionAlert(`Cavalo "${horseName}" excluído permanentemente!`, 'info');
             }
             
-            if (!selectedEsquadrao) {
-                alert('Por favor, selecione um esquadrão.');
-                return;
-            }
-            
-            // Coletar histórico médico
-            const historyArray = [];
-            const historyEntries = historyEntriesContainer.querySelectorAll('.history-entry');
-            historyEntries.forEach(entry => {
-                const date = entry.querySelector('.history-entry-date').textContent;
-                const description = entry.querySelector('.history-entry-text span:last-child').textContent;
-                historyArray.push({
-                    date: date,
-                    description: description
-                });
-            });
-            
-            const horseData = {
-                name: horseName,
-                id: parseInt(horseId) || (horses.length > 0 ? Math.max(...horses.map(h => h.id)) + 1 : 1),
-                color: horseColor,
-                sex: horseSex,
-                esquadrao: selectedEsquadrao,
-                origem: origem,
-                history: historyArray,
-                prescriptions: [],
-                protocolo: horseProtocolo || "Quarentena",
-                selectedForVisit: false
-            };
-            
-            horses.push(horseData);
-            
-            saveHorsesToStorage();
-            
-            closeHorseModal();
-            renderHorses();
-            renderColicas();
-            alert('Ficha salva com sucesso!');
+            hideCustomConfirm();
         }
         
+        // ========== EXPORTAR PARA PDF ==========
         function exportToPDF(horseId) {
             const horse = horses.find(h => h.id === horseId);
             if (!horse) return;
             
-            alert(`Gerando PDF para ${horse.name}...\n\nEm um sistema real, isso geraria um arquivo PDF com todas as informações da ficha.`);
+            // Em um sistema real, aqui geraríamos um PDF
+            // Por enquanto, vamos mostrar um resumo
+            
+            const content = `
+                FICHA VETERINÁRIA - ${horse.name.toUpperCase()}
+                ===========================================
+                
+                INFORMAÇÕES BÁSICAS:
+                - Nome: ${horse.name}
+                - Identificação: ${horse.id}
+                - Pelagem: ${horse.color}
+                - Sexo: ${horse.sex}
+                - Esquadrão: ${horse.esquadrao}${horse.origem ? ` (${horse.origem})` : ''}
+                - Protocolo: ${horse.protocolo || 'Nenhum'}
+                
+                HISTÓRICO MÉDICO:
+                ${horse.history && horse.history.length > 0 ? 
+                    horse.history.map(entry => `- ${entry.date}: ${entry.description}`).join('\n') 
+                    : 'Nenhum histórico registrado.'}
+                
+                PRESCRIÇÕES ATIVAS:
+                ${horse.prescriptions && horse.prescriptions.length > 0 ?
+                    horse.prescriptions.map(p => `- ${p.medication}: ${p.dosage}, ${p.frequency} por ${p.duration} dias`).join('\n')
+                    : 'Nenhuma prescrição ativa.'}
+                
+                HISTÓRICO DE CÓLICAS:
+                ${colicas.filter(c => c.horseId === horseId).length > 0 ?
+                    colicas.filter(c => c.horseId === horseId)
+                        .map(c => `- ${c.date}: Gravidade ${c.severity}, ${c.treatment.join(', ')}`)
+                        .join('\n')
+                    : 'Nenhuma cólica registrada.'}
+                
+                Gerado em: ${formatDate(new Date())}
+                Sistema: Vet 2°rcg System
+            `;
+            
+            // Criar arquivo de texto para download
+            const blob = new Blob([content], { type: 'text/plain' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `ficha-${horse.name.toLowerCase().replace(/\s+/g, '-')}-${formatDate(new Date())}.txt`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            window.URL.revokeObjectURL(url);
+            
+            window.showPermissionAlert('Ficha exportada com sucesso!', 'info');
         }
         
         function exportAllToPDF() {
@@ -3773,165 +4482,252 @@
                 return;
             }
             
-            alert('Exportando todas as fichas para PDF...\n\nEm um sistema real, isso geraria um arquivo ZIP com PDFs de todos os cavalos.');
+            let allContent = `RELATÓRIO COMPLETO - VET 2°RCG SYSTEM\n`;
+            allContent += `Gerado em: ${formatDate(new Date())}\n`;
+            allContent += `Responsável: ${currentUser}\n`;
+            allContent += `Total de cavalos: ${horses.length}\n`;
+            allContent += `Total de cólicas: ${colicas.length}\n\n`;
+            allContent += `==========================================\n\n`;
+            
+            horses.forEach(horse => {
+                allContent += `CAVALO: ${horse.name.toUpperCase()}\n`;
+                allContent += `------------------------------------------\n`;
+                allContent += `ID: ${horse.id} | Cor: ${horse.color} | Sexo: ${horse.sex}\n`;
+                allContent += `Esquadrão: ${horse.esquadrao}${horse.origem ? ` (${horse.origem})` : ''}\n`;
+                allContent += `Protocolo: ${horse.protocolo || 'Nenhum'}\n\n`;
+            });
+            
+            // Criar arquivo de texto para download
+            const blob = new Blob([allContent], { type: 'text/plain' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `relatorio-completo-${formatDate(new Date())}.txt`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            window.URL.revokeObjectURL(url);
+            
+            window.showPermissionAlert('Todos os dados exportados com sucesso!', 'info');
         }
         
-        function redirectToVisita() {
-            window.location.href = 'visita.html';
-        }
-        
-        function logout() {
-            if (confirm('Tem certeza que deseja sair do sistema?')) {
-                localStorage.removeItem('currentUser');
-                localStorage.removeItem('userRole');
-                localStorage.removeItem('userPermissions');
-                showLoginPage();
-            }
-        }
-        
-        // ========== INICIALIZAÇÃO ==========
-        function init() {
-            if (!checkLogin()) {
+        // ========== SISTEMA DE VISITA ==========
+        function toggleVisita() {
+            // Verificar permissão para criar/editar fichas
+            if (blockIfNoPermission('canEditFichas', 'gerenciar visitas')) {
                 return;
             }
             
-            currentUser = localStorage.getItem('currentUser');
-            currentUserRole = localStorage.getItem('userRole');
-            currentUserPermissions = JSON.parse(localStorage.getItem('userPermissions'));
-            
-            // Event Listeners da tela de arquivos
-            btnAddHorse.addEventListener('click', openAddModal);
-            btnExportAll.addEventListener('click', exportAllToPDF);
-            closeModal.addEventListener('click', closeHorseModal);
-            btnCancel.addEventListener('click', closeHorseModal);
-            horseForm.addEventListener('submit', saveHorse);
-            searchInput.addEventListener('input', renderHorses);
-            btnLogout.addEventListener('click', logout);
-            btnVisita.addEventListener('click', redirectToVisita);
-            
-            // Event Listeners do modal de detalhes
-            closeDetailModal.addEventListener('click', closeHorseDetailModal);
-            btnCloseDetail.addEventListener('click', closeHorseDetailModal);
-            
-            // Event Listener para o botão "Editar Ficha" no modal de detalhes
-            btnEditHorse.addEventListener('click', () => {
-                if (blockIfNoPermission('canEditFichas', 'editar fichas')) {
-                    return;
-                }
-                redirectToFicha(currentHorseId);
-            });
-            
-            // Event Listener para excluir cavalo no modal de detalhes
-            btnDeleteHorse.addEventListener('click', () => {
-                if (blockIfNoPermission('canDeleteFichas', 'excluir cavalos')) {
-                    return;
-                }
-                showCustomConfirm(currentHorseId);
-            });
-            
-            // Event Listeners para opções de esquadrão
-            esquadraoOptions.forEach(option => {
-                option.addEventListener('click', function() {
-                    esquadraoOptions.forEach(opt => opt.classList.remove('selected'));
-                    this.classList.add('selected');
-                    
-                    if (this.getAttribute('data-value') === 'Outro') {
-                        esquadraoOrigem.style.display = 'block';
-                    } else {
-                        esquadraoOrigem.style.display = 'none';
-                    }
+            // Alternar o modo visita
+            if (btnVisita.classList.contains('active')) {
+                // Desativar modo visita
+                btnVisita.classList.remove('active');
+                btnVisita.innerHTML = `
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M9 12L11 14L15 10" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    Visita
+                `;
+                
+                // Desmarcar todos os cavalos
+                horses.forEach(horse => {
+                    horse.selectedForVisit = false;
                 });
-            });
-            
-            // Event Listeners para adicionar histórico
-            btnAddHistoryEntry.addEventListener('click', addHistoryEntry);
-            
-            // Permitir adicionar histórico com Enter
-            historyDescription.addEventListener('keypress', (e) => {
-                if (e.key === 'Enter') {
-                    e.preventDefault();
-                    addHistoryEntry();
-                }
-            });
-            
-            // Event Listeners para navegação entre abas
-            navTabs.forEach(tab => {
-                tab.addEventListener('click', function() {
-                    const tabName = this.getAttribute('data-tab');
-                    switchTab(tabName);
+                
+                // Atualizar botões de ação
+                document.querySelectorAll('.file-card .btn-small').forEach(btn => {
+                    btn.disabled = false;
                 });
-            });
-            
-            // Event Listeners para cólicas
-            btnNovaColica.addEventListener('click', openColicaModal);
-            btnRelatorioColicas.addEventListener('click', gerarRelatorioColicas);
-            closeColicaModalBtn.addEventListener('click', closeColicaModalFunc);
-            btnCancelColica.addEventListener('click', closeColicaModalFunc);
-            colicaForm.addEventListener('submit', saveColica);
-            
-            // Event Listeners para filtros de esquadrão
-            esquadraoFilterBtns.forEach(btn => {
-                btn.addEventListener('click', function() {
-                    const esquadrao = this.getAttribute('data-esquadrao');
-                    filterByEsquadrao(esquadrao);
+                
+                window.showPermissionAlert('Modo visita desativado', 'info');
+            } else {
+                // Ativar modo visita
+                btnVisita.classList.add('active');
+                btnVisita.innerHTML = `
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M9 12L11 14L15 10" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    Visita Ativa
+                `;
+                
+                // Desabilitar botões de ação nos cards
+                document.querySelectorAll('.file-card .btn-small').forEach(btn => {
+                    btn.disabled = true;
                 });
-            });
+                
+                window.showPermissionAlert('Modo visita ativado. Clique nos cavalos para selecionar para visita.', 'info');
+            }
             
-            // Event Listeners para seleção de gravidade
-            document.querySelectorAll('.severity-option').forEach(option => {
-                option.addEventListener('click', function() {
-                    document.querySelectorAll('.severity-option').forEach(opt => {
-                        opt.classList.remove('selected');
-                    });
-                    this.classList.add('selected');
-                    selectedSeverity = this.getAttribute('data-severity');
-                });
-            });
-            
-            // Event Listeners para seleção de tratamento
-            document.querySelectorAll('.treatment-option').forEach(option => {
-                option.addEventListener('click', function() {
-                    const treatment = this.getAttribute('data-treatment');
-                    if (this.classList.contains('selected')) {
-                        this.classList.remove('selected');
-                        selectedTreatments = selectedTreatments.filter(t => t !== treatment);
-                    } else {
-                        this.classList.add('selected');
-                        selectedTreatments.push(treatment);
-                    }
-                });
-            });
-            
-            // Event Listeners para o balão de confirmação personalizado
-            confirmCancelBtn.addEventListener('click', hideCustomConfirm);
-            confirmDeleteBtn.addEventListener('click', confirmDelete);
-            
-            // Fechar balão de confirmação ao clicar fora
-            customConfirmOverlay.addEventListener('click', function(e) {
-                if (e.target === this) {
-                    hideCustomConfirm();
-                }
-            });
-            
-            // Fechar modais ao clicar fora deles
-            window.addEventListener('click', (e) => {
-                if (e.target === horseModal) {
-                    closeHorseModal();
-                }
-                if (e.target === horseDetailModal) {
-                    closeHorseDetailModal();
-                }
-                if (e.target === colicaModal) {
-                    closeColicaModalFunc();
-                }
-            });
-            
-            // Iniciar a aplicação
-            showWelcomePage();
+            // Atualizar localStorage
+            saveHorsesToStorage();
         }
         
-        // Iniciar a aplicação
-        init();
+        // ========== NAVEGAÇÃO POR ABAS ==========
+        navTabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                const targetTab = tab.getAttribute('data-tab');
+                
+                // Atualizar abas ativas
+                navTabs.forEach(t => t.classList.remove('active'));
+                tab.classList.add('active');
+                
+                // Mostrar conteúdo da aba selecionada
+                tabContents.forEach(content => {
+                    content.classList.remove('active');
+                    if (content.id === `${targetTab}Tab`) {
+                        content.classList.add('active');
+                        
+                        // Se for a aba de cólicas, atualizar gráficos
+                        if (targetTab === 'colicas') {
+                            renderColicas();
+                            renderColicaStats();
+                            initCharts();
+                        }
+                    }
+                });
+            });
+        });
+        
+        // ========== EVENT LISTENERS ==========
+        // Tela de transição
+        document.addEventListener('DOMContentLoaded', function() {
+            if (checkLogin()) {
+                showWelcomePage();
+            }
+        });
+        
+        // Logout
+        btnLogout.addEventListener('click', function() {
+            // Limpar dados de sessão
+            localStorage.removeItem('currentUser');
+            localStorage.removeItem('userRole');
+            localStorage.removeItem('userPermissions');
+            
+            // Redirecionar para login
+            window.location.href = 'login.html';
+        });
+        
+        // Busca
+        searchInput.addEventListener('input', renderHorses);
+        
+        // Modal de adicionar cavalo
+        btnAddHorse.addEventListener('click', openAddHorseModal);
+        closeModal.addEventListener('click', closeModalFunc);
+        btnCancel.addEventListener('click', closeModalFunc);
+        horseForm.addEventListener('submit', saveHorse);
+        
+        // Histórico médico
+        btnAddHistoryEntry.addEventListener('click', addHistoryEntry);
+        
+        // Atalho Enter no campo de descrição do histórico
+        historyDescription.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                addHistoryEntry();
+            }
+        });
+        
+        // Detalhes do cavalo
+        closeDetailModal.addEventListener('click', closeDetailModalFunc);
+        btnCloseDetail.addEventListener('click', closeDetailModalFunc);
+        
+        btnEditHorse.addEventListener('click', function() {
+            if (currentHorseId) {
+                redirectToFicha(currentHorseId);
+            }
+        });
+        
+        btnDeleteHorse.addEventListener('click', function() {
+            if (currentHorseId) {
+                showCustomConfirm(currentHorseId);
+            }
+        });
+        
+        prescriptionIconBtn.addEventListener('click', openPrescriptionWindows);
+        
+        // Modal de cólica
+        btnNovaColica.addEventListener('click', openColicaModal);
+        closeColicaModalBtn.addEventListener('click', closeColicaModalFunc);
+        btnCancelColica.addEventListener('click', closeColicaModalFunc);
+        colicaForm.addEventListener('submit', saveColica);
+        
+        // Seleção de gravidade
+        document.querySelectorAll('.severity-option').forEach(option => {
+            option.addEventListener('click', () => {
+                document.querySelectorAll('.severity-option').forEach(opt => {
+                    opt.classList.remove('selected');
+                });
+                option.classList.add('selected');
+                selectedSeverity = option.getAttribute('data-severity');
+            });
+        });
+        
+        // Seleção de tratamento (múltipla)
+        document.querySelectorAll('.treatment-option').forEach(option => {
+            option.addEventListener('click', () => {
+                option.classList.toggle('selected');
+                
+                const treatment = option.getAttribute('data-treatment');
+                const index = selectedTreatments.indexOf(treatment);
+                
+                if (index === -1) {
+                    selectedTreatments.push(treatment);
+                } else {
+                    selectedTreatments.splice(index, 1);
+                }
+            });
+        });
+        
+        // Filtros de esquadrão
+        esquadraoFilterBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                const esquadrao = btn.getAttribute('data-esquadrao');
+                filterByEsquadrao(esquadrao);
+            });
+        });
+        
+        // Relatório de cólicas
+        btnRelatorioColicas.addEventListener('click', gerarRelatorioColicas);
+        
+        // Exportar todos
+        btnExportAll.addEventListener('click', exportAllToPDF);
+        
+        // Visita
+        btnVisita.addEventListener('click', toggleVisita);
+        
+        // Balão de confirmação
+        confirmCancelBtn.addEventListener('click', hideCustomConfirm);
+        confirmDeleteBtn.addEventListener('click', deleteHorseConfirmed);
+        
+        // Fechar balão de confirmação clicando fora
+        customConfirmOverlay.addEventListener('click', function(e) {
+            if (e.target === this) {
+                hideCustomConfirm();
+            }
+        });
+        
+        // Fechar modais clicando fora
+        document.addEventListener('click', function(e) {
+            if (e.target === horseModal) {
+                closeModalFunc();
+            }
+            if (e.target === horseDetailModal) {
+                closeDetailModalFunc();
+            }
+            if (e.target === colicaModal) {
+                closeColicaModalFunc();
+            }
+        });
+        
+        // ========== INICIALIZAÇÃO ==========
+        console.log('Sistema Veterinário iniciado com sucesso!');
+        console.log(`Usuário: ${currentUser}`);
+        console.log(`Cargo: ${currentUserRole}`);
+        console.log(`Permissões:`, currentUserPermissions);
+        console.log(`Cavalos carregados: ${horses.length}`);
+        console.log(`Cólicas registradas: ${colicas.length}`);
     </script>
 </body>
 </html>
