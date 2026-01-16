@@ -3,9 +3,29 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sistema Laboratorial - Laudo AIE</title>
+    <title>AutoLaudo AIE - Sistema Automatizado</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
+        :root {
+            --primary: #1a5276;
+            --primary-light: #2e86c1;
+            --primary-dark: #154360;
+            --secondary: #d35400;
+            --secondary-light: #e67e22;
+            --success: #27ae60;
+            --warning: #f39c12;
+            --danger: #e74c3c;
+            --info: #3498db;
+            --light: #f8f9fa;
+            --dark: #2c3e50;
+            --gray: #7f8c8d;
+            --light-gray: #ecf0f1;
+            --border-radius: 12px;
+            --box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+        
         * {
             margin: 0;
             padding: 0;
@@ -14,200 +34,831 @@
         }
         
         body {
-            background-color: #f0f2f5;
-            color: #333;
+            background: linear-gradient(135deg, #f5f7fa 0%, #e4e8f0 100%);
+            color: var(--dark);
             line-height: 1.6;
+            min-height: 100vh;
+            padding-bottom: 50px;
         }
         
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 20px;
-        }
-        
-        /* Header e Navegação */
-        header {
-            background-color: #2c3e50;
+        /* Header */
+        .header {
+            background: linear-gradient(to right, var(--primary-dark), var(--primary));
             color: white;
-            padding: 15px 0;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            padding: 25px 0;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
         }
         
-        .header-content {
+        .header-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 30px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 20px;
+        }
+        
+        .logo-area {
+            display: flex;
+            align-items: center;
+            gap: 20px;
         }
         
         .logo {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-        
-        .logo h1 {
-            font-size: 1.8rem;
-            font-weight: 600;
-        }
-        
-        .logo-icon {
-            background-color: #3498db;
-            width: 50px;
-            height: 50px;
+            width: 70px;
+            height: 70px;
+            background: white;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.5rem;
+            font-size: 2rem;
+            color: var(--primary);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
         }
         
-        .user-info {
+        .logo-text h1 {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+        
+        .logo-text p {
+            font-size: 0.95rem;
+            opacity: 0.9;
+        }
+        
+        .badge-auto {
+            background: var(--secondary);
+            color: white;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            display: inline-block;
+            margin-left: 10px;
+        }
+        
+        .user-area {
+            display: flex;
+            align-items: center;
+            gap: 25px;
+        }
+        
+        .user-card {
             display: flex;
             align-items: center;
             gap: 15px;
+            background: rgba(255, 255, 255, 0.15);
+            padding: 12px 20px;
+            border-radius: 50px;
+            backdrop-filter: blur(10px);
         }
         
         .user-avatar {
-            width: 45px;
-            height: 45px;
+            width: 50px;
+            height: 50px;
             border-radius: 50%;
-            background-color: #3498db;
+            background: linear-gradient(135deg, var(--secondary-light), var(--secondary));
             display: flex;
             align-items: center;
             justify-content: center;
             font-weight: bold;
+            font-size: 1.4rem;
+            color: white;
+        }
+        
+        .user-info p:first-child {
+            font-weight: 600;
+            font-size: 1rem;
+        }
+        
+        .user-info p:last-child {
+            font-size: 0.85rem;
+            opacity: 0.9;
         }
         
         .logout-btn {
-            background-color: #e74c3c;
+            background: var(--danger);
             color: white;
             border: none;
-            padding: 10px 20px;
-            border-radius: 5px;
+            padding: 12px 25px;
+            border-radius: 50px;
             cursor: pointer;
             display: flex;
             align-items: center;
-            gap: 8px;
-            transition: background-color 0.3s;
+            gap: 10px;
+            transition: var(--transition);
+            font-weight: 600;
         }
         
         .logout-btn:hover {
-            background-color: #c0392b;
+            background: #c0392b;
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(231, 76, 60, 0.4);
         }
         
-        /* Conteúdo principal */
-        .dashboard {
+        /* Container Principal */
+        .main-container {
+            max-width: 1400px;
+            margin: 40px auto;
+            padding: 0 30px;
             display: grid;
-            grid-template-columns: 250px 1fr;
-            gap: 20px;
-            margin-top: 20px;
+            grid-template-columns: 300px 1fr;
+            gap: 30px;
         }
         
-        /* Menu lateral */
+        /* Sidebar */
         .sidebar {
-            background-color: white;
-            border-radius: 10px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-            padding: 20px;
+            background: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            padding: 30px 0;
+            height: fit-content;
+            position: sticky;
+            top: 130px;
         }
         
-        .menu-title {
-            font-size: 1.2rem;
+        .sidebar-header {
+            padding: 0 30px 25px;
+            border-bottom: 1px solid var(--light-gray);
             margin-bottom: 20px;
-            padding-bottom: 10px;
-            border-bottom: 1px solid #eee;
-            color: #2c3e50;
         }
         
-        .menu-item {
+        .sidebar-header h3 {
+            color: var(--primary);
+            font-size: 1.4rem;
             display: flex;
             align-items: center;
             gap: 12px;
-            padding: 12px 15px;
-            margin-bottom: 8px;
-            border-radius: 8px;
+        }
+        
+        .nav-menu {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            padding: 0 15px;
+        }
+        
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 18px 25px;
+            border-radius: 12px;
             cursor: pointer;
-            transition: all 0.3s;
-            color: #555;
+            transition: var(--transition);
+            color: var(--dark);
+            text-decoration: none;
+            position: relative;
         }
         
-        .menu-item:hover {
-            background-color: #f8f9fa;
-            color: #2c3e50;
+        .nav-item:hover {
+            background: linear-gradient(to right, rgba(26, 82, 118, 0.08), rgba(26, 82, 118, 0.04));
+            color: var(--primary);
+            transform: translateX(8px);
         }
         
-        .menu-item.active {
-            background-color: #3498db;
+        .nav-item.active {
+            background: linear-gradient(to right, var(--primary-light), var(--primary));
+            color: white;
+            box-shadow: 0 5px 15px rgba(26, 82, 118, 0.25);
+        }
+        
+        .nav-item.active::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            height: 100%;
+            width: 5px;
+            background: var(--secondary);
+            border-radius: 0 5px 5px 0;
+        }
+        
+        .nav-item i {
+            font-size: 1.3rem;
+            width: 28px;
+            text-align: center;
+        }
+        
+        .nav-item span {
+            font-weight: 500;
+            font-size: 1.05rem;
+        }
+        
+        .nav-badge {
+            margin-left: auto;
+            background: var(--secondary);
+            color: white;
+            font-size: 0.8rem;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-weight: 600;
+        }
+        
+        .sidebar-footer {
+            margin-top: 40px;
+            padding: 25px 30px 0;
+            border-top: 1px solid var(--light-gray);
+        }
+        
+        .auto-status {
+            background: linear-gradient(135deg, #e8f4fc, #d4e6f1);
+            padding: 20px;
+            border-radius: 12px;
+            border-left: 5px solid var(--primary);
+        }
+        
+        .status-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 15px;
+        }
+        
+        .status-indicator {
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            background: var(--success);
+            position: relative;
+        }
+        
+        .status-indicator::after {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background: var(--success);
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); opacity: 0.8; }
+            70% { transform: scale(2); opacity: 0; }
+            100% { transform: scale(2); opacity: 0; }
+        }
+        
+        .status-header h4 {
+            color: var(--primary);
+            font-size: 1.1rem;
+        }
+        
+        .status-content p {
+            font-size: 0.9rem;
+            color: var(--dark);
+            margin-bottom: 5px;
+        }
+        
+        .status-content strong {
+            color: var(--primary);
+        }
+        
+        /* Conteúdo Principal */
+        .content-area {
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+        }
+        
+        /* Painel de Controle */
+        .control-panel {
+            background: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            padding: 30px;
+        }
+        
+        .panel-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+        
+        .panel-title h2 {
+            color: var(--primary);
+            font-size: 1.8rem;
+            margin-bottom: 8px;
+        }
+        
+        .panel-title p {
+            color: var(--gray);
+            font-size: 1rem;
+        }
+        
+        .panel-actions {
+            display: flex;
+            gap: 15px;
+        }
+        
+        .btn {
+            padding: 14px 28px;
+            border-radius: 50px;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 600;
+            transition: var(--transition);
+            font-size: 1rem;
+        }
+        
+        .btn:hover {
+            transform: translateY(-3px);
+        }
+        
+        .btn-primary {
+            background: linear-gradient(to right, var(--primary), var(--primary-dark));
+            color: white;
+            box-shadow: 0 5px 15px rgba(26, 82, 118, 0.3);
+        }
+        
+        .btn-primary:hover {
+            box-shadow: 0 8px 20px rgba(26, 82, 118, 0.4);
+        }
+        
+        .btn-success {
+            background: linear-gradient(to right, var(--success), #219653);
+            color: white;
+            box-shadow: 0 5px 15px rgba(39, 174, 96, 0.3);
+        }
+        
+        .btn-success:hover {
+            box-shadow: 0 8px 20px rgba(39, 174, 96, 0.4);
+        }
+        
+        .btn-warning {
+            background: linear-gradient(to right, var(--warning), #e67e22);
+            color: white;
+            box-shadow: 0 5px 15px rgba(243, 156, 18, 0.3);
+        }
+        
+        .btn-warning:hover {
+            box-shadow: 0 8px 20px rgba(243, 156, 18, 0.4);
+        }
+        
+        .btn-danger {
+            background: linear-gradient(to right, var(--danger), #c0392b);
+            color: white;
+            box-shadow: 0 5px 15px rgba(231, 76, 60, 0.3);
+        }
+        
+        .btn-danger:hover {
+            box-shadow: 0 8px 20px rgba(231, 76, 60, 0.4);
+        }
+        
+        .btn-secondary {
+            background: white;
+            color: var(--primary);
+            border: 2px solid var(--primary);
+        }
+        
+        .btn-secondary:hover {
+            background: var(--primary);
             color: white;
         }
         
-        /* Conteúdo principal */
-        .main-content {
-            background-color: white;
-            border-radius: 10px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-            padding: 25px;
+        /* Cards de Estatísticas */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 25px;
+            margin-bottom: 30px;
         }
         
-        .content-header {
+        .stat-card {
+            background: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            padding: 25px;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            transition: var(--transition);
+            border-top: 5px solid;
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.12);
+        }
+        
+        .stat-card.blue {
+            border-color: var(--primary);
+        }
+        
+        .stat-card.green {
+            border-color: var(--success);
+        }
+        
+        .stat-card.orange {
+            border-color: var(--warning);
+        }
+        
+        .stat-card.red {
+            border-color: var(--danger);
+        }
+        
+        .stat-card.purple {
+            border-color: #9b59b6;
+        }
+        
+        .stat-icon {
+            width: 70px;
+            height: 70px;
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            color: white;
+        }
+        
+        .stat-icon.blue {
+            background: linear-gradient(135deg, var(--primary-light), var(--primary));
+        }
+        
+        .stat-icon.green {
+            background: linear-gradient(135deg, #2ecc71, #27ae60);
+        }
+        
+        .stat-icon.orange {
+            background: linear-gradient(135deg, #f39c12, #e67e22);
+        }
+        
+        .stat-icon.red {
+            background: linear-gradient(135deg, #e74c3c, #c0392b);
+        }
+        
+        .stat-icon.purple {
+            background: linear-gradient(135deg, #9b59b6, #8e44ad);
+        }
+        
+        .stat-info h3 {
+            font-size: 2.2rem;
+            color: var(--dark);
+            margin-bottom: 5px;
+            line-height: 1;
+        }
+        
+        .stat-info p {
+            color: var(--gray);
+            font-size: 0.95rem;
+        }
+        
+        /* Programação Automática */
+        .auto-schedule {
+            background: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            padding: 30px;
+            margin-top: 20px;
+        }
+        
+        .schedule-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
             margin-bottom: 25px;
-            padding-bottom: 15px;
-            border-bottom: 1px solid #eee;
         }
         
-        .content-header h2 {
-            color: #2c3e50;
-            font-size: 1.8rem;
-        }
-        
-        .new-report-btn {
-            background-color: #27ae60;
-            color: white;
-            border: none;
-            padding: 12px 25px;
-            border-radius: 5px;
-            cursor: pointer;
+        .schedule-header h3 {
+            color: var(--primary);
+            font-size: 1.5rem;
             display: flex;
             align-items: center;
-            gap: 8px;
-            transition: background-color 0.3s;
+            gap: 12px;
+        }
+        
+        .schedule-controls {
+            display: flex;
+            gap: 15px;
+        }
+        
+        /* Filtros */
+        .filters {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 25px;
+            flex-wrap: wrap;
+        }
+        
+        .filter-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .filter-label {
             font-weight: 600;
+            color: var(--dark);
+            white-space: nowrap;
         }
         
-        .new-report-btn:hover {
-            background-color: #219653;
-        }
-        
-        /* Formulário do laudo */
-        .report-form {
-            display: grid;
-            gap: 25px;
-        }
-        
-        .form-section {
-            background-color: #f8f9fa;
+        .filter-select {
+            padding: 12px 20px;
+            border: 1px solid #ddd;
             border-radius: 8px;
+            background: white;
+            font-size: 1rem;
+            color: var(--dark);
+            min-width: 180px;
+        }
+        
+        /* Tabelas */
+        .table-container {
+            background: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            overflow: hidden;
+        }
+        
+        .table-header {
+            padding: 25px 30px;
+            background: #f8f9fa;
+            border-bottom: 1px solid var(--light-gray);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .table-title {
+            color: var(--primary);
+            font-size: 1.4rem;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .table-search {
+            position: relative;
+        }
+        
+        .table-search input {
+            padding: 12px 20px 12px 50px;
+            border: 1px solid #ddd;
+            border-radius: 50px;
+            width: 300px;
+            font-size: 1rem;
+            background: white;
+        }
+        
+        .table-search i {
+            position: absolute;
+            left: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--gray);
+        }
+        
+        .table-responsive {
+            overflow-x: auto;
+        }
+        
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        .data-table thead {
+            background: linear-gradient(to right, var(--primary), var(--primary-dark));
+            color: white;
+        }
+        
+        .data-table th {
+            padding: 20px 15px;
+            text-align: left;
+            font-weight: 600;
+            font-size: 1.05rem;
+            white-space: nowrap;
+        }
+        
+        .data-table tbody tr {
+            border-bottom: 1px solid var(--light-gray);
+            transition: var(--transition);
+        }
+        
+        .data-table tbody tr:hover {
+            background-color: #f8f9fa;
+        }
+        
+        .data-table td {
+            padding: 20px 15px;
+            vertical-align: middle;
+        }
+        
+        /* Badges de Status */
+        .status-badge {
+            display: inline-block;
+            padding: 8px 18px;
+            border-radius: 50px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            text-align: center;
+            min-width: 120px;
+        }
+        
+        .status-scheduled {
+            background: #e8f4fc;
+            color: var(--primary);
+            border: 1px solid var(--primary-light);
+        }
+        
+        .status-pending {
+            background: #fdebd0;
+            color: var(--warning);
+            border: 1px solid #f39c12;
+        }
+        
+        .status-completed {
+            background: #d4efdf;
+            color: var(--success);
+            border: 1px solid #27ae60;
+        }
+        
+        .status-overdue {
+            background: #fadbd8;
+            color: var(--danger);
+            border: 1px solid #e74c3c;
+        }
+        
+        .status-negative {
+            background: #d4efdf;
+            color: var(--success);
+        }
+        
+        .status-positive {
+            background: #fadbd8;
+            color: var(--danger);
+        }
+        
+        /* Ações */
+        .action-cell {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .action-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: none;
+            cursor: pointer;
+            transition: var(--transition);
+            color: white;
+        }
+        
+        .action-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+        }
+        
+        .btn-view {
+            background: var(--info);
+        }
+        
+        .btn-edit {
+            background: var(--warning);
+        }
+        
+        .btn-delete {
+            background: var(--danger);
+        }
+        
+        .btn-schedule {
+            background: var(--primary);
+        }
+        
+        /* Modal */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
             padding: 20px;
-            border-left: 4px solid #3498db;
+            opacity: 0;
+            visibility: hidden;
+            transition: var(--transition);
+            backdrop-filter: blur(5px);
         }
         
-        .section-title {
-            font-size: 1.3rem;
-            margin-bottom: 20px;
-            color: #2c3e50;
+        .modal-overlay.active {
+            opacity: 1;
+            visibility: visible;
         }
         
-        .form-row {
+        .modal {
+            background: white;
+            border-radius: var(--border-radius);
+            width: 100%;
+            max-width: 700px;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.2);
+            transform: translateY(30px);
+            transition: var(--transition);
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+        
+        .modal-overlay.active .modal {
+            transform: translateY(0);
+        }
+        
+        .modal-header {
+            padding: 25px 30px;
+            border-bottom: 1px solid var(--light-gray);
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .modal-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            color: white;
+        }
+        
+        .modal-icon.warning {
+            background: linear-gradient(135deg, var(--warning), #e67e22);
+        }
+        
+        .modal-icon.danger {
+            background: linear-gradient(135deg, var(--danger), #c0392b);
+        }
+        
+        .modal-icon.success {
+            background: linear-gradient(135deg, var(--success), #219653);
+        }
+        
+        .modal-icon.info {
+            background: linear-gradient(135deg, var(--info), #2980b9);
+        }
+        
+        .modal-title {
+            font-size: 1.6rem;
+            color: var(--dark);
+            flex: 1;
+        }
+        
+        .modal-close {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            color: var(--gray);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        
+        .modal-close:hover {
+            color: var(--danger);
+            transform: rotate(90deg);
+        }
+        
+        .modal-body {
+            padding: 30px;
+        }
+        
+        .modal-text {
+            margin-bottom: 25px;
+            color: var(--gray);
+            line-height: 1.7;
+            font-size: 1.05rem;
+        }
+        
+        .modal-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 15px;
+            padding-top: 25px;
+            border-top: 1px solid var(--light-gray);
+        }
+        
+        /* Formulário de Laudo Rápido */
+        .quick-form {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
             gap: 20px;
-            margin-bottom: 15px;
+            margin-bottom: 30px;
         }
         
         .form-group {
@@ -215,258 +866,234 @@
             flex-direction: column;
         }
         
-        .form-group label {
-            margin-bottom: 8px;
+        .form-label {
+            margin-bottom: 10px;
             font-weight: 600;
-            color: #555;
-        }
-        
-        .form-group input, .form-group select, .form-group textarea {
-            padding: 12px 15px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            font-size: 1rem;
-            transition: border-color 0.3s;
-        }
-        
-        .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
-            outline: none;
-            border-color: #3498db;
-        }
-        
-        .form-actions {
+            color: var(--dark);
             display: flex;
-            justify-content: flex-end;
-            gap: 15px;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .form-label .required {
+            color: var(--danger);
+        }
+        
+        .form-control {
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: var(--transition);
+            background: #fcfcfc;
+        }
+        
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(26, 82, 118, 0.1);
+            background: white;
+        }
+        
+        .form-control.readonly {
+            background-color: #f5f5f5;
+            color: #666;
+        }
+        
+        /* Calendário de Vencimentos */
+        .calendar {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 25px;
             margin-top: 30px;
         }
         
-        .btn-save {
-            background-color: #3498db;
-            color: white;
-            border: none;
-            padding: 12px 30px;
-            border-radius: 5px;
-            cursor: pointer;
+        .calendar-card {
+            background: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            padding: 25px;
+            border-top: 5px solid;
+        }
+        
+        .calendar-card.urgent {
+            border-color: var(--danger);
+        }
+        
+        .calendar-card.warning {
+            border-color: var(--warning);
+        }
+        
+        .calendar-card.normal {
+            border-color: var(--success);
+        }
+        
+        .calendar-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .calendar-date {
+            font-size: 1.1rem;
             font-weight: 600;
-            transition: background-color 0.3s;
+            color: var(--dark);
         }
         
-        .btn-save:hover {
-            background-color: #2980b9;
-        }
-        
-        .btn-cancel {
-            background-color: #95a5a6;
-            color: white;
-            border: none;
-            padding: 12px 30px;
-            border-radius: 5px;
-            cursor: pointer;
-            font-weight: 600;
-            transition: background-color 0.3s;
-        }
-        
-        .btn-cancel:hover {
-            background-color: #7f8c8d;
-        }
-        
-        /* Tabela de laudos */
-        .reports-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 20px;
-        }
-        
-        .reports-table th {
-            background-color: #2c3e50;
-            color: white;
-            text-align: left;
-            padding: 15px;
-            font-weight: 600;
-        }
-        
-        .reports-table td {
-            padding: 15px;
-            border-bottom: 1px solid #eee;
-        }
-        
-        .reports-table tr:hover {
-            background-color: #f8f9fa;
-        }
-        
-        .status-badge {
-            display: inline-block;
-            padding: 5px 12px;
-            border-radius: 20px;
+        .calendar-badge {
+            padding: 6px 15px;
+            border-radius: 50px;
             font-size: 0.85rem;
             font-weight: 600;
         }
         
-        .status-pending {
-            background-color: #f39c12;
-            color: white;
+        .calendar-list {
+            list-style: none;
         }
         
-        .status-completed {
-            background-color: #27ae60;
-            color: white;
-        }
-        
-        .action-btn {
-            background: none;
-            border: none;
-            cursor: pointer;
-            font-size: 1.1rem;
-            margin-right: 10px;
-            color: #3498db;
-            transition: color 0.3s;
-        }
-        
-        .action-btn:hover {
-            color: #2980b9;
-        }
-        
-        /* Modal de logout */
-        .modal-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background-color: rgba(0, 0, 0, 0.5);
+        .calendar-item {
+            padding: 15px 0;
+            border-bottom: 1px solid var(--light-gray);
             display: flex;
+            justify-content: space-between;
             align-items: center;
-            justify-content: center;
-            z-index: 1000;
-            display: none;
         }
         
-        .modal {
-            background-color: white;
-            border-radius: 10px;
-            width: 90%;
-            max-width: 500px;
-            padding: 30px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        .calendar-item:last-child {
+            border-bottom: none;
         }
         
-        .modal-header {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            margin-bottom: 20px;
-        }
-        
-        .modal-icon {
-            background-color: #e74c3c;
-            color: white;
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.5rem;
-        }
-        
-        .modal-title {
-            font-size: 1.5rem;
-            color: #2c3e50;
-        }
-        
-        .modal-content {
-            margin-bottom: 25px;
-            color: #555;
-            line-height: 1.6;
-        }
-        
-        .modal-actions {
-            display: flex;
-            justify-content: flex-end;
-            gap: 15px;
-        }
-        
-        .btn-confirm {
-            background-color: #e74c3c;
-            color: white;
-            border: none;
-            padding: 12px 25px;
-            border-radius: 5px;
-            cursor: pointer;
+        .calendar-animal {
             font-weight: 600;
-            transition: background-color 0.3s;
+            color: var(--dark);
         }
         
-        .btn-confirm:hover {
-            background-color: #c0392b;
-        }
-        
-        .btn-close {
-            background-color: #95a5a6;
-            color: white;
-            border: none;
-            padding: 12px 25px;
-            border-radius: 5px;
-            cursor: pointer;
-            font-weight: 600;
-            transition: background-color 0.3s;
-        }
-        
-        .btn-close:hover {
-            background-color: #7f8c8d;
+        .calendar-property {
+            font-size: 0.9rem;
+            color: var(--gray);
         }
         
         /* Responsividade */
-        @media (max-width: 992px) {
-            .dashboard {
+        @media (max-width: 1200px) {
+            .main-container {
                 grid-template-columns: 1fr;
             }
             
             .sidebar {
-                margin-bottom: 20px;
+                position: static;
+            }
+            
+            .nav-menu {
+                flex-direction: row;
+                overflow-x: auto;
+                padding: 0 15px;
+            }
+            
+            .nav-item {
+                white-space: nowrap;
+            }
+        }
+        
+        @media (max-width: 992px) {
+            .header-container {
+                flex-direction: column;
+                gap: 20px;
+            }
+            
+            .user-area {
+                width: 100%;
+                justify-content: space-between;
+            }
+            
+            .panel-header {
+                flex-direction: column;
+                gap: 20px;
+                align-items: flex-start;
+            }
+            
+            .panel-actions {
+                width: 100%;
+                justify-content: space-between;
+            }
+            
+            .stats-grid {
+                grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            }
+            
+            .table-search input {
+                width: 100%;
             }
         }
         
         @media (max-width: 768px) {
-            .header-content {
-                flex-direction: column;
-                gap: 15px;
-                text-align: center;
+            .main-container, .header-container {
+                padding: 0 20px;
             }
             
-            .form-row {
+            .btn {
+                padding: 12px 20px;
+                font-size: 0.95rem;
+            }
+            
+            .stats-grid {
                 grid-template-columns: 1fr;
             }
             
-            .form-actions, .modal-actions {
+            .filters {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .table-header {
+                flex-direction: column;
+                gap: 15px;
+                align-items: flex-start;
+            }
+            
+            .modal {
+                max-width: 95%;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .modal-actions {
                 flex-direction: column;
             }
             
-            .reports-table {
-                display: block;
-                overflow-x: auto;
+            .modal-actions .btn {
+                width: 100%;
+            }
+            
+            .btn {
+                padding: 10px 15px;
             }
         }
     </style>
 </head>
 <body>
     <!-- Header -->
-    <header>
-        <div class="header-content">
-            <div class="logo">
-                <div class="logo-icon">
-                    <i class="fas fa-horse-head"></i>
+    <header class="header">
+        <div class="header-container">
+            <div class="logo-area">
+                <div class="logo">
+                    <i class="fas fa-robot"></i>
                 </div>
-                <h1>Laboratório de Anemia Infecciosa Equina</h1>
+                <div class="logo-text">
+                    <h1>AutoLaudo AIE <span class="badge-auto">AUTOMATIZADO</span></h1>
+                    <p>Sistema de Emissão Automática de Laudos - 2º RCG</p>
+                </div>
             </div>
-            <div class="user-info">
-                <div class="user-avatar">
-                    <span>A</span>
-                </div>
-                <div>
-                    <p style="font-weight: bold;">Ten. Andressa</p>
-                    <p style="font-size: 0.9rem; color: #bdc3c7;">Responsável Técnico</p>
+            
+            <div class="user-area">
+                <div class="user-card">
+                    <div class="user-avatar">
+                        <span>A</span>
+                    </div>
+                    <div class="user-info">
+                        <p>Ten. Andressa</p>
+                        <p>Responsável Técnica</p>
+                    </div>
                 </div>
                 <button class="logout-btn" id="logoutBtn">
                     <i class="fas fa-sign-out-alt"></i> Sair
@@ -475,348 +1102,365 @@
         </div>
     </header>
 
-    <!-- Conteúdo Principal -->
-    <div class="container">
-        <div class="dashboard">
-            <!-- Menu Lateral -->
-            <div class="sidebar">
-                <h3 class="menu-title">Menu do Laboratório</h3>
-                <div class="menu-item active" data-content="new-report">
+    <!-- Container Principal -->
+    <div class="main-container">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <div class="sidebar-header">
+                <h3><i class="fas fa-sliders-h"></i> Controle do Sistema</h3>
+            </div>
+            
+            <div class="nav-menu">
+                <a href="#" class="nav-item active" data-content="dashboard">
+                    <i class="fas fa-tachometer-alt"></i>
+                    <span>Dashboard</span>
+                </a>
+                <a href="#" class="nav-item" data-content="auto-schedule">
+                    <i class="fas fa-calendar-alt"></i>
+                    <span>Programação Automática</span>
+                    <span class="nav-badge">12</span>
+                </a>
+                <a href="#" class="nav-item" data-content="horses">
+                    <i class="fas fa-horse"></i>
+                    <span>Cadastro de Cavalos</span>
+                    <span class="nav-badge">48</span>
+                </a>
+                <a href="#" class="nav-item" data-content="reports">
                     <i class="fas fa-file-medical"></i>
-                    <span>Novo Laudo</span>
-                </div>
-                <div class="menu-item" data-content="reports-list">
-                    <i class="fas fa-list"></i>
-                    <span>Laudos Registrados</span>
-                </div>
-                <div class="menu-item" data-content="lab-info">
-                    <i class="fas fa-info-circle"></i>
-                    <span>Informações do Laboratório</span>
-                </div>
-                <div class="menu-item" data-content="statistics">
-                    <i class="fas fa-chart-bar"></i>
-                    <span>Estatísticas</span>
-                </div>
-                <div class="menu-item" data-content="settings">
-                    <i class="fas fa-cog"></i>
+                    <span>Laudos Emitidos</span>
+                    <span class="nav-badge">156</span>
+                </a>
+                <a href="#" class="nav-item" data-content="templates">
+                    <i class="fas fa-clipboard"></i>
+                    <span>Modelos de Laudo</span>
+                </a>
+                <a href="#" class="nav-item" data-content="calendar">
+                    <i class="fas fa-calendar-day"></i>
+                    <span>Calendário de Vencimentos</span>
+                </a>
+                <a href="#" class="nav-item" data-content="batch">
+                    <i class="fas fa-bolt"></i>
+                    <span>Emissão em Lote</span>
+                </a>
+                <a href="#" class="nav-item" data-content="settings">
+                    <i class="fas fa-cogs"></i>
                     <span>Configurações</span>
+                </a>
+            </div>
+            
+            <div class="sidebar-footer">
+                <div class="auto-status">
+                    <div class="status-header">
+                        <div class="status-indicator"></div>
+                        <h4>Sistema Automático Ativo</h4>
+                    </div>
+                    <div class="status-content">
+                        <p>Próxima emissão automática: <strong>15/04/2024</strong></p>
+                        <p>Laudos programados: <strong>12 cavalos</strong></p>
+                        <p>Intervalo padrão: <strong>6 meses</strong></p>
+                    </div>
                 </div>
             </div>
-
-            <!-- Área de Conteúdo -->
-            <div class="main-content">
-                <!-- Cabeçalho do conteúdo -->
-                <div class="content-header">
-                    <h2 id="contentTitle">Registro de Laudo</h2>
-                    <button class="new-report-btn" id="newReportBtn">
-                        <i class="fas fa-plus"></i> Novo Laudo
-                    </button>
+        </div>
+        
+        <!-- Conteúdo Principal -->
+        <div class="content-area">
+            <!-- Painel de Controle -->
+            <div class="control-panel">
+                <div class="panel-header">
+                    <div class="panel-title">
+                        <h2>Dashboard</h2>
+                        <p>Controle central do sistema automatizado de laudos</p>
+                    </div>
+                    <div class="panel-actions">
+                        <button class="btn btn-primary" id="autoEmitBtn">
+                            <i class="fas fa-bolt"></i> Emitir Automático
+                        </button>
+                        <button class="btn btn-success" id="manualEmitBtn">
+                            <i class="fas fa-plus"></i> Novo Laudo Manual
+                        </button>
+                    </div>
                 </div>
-
-                <!-- Conteúdo Dinâmico -->
-                <div id="dynamicContent">
-                    <!-- Formulário de Laudo (conteúdo inicial) -->
-                    <form class="report-form" id="reportForm">
-                        <!-- Seção: Informações do Laboratório -->
-                        <div class="form-section">
-                            <h3 class="section-title">Informações do Laboratório</h3>
-                            <div class="form-row">
-                                <div class="form-group">
-                                    <label for="labName">Nome do Laboratório</label>
-                                    <input type="text" id="labName" value="Laboratório de Anemia Infecciosa Equina do 2º Regimento de Cavalaria de Guarda" readonly>
-                                </div>
-                                <div class="form-group">
-                                    <label for="portaria">Portaria</label>
-                                    <input type="text" id="portaria" value="Portaria Nº 352 de 07/10/2014" readonly>
-                                </div>
-                            </div>
-                            <div class="form-row">
-                                <div class="form-group">
-                                    <label for="enderecoLab">Endereço</label>
-                                    <input type="text" id="enderecoLab" value="Avenida Duque de Caxias, 2660 -- Vila Militar, Rio de Janeiro/RJ -- CEP: 21.615-220" readonly>
-                                </div>
-                            </div>
-                            <div class="form-row">
-                                <div class="form-group">
-                                    <label for="telefoneLab">Telefone</label>
-                                    <input type="text" id="telefoneLab" value="(21) 2457-4544" readonly>
-                                </div>
-                                <div class="form-group">
-                                    <label for="emailLab">E-mail</label>
-                                    <input type="email" id="emailLab" value="lab2rcg@gmail.com" readonly>
-                                </div>
+                
+                <!-- Estatísticas -->
+                <div class="stats-grid">
+                    <div class="stat-card blue">
+                        <div class="stat-icon blue">
+                            <i class="fas fa-horse"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3>48</h3>
+                            <p>Cavalos Cadastrados</p>
+                        </div>
+                    </div>
+                    
+                    <div class="stat-card green">
+                        <div class="stat-icon green">
+                            <i class="fas fa-file-medical"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3>156</h3>
+                            <p>Laudos Emitidos</p>
+                        </div>
+                    </div>
+                    
+                    <div class="stat-card orange">
+                        <div class="stat-icon orange">
+                            <i class="fas fa-calendar-alt"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3>12</h3>
+                            <p>Vencimentos em 30 dias</p>
+                        </div>
+                    </div>
+                    
+                    <div class="stat-card red">
+                        <div class="stat-icon red">
+                            <i class="fas fa-exclamation-triangle"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3>3</h3>
+                            <p>Vencidos</p>
+                        </div>
+                    </div>
+                    
+                    <div class="stat-card purple">
+                        <div class="stat-icon purple">
+                            <i class="fas fa-robot"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3>84%</h3>
+                            <p>Automatizado</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Conteúdo Dinâmico -->
+            <div id="dynamicContent">
+                <!-- Programação Automática (conteúdo inicial) -->
+                <div class="auto-schedule">
+                    <div class="schedule-header">
+                        <h3><i class="fas fa-calendar-alt"></i> Programação Automática - Próximos 30 Dias</h3>
+                        <div class="schedule-controls">
+                            <button class="btn btn-secondary">
+                                <i class="fas fa-filter"></i> Filtrar
+                            </button>
+                            <button class="btn btn-primary" id="scheduleAllBtn">
+                                <i class="fas fa-calendar-check"></i> Programar Todos
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="filters">
+                        <div class="filter-group">
+                            <span class="filter-label">Unidade:</span>
+                            <select class="filter-select">
+                                <option>Todas</option>
+                                <option selected>ESEQEX</option>
+                                <option>1º RCG</option>
+                                <option>3º RCG</option>
+                            </select>
+                        </div>
+                        <div class="filter-group">
+                            <span class="filter-label">Status:</span>
+                            <select class="filter-select">
+                                <option>Todos</option>
+                                <option selected>Pendentes</option>
+                                <option>Programados</option>
+                                <option>Concluídos</option>
+                            </select>
+                        </div>
+                        <div class="filter-group">
+                            <span class="filter-label">Período:</span>
+                            <select class="filter-select">
+                                <option>Próximos 7 dias</option>
+                                <option selected>Próximos 30 dias</option>
+                                <option>Próximos 90 dias</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="table-container">
+                        <div class="table-header">
+                            <h3 class="table-title"><i class="fas fa-list"></i> Cavalos com Laudo Próximo do Vencimento</h3>
+                            <div class="table-search">
+                                <i class="fas fa-search"></i>
+                                <input type="text" placeholder="Buscar cavalo ou registro...">
                             </div>
                         </div>
-
-                        <!-- Seção: Registro da Amostra -->
-                        <div class="form-section">
-                            <h3 class="section-title">Registro da Amostra</h3>
-                            <div class="form-row">
-                                <div class="form-group">
-                                    <label for="numRegistro">Nº de Registro de Amostra</label>
-                                    <input type="text" id="numRegistro" value="2184">
-                                </div>
-                                <div class="form-group">
-                                    <label for="numSerie">Nº de Série</label>
-                                    <input type="text" id="numSerie" value="BC 018/23">
-                                </div>
-                                <div class="form-group">
-                                    <label for="numExame">Nº Exame</label>
-                                    <input type="text" id="numExame" value="2184/23">
-                                </div>
-                            </div>
+                        
+                        <div class="table-responsive">
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>Código</th>
+                                        <th>Nome do Animal</th>
+                                        <th>Unidade</th>
+                                        <th>Último Laudo</th>
+                                        <th>Próximo Laudo</th>
+                                        <th>Dias Restantes</th>
+                                        <th>Status</th>
+                                        <th>Ações</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>EQ-1844</td>
+                                        <td>AFRICANO DO RINCÃO</td>
+                                        <td>ESEQEX</td>
+                                        <td>17/10/2023</td>
+                                        <td>17/04/2024</td>
+                                        <td><strong style="color: var(--warning);">25</strong></td>
+                                        <td><span class="status-badge status-pending">Pendente</span></td>
+                                        <td>
+                                            <div class="action-cell">
+                                                <button class="action-btn btn-schedule" title="Programar emissão">
+                                                    <i class="fas fa-calendar-plus"></i>
+                                                </button>
+                                                <button class="action-btn btn-edit" title="Editar cadastro">
+                                                    <i class="fas fa-edit"></i>
+                                                </button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>EQ-1923</td>
+                                        <td>GAROTO DO PANTANAL</td>
+                                        <td>ESEQEX</td>
+                                        <td>18/10/2023</td>
+                                        <td>18/04/2024</td>
+                                        <td><strong style="color: var(--warning);">26</strong></td>
+                                        <td><span class="status-badge status-pending">Pendente</span></td>
+                                        <td>
+                                            <div class="action-cell">
+                                                <button class="action-btn btn-schedule" title="Programar emissão">
+                                                    <i class="fas fa-calendar-plus"></i>
+                                                </button>
+                                                <button class="action-btn btn-edit" title="Editar cadastro">
+                                                    <i class="fas fa-edit"></i>
+                                                </button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>EQ-2015</td>
+                                        <td>RAIO DE LUZ</td>
+                                        <td>1º RCG</td>
+                                        <td>19/10/2023</td>
+                                        <td>19/04/2024</td>
+                                        <td><strong style="color: var(--warning);">27</strong></td>
+                                        <td><span class="status-badge status-scheduled">Programado</span></td>
+                                        <td>
+                                            <div class="action-cell">
+                                                <button class="action-btn btn-view" title="Visualizar laudo">
+                                                    <i class="fas fa-eye"></i>
+                                                </button>
+                                                <button class="action-btn btn-edit" title="Editar laudo">
+                                                    <i class="fas fa-edit"></i>
+                                                </button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>EQ-1987</td>
+                                        <td>VENTANIA DO SERTÃO</td>
+                                        <td>3º RCG</td>
+                                        <td>15/09/2023</td>
+                                        <td>15/03/2024</td>
+                                        <td><strong style="color: var(--danger);">-8 (Vencido)</strong></td>
+                                        <td><span class="status-badge status-overdue">Vencido</span></td>
+                                        <td>
+                                            <div class="action-cell">
+                                                <button class="action-btn btn-schedule" title="Emitir urgente">
+                                                    <i class="fas fa-bolt"></i>
+                                                </button>
+                                                <button class="action-btn btn-edit" title="Editar cadastro">
+                                                    <i class="fas fa-edit"></i>
+                                                </button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>EQ-2056</td>
+                                        <td>TROVÃO DO CERRAO</td>
+                                        <td>ESEQEX</td>
+                                        <td>22/10/2023</td>
+                                        <td>22/04/2024</td>
+                                        <td><strong style="color: var(--success);">30</strong></td>
+                                        <td><span class="status-badge status-completed">Emitido</span></td>
+                                        <td>
+                                            <div class="action-cell">
+                                                <button class="action-btn btn-view" title="Visualizar laudo">
+                                                    <i class="fas fa-eye"></i>
+                                                </button>
+                                                <button class="action-btn btn-edit" title="Editar laudo">
+                                                    <i class="fas fa-edit"></i>
+                                                </button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
                         </div>
-
-                        <!-- Seção: Proprietário do Animal -->
-                        <div class="form-section">
-                            <h3 class="section-title">Proprietário do Animal</h3>
-                            <div class="form-row">
-                                <div class="form-group">
-                                    <label for="nomeProprietario">Nome</label>
-                                    <input type="text" id="nomeProprietario" value="ESCOLA DE EQUITAÇÃO DO EXÉRCITO - ESEQEX">
-                                </div>
-                                <div class="form-group">
-                                    <label for="cnpj">CNPJ</label>
-                                    <input type="text" id="cnpj" value="10439707/0001-52">
-                                </div>
+                    </div>
+                    
+                    <!-- Calendário de Vencimentos -->
+                    <div class="calendar">
+                        <div class="calendar-card urgent">
+                            <div class="calendar-header">
+                                <div class="calendar-date">Março 2024 - Vencidos</div>
+                                <div class="calendar-badge status-overdue">3 Cavalos</div>
                             </div>
-                            <div class="form-row">
-                                <div class="form-group">
-                                    <label for="enderecoProprietario">Endereço</label>
-                                    <input type="text" id="enderecoProprietario" value="ESTRADA MARECHAL MALLET, 1.283">
-                                </div>
-                            </div>
-                            <div class="form-row">
-                                <div class="form-group">
-                                    <label for="municipioProprietario">Município</label>
-                                    <input type="text" id="municipioProprietario" value="RIO DE JANEIRO">
-                                </div>
-                                <div class="form-group">
-                                    <label for="ufProprietario">UF</label>
-                                    <input type="text" id="ufProprietario" value="RJ">
-                                </div>
-                                <div class="form-group">
-                                    <label for="telefoneProprietario">Telefone</label>
-                                    <input type="text" id="telefoneProprietario" value="(21) 23014-054">
-                                </div>
-                            </div>
+                            <ul class="calendar-list">
+                                <li class="calendar-item">
+                                    <div>
+                                        <div class="calendar-animal">VENTANIA DO SERTÃO</div>
+                                        <div class="calendar-property">3º RCG • Venceu em 15/03</div>
+                                    </div>
+                                    <button class="action-btn btn-danger">
+                                        <i class="fas fa-bolt"></i>
+                                    </button>
+                                </li>
+                                <li class="calendar-item">
+                                    <div>
+                                        <div class="calendar-animal">CORISCO DA SERRA</div>
+                                        <div class="calendar-property">1º RCG • Venceu em 22/03</div>
+                                    </div>
+                                    <button class="action-btn btn-danger">
+                                        <i class="fas fa-bolt"></i>
+                                    </button>
+                                </li>
+                            </ul>
                         </div>
-
-                        <!-- Seção: Veterinário Requisitante -->
-                        <div class="form-section">
-                            <h3 class="section-title">Veterinário Requisitante Responsável pela Coleta</h3>
-                            <div class="form-row">
-                                <div class="form-group">
-                                    <label for="nomeVeterinario">Nome</label>
-                                    <input type="text" id="nomeVeterinario" value="BEATRIZ CHIAPPETTA">
-                                </div>
-                                <div class="form-group">
-                                    <label for="cpfVeterinario">CPF</label>
-                                    <input type="text" id="cpfVeterinario" value="122.666.797-82">
-                                </div>
-                                <div class="form-group">
-                                    <label for="crmvVeterinario">CRMV/UF</label>
-                                    <input type="text" id="crmvVeterinario" value="11073/RJ">
-                                </div>
+                        
+                        <div class="calendar-card warning">
+                            <div class="calendar-header">
+                                <div class="calendar-date">Abril 2024 - Próximos</div>
+                                <div class="calendar-badge status-pending">8 Cavalos</div>
                             </div>
-                            <div class="form-row">
-                                <div class="form-group">
-                                    <label for="enderecoVeterinario">Endereço</label>
-                                    <input type="text" id="enderecoVeterinario" value="AV. GENERAL GOMES CARNEIRO,9">
-                                </div>
-                                <div class="form-group">
-                                    <label for="emailVeterinario">E-mail</label>
-                                    <input type="email" id="emailVeterinario" value="chiappettabeatriz@gmail.com">
-                                </div>
-                            </div>
-                            <div class="form-row">
-                                <div class="form-group">
-                                    <label for="municipioVeterinario">Município</label>
-                                    <input type="text" id="municipioVeterinario" value="RIO DE JANEIRO">
-                                </div>
-                                <div class="form-group">
-                                    <label for="ufVeterinario">UF</label>
-                                    <input type="text" id="ufVeterinario" value="RJ">
-                                </div>
-                                <div class="form-group">
-                                    <label for="telefoneVeterinario">Telefone</label>
-                                    <input type="text" id="telefoneVeterinario" value="(21) 98128-7753">
-                                </div>
-                            </div>
+                            <ul class="calendar-list">
+                                <li class="calendar-item">
+                                    <div>
+                                        <div class="calendar-animal">AFRICANO DO RINCÃO</div>
+                                        <div class="calendar-property">ESEQEX • Vence em 17/04</div>
+                                    </div>
+                                    <button class="action-btn btn-warning">
+                                        <i class="fas fa-calendar-plus"></i>
+                                    </button>
+                                </li>
+                                <li class="calendar-item">
+                                    <div>
+                                        <div class="calendar-animal">GAROTO DO PANTANAL</div>
+                                        <div class="calendar-property">ESEQEX • Vence em 18/04</div>
+                                    </div>
+                                    <button class="action-btn btn-warning">
+                                        <i class="fas fa-calendar-plus"></i>
+                                    </button>
+                                </li>
+                            </ul>
                         </div>
-
-                        <!-- Seção: Informações do Animal -->
-                        <div class="form-section">
-                            <h3 class="section-title">Informações do Animal</h3>
-                            <div class="form-row">
-                                <div class="form-group">
-                                    <label for="nomeAnimal">Nome do Animal</label>
-                                    <input type="text" id="nomeAnimal" value="AFRICANO DO RINCÃO">
-                                </div>
-                                <div class="form-group">
-                                    <label for="especie">Espécie</label>
-                                    <input type="text" id="especie" value="EQUINA">
-                                </div>
-                                <div class="form-group">
-                                    <label for="registroAnimal">Registro Nº/Marca</label>
-                                    <input type="text" id="registroAnimal" value="1844">
-                                </div>
-                            </div>
-                            <div class="form-row">
-                                <div class="form-group">
-                                    <label for="sexoAnimal">Sexo</label>
-                                    <select id="sexoAnimal">
-                                        <option value="M">Macho</option>
-                                        <option value="F">Fêmea</option>
-                                    </select>
-                                </div>
-                                <div class="form-group">
-                                    <label for="idadeAnimal">Idade</label>
-                                    <input type="text" id="idadeAnimal" value="8 ANOS">
-                                </div>
-                                <div class="form-group">
-                                    <label for="pelagemAnimal">Pelagem</label>
-                                    <input type="text" id="pelagemAnimal" value="ALAZÃ">
-                                </div>
-                            </div>
-                            <div class="form-row">
-                                <div class="form-group">
-                                    <label for="localAnimal">Local onde se encontra</label>
-                                    <input type="text" id="localAnimal" value="ESCOLA DE EQUITAÇÃO DO EXÉRCITO -- EsEqEx">
-                                </div>
-                            </div>
-                            <div class="form-row">
-                                <div class="form-group">
-                                    <label for="municipioAnimal">Município</label>
-                                    <input type="text" id="municipioAnimal" value="RIO DE JANEIRO">
-                                </div>
-                                <div class="form-group">
-                                    <label for="ufAnimal">UF</label>
-                                    <input type="text" id="ufAnimal" value="RJ">
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Seção: Informações da Amostra -->
-                        <div class="form-section">
-                            <h3 class="section-title">Informações da Amostra</h3>
-                            <div class="form-row">
-                                <div class="form-group">
-                                    <label for="matrizAmostra">Matriz</label>
-                                    <input type="text" id="matrizAmostra" value="SORO SANGUINEO">
-                                </div>
-                                <div class="form-group">
-                                    <label for="dataColeta">Data da Coleta</label>
-                                    <input type="date" id="dataColeta" value="2023-10-17">
-                                </div>
-                                <div class="form-group">
-                                    <label for="dataRecepcao">Data de recepção no laboratório</label>
-                                    <input type="date" id="dataRecepcao" value="2023-10-19">
-                                </div>
-                                <div class="form-group">
-                                    <label for="lacre">Lacre</label>
-                                    <input type="text" id="lacre" value="OO12753">
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Seção: Método de Ensaio -->
-                        <div class="form-section">
-                            <h3 class="section-title">Método de Ensaio</h3>
-                            <div class="form-row">
-                                <div class="form-group">
-                                    <label for="metodoEnsaio">Método(s) de ensaio utilizado(s)</label>
-                                    <textarea id="metodoEnsaio" rows="3">Imunodifusão (PORT. NR 52 DE 26/11/2018 -- POP 12 recebimento de amostras e realização de ensaio de anemia infecciosa equina)</textarea>
-                                </div>
-                            </div>
-                            <div class="form-row">
-                                <div class="form-group">
-                                    <label for="nomeKit">Nome comercial</label>
-                                    <input type="text" id="nomeKit" value="KIT PARA DETECÇÃO DE ANTICORPOS CONTRA O VIRUS DA ANEMIA INFECCIOSA EQUINA">
-                                </div>
-                                <div class="form-group">
-                                    <label for="fabricanteKit">Fabricante</label>
-                                    <input type="text" id="fabricanteKit" value="IDEXX">
-                                </div>
-                            </div>
-                            <div class="form-row">
-                                <div class="form-group">
-                                    <label for="loteKit">Partida/lote</label>
-                                    <input type="text" id="loteKit" value="MAR2022 BU662">
-                                </div>
-                                <div class="form-group">
-                                    <label for="validadeKit">Validade</label>
-                                    <input type="date" id="validadeKit" value="2024-02-06">
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Seção: Resultado -->
-                        <div class="form-section">
-                            <h3 class="section-title">Resultado</h3>
-                            <div class="form-row">
-                                <div class="form-group">
-                                    <label for="resultadoExame">Resultado</label>
-                                    <select id="resultadoExame">
-                                        <option value="NEGATIVO">NEGATIVO</option>
-                                        <option value="POSITIVO">POSITIVO</option>
-                                        <option value="INCONCLUSIVO">INCONCLUSIVO</option>
-                                        <option value="PENDENTE">PENDENTE</option>
-                                    </select>
-                                </div>
-                                <div class="form-group">
-                                    <label for="dataValidade">Data de Validade</label>
-                                    <input type="date" id="dataValidade" value="2023-12-15">
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Seção: Responsável Técnico -->
-                        <div class="form-section">
-                            <h3 class="section-title">Responsável Técnico</h3>
-                            <div class="form-row">
-                                <div class="form-group">
-                                    <label for="nomeResponsavel">Nome</label>
-                                    <input type="text" id="nomeResponsavel" value="CAMILA MOSCOSO JUSTEN GORGES">
-                                </div>
-                                <div class="form-group">
-                                    <label for="cargoResponsavel">Cargo</label>
-                                    <input type="text" id="cargoResponsavel" value="MÉDICA VETERINÁRIA">
-                                </div>
-                                <div class="form-group">
-                                    <label for="crmvResponsavel">CRMV</label>
-                                    <input type="text" id="crmvResponsavel" value="CRMV-RJ 10095">
-                                </div>
-                            </div>
-                            <div class="form-row">
-                                <div class="form-group">
-                                    <label for="dataEmissao">Data de emissão do relatório</label>
-                                    <input type="date" id="dataEmissao" value="2023-10-22">
-                                </div>
-                                <div class="form-group">
-                                    <label for="localEmissao">Local de emissão</label>
-                                    <input type="text" id="localEmissao" value="Rio De Janeiro">
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Seção: Observações Adicionais -->
-                        <div class="form-section">
-                            <h3 class="section-title">Observações Adicionais</h3>
-                            <div class="form-row">
-                                <div class="form-group" style="grid-column: 1 / -1;">
-                                    <label for="observacoes">Observações</label>
-                                    <textarea id="observacoes" rows="4" placeholder="Adicione observações adicionais sobre o laudo..."></textarea>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Botões de ação -->
-                        <div class="form-actions">
-                            <button type="button" class="btn-cancel" id="cancelBtn">Cancelar</button>
-                            <button type="submit" class="btn-save">Salvar Laudo</button>
-                        </div>
-                    </form>
+                    </div>
                 </div>
             </div>
         </div>
@@ -826,477 +1470,554 @@
     <div class="modal-overlay" id="logoutModal">
         <div class="modal">
             <div class="modal-header">
-                <div class="modal-icon">
+                <div class="modal-icon danger">
                     <i class="fas fa-sign-out-alt"></i>
                 </div>
                 <h3 class="modal-title">Confirmar Saída</h3>
+                <button class="modal-close" id="closeLogoutModal">&times;</button>
             </div>
-            <div class="modal-content">
-                <p>Tem certeza que deseja sair do sistema laboratorial? Qualquer alteração não salva será perdida.</p>
+            <div class="modal-body">
+                <p class="modal-text">Tem certeza que deseja sair do sistema de automação? O sistema continuará executando as programações automáticas em segundo plano.</p>
+                <div class="modal-actions">
+                    <button class="btn btn-secondary" id="cancelLogout">Cancelar</button>
+                    <button class="btn btn-danger" id="confirmLogout">
+                        <i class="fas fa-sign-out-alt"></i> Sair do Sistema
+                    </button>
+                </div>
             </div>
-            <div class="modal-actions">
-                <button class="btn-close" id="cancelLogout">Cancelar</button>
-                <button class="btn-confirm" id="confirmLogout">Sair do Sistema</button>
+        </div>
+    </div>
+
+    <!-- Modal de Emissão Automática -->
+    <div class="modal-overlay" id="autoEmitModal">
+        <div class="modal">
+            <div class="modal-header">
+                <div class="modal-icon success">
+                    <i class="fas fa-robot"></i>
+                </div>
+                <h3 class="modal-title">Emissão Automática de Laudos</h3>
+                <button class="modal-close" id="closeAutoModal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p class="modal-text">O sistema irá emitir automaticamente os laudos para os cavalos com vencimento dentro dos próximos 30 dias. Esta ação gerará <strong>12 laudos</strong>.</p>
+                
+                <div class="quick-form" style="margin-top: 25px;">
+                    <div class="form-group">
+                        <label class="form-label">Data de Referência</label>
+                        <input type="date" class="form-control" id="referenceDate" value="2024-03-22">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Período de Vencimento</label>
+                        <select class="form-control" id="duePeriod">
+                            <option value="30">Próximos 30 dias</option>
+                            <option value="15">Próximos 15 dias</option>
+                            <option value="7">Próximos 7 dias</option>
+                            <option value="0">Apenas vencidos</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Unidade</label>
+                        <select class="form-control" id="unitFilter">
+                            <option value="all">Todas as unidades</option>
+                            <option value="eseqex" selected>ESEQEX</option>
+                            <option value="1rcg">1º RCG</option>
+                            <option value="3rcg">3º RCG</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Modelo de Laudo</label>
+                        <select class="form-control" id="reportTemplate">
+                            <option value="standard">Padrão AIE</option>
+                            <option value="simplified">Simplificado</option>
+                            <option value="complete">Completo</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div style="background: #f8f9fa; padding: 20px; border-radius: 8px; margin-top: 25px;">
+                    <h4 style="color: var(--primary); margin-bottom: 15px;">Resumo da Emissão</h4>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                        <div>
+                            <p><strong>Cavalos selecionados:</strong> <span id="selectedHorses">12</span></p>
+                            <p><strong>Período:</strong> 22/03/2024 a 21/04/2024</p>
+                        </div>
+                        <div>
+                            <p><strong>Intervalo padrão:</strong> 6 meses</p>
+                            <p><strong>Próxima emissão:</strong> 15/04/2024</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="modal-actions">
+                    <button class="btn btn-secondary" id="cancelAutoEmit">Cancelar</button>
+                    <button class="btn btn-success" id="confirmAutoEmit">
+                        <i class="fas fa-play"></i> Executar Emissão Automática
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de Configuração de Período -->
+    <div class="modal-overlay" id="periodModal">
+        <div class="modal">
+            <div class="modal-header">
+                <div class="modal-icon info">
+                    <i class="fas fa-calendar-alt"></i>
+                </div>
+                <h3 class="modal-title">Configurar Período de Emissão</h3>
+                <button class="modal-close" id="closePeriodModal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p class="modal-text">Defina o intervalo padrão para emissão automática de laudos. O sistema usará esta configuração para programar os próximos vencimentos.</p>
+                
+                <div class="quick-form" style="margin-top: 25px;">
+                    <div class="form-group">
+                        <label class="form-label">Intervalo Padrão</label>
+                        <select class="form-control" id="defaultInterval">
+                            <option value="6" selected>6 meses</option>
+                            <option value="3">3 meses</option>
+                            <option value="12">12 meses</option>
+                            <option value="1">1 mês</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Dias de Antecedência</label>
+                        <select class="form-control" id="advanceDays">
+                            <option value="7">7 dias antes</option>
+                            <option value="15" selected>15 dias antes</option>
+                            <option value="30">30 dias antes</option>
+                            <option value="0">No dia do vencimento</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Lembrete de Emissão</label>
+                        <select class="form-control" id="reminderDays">
+                            <option value="1">1 dia antes</option>
+                            <option value="3" selected>3 dias antes</option>
+                            <option value="5">5 dias antes</option>
+                            <option value="7">7 dias antes</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">
+                            <input type="checkbox" id="autoRenew" checked> Renovação Automática
+                        </label>
+                        <p style="font-size: 0.9rem; color: var(--gray); margin-top: 5px;">O sistema irá automaticamente programar o próximo laudo após a emissão do atual.</p>
+                    </div>
+                </div>
+                
+                <div style="background: #f8f9fa; padding: 20px; border-radius: 8px; margin-top: 25px;">
+                    <h4 style="color: var(--primary); margin-bottom: 15px;">Impacto da Configuração</h4>
+                    <p>Com o intervalo de <strong>6 meses</strong> e antecedência de <strong>15 dias</strong>:</p>
+                    <ul style="margin-top: 10px; padding-left: 20px;">
+                        <li>Laudos serão emitidos 15 dias antes do vencimento</li>
+                        <li>Próximo vencimento será calculado automaticamente</li>
+                        <li>Lembrete enviado 3 dias antes da emissão</li>
+                    </ul>
+                </div>
+                
+                <div class="modal-actions">
+                    <button class="btn btn-secondary" id="cancelPeriod">Cancelar</button>
+                    <button class="btn btn-primary" id="savePeriod">
+                        <i class="fas fa-save"></i> Salvar Configuração
+                    </button>
+                </div>
             </div>
         </div>
     </div>
 
     <script>
-        // Elementos do DOM
+        // Dados do Sistema
+        const systemData = {
+            lab: {
+                name: "Laboratório de Anemia Infecciosa Equina do 2º Regimento de Cavalaria de Guarda",
+                address: "Avenida Duque de Caxias, 2660 -- Vila Militar, Rio de Janeiro/RJ -- CEP: 21.615-220",
+                phone: "(21) 2457-4544",
+                email: "lab2rcg@gmail.com",
+                ordinance: "Portaria Nº 352 de 07/10/2014"
+            },
+            settings: {
+                defaultInterval: 6, // meses
+                advanceDays: 15,
+                reminderDays: 3,
+                autoRenew: true,
+                autoSchedule: true
+            },
+            horses: [
+                {
+                    id: "EQ-1844",
+                    code: "1844",
+                    name: "AFRICANO DO RINCÃO",
+                    unit: "ESEQEX",
+                    species: "EQUINA",
+                    sex: "M",
+                    age: "8 ANOS",
+                    coat: "ALAZÃ",
+                    lastReport: "2023-10-17",
+                    nextReport: "2024-04-17",
+                    status: "pending",
+                    reports: [
+                        { date: "2023-10-17", result: "NEGATIVO", number: "2184/23" },
+                        { date: "2023-04-17", result: "NEGATIVO", number: "1872/23" },
+                        { date: "2022-10-17", result: "NEGATIVO", number: "1543/22" }
+                    ]
+                },
+                {
+                    id: "EQ-1923",
+                    code: "1923",
+                    name: "GAROTO DO PANTANAL",
+                    unit: "ESEQEX",
+                    species: "EQUINA",
+                    sex: "M",
+                    age: "7 ANOS",
+                    coat: "BAIO",
+                    lastReport: "2023-10-18",
+                    nextReport: "2024-04-18",
+                    status: "pending",
+                    reports: [
+                        { date: "2023-10-18", result: "NEGATIVO", number: "2185/23" },
+                        { date: "2023-04-18", result: "NEGATIVO", number: "1873/23" }
+                    ]
+                },
+                {
+                    id: "EQ-2015",
+                    code: "2015",
+                    name: "RAIO DE LUZ",
+                    unit: "1º RCG",
+                    species: "EQUINA",
+                    sex: "F",
+                    age: "6 ANOS",
+                    coat: "ALAZÃ",
+                    lastReport: "2023-10-19",
+                    nextReport: "2024-04-19",
+                    status: "scheduled",
+                    reports: [
+                        { date: "2023-10-19", result: "POSITIVO", number: "2186/23" },
+                        { date: "2023-04-19", result: "NEGATIVO", number: "1874/23" }
+                    ]
+                },
+                {
+                    id: "EQ-1987",
+                    code: "1987",
+                    name: "VENTANIA DO SERTÃO",
+                    unit: "3º RCG",
+                    species: "EQUINA",
+                    sex: "M",
+                    age: "9 ANOS",
+                    coat: "PRETO",
+                    lastReport: "2023-09-15",
+                    nextReport: "2024-03-15",
+                    status: "overdue",
+                    reports: [
+                        { date: "2023-09-15", result: "NEGATIVO", number: "2101/23" },
+                        { date: "2023-03-15", result: "NEGATIVO", number: "1802/23" }
+                    ]
+                }
+            ],
+            templates: {
+                standard: {
+                    name: "Padrão AIE",
+                    sections: ["lab", "sample", "owner", "vet", "animal", "test", "result", "responsible"]
+                },
+                simplified: {
+                    name: "Simplificado",
+                    sections: ["lab", "animal", "result", "responsible"]
+                },
+                complete: {
+                    name: "Completo",
+                    sections: ["lab", "sample", "owner", "vet", "animal", "test", "result", "responsible", "observations"]
+                }
+            }
+        };
+        
+        // Elementos DOM
         const logoutBtn = document.getElementById('logoutBtn');
         const logoutModal = document.getElementById('logoutModal');
+        const closeLogoutModal = document.getElementById('closeLogoutModal');
         const cancelLogout = document.getElementById('cancelLogout');
         const confirmLogout = document.getElementById('confirmLogout');
-        const menuItems = document.querySelectorAll('.menu-item');
+        
+        const autoEmitBtn = document.getElementById('autoEmitBtn');
+        const autoEmitModal = document.getElementById('autoEmitModal');
+        const closeAutoModal = document.getElementById('closeAutoModal');
+        const cancelAutoEmit = document.getElementById('cancelAutoEmit');
+        const confirmAutoEmit = document.getElementById('confirmAutoEmit');
+        
+        const scheduleAllBtn = document.getElementById('scheduleAllBtn');
+        const periodModal = document.getElementById('periodModal');
+        const closePeriodModal = document.getElementById('closePeriodModal');
+        const cancelPeriod = document.getElementById('cancelPeriod');
+        const savePeriod = document.getElementById('savePeriod');
+        
+        const navItems = document.querySelectorAll('.nav-item');
         const dynamicContent = document.getElementById('dynamicContent');
-        const contentTitle = document.getElementById('contentTitle');
-        const newReportBtn = document.getElementById('newReportBtn');
-        const reportForm = document.getElementById('reportForm');
-        const cancelBtn = document.getElementById('cancelBtn');
+        const manualEmitBtn = document.getElementById('manualEmitBtn');
         
-        // Dados de exemplo para laudos
-        const sampleReports = [
-            {
-                id: 1,
-                registro: "2184",
-                animal: "AFRICANO DO RINCÃO",
-                proprietario: "ESCOLA DE EQUITAÇÃO DO EXÉRCITO",
-                dataColeta: "17/10/2023",
-                dataResultado: "22/10/2023",
-                resultado: "NEGATIVO",
-                status: "completado"
-            },
-            {
-                id: 2,
-                registro: "2185",
-                animal: "GAROTO DO PANTANAL",
-                proprietario: "FAZENDA SÃO JOSÉ",
-                dataColeta: "18/10/2023",
-                dataResultado: "23/10/2023",
-                resultado: "NEGATIVO",
-                status: "completado"
-            },
-            {
-                id: 3,
-                registro: "2186",
-                animal: "RAIO DE LUZ",
-                proprietario: "HARAS SANTA RITA",
-                dataColeta: "19/10/2023",
-                dataResultado: "24/10/2023",
-                resultado: "POSITIVO",
-                status: "completado"
-            },
-            {
-                id: 4,
-                registro: "2187",
-                animal: "VENTANIA DO SERTÃO",
-                proprietario: "FAZENDA NOVA ESPERANÇA",
-                dataColeta: "20/10/2023",
-                dataResultado: "-",
-                resultado: "PENDENTE",
-                status: "pendente"
-            }
-        ];
-        
-        // Abrir modal de logout
+        // Logout
         logoutBtn.addEventListener('click', () => {
-            logoutModal.style.display = 'flex';
+            logoutModal.classList.add('active');
         });
         
-        // Fechar modal de logout
+        closeLogoutModal.addEventListener('click', () => {
+            logoutModal.classList.remove('active');
+        });
+        
         cancelLogout.addEventListener('click', () => {
-            logoutModal.style.display = 'none';
+            logoutModal.classList.remove('active');
         });
         
-        // Confirmar logout
         confirmLogout.addEventListener('click', () => {
-            // Redirecionar para a tela de login (simulação)
-            alert('Redirecionando para a tela de login...');
-            logoutModal.style.display = 'none';
-            // Em um sistema real, aqui seria window.location.href = 'login.html';
+            alert('Redirecionando para tela de login...');
+            logoutModal.classList.remove('active');
         });
         
-        // Navegação do menu lateral
-        menuItems.forEach(item => {
-            item.addEventListener('click', () => {
-                // Remover classe active de todos os itens
-                menuItems.forEach(i => i.classList.remove('active'));
-                // Adicionar classe active ao item clicado
+        // Emissão Automática
+        autoEmitBtn.addEventListener('click', () => {
+            autoEmitModal.classList.add('active');
+        });
+        
+        closeAutoModal.addEventListener('click', () => {
+            autoEmitModal.classList.remove('active');
+        });
+        
+        cancelAutoEmit.addEventListener('click', () => {
+            autoEmitModal.classList.remove('active');
+        });
+        
+        confirmAutoEmit.addEventListener('click', () => {
+            const duePeriod = document.getElementById('duePeriod').value;
+            const unitFilter = document.getElementById('unitFilter').value;
+            const template = document.getElementById('reportTemplate').value;
+            
+            // Filtrar cavalos
+            const horsesToProcess = filterHorsesForAutoEmit(duePeriod, unitFilter);
+            
+            // Emitir laudos
+            emitAutomaticReports(horsesToProcess, template);
+            
+            autoEmitModal.classList.remove('active');
+            showNotification(`Laudos automáticos emitidos: ${horsesToProcess.length} cavalos processados`, 'success');
+        });
+        
+        // Configurar Período
+        scheduleAllBtn.addEventListener('click', () => {
+            periodModal.classList.add('active');
+            loadPeriodSettings();
+        });
+        
+        closePeriodModal.addEventListener('click', () => {
+            periodModal.classList.remove('active');
+        });
+        
+        cancelPeriod.addEventListener('click', () => {
+            periodModal.classList.remove('active');
+        });
+        
+        savePeriod.addEventListener('click', () => {
+            savePeriodSettings();
+            periodModal.classList.remove('active');
+            showNotification('Configurações de período salvas com sucesso!', 'success');
+        });
+        
+        // Navegação
+        navItems.forEach(item => {
+            item.addEventListener('click', (e) => {
+                e.preventDefault();
+                
+                // Atualizar navegação
+                navItems.forEach(i => i.classList.remove('active'));
                 item.classList.add('active');
                 
-                // Carregar conteúdo baseado no item clicado
+                // Carregar conteúdo
                 const contentType = item.getAttribute('data-content');
                 loadContent(contentType);
             });
         });
         
-        // Função para carregar conteúdo dinâmico
-        function loadContent(contentType) {
-            switch(contentType) {
-                case 'new-report':
-                    contentTitle.textContent = 'Registro de Laudo';
-                    newReportBtn.style.display = 'flex';
-                    showReportForm();
-                    break;
-                case 'reports-list':
-                    contentTitle.textContent = 'Laudos Registrados';
-                    newReportBtn.style.display = 'flex';
-                    showReportsList();
-                    break;
-                case 'lab-info':
-                    contentTitle.textContent = 'Informações do Laboratório';
-                    newReportBtn.style.display = 'none';
-                    showLabInfo();
-                    break;
-                case 'statistics':
-                    contentTitle.textContent = 'Estatísticas';
-                    newReportBtn.style.display = 'none';
-                    showStatistics();
-                    break;
-                case 'settings':
-                    contentTitle.textContent = 'Configurações';
-                    newReportBtn.style.display = 'none';
-                    showSettings();
-                    break;
+        // Novo Laudo Manual
+        manualEmitBtn.addEventListener('click', () => {
+            navItems.forEach(i => i.classList.remove('active'));
+            document.querySelector('[data-content="reports"]').classList.add('active');
+            loadContent('reports');
+        });
+        
+        // Funções do Sistema
+        function filterHorsesForAutoEmit(duePeriod, unitFilter) {
+            const today = new Date();
+            const dueDate = new Date();
+            dueDate.setDate(today.getDate() + parseInt(duePeriod));
+            
+            return systemData.horses.filter(horse => {
+                // Filtrar por unidade
+                if (unitFilter !== 'all' && horse.unit !== unitFilter.toUpperCase()) {
+                    return false;
+                }
+                
+                // Verificar se está dentro do período
+                const nextReportDate = new Date(horse.nextReport);
+                return nextReportDate <= dueDate;
+            });
+        }
+        
+        function emitAutomaticReports(horses, template) {
+            console.log(`Emitindo laudos automáticos para ${horses.length} cavalos...`);
+            
+            horses.forEach(horse => {
+                // Gerar número do laudo
+                const reportNumber = generateReportNumber();
+                
+                // Calcular data de emissão
+                const emissionDate = new Date().toISOString().split('T')[0];
+                
+                // Calcular data de validade (6 meses)
+                const validityDate = new Date();
+                validityDate.setMonth(validityDate.getMonth() + 6);
+                
+                // Calcular próximo laudo
+                const nextReportDate = new Date();
+                nextReportDate.setMonth(nextReportDate.getMonth() + 6);
+                
+                // Atualizar cavalo
+                horse.lastReport = emissionDate;
+                horse.nextReport = nextReportDate.toISOString().split('T')[0];
+                horse.status = 'completed';
+                
+                // Adicionar ao histórico
+                horse.reports.unshift({
+                    date: emissionDate,
+                    result: "NEGATIVO", // Por padrão, assumimos negativo
+                    number: reportNumber,
+                    template: template
+                });
+                
+                console.log(`Laudo emitido para ${horse.name}: ${reportNumber}`);
+            });
+            
+            // Atualizar interface
+            if (document.querySelector('[data-content="dashboard"]').classList.contains('active')) {
+                loadContent('dashboard');
             }
         }
         
-        // Função para mostrar formulário de laudo
-        function showReportForm() {
-            dynamicContent.innerHTML = `
-                <form class="report-form" id="reportForm">
-                    <!-- O conteúdo do formulário é mantido do HTML original -->
-                    ${reportForm.innerHTML}
-                </form>
-            `;
-            
-            // Reatribuir eventos aos elementos do formulário recriado
-            document.getElementById('reportForm').addEventListener('submit', handleFormSubmit);
-            document.getElementById('cancelBtn').addEventListener('click', resetForm);
+        function generateReportNumber() {
+            const today = new Date();
+            const year = today.getFullYear().toString().slice(-2);
+            const month = (today.getMonth() + 1).toString().padStart(2, '0');
+            const random = Math.floor(Math.random() * 900) + 100;
+            return `${random}/${month}${year}`;
         }
         
-        // Função para mostrar lista de laudos
-        function showReportsList() {
-            let tableRows = '';
+        function loadPeriodSettings() {
+            document.getElementById('defaultInterval').value = systemData.settings.defaultInterval;
+            document.getElementById('advanceDays').value = systemData.settings.advanceDays;
+            document.getElementById('reminderDays').value = systemData.settings.reminderDays;
+            document.getElementById('autoRenew').checked = systemData.settings.autoRenew;
+        }
+        
+        function savePeriodSettings() {
+            systemData.settings.defaultInterval = parseInt(document.getElementById('defaultInterval').value);
+            systemData.settings.advanceDays = parseInt(document.getElementById('advanceDays').value);
+            systemData.settings.reminderDays = parseInt(document.getElementById('reminderDays').value);
+            systemData.settings.autoRenew = document.getElementById('autoRenew').checked;
             
-            sampleReports.forEach(report => {
-                const statusClass = report.status === 'completado' ? 'status-completed' : 'status-pending';
-                const statusText = report.status === 'completado' ? 'Concluído' : 'Pendente';
-                
-                tableRows += `
-                    <tr>
-                        <td>${report.registro}</td>
-                        <td>${report.animal}</td>
-                        <td>${report.proprietario}</td>
-                        <td>${report.dataColeta}</td>
-                        <td>${report.dataResultado}</td>
-                        <td><span class="status-badge ${statusClass}">${statusText}</span></td>
-                        <td>${report.resultado}</td>
-                        <td>
-                            <button class="action-btn edit-btn" data-id="${report.id}">
-                                <i class="fas fa-edit"></i>
-                            </button>
-                            <button class="action-btn view-btn" data-id="${report.id}">
-                                <i class="fas fa-eye"></i>
-                            </button>
-                            <button class="action-btn delete-btn" data-id="${report.id}">
-                                <i class="fas fa-trash"></i>
-                            </button>
-                        </td>
-                    </tr>
-                `;
+            // Atualizar todos os próximos vencimentos
+            updateAllNextReports();
+        }
+        
+        function updateAllNextReports() {
+            const intervalMonths = systemData.settings.defaultInterval;
+            
+            systemData.horses.forEach(horse => {
+                if (horse.lastReport) {
+                    const lastDate = new Date(horse.lastReport);
+                    lastDate.setMonth(lastDate.getMonth() + intervalMonths);
+                    horse.nextReport = lastDate.toISOString().split('T')[0];
+                }
             });
             
-            dynamicContent.innerHTML = `
-                <div style="overflow-x: auto;">
-                    <table class="reports-table">
-                        <thead>
-                            <tr>
-                                <th>Registro</th>
-                                <th>Animal</th>
-                                <th>Proprietário</th>
-                                <th>Data Coleta</th>
-                                <th>Data Resultado</th>
-                                <th>Status</th>
-                                <th>Resultado</th>
-                                <th>Ações</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            ${tableRows}
-                        </tbody>
-                    </table>
-                </div>
-                
-                <div style="margin-top: 30px; padding: 20px; background-color: #f8f9fa; border-radius: 8px;">
-                    <h3 style="margin-bottom: 15px; color: #2c3e50;">Estatísticas Rápidas</h3>
-                    <div style="display: flex; gap: 20px; flex-wrap: wrap;">
-                        <div style="background-color: white; padding: 15px; border-radius: 8px; flex: 1; min-width: 200px;">
-                            <p style="font-size: 0.9rem; color: #7f8c8d;">Total de Laudos</p>
-                            <p style="font-size: 2rem; font-weight: bold; color: #2c3e50;">${sampleReports.length}</p>
-                        </div>
-                        <div style="background-color: white; padding: 15px; border-radius: 8px; flex: 1; min-width: 200px;">
-                            <p style="font-size: 0.9rem; color: #7f8c8d;">Concluídos</p>
-                            <p style="font-size: 2rem; font-weight: bold; color: #27ae60;">${sampleReports.filter(r => r.status === 'completado').length}</p>
-                        </div>
-                        <div style="background-color: white; padding: 15px; border-radius: 8px; flex: 1; min-width: 200px;">
-                            <p style="font-size: 0.9rem; color: #7f8c8d;">Pendentes</p>
-                            <p style="font-size: 2rem; font-weight: bold; color: #f39c12;">${sampleReports.filter(r => r.status === 'pendente').length}</p>
-                        </div>
-                    </div>
-                </div>
+            console.log('Todos os vencimentos atualizados com o novo intervalo');
+        }
+        
+        function showNotification(message, type) {
+            // Criar elemento de notificação
+            const notification = document.createElement('div');
+            notification.style.cssText = `
+                position: fixed;
+                top: 100px;
+                right: 30px;
+                padding: 20px 25px;
+                border-radius: 10px;
+                color: white;
+                font-weight: 600;
+                z-index: 3000;
+                box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+                display: flex;
+                align-items: center;
+                gap: 15px;
+                animation: slideIn 0.3s ease-out;
             `;
             
-            // Adicionar eventos aos botões da tabela
-            document.querySelectorAll('.edit-btn').forEach(btn => {
-                btn.addEventListener('click', () => {
-                    alert(`Editar laudo ${btn.getAttribute('data-id')} - Em um sistema real, isso abriria o formulário com os dados preenchidos.`);
-                });
-            });
+            // Cor baseada no tipo
+            if (type === 'success') {
+                notification.style.background = 'linear-gradient(to right, var(--success), #219653)';
+            } else if (type === 'error') {
+                notification.style.background = 'linear-gradient(to right, var(--danger), #c0392b)';
+            } else if (type === 'warning') {
+                notification.style.background = 'linear-gradient(to right, var(--warning), #e67e22)';
+            } else {
+                notification.style.background = 'linear-gradient(to right, var(--primary), var(--primary-dark))';
+            }
             
-            document.querySelectorAll('.view-btn').forEach(btn => {
-                btn.addEventListener('click', () => {
-                    alert(`Visualizar laudo ${btn.getAttribute('data-id')} - Em um sistema real, isso abriria uma visualização somente leitura.`);
-                });
-            });
+            // Ícone baseado no tipo
+            let icon = 'fa-info-circle';
+            if (type === 'success') icon = 'fa-check-circle';
+            if (type === 'error') icon = 'fa-exclamation-circle';
+            if (type === 'warning') icon = 'fa-exclamation-triangle';
             
-            document.querySelectorAll('.delete-btn').forEach(btn => {
-                btn.addEventListener('click', () => {
-                    if (confirm('Tem certeza que deseja excluir este laudo?')) {
-                        alert(`Laudo ${btn.getAttribute('data-id')} excluído (simulação).`);
+            notification.innerHTML = `
+                <i class="fas ${icon}" style="font-size: 1.3rem;"></i>
+                <span>${message}</span>
+            `;
+            
+            document.body.appendChild(notification);
+            
+            // Remover após 5 segundos
+            setTimeout(() => {
+                notification.style.animation = 'slideOut 0.3s ease-in';
+                setTimeout(() => {
+                    document.body.removeChild(notification);
+                }, 300);
+            }, 5000);
+        }
+        
+        // Adicionar animações CSS
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes slideIn {
+                from { transform: translateX(100%); opacity: 0; }
+                to { transform: translateX(0); opacity: 1; }
+            }
+            @keyframes slideOut {
+                from { transform: translateX(0); opacity: 1; }
+                to { transform: translateX(100%); opacity: 0; }
+            }
+        `;
+        document.head.appendChild(style);
+        
+        // Inicializar
+        document.addEventListener('DOMContentLoaded', () => {
+            console.log('Sistema de Automação de Laudos AIE carregado');
+            
+            // Fechar modais ao clicar fora
+            document.querySelectorAll('.modal-overlay').forEach(modal => {
+                modal.addEventListener('click', (e) => {
+                    if (e.target === modal) {
+                        modal.classList.remove('active');
                     }
                 });
             });
-        }
-        
-        // Função para mostrar informações do laboratório
-        function showLabInfo() {
-            dynamicContent.innerHTML = `
-                <div style="max-width: 800px;">
-                    <div class="form-section">
-                        <h3 class="section-title">Dados do Laboratório</h3>
-                        <div style="display: grid; gap: 20px;">
-                            <div>
-                                <p style="font-weight: bold; margin-bottom: 5px;">Nome:</p>
-                                <p>Laboratório de Anemia Infecciosa Equina do 2º Regimento de Cavalaria de Guarda</p>
-                            </div>
-                            <div>
-                                <p style="font-weight: bold; margin-bottom: 5px;">Endereço:</p>
-                                <p>Avenida Duque de Caxias, 2660 -- Vila Militar, Rio de Janeiro/RJ -- CEP: 21.615-220</p>
-                            </div>
-                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
-                                <div>
-                                    <p style="font-weight: bold; margin-bottom: 5px;">Telefone:</p>
-                                    <p>(21) 2457-4544</p>
-                                </div>
-                                <div>
-                                    <p style="font-weight: bold; margin-bottom: 5px;">E-mail:</p>
-                                    <p>lab2rcg@gmail.com</p>
-                                </div>
-                            </div>
-                            <div>
-                                <p style="font-weight: bold; margin-bottom: 5px;">Portaria de Autorização:</p>
-                                <p>Portaria Nº 352 de 07/10/2014</p>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="form-section">
-                        <h3 class="section-title">Responsáveis Técnicos</h3>
-                        <div style="display: grid; gap: 15px;">
-                            <div style="display: flex; align-items: center; gap: 15px; padding: 15px; background-color: white; border-radius: 8px;">
-                                <div style="width: 60px; height: 60px; border-radius: 50%; background-color: #3498db; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; font-size: 1.5rem;">A</div>
-                                <div>
-                                    <p style="font-weight: bold;">Ten. Andressa</p>
-                                    <p style="color: #7f8c8d;">Responsável Técnico Principal</p>
-                                    <p>CRMV-RJ 10095</p>
-                                </div>
-                            </div>
-                            <div style="display: flex; align-items: center; gap: 15px; padding: 15px; background-color: white; border-radius: 8px;">
-                                <div style="width: 60px; height: 60px; border-radius: 50%; background-color: #9b59b6; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; font-size: 1.5rem;">C</div>
-                                <div>
-                                    <p style="font-weight: bold;">Camila Moscoso Justen Gorges</p>
-                                    <p style="color: #7f8c8d;">Médica Veterinária</p>
-                                    <p>CRMV-RJ 10095</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            `;
-        }
-        
-        // Função para mostrar estatísticas
-        function showStatistics() {
-            dynamicContent.innerHTML = `
-                <div style="max-width: 800px;">
-                    <div class="form-section">
-                        <h3 class="section-title">Estatísticas de Laudos</h3>
-                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; margin-bottom: 30px;">
-                            <div style="background-color: #3498db; color: white; padding: 20px; border-radius: 8px;">
-                                <p style="font-size: 0.9rem;">Total de Laudos (2023)</p>
-                                <p style="font-size: 2.5rem; font-weight: bold;">124</p>
-                            </div>
-                            <div style="background-color: #27ae60; color: white; padding: 20px; border-radius: 8px;">
-                                <p style="font-size: 0.9rem;">Negativos</p>
-                                <p style="font-size: 2.5rem; font-weight: bold;">112</p>
-                            </div>
-                            <div style="background-color: #e74c3c; color: white; padding: 20px; border-radius: 8px;">
-                                <p style="font-size: 0.9rem;">Positivos</p>
-                                <p style="font-size: 2.5rem; font-weight: bold;">9</p>
-                            </div>
-                            <div style="background-color: #f39c12; color: white; padding: 20px; border-radius: 8px;">
-                                <p style="font-size: 0.9rem;">Inconclusivos</p>
-                                <p style="font-size: 2.5rem; font-weight: bold;">3</p>
-                            </div>
-                        </div>
-                        
-                        <div style="background-color: white; padding: 20px; border-radius: 8px; margin-bottom: 20px;">
-                            <h4 style="margin-bottom: 15px;">Distribuição Mensal (2023)</h4>
-                            <div style="height: 20px; background-color: #ecf0f1; border-radius: 10px; overflow: hidden; margin-bottom: 10px;">
-                                <div style="width: 8%; height: 100%; background-color: #3498db;"></div>
-                            </div>
-                            <p style="font-size: 0.9rem;">Janeiro: 10 laudos</p>
-                            
-                            <div style="height: 20px; background-color: #ecf0f1; border-radius: 10px; overflow: hidden; margin-bottom: 10px;">
-                                <div style="width: 12%; height: 100%; background-color: #3498db;"></div>
-                            </div>
-                            <p style="font-size: 0.9rem;">Fevereiro: 15 laudos</p>
-                            
-                            <div style="height: 20px; background-color: #ecf0f1; border-radius: 10px; overflow: hidden; margin-bottom: 10px;">
-                                <div style="width: 10%; height: 100%; background-color: #3498db;"></div>
-                            </div>
-                            <p style="font-size: 0.9rem;">Março: 12 laudos</p>
-                            
-                            <div style="height: 20px; background-color: #ecf0f1; border-radius: 10px; overflow: hidden; margin-bottom: 10px;">
-                                <div style="width: 15%; height: 100%; background-color: #3498db;"></div>
-                            </div>
-                            <p style="font-size: 0.9rem;">Outubro: 18 laudos (até agora)</p>
-                        </div>
-                    </div>
-                </div>
-            `;
-        }
-        
-        // Função para mostrar configurações
-        function showSettings() {
-            dynamicContent.innerHTML = `
-                <div style="max-width: 600px;">
-                    <div class="form-section">
-                        <h3 class="section-title">Configurações do Sistema</h3>
-                        <div style="display: grid; gap: 20px;">
-                            <div class="form-group">
-                                <label for="systemTheme">Tema do Sistema</label>
-                                <select id="systemTheme" style="width: 100%; padding: 12px 15px;">
-                                    <option value="light">Claro</option>
-                                    <option value="dark">Escuro</option>
-                                    <option value="auto">Automático (segundo sistema)</option>
-                                </select>
-                            </div>
-                            
-                            <div class="form-group">
-                                <label for="resultsNotification">Notificação de Resultados</label>
-                                <select id="resultsNotification" style="width: 100%; padding: 12px 15px;">
-                                    <option value="immediate">Imediata</option>
-                                    <option value="daily">Diária</option>
-                                    <option value="weekly">Semanal</option>
-                                    <option value="none">Nenhuma</option>
-                                </select>
-                            </div>
-                            
-                            <div class="form-group">
-                                <label for="autoSave">Auto-salvamento</label>
-                                <div style="display: flex; align-items: center; gap: 10px;">
-                                    <input type="checkbox" id="autoSave" checked>
-                                    <label for="autoSave" style="margin-bottom: 0;">Salvar automaticamente a cada 5 minutos</label>
-                                </div>
-                            </div>
-                            
-                            <div class="form-group">
-                                <label for="backupFrequency">Frequência de Backup</label>
-                                <select id="backupFrequency" style="width: 100%; padding: 12px 15px;">
-                                    <option value="daily">Diário</option>
-                                    <option value="weekly">Semanal</option>
-                                    <option value="monthly">Mensal</option>
-                                </select>
-                            </div>
-                            
-                            <div style="margin-top: 20px;">
-                                <button class="btn-save" style="width: 100%;">Salvar Configurações</button>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="form-section">
-                        <h3 class="section-title">Exportação de Dados</h3>
-                        <p style="margin-bottom: 15px;">Exportar laudos para formatos externos:</p>
-                        <div style="display: flex; gap: 10px; flex-wrap: wrap;">
-                            <button class="btn-cancel" style="padding: 10px 20px;">
-                                <i class="fas fa-file-pdf"></i> Exportar PDF
-                            </button>
-                            <button class="btn-cancel" style="padding: 10px 20px;">
-                                <i class="fas fa-file-excel"></i> Exportar Excel
-                            </button>
-                            <button class="btn-cancel" style="padding: 10px 20px;">
-                                <i class="fas fa-file-csv"></i> Exportar CSV
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            `;
-        }
-        
-        // Manipular envio do formulário
-        function handleFormSubmit(e) {
-            e.preventDefault();
-            
-            // Coletar dados do formulário
-            const formData = {
-                registro: document.getElementById('numRegistro').value,
-                animal: document.getElementById('nomeAnimal').value,
-                resultado: document.getElementById('resultadoExame').value,
-                dataColeta: document.getElementById('dataColeta').value,
-                // Em um sistema real, coletaria todos os campos
-            };
-            
-            // Simular salvamento
-            alert(`Laudo do animal ${formData.animal} (registro ${formData.registro}) salvo com sucesso!`);
-            
-            // Redirecionar para lista de laudos
-            menuItems.forEach(i => i.classList.remove('active'));
-            document.querySelector('[data-content="reports-list"]').classList.add('active');
-            loadContent('reports-list');
-        }
-        
-        // Resetar formulário
-        function resetForm() {
-            if (confirm('Tem certeza que deseja cancelar? Todas as alterações serão perdidas.')) {
-                // Em um sistema real, isso resetaria o formulário
-                alert('Formulário cancelado. Voltando para lista de laudos.');
-                
-                // Redirecionar para lista de laudos
-                menuItems.forEach(i => i.classList.remove('active'));
-                document.querySelector('[data-content="reports-list"]').classList.add('active');
-                loadContent('reports-list');
-            }
-        }
-        
-        // Novo laudo
-        newReportBtn.addEventListener('click', () => {
-            menuItems.forEach(i => i.classList.remove('active'));
-            document.querySelector('[data-content="new-report"]').classList.add('active');
-            loadContent('new-report');
         });
-        
-        // Inicializar eventos do formulário
-        reportForm.addEventListener('submit', handleFormSubmit);
-        cancelBtn.addEventListener('click', resetForm);
-        
-        // Inicializar a página mostrando o formulário
-        window.onload = () => {
-            // Simular que estamos na página do laboratório após login
-            console.log('Sistema laboratorial carregado para Ten. Andressa');
-        };
     </script>
 </body>
 </html>
