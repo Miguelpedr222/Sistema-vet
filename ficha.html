@@ -1091,7 +1091,125 @@
         let autoSaveTimeout = null;
         let hasUnsavedChanges = false;
 
-        // FUNÇÕES DE LOCALSTORAGE
+        // ========== SISTEMA DE SINCRONIZAÇÃO EM TEMPO REAL ==========
+        // Monitorar alterações no formulário e salvar automaticamente
+        function setupAutoSave() {
+            const form = document.getElementById('animalName')?.closest('.form-card')?.parentElement;
+            if (!form) return;
+            
+            // Salvar automaticamente quando o formulário perder foco
+            form.addEventListener('change', function(e) {
+                if (currentAnimal) {
+                    saveCurrentFormState();
+                }
+            });
+            
+            // Salvar automaticamente em intervalos regulares
+            setInterval(function() {
+                if (currentAnimal && document.hasFocus()) {
+                    saveCurrentFormState();
+                }
+            }, 30000); // A cada 30 segundos
+        }
+
+        function saveCurrentFormState() {
+            if (!currentAnimal) return;
+            
+            // Capturar dados atuais do formulário
+            const formData = {
+                name: document.getElementById('animalName')?.value || currentAnimal.name,
+                animalId: document.getElementById('animalId')?.value || currentAnimal.animalId,
+                color: document.getElementById('animalColor')?.value || currentAnimal.color,
+                sex: document.getElementById('animalSex')?.value || currentAnimal.sex,
+                protocol: document.getElementById('animalProtocol')?.value || currentAnimal.protocol,
+                protocolDetails: document.getElementById('protocolDetails')?.value || currentAnimal.protocolDetails,
+                history: currentAnimal.history || [],
+                lastUpdated: new Date().toISOString()
+            };
+            
+            // Obter esquadrão selecionado
+            esquadraoOptions.forEach(option => {
+                if (option.classList.contains('selected')) {
+                    formData.esquadrao = option.getAttribute('data-value');
+                }
+            });
+            
+            // Se for "Outro", obter origem
+            if (formData.esquadrao === 'Outro') {
+                formData.origem = document.getElementById('animalOrigem')?.value || currentAnimal.origem;
+            } else {
+                formData.origem = currentAnimal.origem || '';
+            }
+            
+            // Salvar no localStorage com timestamp
+            localStorage.setItem('ficha_autosave_' + ANIMAL_ID, JSON.stringify({
+                data: formData,
+                timestamp: new Date().toISOString()
+            }));
+            
+            // Notificar o sistema.html sobre a mudança
+            localStorage.setItem('vetSystem_lastUpdate', new Date().toISOString());
+            
+            // Atualizar dados locais
+            Object.assign(currentAnimal, formData);
+            
+            // Salvar no localStorage principal
+            saveToStorage();
+        }
+
+        // ========== SISTEMA DE HISTÓRICO DE ALTERAÇÕES ==========
+        function saveChangeHistory(action, changes) {
+            try {
+                const historyKey = 'vetSystem_changeHistory';
+                const history = JSON.parse(localStorage.getItem(historyKey)) || [];
+                
+                history.push({
+                    animalId: ANIMAL_ID,
+                    action: action, // 'create', 'update', 'delete'
+                    changes: changes,
+                    timestamp: new Date().toISOString(),
+                    user: 'Sistema Ficha'
+                });
+                
+                // Manter apenas os últimos 100 registros
+                if (history.length > 100) {
+                    history.shift();
+                }
+                
+                localStorage.setItem(historyKey, JSON.stringify(history));
+            } catch (error) {
+                console.error('Erro ao salvar histórico:', error);
+            }
+        }
+
+        // ========== NOTIFICAÇÃO DE SALVAMENTO ==========
+        function showSyncNotification(type, message) {
+            const icon = saveStatus.querySelector('i');
+            const text = saveStatus.querySelector('span');
+            
+            saveStatus.className = 'save-status ' + type;
+            text.textContent = message;
+            
+            switch(type) {
+                case 'saving':
+                    icon.className = 'fas fa-sync-alt fa-spin';
+                    break;
+                case 'saved':
+                    icon.className = 'fas fa-check-circle';
+                    break;
+                case 'error':
+                    icon.className = 'fas fa-exclamation-circle';
+                    break;
+            }
+            
+            saveStatus.classList.remove('hidden');
+            
+            setTimeout(() => {
+                saveStatus.classList.add('hidden');
+            }, 3000);
+        }
+
+        // ========== FUNÇÕES DE LOCALSTORAGE ==========
         function loadFromStorage() {
             try {
                 const storedData = localStorage.getItem(STORAGE_KEY);
@@ -1156,6 +1274,10 @@
                 };
                 
                 localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+                
+                // Notificar sistema.html sobre a atualização
+                localStorage.setItem('vetSystem_lastUpdate', new Date().toISOString());
+                
                 return true;
             } catch (error) {
                 console.error('Erro ao salvar dados:', error);
@@ -1307,9 +1429,21 @@
             Object.assign(currentAnimal, updatedAnimal);
             
             // Salvar no localStorage
-            saveToStorage();
+            const success = saveToStorage();
             
-            return true;
+            // Salvar histórico de alteração
+            if (success) {
+                saveChangeHistory('update', {
+                    name: updatedAnimal.name,
+                    animalId: updatedAnimal.animalId,
+                    color: updatedAnimal.color,
+                    sex: updatedAnimal.sex,
+                    esquadrao: updatedAnimal.esquadrao,
+                    protocol: updatedAnimal.protocol
+                });
+            }
+            
+            return success;
         }
 
         // INICIALIZAR FORMULÁRIO
@@ -1496,6 +1630,12 @@
                         date: dateValue,
                         description: descriptionValue
                     };
+                    
+                    // Salvar histórico de alteração
+                    saveChangeHistory('updateHistory', {
+                        date: dateValue,
+                        description: descriptionValue.substring(0, 50) + '...'
+                    });
                 }
             } else {
                 // Adicionar novo histórico
@@ -1508,6 +1648,12 @@
                     date: dateValue,
                     time: generateRandomTime(),
                     description: descriptionValue
+                });
+                
+                // Salvar histórico de alteração
+                saveChangeHistory('addHistory', {
+                    date: dateValue,
+                    description: descriptionValue.substring(0, 50) + '...'
                 });
             }
 
@@ -1539,10 +1685,17 @@
         function deleteHistory(id) {
             const index = currentAnimal.history.findIndex(item => item.id === id);
             if (index !== -1) {
+                const deletedHistory = currentAnimal.history[index];
                 currentAnimal.history.splice(index, 1);
                 renderHistory();
                 hasUnsavedChanges = true;
                 autoSave();
+                
+                // Salvar histórico de alteração
+                saveChangeHistory('deleteHistory', {
+                    date: deletedHistory.date,
+                    description: deletedHistory.description.substring(0, 50) + '...'
+                });
             }
         }
 
@@ -1561,8 +1714,21 @@
         // EXCLUIR FICHA
         function deleteAnimal() {
             try {
+                // Salvar histórico de alteração
+                saveChangeHistory('deleteAnimal', {
+                    name: currentAnimal.name,
+                    animalId: currentAnimal.animalId
+                });
+                
                 // Remover do localStorage
                 localStorage.removeItem(STORAGE_KEY);
+                
+                // Limpar autosaves relacionados
+                localStorage.removeItem('ficha_autosave_' + ANIMAL_ID);
+                
+                // Notificar sistema.html sobre exclusão
+                localStorage.setItem('vetSystem_lastUpdate', new Date().toISOString());
+                localStorage.setItem('vetSystem_animalDeleted', ANIMAL_ID.toString());
                 
                 showAlertModal('Sucesso', 'Ficha excluída permanentemente!');
                 
@@ -1695,6 +1861,9 @@
         function init() {
             initForm();
             addInputListeners();
+            
+            // Inicializar sistema de auto-save
+            setupAutoSave();
 
             // Event Listeners para opções de esquadrão
             esquadraoOptions.forEach(option => {
@@ -1807,6 +1976,52 @@
                     autoExpandTextarea(historyDescription);
                 }
             });
+            
+            // Iniciar sincronização
+            startSyncWithSystem();
+        }
+
+        // ========== SINCRONIZAÇÃO COM O SISTEMA ==========
+        function startSyncWithSystem() {
+            // Verificar se há alterações do sistema a cada 2 segundos
+            setInterval(checkForSystemUpdates, 2000);
+        }
+
+        function checkForSystemUpdates() {
+            // Verificar se o sistema atualizou os dados
+            const lastSystemUpdate = localStorage.getItem('vetSystem_lastUpdate');
+            const lastLocalUpdate = currentAnimal?.lastUpdated;
+            
+            if (lastSystemUpdate && lastLocalUpdate && lastSystemUpdate > lastLocalUpdate) {
+                // Carregar dados atualizados do sistema
+                const storedData = localStorage.getItem('vetSystemHorses');
+                if (storedData) {
+                    try {
+                        const systemHorses = JSON.parse(storedData);
+                        // Verificar se nosso animal existe no sistema
+                        if (systemHorses && systemHorses.length > 0) {
+                            const systemAnimal = systemHorses.find(h => h.id === ANIMAL_ID);
+                            if (systemAnimal && JSON.stringify(currentAnimal) !== JSON.stringify(systemAnimal)) {
+                                // Atualizar dados locais
+                                currentAnimal = systemAnimal;
+                                initForm();
+                                console.log('Dados sincronizados com o sistema.');
+                            }
+                        }
+                    } catch (error) {
+                        console.error('Erro ao sincronizar com sistema:', error);
+                    }
+                }
+            }
+            
+            // Verificar se há exclusão no sistema
+            const animalDeleted = localStorage.getItem('vetSystem_animalDeleted');
+            if (animalDeleted === ANIMAL_ID.toString()) {
+                showAlertModal('Ficha Excluída', 'Esta ficha foi excluída no sistema. Redirecionando...');
+                setTimeout(() => {
+                    window.location.href = 'sistema.html';
+                }, 3000);
+            }
         }
 
         // INICIAR QUANDO O DOM ESTIVER PRONTO
