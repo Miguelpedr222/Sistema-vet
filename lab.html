@@ -121,13 +121,14 @@
             width: 45px;
             height: 45px;
             border-radius: 50%;
-            background: linear-gradient(135deg, var(--secondary-light), var(--secondary));
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
-            font-size: 1.2rem;
-            color: white;
+            overflow: hidden;
+            border: 2px solid var(--secondary);
+        }
+        
+        .user-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
         }
         
         .user-info p:first-child {
@@ -966,10 +967,11 @@
             <div class="user-area">
                 <div class="user-card">
                     <div class="user-avatar">
-                        <span>A</span>
+                        <!-- Substituído o "A" pela foto de perfil -->
+                        <img src="perfil.jpg" alt="Dra. Andressa Alves">
                     </div>
                     <div class="user-info">
-                        <p>Dra. Andressa Silva</p>
+                        <p>Dra. Andressa Alves</p>
                         <p>Médica Veterinária</p>
                     </div>
                 </div>
@@ -1473,7 +1475,7 @@
                         ownerAddress: "Vila Militar, Rio de Janeiro/RJ",
                         ownerPhone: "(21) 2457-4544",
                         ownerEmail: "",
-                        vetName: "Dra. Andressa Silva",
+                        vetName: "Dra. Andressa Alves",
                         vetCrmv: "RJ-12345",
                         createdAt: new Date().toISOString(),
                         lastReport: "2023-10-18",
@@ -1933,7 +1935,7 @@
                         resultDate: new Date().toISOString().split('T')[0],
                         diagnosisMethod: 'ELISA',
                         result: 'NEGATIVO',
-                        vetName: horse.vetName || 'Dra. Andressa Silva',
+                        vetName: horse.vetName || 'Dra. Andressa Alves',
                         vetCrmv: horse.vetCrmv || 'RJ-12345',
                         notes: 'Laudo emitido automaticamente pelo sistema.',
                         validityDate: (() => {
@@ -2175,7 +2177,7 @@
                     resultDate: document.getElementById('resultDate').value,
                     diagnosisMethod: document.getElementById('diagnosisMethod').value,
                     result: document.getElementById('resultType').value,
-                    vetName: horse.vetName || 'Dra. Andressa Silva',
+                    vetName: horse.vetName || 'Dra. Andressa Alves',
                     vetCrmv: horse.vetCrmv || 'RJ-12345',
                     notes: document.getElementById('reportNotes').value,
                     validityDate: (() => {
