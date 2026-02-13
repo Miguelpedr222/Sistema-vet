@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>LabVet AIE - Sistema Automatizado de Laudos</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <style>
         :root {
             --primary: #1a5f7a;
@@ -367,6 +369,16 @@
             color: white;
         }
         
+        .btn-info {
+            background: linear-gradient(to right, var(--info), #138496);
+            color: white;
+            box-shadow: 0 5px 15px rgba(23, 162, 184, 0.3);
+        }
+        
+        .btn-info:hover {
+            box-shadow: 0 8px 20px rgba(23, 162, 184, 0.4);
+        }
+        
         /* Cards de Estatísticas */
         .stats-grid {
             display: grid;
@@ -651,10 +663,17 @@
             color: var(--danger);
         }
         
+        .status-inconclusive {
+            background: #fdebd0;
+            color: var(--warning);
+            border: 1px solid var(--warning);
+        }
+        
         /* Ações */
         .action-cell {
             display: flex;
             gap: 8px;
+            flex-wrap: wrap;
         }
         
         .action-btn {
@@ -690,6 +709,61 @@
         
         .btn-schedule {
             background: var(--primary);
+        }
+        
+        .btn-pdf {
+            background: var(--danger);
+        }
+        
+        .btn-test {
+            background: var(--secondary);
+        }
+        
+        /* Timer */
+        .timer-container {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+            padding: 15px 25px;
+            border-radius: var(--border-radius);
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .timer-display {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .timer-icon {
+            font-size: 2rem;
+        }
+        
+        .timer-info h4 {
+            font-size: 1.2rem;
+            margin-bottom: 5px;
+        }
+        
+        .timer-info p {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+        
+        .timer-countdown {
+            font-size: 2rem;
+            font-weight: 700;
+            font-family: monospace;
+            background: rgba(255, 255, 255, 0.2);
+            padding: 10px 20px;
+            border-radius: 50px;
+            letter-spacing: 5px;
+        }
+        
+        .timer-controls {
+            display: flex;
+            gap: 10px;
         }
         
         /* Modal */
@@ -728,8 +802,8 @@
             overflow-y: auto;
         }
         
-        .modal-overlay.active .modal {
-            transform: translateY(0);
+        .modal.large {
+            max-width: 900px;
         }
         
         .modal-header {
@@ -806,6 +880,128 @@
             border-top: 1px solid var(--light-gray);
         }
         
+        /* Visualização de Laudo */
+        .report-preview {
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 30px;
+            margin-top: 20px;
+            font-family: 'Times New Roman', Times, serif;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+        }
+        
+        .report-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid var(--primary);
+        }
+        
+        .report-logo {
+            width: 80px;
+            height: 80px;
+            background: var(--primary);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+        }
+        
+        .report-title {
+            text-align: center;
+        }
+        
+        .report-title h2 {
+            color: var(--primary);
+            font-size: 1.8rem;
+            margin-bottom: 5px;
+        }
+        
+        .report-title p {
+            color: var(--gray);
+            font-size: 0.9rem;
+        }
+        
+        .report-info {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .report-info-item {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .report-info-label {
+            font-weight: 600;
+            color: var(--primary);
+            margin-bottom: 5px;
+        }
+        
+        .report-info-value {
+            padding: 5px 0;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .report-result {
+            background: #f8f9fa;
+            padding: 30px;
+            text-align: center;
+            margin-bottom: 30px;
+            border-radius: 8px;
+        }
+        
+        .report-result h3 {
+            color: var(--gray);
+            font-size: 1.2rem;
+            margin-bottom: 15px;
+        }
+        
+        .report-result-value {
+            font-size: 3rem;
+            font-weight: 700;
+            padding: 20px;
+            border-radius: 8px;
+            display: inline-block;
+        }
+        
+        .report-result-value.negative {
+            color: var(--success);
+            background: rgba(40, 167, 69, 0.1);
+        }
+        
+        .report-result-value.positive {
+            color: var(--danger);
+            background: rgba(220, 53, 69, 0.1);
+        }
+        
+        .report-footer {
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid #ddd;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .report-signature {
+            text-align: center;
+            width: 250px;
+        }
+        
+        .report-signature-line {
+            border-top: 1px solid #000;
+            margin-bottom: 10px;
+            width: 100%;
+        }
+        
         /* Notificações */
         .notification {
             position: fixed;
@@ -847,6 +1043,16 @@
         @keyframes slideOut {
             from { transform: translateX(0); opacity: 1; }
             to { transform: translateX(100%); opacity: 0; }
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+        
+        .pulse {
+            animation: pulse 2s infinite;
         }
         
         /* Responsividade */
@@ -895,6 +1101,16 @@
             .stats-grid {
                 grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
             }
+            
+            .timer-container {
+                flex-direction: column;
+                gap: 15px;
+                text-align: center;
+            }
+            
+            .timer-display {
+                flex-direction: column;
+            }
         }
         
         @media (max-width: 768px) {
@@ -924,6 +1140,10 @@
             .modal {
                 max-width: 95%;
             }
+            
+            .report-info {
+                grid-template-columns: 1fr;
+            }
         }
         
         @media (max-width: 576px) {
@@ -945,6 +1165,10 @@
             
             .logo-text h1 {
                 font-size: 1.4rem;
+            }
+            
+            .timer-countdown {
+                font-size: 1.5rem;
             }
         }
     </style>
@@ -970,7 +1194,7 @@
                     </div>
                     <div class="user-info">
                         <p>Dra. Andressa Silva</p>
-                        <p>Médica Veterinária</p>
+                        <p>CRMV-RJ 10095</p>
                     </div>
                 </div>
                 <button class="logout-btn" id="logoutBtn">
@@ -979,6 +1203,27 @@
             </div>
         </div>
     </header>
+
+    <!-- Timer de Teste Automático -->
+    <div style="max-width: 1400px; margin: 20px auto 0; padding: 0 30px;">
+        <div class="timer-container" id="testTimer" style="display: none;">
+            <div class="timer-display">
+                <div class="timer-icon">
+                    <i class="fas fa-hourglass-half"></i>
+                </div>
+                <div class="timer-info">
+                    <h4>Teste Automático de Emissão de Laudos</h4>
+                    <p>Emitindo laudo em massa para todos os cavalos cadastrados</p>
+                </div>
+            </div>
+            <div class="timer-countdown" id="timerCountdown">02:00</div>
+            <div class="timer-controls">
+                <button class="btn btn-danger" id="cancelTimerBtn">
+                    <i class="fas fa-stop"></i> Cancelar
+                </button>
+            </div>
+        </div>
+    </div>
 
     <!-- Container Principal -->
     <div class="main-container">
@@ -1035,6 +1280,9 @@
                         <button class="btn btn-success" id="manualEmitBtn">
                             <i class="fas fa-plus"></i> Novo Laudo Manual
                         </button>
+                        <button class="btn btn-warning" id="testEmitBtn">
+                            <i class="fas fa-flask"></i> Teste (2 min)
+                        </button>
                     </div>
                 </div>
                 
@@ -1079,6 +1327,16 @@
                             <p>Laudos Vencidos</p>
                         </div>
                     </div>
+                    
+                    <div class="stat-card purple">
+                        <div class="stat-icon purple">
+                            <i class="fas fa-file-pdf"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3 id="pdfReports">0</h3>
+                            <p>PDFs Gerados</p>
+                        </div>
+                    </div>
                 </div>
                 
                 <!-- Próximos Vencimentos -->
@@ -1119,12 +1377,17 @@
                     <div class="form-grid">
                         <div class="form-group">
                             <label class="form-label">Código do Animal <span class="required">*</span></label>
-                            <input type="text" class="form-control" id="horseCode" required placeholder="Ex: EQ-001">
+                            <input type="text" class="form-control" id="horseCode" required placeholder="Ex: BC 018/23">
                         </div>
                         
                         <div class="form-group">
                             <label class="form-label">Nome do Animal <span class="required">*</span></label>
-                            <input type="text" class="form-control" id="horseName" required placeholder="Ex: Estrela do Norte">
+                            <input type="text" class="form-control" id="horseName" required placeholder="Ex: AFRICANO DO RINCÃO">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">Nº Registro/Marca</label>
+                            <input type="text" class="form-control" id="horseRegistration" placeholder="Ex: 1844">
                         </div>
                         
                         <div class="form-group">
@@ -1155,27 +1418,43 @@
                         
                         <div class="form-group">
                             <label class="form-label">Idade (anos)</label>
-                            <input type="number" class="form-control" id="horseAge" min="0" max="30" placeholder="Ex: 5">
+                            <input type="number" class="form-control" id="horseAge" min="0" max="30" placeholder="Ex: 8">
                         </div>
                         
                         <div class="form-group">
                             <label class="form-label">Proprietário <span class="required">*</span></label>
-                            <input type="text" class="form-control" id="horseOwner" required placeholder="Nome do proprietário">
+                            <input type="text" class="form-control" id="horseOwner" required placeholder="ESCOLA DE EQUITAÇÃO DO EXÉRCITO">
                         </div>
                         
                         <div class="form-group">
-                            <label class="form-label">CPF/CNPJ do Proprietário</label>
-                            <input type="text" class="form-control" id="ownerDocument" placeholder="CPF ou CNPJ">
+                            <label class="form-label">CNPJ do Proprietário</label>
+                            <input type="text" class="form-control" id="ownerDocument" placeholder="Ex: 10439707/0001-52">
                         </div>
                         
                         <div class="form-group">
                             <label class="form-label">Endereço</label>
-                            <input type="text" class="form-control" id="ownerAddress" placeholder="Endereço do proprietário">
+                            <input type="text" class="form-control" id="ownerAddress" placeholder="ESTRADA MARECHAL MALLET, 1.283">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">Município</label>
+                            <input type="text" class="form-control" id="ownerCity" placeholder="RIO DE JANEIRO">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">UF</label>
+                            <select class="form-control" id="ownerState">
+                                <option value="RJ">RJ</option>
+                                <option value="SP">SP</option>
+                                <option value="MG">MG</option>
+                                <option value="ES">ES</option>
+                                <option value="Outro">Outro</option>
+                            </select>
                         </div>
                         
                         <div class="form-group">
                             <label class="form-label">Telefone</label>
-                            <input type="tel" class="form-control" id="ownerPhone" placeholder="(00) 00000-0000">
+                            <input type="tel" class="form-control" id="ownerPhone" placeholder="(21) 2457-4544">
                         </div>
                         
                         <div class="form-group">
@@ -1185,12 +1464,27 @@
                         
                         <div class="form-group">
                             <label class="form-label">Veterinário Responsável</label>
-                            <input type="text" class="form-control" id="vetName" placeholder="Nome do veterinário">
+                            <input type="text" class="form-control" id="vetName" placeholder="BEATRIZ CHIAPPETTA">
                         </div>
                         
                         <div class="form-group">
-                            <label class="form-label">CRMV</label>
-                            <input type="text" class="form-control" id="vetCrmv" placeholder="Número do CRMV">
+                            <label class="form-label">CPF Veterinário</label>
+                            <input type="text" class="form-control" id="vetCpf" placeholder="122.666.797-82">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">CRMV/UF</label>
+                            <input type="text" class="form-control" id="vetCrmv" placeholder="11073/RJ">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">Email Veterinário</label>
+                            <input type="email" class="form-control" id="vetEmail" placeholder="chiappettabeatriz@gmail.com">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">Local onde se encontra</label>
+                            <input type="text" class="form-control" id="horseLocation" placeholder="ESCOLA DE EQUITAÇÃO DO EXÉRCITO">
                         </div>
                     </div>
                     
@@ -1323,6 +1617,36 @@
                     </div>
                     
                     <div class="form-group">
+                        <label class="form-label">Laboratório Responsável</label>
+                        <input type="text" class="form-control" id="labName" value="Laboratório de Anemia Infecciosa Equina do 2º Regimento de Cavalaria de Guarda">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Endereço do Laboratório</label>
+                        <input type="text" class="form-control" id="labAddress" value="Avenida Duque de Caxias, 2660 - Vila Militar, Rio de Janeiro/RJ - CEP: 21.615-220">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Telefone do Laboratório</label>
+                        <input type="text" class="form-control" id="labPhone" value="(21) 2457-4544">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Email do Laboratório</label>
+                        <input type="email" class="form-control" id="labEmail" value="lab2rcg@gmail.com">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Responsável Técnico</label>
+                        <input type="text" class="form-control" id="techResponsible" value="CAMILA MOSCOSO JUSTEN GORGES">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">CRMV Responsável Técnico</label>
+                        <input type="text" class="form-control" id="techCrmv" value="CRMV-RJ 10095">
+                    </div>
+                    
+                    <div class="form-group">
                         <label class="form-label">Notificar Veterinário</label>
                         <select class="form-control" id="notifyVet">
                             <option value="true">Sim</option>
@@ -1333,6 +1657,14 @@
                     <div class="form-group">
                         <label class="form-label">Notificar Proprietário</label>
                         <select class="form-control" id="notifyOwner">
+                            <option value="true">Sim</option>
+                            <option value="false">Não</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Gerar PDF Automaticamente</label>
+                        <select class="form-control" id="autoPdf">
                             <option value="true">Sim</option>
                             <option value="false">Não</option>
                         </select>
@@ -1368,7 +1700,7 @@
 
     <!-- Modal de Emissão de Laudo -->
     <div class="modal-overlay" id="reportModal">
-        <div class="modal" style="max-width: 800px;">
+        <div class="modal" style="max-width: 900px;">
             <div class="modal-header">
                 <div class="modal-icon info">
                     <i class="fas fa-file-medical"></i>
@@ -1379,22 +1711,67 @@
             <div class="modal-body">
                 <div class="form-grid">
                     <div class="form-group">
+                        <label class="form-label">Nº Registro da Amostra</label>
+                        <input type="text" class="form-control" id="sampleNumber" value="" placeholder="Ex: 2184">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Nº de Série</label>
+                        <input type="text" class="form-control" id="serialNumber" value="" placeholder="Ex: BC 018/23">
+                    </div>
+                    
+                    <div class="form-group">
                         <label class="form-label">Data da Coleta</label>
                         <input type="date" class="form-control" id="collectionDate" value="">
                     </div>
                     
                     <div class="form-group">
-                        <label class="form-label">Data do Resultado</label>
-                        <input type="date" class="form-control" id="resultDate" value="">
+                        <label class="form-label">Data de Recepção</label>
+                        <input type="date" class="form-control" id="receptionDate" value="">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Data Inicial do IDGA</label>
+                        <input type="date" class="form-control" id="initialDate" value="">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Data Final do IDGA</label>
+                        <input type="date" class="form-control" id="finalDate" value="">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Lacre</label>
+                        <input type="text" class="form-control" id="sealNumber" placeholder="Ex: OO12753">
                     </div>
                     
                     <div class="form-group">
                         <label class="form-label">Método de Diagnóstico</label>
                         <select class="form-control" id="diagnosisMethod">
+                            <option value="IDGA">IDGA (Imunodifusão em Gel de Ágar)</option>
                             <option value="ELISA">ELISA</option>
                             <option value="PCR">PCR</option>
-                            <option value="AGID">AGID (Imunodifusão em Gel de Ágar)</option>
                         </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Kit</label>
+                        <input type="text" class="form-control" id="kitName" value="KIT PARA DETECÇÃO DE ANTICORPOS CONTRA O VIRUS DA ANEMIA INFECCIOSA EQUINA">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Fabricante</label>
+                        <input type="text" class="form-control" id="kitManufacturer" value="IDEXX">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Lote</label>
+                        <input type="text" class="form-control" id="kitLot" value="MAR2022 BU662">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Validade do Kit</label>
+                        <input type="date" class="form-control" id="kitExpiry" value="2024-02-06">
                     </div>
                     
                     <div class="form-group">
@@ -1407,21 +1784,58 @@
                     </div>
                     
                     <div class="form-group">
+                        <label class="form-label">Data de Validade</label>
+                        <input type="date" class="form-control" id="validityDate" value="">
+                    </div>
+                    
+                    <div class="form-group">
                         <label class="form-label">Observações</label>
-                        <textarea class="form-control" id="reportNotes" rows="3" placeholder="Observações adicionais..."></textarea>
+                        <textarea class="form-control" id="reportNotes" rows="2" placeholder="Observações adicionais..."></textarea>
                     </div>
                 </div>
                 
                 <div style="background: #f8f9fa; padding: 15px; border-radius: 8px; margin-top: 20px;">
                     <h4 style="color: var(--primary); margin-bottom: 10px;">Informações do Animal</h4>
-                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; font-size: 0.9rem;" id="horseInfo">
+                    <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; font-size: 0.9rem;" id="horseInfo">
                         <!-- Informações serão preenchidas aqui -->
                     </div>
                 </div>
                 
-                <div class="modal-actions">
+                <div class="modal-actions" style="margin-top: 20px;">
                     <button class="btn btn-secondary" id="cancelReport">Cancelar</button>
-                    <button class="btn btn-success" id="generateReport">Emitir Laudo</button>
+                    <button class="btn btn-info" id="previewReportBtn">
+                        <i class="fas fa-eye"></i> Visualizar
+                    </button>
+                    <button class="btn btn-success" id="generateReport">
+                        <i class="fas fa-save"></i> Emitir Laudo
+                    </button>
+                    <button class="btn btn-danger" id="generatePdfBtn">
+                        <i class="fas fa-file-pdf"></i> Gerar PDF
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de Visualização de Laudo -->
+    <div class="modal-overlay" id="previewModal">
+        <div class="modal large" style="max-width: 1000px;">
+            <div class="modal-header">
+                <div class="modal-icon info">
+                    <i class="fas fa-file-medical"></i>
+                </div>
+                <h3 class="modal-title">Visualização do Laudo</h3>
+                <button class="modal-close" id="closePreviewModal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div id="reportPreviewContent">
+                    <!-- Conteúdo do laudo será inserido aqui -->
+                </div>
+                <div class="modal-actions">
+                    <button class="btn btn-secondary" id="closePreviewBtn">Fechar</button>
+                    <button class="btn btn-danger" id="downloadPdfBtn">
+                        <i class="fas fa-file-pdf"></i> Baixar PDF
+                    </button>
                 </div>
             </div>
         </div>
@@ -1433,7 +1847,10 @@
             constructor() {
                 this.horses = JSON.parse(localStorage.getItem('labvet_horses')) || this.getDefaultHorses();
                 this.reports = JSON.parse(localStorage.getItem('labvet_reports')) || [];
+                this.pdfReports = JSON.parse(localStorage.getItem('labvet_pdfs')) || [];
                 this.settings = JSON.parse(localStorage.getItem('labvet_settings')) || this.getDefaultSettings();
+                this.testTimer = null;
+                this.testTimeLeft = 120; // 2 minutos em segundos
                 
                 // Inicializar dados
                 this.init();
@@ -1443,39 +1860,51 @@
                 return [
                     {
                         id: this.generateId(),
-                        code: "EQ-001",
+                        code: "BC 018/23",
+                        registration: "1844",
                         name: "AFRICANO DO RINCÃO",
                         breed: "Quarto de Milha",
                         coat: "Alazã",
                         sex: "M",
                         age: 8,
-                        owner: "Exército Brasileiro",
-                        ownerDocument: "",
-                        ownerAddress: "Vila Militar, Rio de Janeiro/RJ",
-                        ownerPhone: "(21) 2457-4544",
+                        owner: "ESCOLA DE EQUITAÇÃO DO EXÉRCITO",
+                        ownerDocument: "10439707/0001-52",
+                        ownerAddress: "ESTRADA MARECHAL MALLET, 1.283",
+                        ownerCity: "RIO DE JANEIRO",
+                        ownerState: "RJ",
+                        ownerPhone: "(21) 23014-054",
                         ownerEmail: "",
-                        vetName: "Dra. Andressa Silva",
-                        vetCrmv: "RJ-12345",
-                        createdAt: new Date().toISOString(),
+                        vetName: "BEATRIZ CHIAPPETTA",
+                        vetCpf: "122.666.797-82",
+                        vetCrmv: "11073/RJ",
+                        vetEmail: "chiappettabeatriz@gmail.com",
+                        horseLocation: "ESCOLA DE EQUITAÇÃO DO EXÉRCITO",
+                        createdAt: "2023-10-17",
                         lastReport: "2023-10-17",
                         nextReport: "2024-04-17"
                     },
                     {
                         id: this.generateId(),
-                        code: "EQ-002",
+                        code: "BC 019/23",
+                        registration: "1845",
                         name: "GAROTO DO PANTANAL",
                         breed: "Mangalarga",
                         coat: "Baio",
                         sex: "M",
                         age: 7,
-                        owner: "Exército Brasileiro",
-                        ownerDocument: "",
-                        ownerAddress: "Vila Militar, Rio de Janeiro/RJ",
-                        ownerPhone: "(21) 2457-4544",
+                        owner: "ESCOLA DE EQUITAÇÃO DO EXÉRCITO",
+                        ownerDocument: "10439707/0001-52",
+                        ownerAddress: "ESTRADA MARECHAL MALLET, 1.283",
+                        ownerCity: "RIO DE JANEIRO",
+                        ownerState: "RJ",
+                        ownerPhone: "(21) 23014-054",
                         ownerEmail: "",
-                        vetName: "Dra. Andressa Silva",
-                        vetCrmv: "RJ-12345",
-                        createdAt: new Date().toISOString(),
+                        vetName: "BEATRIZ CHIAPPETTA",
+                        vetCpf: "122.666.797-82",
+                        vetCrmv: "11073/RJ",
+                        vetEmail: "chiappettabeatriz@gmail.com",
+                        horseLocation: "ESCOLA DE EQUITAÇÃO DO EXÉRCITO",
+                        createdAt: "2023-10-18",
                         lastReport: "2023-10-18",
                         nextReport: "2024-04-18"
                     }
@@ -1484,10 +1913,17 @@
             
             getDefaultSettings() {
                 return {
-                    defaultInterval: 6, // meses
+                    defaultInterval: 6,
                     advanceDays: 15,
+                    labName: "Laboratório de Anemia Infecciosa Equina do 2º Regimento de Cavalaria de Guarda",
+                    labAddress: "Avenida Duque de Caxias, 2660 - Vila Militar, Rio de Janeiro/RJ - CEP: 21.615-220",
+                    labPhone: "(21) 2457-4544",
+                    labEmail: "lab2rcg@gmail.com",
+                    techResponsible: "CAMILA MOSCOSO JUSTEN GORGES",
+                    techCrmv: "CRMV-RJ 10095",
                     notifyVet: true,
-                    notifyOwner: false
+                    notifyOwner: false,
+                    autoPdf: true
                 };
             }
             
@@ -1504,14 +1940,15 @@
             saveData() {
                 localStorage.setItem('labvet_horses', JSON.stringify(this.horses));
                 localStorage.setItem('labvet_reports', JSON.stringify(this.reports));
+                localStorage.setItem('labvet_pdfs', JSON.stringify(this.pdfReports));
                 localStorage.setItem('labvet_settings', JSON.stringify(this.settings));
             }
             
             updateCounts() {
                 document.getElementById('horsesCount').textContent = this.horses.length;
                 document.getElementById('reportsCount').textContent = this.reports.length;
+                document.getElementById('pdfReports').textContent = this.pdfReports.length;
                 
-                // Contar agendamentos pendentes
                 const today = new Date();
                 const nextMonth = new Date();
                 nextMonth.setDate(today.getDate() + 30);
@@ -1519,18 +1956,17 @@
                 const pendingSchedules = this.horses.filter(horse => {
                     if (!horse.nextReport) return false;
                     const nextReportDate = new Date(horse.nextReport);
-                    return nextReportDate <= nextMonth;
+                    return nextReportDate <= nextMonth && nextReportDate >= today;
                 }).length;
                 
                 document.getElementById('schedulesCount').textContent = pendingSchedules;
             }
             
             updateDashboard() {
-                // Atualizar estatísticas
                 document.getElementById('totalHorses').textContent = this.horses.length;
                 document.getElementById('totalReports').textContent = this.reports.length;
+                document.getElementById('pdfReports').textContent = this.pdfReports.length;
                 
-                // Contar laudos vencidos
                 const today = new Date();
                 const overdueReports = this.horses.filter(horse => {
                     if (!horse.nextReport) return false;
@@ -1540,7 +1976,6 @@
                 
                 document.getElementById('overdueReports').textContent = overdueReports;
                 
-                // Contar agendamentos pendentes
                 const nextMonth = new Date();
                 nextMonth.setDate(today.getDate() + 30);
                 const pendingSchedules = this.horses.filter(horse => {
@@ -1551,12 +1986,13 @@
                 
                 document.getElementById('pendingSchedules').textContent = pendingSchedules;
                 
-                // Atualizar tabela de próximos vencimentos
                 this.updateDueSoonTable();
             }
             
             updateDueSoonTable() {
                 const tableBody = document.getElementById('dueSoonTable');
+                if (!tableBody) return;
+                
                 tableBody.innerHTML = '';
                 
                 const today = new Date();
@@ -1566,7 +2002,7 @@
                 const dueSoonHorses = this.horses.filter(horse => {
                     if (!horse.nextReport) return false;
                     const nextReportDate = new Date(horse.nextReport);
-                    return nextReportDate <= nextMonth && nextReportDate >= today;
+                    return nextReportDate <= nextMonth;
                 }).sort((a, b) => new Date(a.nextReport) - new Date(b.nextReport));
                 
                 dueSoonHorses.forEach(horse => {
@@ -1576,7 +2012,10 @@
                     let statusClass = 'status-scheduled';
                     let statusText = 'Agendado';
                     
-                    if (daysRemaining <= 7) {
+                    if (daysRemaining < 0) {
+                        statusClass = 'status-overdue';
+                        statusText = 'Vencido';
+                    } else if (daysRemaining <= 7) {
                         statusClass = 'status-pending';
                         statusText = 'Pendente';
                     }
@@ -1588,7 +2027,7 @@
                         <td>${horse.owner}</td>
                         <td>${this.formatDate(horse.lastReport)}</td>
                         <td>${this.formatDate(horse.nextReport)}</td>
-                        <td><strong style="color: ${daysRemaining <= 7 ? 'var(--warning)' : 'var(--success)'};">${daysRemaining} dias</strong></td>
+                        <td><strong style="color: ${daysRemaining < 0 ? 'var(--danger)' : daysRemaining <= 7 ? 'var(--warning)' : 'var(--success)'};">${daysRemaining < 0 ? `Venceu há ${Math.abs(daysRemaining)} dias` : `${daysRemaining} dias`}</strong></td>
                         <td><span class="status-badge ${statusClass}">${statusText}</span></td>
                     `;
                     tableBody.appendChild(row);
@@ -1597,6 +2036,8 @@
             
             updateHorsesTable(filter = '') {
                 const tableBody = document.getElementById('horsesTable');
+                if (!tableBody) return;
+                
                 tableBody.innerHTML = '';
                 
                 let filteredHorses = this.horses;
@@ -1628,8 +2069,11 @@
                                 <button class="action-btn btn-edit" onclick="labvetSystem.editHorse('${horse.id}')" title="Editar">
                                     <i class="fas fa-edit"></i>
                                 </button>
-                                <button class="action-btn btn-schedule" onclick="labvetSystem.scheduleReport('${horse.id}')" title="Agendar Laudo">
-                                    <i class="fas fa-calendar-plus"></i>
+                                <button class="action-btn btn-schedule" onclick="labvetSystem.scheduleReport('${horse.id}')" title="Emitir Laudo">
+                                    <i class="fas fa-file-medical"></i>
+                                </button>
+                                <button class="action-btn btn-pdf" onclick="labvetSystem.generateHorsePdf('${horse.id}')" title="Gerar PDF">
+                                    <i class="fas fa-file-pdf"></i>
                                 </button>
                             </div>
                         </td>
@@ -1640,6 +2084,8 @@
             
             updateReportsTable(filter = '') {
                 const tableBody = document.getElementById('reportsTable');
+                if (!tableBody) return;
+                
                 tableBody.innerHTML = '';
                 
                 let filteredReports = this.reports;
@@ -1652,27 +2098,32 @@
                     );
                 }
                 
-                // Ordenar por data (mais recente primeiro)
                 filteredReports.sort((a, b) => new Date(b.emissionDate) - new Date(a.emissionDate));
                 
                 filteredReports.forEach(report => {
                     const horse = this.horses.find(h => h.id === report.horseId);
                     const row = document.createElement('tr');
+                    
+                    let statusClass = '';
+                    if (report.result === 'NEGATIVO') statusClass = 'status-negative';
+                    else if (report.result === 'POSITIVO') statusClass = 'status-positive';
+                    else statusClass = 'status-inconclusive';
+                    
                     row.innerHTML = `
                         <td>${report.number}</td>
                         <td>${report.horseCode}</td>
                         <td>${report.horseName}</td>
                         <td>${this.formatDate(report.emissionDate)}</td>
                         <td>${this.formatDate(report.validityDate)}</td>
-                        <td><span class="status-badge ${report.result === 'NEGATIVO' ? 'status-negative' : 'status-positive'}">${report.result}</span></td>
+                        <td><span class="status-badge ${statusClass}">${report.result}</span></td>
                         <td>${report.vetName || '-'}</td>
                         <td>
                             <div class="action-cell">
                                 <button class="action-btn btn-view" onclick="labvetSystem.viewReport('${report.id}')" title="Visualizar">
                                     <i class="fas fa-eye"></i>
                                 </button>
-                                <button class="action-btn btn-edit" onclick="labvetSystem.editReport('${report.id}')" title="Editar">
-                                    <i class="fas fa-edit"></i>
+                                <button class="action-btn btn-pdf" onclick="labvetSystem.generateReportPdf('${report.id}')" title="Gerar PDF">
+                                    <i class="fas fa-file-pdf"></i>
                                 </button>
                             </div>
                         </td>
@@ -1683,6 +2134,8 @@
             
             updateScheduleTable() {
                 const tableBody = document.getElementById('scheduleTable');
+                if (!tableBody) return;
+                
                 tableBody.innerHTML = '';
                 
                 const today = new Date();
@@ -1722,7 +2175,7 @@
                         <td><span class="status-badge ${statusClass}">${statusText}</span></td>
                         <td>
                             <div class="action-cell">
-                                <button class="action-btn btn-schedule" onclick="labvetSystem.emitReport('${horse.id}')" title="Emitir Laudo">
+                                <button class="action-btn btn-schedule" onclick="labvetSystem.scheduleReport('${horse.id}')" title="Emitir Laudo">
                                     <i class="fas fa-file-medical"></i>
                                 </button>
                             </div>
@@ -1736,7 +2189,7 @@
                 const horse = {
                     id: this.generateId(),
                     ...horseData,
-                    createdAt: new Date().toISOString(),
+                    createdAt: new Date().toISOString().split('T')[0],
                     lastReport: null,
                     nextReport: null
                 };
@@ -1749,30 +2202,6 @@
                 return horse;
             }
             
-            updateHorse(id, horseData) {
-                const index = this.horses.findIndex(h => h.id === id);
-                if (index !== -1) {
-                    this.horses[index] = { ...this.horses[index], ...horseData };
-                    this.saveData();
-                    this.updateCounts();
-                    this.updateDashboard();
-                    return true;
-                }
-                return false;
-            }
-            
-            deleteHorse(id) {
-                const index = this.horses.findIndex(h => h.id === id);
-                if (index !== -1) {
-                    this.horses.splice(index, 1);
-                    this.saveData();
-                    this.updateCounts();
-                    this.updateDashboard();
-                    return true;
-                }
-                return false;
-            }
-            
             addReport(reportData) {
                 const report = {
                     id: this.generateId(),
@@ -1782,14 +2211,14 @@
                 
                 this.reports.push(report);
                 
-                // Atualizar datas do cavalo
                 const horseIndex = this.horses.findIndex(h => h.id === report.horseId);
                 if (horseIndex !== -1) {
                     this.horses[horseIndex].lastReport = report.emissionDate;
                     
-                    // Calcular próxima data (baseado nas configurações)
-                    const nextDate = new Date(report.emissionDate);
-                    nextDate.setMonth(nextDate.getMonth() + this.settings.defaultInterval);
+                    const nextDate = new Date(report.validityDate || report.emissionDate);
+                    if (!report.validityDate) {
+                        nextDate.setMonth(nextDate.getMonth() + this.settings.defaultInterval);
+                    }
                     this.horses[horseIndex].nextReport = nextDate.toISOString().split('T')[0];
                 }
                 
@@ -1797,7 +2226,27 @@
                 this.updateCounts();
                 this.updateDashboard();
                 
+                if (this.settings.autoPdf) {
+                    setTimeout(() => {
+                        this.generateReportPdf(report.id);
+                    }, 500);
+                }
+                
                 return report;
+            }
+            
+            addPdfReport(pdfData) {
+                const pdf = {
+                    id: this.generateId(),
+                    ...pdfData,
+                    generatedAt: new Date().toISOString()
+                };
+                
+                this.pdfReports.push(pdf);
+                this.saveData();
+                this.updateCounts();
+                
+                return pdf;
             }
             
             formatDate(dateString) {
@@ -1819,26 +2268,36 @@
                 return `LV-${year}${month}-${count.toString().padStart(3, '0')}`;
             }
             
-            // Métodos para UI
             viewHorse(id) {
                 const horse = this.horses.find(h => h.id === id);
                 if (!horse) return;
                 
-                // Mostrar informações do cavalo
-                showNotification(`Visualizando: ${horse.name} (${horse.code})`, 'info');
-                
-                // Aqui você poderia abrir um modal com todas as informações
                 const modalText = `
-                    <strong>Código:</strong> ${horse.code}<br>
-                    <strong>Nome:</strong> ${horse.name}<br>
-                    <strong>Raça:</strong> ${horse.breed || '-'}<br>
-                    <strong>Pelagem:</strong> ${horse.coat || '-'}<br>
-                    <strong>Sexo:</strong> ${horse.sex === 'M' ? 'Macho' : 'Fêmea'}<br>
-                    <strong>Idade:</strong> ${horse.age || '-'} anos<br>
-                    <strong>Proprietário:</strong> ${horse.owner}<br>
-                    <strong>Telefone:</strong> ${horse.ownerPhone || '-'}<br>
-                    <strong>Último laudo:</strong> ${horse.lastReport ? this.formatDate(horse.lastReport) : 'Nunca'}<br>
-                    <strong>Próximo laudo:</strong> ${horse.nextReport ? this.formatDate(horse.nextReport) : 'Não agendado'}
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                        <div>
+                            <strong>Código:</strong> ${horse.code}<br>
+                            <strong>Registro:</strong> ${horse.registration || '-'}<br>
+                            <strong>Nome:</strong> ${horse.name}<br>
+                            <strong>Raça:</strong> ${horse.breed || '-'}<br>
+                            <strong>Pelagem:</strong> ${horse.coat || '-'}<br>
+                            <strong>Sexo:</strong> ${horse.sex === 'M' ? 'Macho' : 'Fêmea'}<br>
+                            <strong>Idade:</strong> ${horse.age || '-'} anos<br>
+                            <strong>Local:</strong> ${horse.horseLocation || '-'}
+                        </div>
+                        <div>
+                            <strong>Proprietário:</strong> ${horse.owner}<br>
+                            <strong>CNPJ:</strong> ${horse.ownerDocument || '-'}<br>
+                            <strong>Endereço:</strong> ${horse.ownerAddress || '-'}<br>
+                            <strong>Município:</strong> ${horse.ownerCity || '-'}/${horse.ownerState || '-'}<br>
+                            <strong>Telefone:</strong> ${horse.ownerPhone || '-'}<br>
+                            <strong>Veterinário:</strong> ${horse.vetName || '-'}<br>
+                            <strong>CRMV:</strong> ${horse.vetCrmv || '-'}
+                        </div>
+                    </div>
+                    <div style="margin-top: 15px; padding-top: 15px; border-top: 1px solid #eee;">
+                        <strong>Último laudo:</strong> ${horse.lastReport ? this.formatDate(horse.lastReport) : 'Nunca'}<br>
+                        <strong>Próximo laudo:</strong> ${horse.nextReport ? this.formatDate(horse.nextReport) : 'Não agendado'}
+                    </div>
                 `;
                 
                 showModal('Informações do Cavalo', modalText, 'info');
@@ -1848,12 +2307,7 @@
                 const horse = this.horses.find(h => h.id === id);
                 if (!horse) return;
                 
-                // Preencher formulário de edição
-                showNotification(`Editando: ${horse.name}`, 'info');
-                
-                // Aqui você poderia implementar a edição
-                // Por simplicidade, vamos apenas mostrar um modal
-                showModal('Editar Cavalo', 'Funcionalidade de edição em desenvolvimento.', 'warning');
+                showNotification('Funcionalidade de edição em desenvolvimento', 'info');
             }
             
             scheduleReport(id) {
@@ -1861,63 +2315,439 @@
                 const horse = this.horses.find(h => h.id === id);
                 if (!horse) return;
                 
-                // Preencher modal de emissão de laudo
                 document.getElementById('horseModalName').textContent = horse.name;
-                document.getElementById('collectionDate').value = new Date().toISOString().split('T')[0];
-                document.getElementById('resultDate').value = new Date().toISOString().split('T')[0];
                 
-                // Preencher informações do animal
+                const today = new Date().toISOString().split('T')[0];
+                document.getElementById('sampleNumber').value = horse.registration || '2184';
+                document.getElementById('serialNumber').value = horse.code;
+                document.getElementById('collectionDate').value = today;
+                document.getElementById('receptionDate').value = today;
+                document.getElementById('initialDate').value = today;
+                document.getElementById('finalDate').value = today;
+                document.getElementById('sealNumber').value = 'OO12753';
+                
+                const validityDate = new Date();
+                validityDate.setMonth(validityDate.getMonth() + this.settings.defaultInterval);
+                document.getElementById('validityDate').value = validityDate.toISOString().split('T')[0];
+                
                 document.getElementById('horseInfo').innerHTML = `
                     <div>
                         <strong>Código:</strong> ${horse.code}<br>
-                        <strong>Raça:</strong> ${horse.breed || '-'}<br>
-                        <strong>Idade:</strong> ${horse.age || '-'} anos
+                        <strong>Registro:</strong> ${horse.registration || '-'}<br>
+                        <strong>Nome:</strong> ${horse.name}
                     </div>
                     <div>
-                        <strong>Proprietário:</strong> ${horse.owner}<br>
+                        <strong>Raça:</strong> ${horse.breed || '-'}<br>
                         <strong>Pelagem:</strong> ${horse.coat || '-'}<br>
                         <strong>Sexo:</strong> ${horse.sex === 'M' ? 'Macho' : 'Fêmea'}
                     </div>
+                    <div>
+                        <strong>Idade:</strong> ${horse.age || '-'} anos<br>
+                        <strong>Proprietário:</strong> ${horse.owner}
+                    </div>
                 `;
                 
-                // Mostrar modal
                 document.getElementById('reportModal').classList.add('active');
             }
             
-            emitReport(id) {
-                this.scheduleReport(id);
+            async generateReportPdf(reportId) {
+                const report = this.reports.find(r => r.id === reportId);
+                if (!report) return;
+                
+                const horse = this.horses.find(h => h.id === report.horseId);
+                if (!horse) return;
+                
+                showNotification('Gerando PDF do laudo...', 'info');
+                
+                try {
+                    const { jsPDF } = window.jspdf;
+                    const doc = new jsPDF();
+                    
+                    doc.setFont('helvetica', 'bold');
+                    doc.setFontSize(16);
+                    doc.setTextColor(26, 95, 122);
+                    doc.text('RELATÓRIO DE ENSAIO DE ANEMIA INFECCIOSA EQUINA', 105, 20, { align: 'center' });
+                    
+                    doc.setFontSize(10);
+                    doc.setTextColor(0, 0, 0);
+                    doc.setFont('helvetica', 'normal');
+                    
+                    doc.text(`Nº de Registro de Amostra: ${report.sampleNumber || horse.registration || '2184'}`, 20, 40);
+                    doc.text(`Nº de Série: ${report.serialNumber || horse.code}`, 20, 50);
+                    doc.text(`Nº Exame: ${report.number}`, 20, 60);
+                    
+                    doc.setFont('helvetica', 'bold');
+                    doc.text('PROPRIETÁRIO DO ANIMAL', 20, 80);
+                    doc.setFont('helvetica', 'normal');
+                    
+                    doc.text(`Nome: ${horse.owner}`, 20, 90);
+                    doc.text(`CNPJ: ${horse.ownerDocument || '10439707/0001-52'}`, 20, 100);
+                    doc.text(`Endereço: ${horse.ownerAddress || 'ESTRADA MARECHAL MALLET, 1.283'}`, 20, 110);
+                    doc.text(`Município: ${horse.ownerCity || 'RIO DE JANEIRO'}`, 20, 120);
+                    doc.text(`UF: ${horse.ownerState || 'RJ'}`, 20, 130);
+                    doc.text(`Telefone: ${horse.ownerPhone || '(21) 23014-054'}`, 20, 140);
+                    
+                    doc.setFont('helvetica', 'bold');
+                    doc.text('VETERINÁRIO REQUISITANTE RESPONSÁVEL PELA COLETA', 20, 160);
+                    doc.setFont('helvetica', 'normal');
+                    
+                    doc.text(`Nome: ${report.vetName || horse.vetName || 'BEATRIZ CHIAPPETTA'}`, 20, 170);
+                    doc.text(`CPF: ${horse.vetCpf || '122.666.797-82'}`, 20, 180);
+                    doc.text(`CRMV/UF: ${report.vetCrmv || horse.vetCrmv || '11073/RJ'}`, 20, 190);
+                    doc.text(`E-mail: ${horse.vetEmail || 'chiappettabeatriz@gmail.com'}`, 20, 200);
+                    doc.text(`Telefone: (21) 98128-7753`, 20, 210);
+                    
+                    doc.setFont('helvetica', 'bold');
+                    doc.text('ANIMAL', 20, 230);
+                    doc.setFont('helvetica', 'normal');
+                    
+                    doc.text(`Nome: ${report.horseName}`, 20, 240);
+                    doc.text(`Espécie: EQUINA`, 20, 250);
+                    doc.text(`Registro Nº/Marca: ${horse.registration || '1844'}`, 20, 260);
+                    doc.text(`Sexo: ${horse.sex || 'M'}`, 20, 270);
+                    doc.text(`Idade: ${horse.age || '8'} ANOS`, 20, 280);
+                    doc.text(`Pelagem: ${horse.coat || 'ALAZÃ'}`, 20, 290);
+                    doc.text(`Local: ${horse.horseLocation || 'ESCOLA DE EQUITAÇÃO DO EXÉRCITO'}`, 20, 300);
+                    
+                    doc.addPage();
+                    
+                    doc.setFont('helvetica', 'bold');
+                    doc.text('AMOSTRA', 20, 20);
+                    doc.setFont('helvetica', 'normal');
+                    
+                    doc.text(`Matriz: SORO SANGUÍNEO`, 20, 30);
+                    doc.text(`Data da Coleta: ${this.formatDate(report.collectionDate)}`, 20, 40);
+                    doc.text(`Data de recepção no laboratório: ${this.formatDate(report.receptionDate || report.collectionDate)}`, 20, 50);
+                    doc.text(`Lacre: ${report.sealNumber || 'OO12753'}`, 20, 60);
+                    
+                    doc.setFont('helvetica', 'bold');
+                    doc.text('AIE/IDGA', 20, 80);
+                    doc.setFont('helvetica', 'normal');
+                    
+                    doc.text(`Data inicial do IDGA: ${this.formatDate(report.initialDate || report.collectionDate)}`, 20, 90);
+                    doc.text(`Data final do IDGA: ${this.formatDate(report.finalDate || report.collectionDate)}`, 20, 100);
+                    
+                    doc.setFont('helvetica', 'bold');
+                    doc.text('Método(s) de ensaio utilizado(s):', 20, 120);
+                    doc.setFont('helvetica', 'normal');
+                    doc.text(`Imunodifusão (PORT. NR 52 DE 26/11/2018 - POP 12 recebimento de amostras e realização de ensaio de anemia infecciosa equina)`, 20, 130);
+                    
+                    doc.setFont('helvetica', 'bold');
+                    doc.text('Nome comercial:', 20, 150);
+                    doc.setFont('helvetica', 'normal');
+                    doc.text(`KIT PARA DETECÇÃO DE ANTICORPOS CONTRA O VIRUS DA ANEMIA INFECCIOSA EQUINA`, 20, 160);
+                    
+                    doc.setFont('helvetica', 'bold');
+                    doc.text('Fabricante:', 20, 180);
+                    doc.setFont('helvetica', 'normal');
+                    doc.text(`IDEXX`, 20, 190);
+                    
+                    doc.setFont('helvetica', 'bold');
+                    doc.text('Partida/lote:', 20, 210);
+                    doc.setFont('helvetica', 'normal');
+                    doc.text(`MAR2022 BU662`, 20, 220);
+                    
+                    doc.setFont('helvetica', 'bold');
+                    doc.text('Validade:', 20, 240);
+                    doc.setFont('helvetica', 'normal');
+                    doc.text(`06/02/2024`, 20, 250);
+                    
+                    doc.setFont('helvetica', 'bold');
+                    doc.setFontSize(14);
+                    doc.text('RESULTADO:', 20, 280);
+                    
+                    doc.setFontSize(20);
+                    doc.setTextColor(report.result === 'NEGATIVO' ? 40 : report.result === 'POSITIVO' ? 220 : 253, 
+                                   report.result === 'NEGATIVO' ? 167 : report.result === 'POSITIVO' ? 53 : 126, 
+                                   report.result === 'NEGATIVO' ? 69 : report.result === 'POSITIVO' ? 69 : 20);
+                    doc.text(report.result, 90, 280);
+                    
+                    doc.setFontSize(10);
+                    doc.setTextColor(0, 0, 0);
+                    doc.text(`Data de Validade: ${this.formatDate(report.validityDate)}`, 20, 300);
+                    
+                    doc.text('O RESULTADO ACIMA SE REFERE A AMOSTRA FORNECIDA PELO CLIENTE', 20, 320);
+                    
+                    doc.text(`Assinatura e carimbo do Responsável Técnico`, 20, 350);
+                    doc.text(`${this.settings.techResponsible}`, 20, 360);
+                    doc.text(`MÉDICA VETERINÁRIA`, 20, 370);
+                    doc.text(`${this.settings.techCrmv}`, 20, 380);
+                    
+                    doc.text(`Rio de Janeiro, ${this.formatDate(report.emissionDate)}.`, 20, 400);
+                    
+                    doc.text('Declaramos que o resultado acima descrito refere-se somente a amostra analisada e que este Relatório de Ensaio só poderá ser reproduzido na integra.', 20, 430);
+                    
+                    doc.text('1ª via criador', 20, 450);
+                    doc.text('FR 43 Versão 6.0 Autoridade emitente: Gerente da Qualidade', 20, 460);
+                    
+                    const pdfBlob = doc.output('blob');
+                    const pdfUrl = URL.createObjectURL(pdfBlob);
+                    
+                    const link = document.createElement('a');
+                    link.href = pdfUrl;
+                    link.download = `Laudo_${report.number}_${report.horseName}.pdf`;
+                    link.click();
+                    
+                    this.addPdfReport({
+                        reportId: report.id,
+                        reportNumber: report.number,
+                        horseName: report.horseName,
+                        fileName: `Laudo_${report.number}_${report.horseName}.pdf`
+                    });
+                    
+                    showNotification('PDF gerado com sucesso!', 'success');
+                    
+                } catch (error) {
+                    console.error('Erro ao gerar PDF:', error);
+                    showNotification('Erro ao gerar PDF', 'error');
+                }
+            }
+            
+            async generateHorsePdf(horseId) {
+                const horse = this.horses.find(h => h.id === horseId);
+                if (!horse) return;
+                
+                showNotification('Gerando PDF do cadastro...', 'info');
+                
+                try {
+                    const { jsPDF } = window.jspdf;
+                    const doc = new jsPDF();
+                    
+                    doc.setFont('helvetica', 'bold');
+                    doc.setFontSize(16);
+                    doc.setTextColor(26, 95, 122);
+                    doc.text('FICHA DE CADASTRO - EQUINO', 105, 20, { align: 'center' });
+                    
+                    doc.setFontSize(12);
+                    doc.setTextColor(0, 0, 0);
+                    
+                    doc.setFont('helvetica', 'bold');
+                    doc.text('DADOS DO ANIMAL', 20, 40);
+                    doc.setFont('helvetica', 'normal');
+                    
+                    let y = 50;
+                    doc.text(`Código: ${horse.code}`, 20, y);
+                    y += 10;
+                    doc.text(`Registro: ${horse.registration || '-'}`, 20, y);
+                    y += 10;
+                    doc.text(`Nome: ${horse.name}`, 20, y);
+                    y += 10;
+                    doc.text(`Raça: ${horse.breed || '-'}`, 20, y);
+                    y += 10;
+                    doc.text(`Pelagem: ${horse.coat || '-'}`, 20, y);
+                    y += 10;
+                    doc.text(`Sexo: ${horse.sex === 'M' ? 'Macho' : 'Fêmea'}`, 20, y);
+                    y += 10;
+                    doc.text(`Idade: ${horse.age || '-'} anos`, 20, y);
+                    y += 10;
+                    doc.text(`Local: ${horse.horseLocation || '-'}`, 20, y);
+                    y += 20;
+                    
+                    doc.setFont('helvetica', 'bold');
+                    doc.text('PROPRIETÁRIO', 20, y);
+                    doc.setFont('helvetica', 'normal');
+                    y += 10;
+                    
+                    doc.text(`Nome: ${horse.owner}`, 20, y);
+                    y += 10;
+                    doc.text(`CNPJ: ${horse.ownerDocument || '-'}`, 20, y);
+                    y += 10;
+                    doc.text(`Endereço: ${horse.ownerAddress || '-'}`, 20, y);
+                    y += 10;
+                    doc.text(`Município: ${horse.ownerCity || '-'}/${horse.ownerState || '-'}`, 20, y);
+                    y += 10;
+                    doc.text(`Telefone: ${horse.ownerPhone || '-'}`, 20, y);
+                    y += 10;
+                    doc.text(`Email: ${horse.ownerEmail || '-'}`, 20, y);
+                    y += 20;
+                    
+                    doc.setFont('helvetica', 'bold');
+                    doc.text('VETERINÁRIO RESPONSÁVEL', 20, y);
+                    doc.setFont('helvetica', 'normal');
+                    y += 10;
+                    
+                    doc.text(`Nome: ${horse.vetName || '-'}`, 20, y);
+                    y += 10;
+                    doc.text(`CPF: ${horse.vetCpf || '-'}`, 20, y);
+                    y += 10;
+                    doc.text(`CRMV/UF: ${horse.vetCrmv || '-'}`, 20, y);
+                    y += 10;
+                    doc.text(`Email: ${horse.vetEmail || '-'}`, 20, y);
+                    y += 20;
+                    
+                    doc.setFont('helvetica', 'bold');
+                    doc.text('HISTÓRICO DE LAUDOS', 20, y);
+                    doc.setFont('helvetica', 'normal');
+                    y += 10;
+                    
+                    const horseReports = this.reports.filter(r => r.horseId === horseId);
+                    if (horseReports.length > 0) {
+                        horseReports.slice(0, 5).forEach((report, index) => {
+                            doc.text(`${index + 1}. Laudo ${report.number} - ${this.formatDate(report.emissionDate)} - ${report.result}`, 20, y);
+                            y += 10;
+                        });
+                    } else {
+                        doc.text('Nenhum laudo encontrado', 20, y);
+                    }
+                    
+                    const pdfBlob = doc.output('blob');
+                    const pdfUrl = URL.createObjectURL(pdfBlob);
+                    
+                    const link = document.createElement('a');
+                    link.href = pdfUrl;
+                    link.download = `Cadastro_${horse.code}_${horse.name}.pdf`;
+                    link.click();
+                    
+                    showNotification('PDF do cadastro gerado com sucesso!', 'success');
+                    
+                } catch (error) {
+                    console.error('Erro ao gerar PDF:', error);
+                    showNotification('Erro ao gerar PDF', 'error');
+                }
             }
             
             viewReport(id) {
                 const report = this.reports.find(r => r.id === id);
                 if (!report) return;
                 
-                const modalText = `
-                    <strong>Número do Laudo:</strong> ${report.number}<br>
-                    <strong>Animal:</strong> ${report.horseName} (${report.horseCode})<br>
-                    <strong>Data da Coleta:</strong> ${this.formatDate(report.collectionDate)}<br>
-                    <strong>Data do Resultado:</strong> ${this.formatDate(report.resultDate)}<br>
-                    <strong>Método:</strong> ${report.diagnosisMethod}<br>
-                    <strong>Resultado:</strong> <span class="${report.result === 'NEGATIVO' ? 'status-negative' : 'status-positive'}">${report.result}</span><br>
-                    <strong>Validade:</strong> ${this.formatDate(report.validityDate)}<br>
-                    <strong>Observações:</strong> ${report.notes || 'Nenhuma'}
+                const horse = this.horses.find(h => h.id === report.horseId);
+                
+                let resultClass = '';
+                if (report.result === 'NEGATIVO') resultClass = 'negative';
+                else if (report.result === 'POSITIVO') resultClass = 'positive';
+                
+                const previewContent = `
+                    <div class="report-preview">
+                        <div class="report-header">
+                            <div class="report-logo">
+                                <i class="fas fa-horse-head"></i>
+                            </div>
+                            <div class="report-title">
+                                <h2>RELATÓRIO DE ENSAIO DE ANEMIA INFECCIOSA EQUINA</h2>
+                                <p>${this.settings.labName}</p>
+                                <p>${this.settings.labAddress}</p>
+                                <p>Tel: ${this.settings.labPhone} | E-mail: ${this.settings.labEmail}</p>
+                            </div>
+                        </div>
+                        
+                        <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin-bottom: 20px;">
+                            <div><strong>Nº Registro:</strong> ${report.sampleNumber || (horse ? horse.registration : '2184')}</div>
+                            <div><strong>Nº Série:</strong> ${report.serialNumber || (horse ? horse.code : 'BC 018/23')}</div>
+                            <div><strong>Nº Exame:</strong> ${report.number}</div>
+                        </div>
+                        
+                        <div style="margin-bottom: 20px;">
+                            <h3 style="color: var(--primary);">PROPRIETÁRIO DO ANIMAL</h3>
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                                <div><strong>Nome:</strong> ${horse ? horse.owner : 'ESCOLA DE EQUITAÇÃO DO EXÉRCITO'}</div>
+                                <div><strong>CNPJ:</strong> ${horse ? horse.ownerDocument : '10439707/0001-52'}</div>
+                                <div><strong>Endereço:</strong> ${horse ? horse.ownerAddress : 'ESTRADA MARECHAL MALLET, 1.283'}</div>
+                                <div><strong>Município:</strong> ${horse ? horse.ownerCity : 'RIO DE JANEIRO'} - ${horse ? horse.ownerState : 'RJ'}</div>
+                                <div><strong>Telefone:</strong> ${horse ? horse.ownerPhone : '(21) 23014-054'}</div>
+                            </div>
+                        </div>
+                        
+                        <div style="margin-bottom: 20px;">
+                            <h3 style="color: var(--primary);">VETERINÁRIO REQUISITANTE RESPONSÁVEL PELA COLETA</h3>
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                                <div><strong>Nome:</strong> ${report.vetName || (horse ? horse.vetName : 'BEATRIZ CHIAPPETTA')}</div>
+                                <div><strong>CPF:</strong> ${horse ? horse.vetCpf : '122.666.797-82'}</div>
+                                <div><strong>CRMV/UF:</strong> ${report.vetCrmv || (horse ? horse.vetCrmv : '11073/RJ')}</div>
+                                <div><strong>E-mail:</strong> ${horse ? horse.vetEmail : 'chiappettabeatriz@gmail.com'}</div>
+                                <div><strong>Telefone:</strong> (21) 98128-7753</div>
+                            </div>
+                        </div>
+                        
+                        <div style="margin-bottom: 20px;">
+                            <h3 style="color: var(--primary);">ANIMAL</h3>
+                            <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px;">
+                                <div><strong>Nome:</strong> ${report.horseName}</div>
+                                <div><strong>Espécie:</strong> EQUINA</div>
+                                <div><strong>Registro:</strong> ${horse ? horse.registration : '1844'}</div>
+                                <div><strong>Sexo:</strong> ${horse ? (horse.sex === 'M' ? 'Macho' : 'Fêmea') : 'Macho'}</div>
+                                <div><strong>Idade:</strong> ${horse ? horse.age : '8'} ANOS</div>
+                                <div><strong>Pelagem:</strong> ${horse ? horse.coat : 'ALAZÃ'}</div>
+                                <div><strong>Local:</strong> ${horse ? horse.horseLocation : 'ESCOLA DE EQUITAÇÃO DO EXÉRCITO'}</div>
+                            </div>
+                        </div>
+                        
+                        <div style="margin-bottom: 20px;">
+                            <h3 style="color: var(--primary);">AMOSTRA</h3>
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                                <div><strong>Matriz:</strong> SORO SANGUÍNEO</div>
+                                <div><strong>Data da Coleta:</strong> ${this.formatDate(report.collectionDate)}</div>
+                                <div><strong>Data de recepção:</strong> ${this.formatDate(report.receptionDate || report.collectionDate)}</div>
+                                <div><strong>Lacre:</strong> ${report.sealNumber || 'OO12753'}</div>
+                            </div>
+                        </div>
+                        
+                        <div style="margin-bottom: 20px;">
+                            <h3 style="color: var(--primary);">AIE/IDGA</h3>
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                                <div><strong>Data inicial do IDGA:</strong> ${this.formatDate(report.initialDate || report.collectionDate)}</div>
+                                <div><strong>Data final do IDGA:</strong> ${this.formatDate(report.finalDate || report.collectionDate)}</div>
+                            </div>
+                        </div>
+                        
+                        <div style="margin-bottom: 20px;">
+                            <h3 style="color: var(--primary);">MÉTODO DE ENSAIO</h3>
+                            <p>Imunodifusão (PORT. NR 52 DE 26/11/2018 - POP 12 recebimento de amostras e realização de ensaio de anemia infecciosa equina)</p>
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 10px;">
+                                <div><strong>Nome comercial:</strong> KIT PARA DETECÇÃO DE ANTICORPOS CONTRA O VIRUS DA ANEMIA INFECCIOSA EQUINA</div>
+                                <div><strong>Fabricante:</strong> IDEXX</div>
+                                <div><strong>Partida/lote:</strong> MAR2022 BU662</div>
+                                <div><strong>Validade:</strong> 06/02/2024</div>
+                            </div>
+                        </div>
+                        
+                        <div class="report-result">
+                            <h3>RESULTADO</h3>
+                            <div class="report-result-value ${resultClass}">
+                                ${report.result}
+                            </div>
+                            <p style="margin-top: 15px;"><strong>Data de Validade:</strong> ${this.formatDate(report.validityDate)}</p>
+                        </div>
+                        
+                        <p style="font-style: italic; margin-bottom: 20px;">O RESULTADO ACIMA SE REFERE A AMOSTRA FORNECIDA PELO CLIENTE</p>
+                        
+                        <div class="report-footer">
+                            <div class="report-signature">
+                                <div class="report-signature-line"></div>
+                                <p><strong>${this.settings.techResponsible}</strong></p>
+                                <p>MÉDICA VETERINÁRIA</p>
+                                <p>${this.settings.techCrmv}</p>
+                            </div>
+                            <div>
+                                <p><strong>Local e data de emissão:</strong></p>
+                                <p>Rio de Janeiro, ${this.formatDate(report.emissionDate)}.</p>
+                            </div>
+                        </div>
+                        
+                        <p style="margin-top: 20px; font-size: 0.8rem; text-align: center;">
+                            Declaramos que o resultado acima descrito refere-se somente a amostra analisada e que este Relatório de Ensaio só poderá ser reproduzido na integra.
+                        </p>
+                        <p style="margin-top: 10px; font-size: 0.8rem; text-align: center;">
+                            1ª via criador | FR 43 Versão 6.0 Autoridade emitente: Gerente da Qualidade
+                        </p>
+                    </div>
                 `;
                 
-                showModal(`Laudo ${report.number}`, modalText, 'info');
+                document.getElementById('reportPreviewContent').innerHTML = previewContent;
+                document.getElementById('previewModal').classList.add('active');
+                
+                const downloadBtn = document.getElementById('downloadPdfBtn');
+                downloadBtn.onclick = () => {
+                    this.generateReportPdf(report.id);
+                };
             }
             
-            editReport(id) {
-                showNotification('Funcionalidade de edição de laudo em desenvolvimento', 'info');
-            }
-            
-            // Emissão automática
             autoEmitReports() {
                 const today = new Date();
                 const nextMonth = new Date();
                 nextMonth.setDate(today.getDate() + 30);
                 
                 const horsesToProcess = this.horses.filter(horse => {
-                    if (!horse.nextReport) return false;
+                    if (!horse.nextReport) return true;
                     const nextReportDate = new Date(horse.nextReport);
                     return nextReportDate <= nextMonth;
                 });
@@ -1928,13 +2758,22 @@
                         horseId: horse.id,
                         horseCode: horse.code,
                         horseName: horse.name,
+                        sampleNumber: horse.registration || '2184',
+                        serialNumber: horse.code,
                         number: this.generateReportNumber(),
                         collectionDate: new Date().toISOString().split('T')[0],
-                        resultDate: new Date().toISOString().split('T')[0],
-                        diagnosisMethod: 'ELISA',
+                        receptionDate: new Date().toISOString().split('T')[0],
+                        initialDate: new Date().toISOString().split('T')[0],
+                        finalDate: new Date().toISOString().split('T')[0],
+                        sealNumber: 'OO12753',
+                        diagnosisMethod: 'IDGA',
+                        kitName: 'KIT PARA DETECÇÃO DE ANTICORPOS CONTRA O VIRUS DA ANEMIA INFECCIOSA EQUINA',
+                        kitManufacturer: 'IDEXX',
+                        kitLot: 'MAR2022 BU662',
+                        kitExpiry: '2024-02-06',
                         result: 'NEGATIVO',
-                        vetName: horse.vetName || 'Dra. Andressa Silva',
-                        vetCrmv: horse.vetCrmv || 'RJ-12345',
+                        vetName: horse.vetName || 'BEATRIZ CHIAPPETTA',
+                        vetCrmv: horse.vetCrmv || '11073/RJ',
                         notes: 'Laudo emitido automaticamente pelo sistema.',
                         validityDate: (() => {
                             const date = new Date();
@@ -1950,13 +2789,11 @@
                 return count;
             }
             
-            // Agendar todos os pendentes
             scheduleAllPending() {
                 const today = new Date();
                 
                 this.horses.forEach(horse => {
                     if (!horse.nextReport) {
-                        // Se nunca teve laudo, agendar para daqui a 15 dias
                         const nextDate = new Date();
                         nextDate.setDate(today.getDate() + this.settings.advanceDays);
                         horse.nextReport = nextDate.toISOString().split('T')[0];
@@ -1966,6 +2803,41 @@
                 this.saveData();
                 this.updateDashboard();
             }
+            
+            startTestTimer() {
+                this.testTimeLeft = 120;
+                const timerElement = document.getElementById('timerCountdown');
+                const timerContainer = document.getElementById('testTimer');
+                
+                timerContainer.style.display = 'flex';
+                
+                this.testTimer = setInterval(() => {
+                    this.testTimeLeft--;
+                    
+                    const minutes = Math.floor(this.testTimeLeft / 60);
+                    const seconds = this.testTimeLeft % 60;
+                    timerElement.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+                    
+                    if (this.testTimeLeft <= 0) {
+                        clearInterval(this.testTimer);
+                        timerContainer.style.display = 'none';
+                        
+                        const count = this.autoEmitReports();
+                        showNotification(`Teste concluído! ${count} laudos emitidos automaticamente`, 'success');
+                        this.updateDashboard();
+                    }
+                }, 1000);
+            }
+            
+            cancelTestTimer() {
+                if (this.testTimer) {
+                    clearInterval(this.testTimer);
+                    this.testTimer = null;
+                }
+                document.getElementById('testTimer').style.display = 'none';
+                this.testTimeLeft = 120;
+                showNotification('Teste automático cancelado', 'warning');
+            }
         }
         
         // Inicializar sistema
@@ -1974,7 +2846,6 @@
         // Variáveis globais
         let currentHorseId = null;
         let currentAction = null;
-        let currentActionData = null;
         
         // Funções de UI
         function showNotification(message, type = 'info') {
@@ -2004,7 +2875,6 @@
             modalTitle.textContent = title;
             modalText.innerHTML = content;
             
-            // Definir ícone baseado no tipo
             const iconClass = type === 'warning' ? 'fa-exclamation-triangle' : 
                              type === 'danger' ? 'fa-times-circle' : 
                              type === 'success' ? 'fa-check-circle' : 'fa-info-circle';
@@ -2022,11 +2892,9 @@
                 item.addEventListener('click', (e) => {
                     e.preventDefault();
                     
-                    // Atualizar navegação
                     document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
                     item.classList.add('active');
                     
-                    // Mostrar conteúdo correspondente
                     const contentType = item.getAttribute('data-content');
                     document.querySelectorAll('.content-area > div').forEach(div => {
                         div.style.display = 'none';
@@ -2036,7 +2904,6 @@
                     if (targetDiv) {
                         targetDiv.style.display = 'block';
                         
-                        // Atualizar dados da seção
                         if (contentType === 'cavalos') {
                             labvetSystem.updateHorsesTable();
                         } else if (contentType === 'laudos') {
@@ -2044,11 +2911,17 @@
                         } else if (contentType === 'agenda') {
                             labvetSystem.updateScheduleTable();
                         } else if (contentType === 'config') {
-                            // Carregar configurações
                             document.getElementById('defaultInterval').value = labvetSystem.settings.defaultInterval;
                             document.getElementById('advanceDays').value = labvetSystem.settings.advanceDays;
+                            document.getElementById('labName').value = labvetSystem.settings.labName;
+                            document.getElementById('labAddress').value = labvetSystem.settings.labAddress;
+                            document.getElementById('labPhone').value = labvetSystem.settings.labPhone;
+                            document.getElementById('labEmail').value = labvetSystem.settings.labEmail;
+                            document.getElementById('techResponsible').value = labvetSystem.settings.techResponsible;
+                            document.getElementById('techCrmv').value = labvetSystem.settings.techCrmv;
                             document.getElementById('notifyVet').value = labvetSystem.settings.notifyVet;
                             document.getElementById('notifyOwner').value = labvetSystem.settings.notifyOwner;
+                            document.getElementById('autoPdf').value = labvetSystem.settings.autoPdf;
                         }
                     }
                 });
@@ -2070,8 +2943,18 @@
             // Novo laudo manual
             document.getElementById('manualEmitBtn').addEventListener('click', () => {
                 showNotification('Selecione um cavalo na lista para emitir laudo manual', 'info');
-                // Navegar para cavalos cadastrados
                 document.querySelector('[data-content="cavalos"]').click();
+            });
+            
+            // Teste de 2 minutos
+            document.getElementById('testEmitBtn').addEventListener('click', () => {
+                labvetSystem.startTestTimer();
+                showNotification('Teste automático iniciado! Laudo será emitido em 2 minutos', 'info');
+            });
+            
+            // Cancelar timer
+            document.getElementById('cancelTimerBtn').addEventListener('click', () => {
+                labvetSystem.cancelTestTimer();
             });
             
             // Agendar todos pendentes
@@ -2084,8 +2967,15 @@
             document.getElementById('saveSettings').addEventListener('click', () => {
                 labvetSystem.settings.defaultInterval = parseInt(document.getElementById('defaultInterval').value);
                 labvetSystem.settings.advanceDays = parseInt(document.getElementById('advanceDays').value);
+                labvetSystem.settings.labName = document.getElementById('labName').value;
+                labvetSystem.settings.labAddress = document.getElementById('labAddress').value;
+                labvetSystem.settings.labPhone = document.getElementById('labPhone').value;
+                labvetSystem.settings.labEmail = document.getElementById('labEmail').value;
+                labvetSystem.settings.techResponsible = document.getElementById('techResponsible').value;
+                labvetSystem.settings.techCrmv = document.getElementById('techCrmv').value;
                 labvetSystem.settings.notifyVet = document.getElementById('notifyVet').value === 'true';
                 labvetSystem.settings.notifyOwner = document.getElementById('notifyOwner').value === 'true';
+                labvetSystem.settings.autoPdf = document.getElementById('autoPdf').value === 'true';
                 
                 labvetSystem.saveData();
                 showNotification('Configurações salvas com sucesso', 'success');
@@ -2107,6 +2997,7 @@
                 
                 const horseData = {
                     code: document.getElementById('horseCode').value,
+                    registration: document.getElementById('horseRegistration').value,
                     name: document.getElementById('horseName').value,
                     breed: document.getElementById('horseBreed').value,
                     coat: document.getElementById('horseCoat').value,
@@ -2115,19 +3006,21 @@
                     owner: document.getElementById('horseOwner').value,
                     ownerDocument: document.getElementById('ownerDocument').value,
                     ownerAddress: document.getElementById('ownerAddress').value,
+                    ownerCity: document.getElementById('ownerCity').value,
+                    ownerState: document.getElementById('ownerState').value,
                     ownerPhone: document.getElementById('ownerPhone').value,
                     ownerEmail: document.getElementById('ownerEmail').value,
                     vetName: document.getElementById('vetName').value,
-                    vetCrmv: document.getElementById('vetCrmv').value
+                    vetCpf: document.getElementById('vetCpf').value,
+                    vetCrmv: document.getElementById('vetCrmv').value,
+                    vetEmail: document.getElementById('vetEmail').value,
+                    horseLocation: document.getElementById('horseLocation').value
                 };
                 
                 labvetSystem.addHorse(horseData);
                 showNotification(`Cavalo ${horseData.name} cadastrado com sucesso!`, 'success');
                 
-                // Limpar formulário
                 e.target.reset();
-                
-                // Atualizar lista
                 labvetSystem.updateHorsesTable();
             });
             
@@ -2144,19 +3037,16 @@
                 
                 modal.classList.remove('active');
                 currentAction = null;
-                currentActionData = null;
             });
             
             document.getElementById('cancelAction').addEventListener('click', () => {
                 document.getElementById('confirmModal').classList.remove('active');
                 currentAction = null;
-                currentActionData = null;
             });
             
             document.getElementById('closeModal').addEventListener('click', () => {
                 document.getElementById('confirmModal').classList.remove('active');
                 currentAction = null;
-                currentActionData = null;
             });
             
             // Modal de emissão de laudo
@@ -2170,19 +3060,24 @@
                     horseId: currentHorseId,
                     horseCode: horse.code,
                     horseName: horse.name,
+                    sampleNumber: document.getElementById('sampleNumber').value,
+                    serialNumber: document.getElementById('serialNumber').value,
                     number: labvetSystem.generateReportNumber(),
                     collectionDate: document.getElementById('collectionDate').value,
-                    resultDate: document.getElementById('resultDate').value,
+                    receptionDate: document.getElementById('receptionDate').value,
+                    initialDate: document.getElementById('initialDate').value,
+                    finalDate: document.getElementById('finalDate').value,
+                    sealNumber: document.getElementById('sealNumber').value,
                     diagnosisMethod: document.getElementById('diagnosisMethod').value,
+                    kitName: document.getElementById('kitName').value,
+                    kitManufacturer: document.getElementById('kitManufacturer').value,
+                    kitLot: document.getElementById('kitLot').value,
+                    kitExpiry: document.getElementById('kitExpiry').value,
                     result: document.getElementById('resultType').value,
-                    vetName: horse.vetName || 'Dra. Andressa Silva',
-                    vetCrmv: horse.vetCrmv || 'RJ-12345',
+                    vetName: horse.vetName || 'BEATRIZ CHIAPPETTA',
+                    vetCrmv: horse.vetCrmv || '11073/RJ',
                     notes: document.getElementById('reportNotes').value,
-                    validityDate: (() => {
-                        const date = new Date(document.getElementById('resultDate').value);
-                        date.setMonth(date.getMonth() + labvetSystem.settings.defaultInterval);
-                        return date.toISOString().split('T')[0];
-                    })()
+                    validityDate: document.getElementById('validityDate').value
                 };
                 
                 labvetSystem.addReport(reportData);
@@ -2190,6 +3085,66 @@
                 
                 document.getElementById('reportModal').classList.remove('active');
                 currentHorseId = null;
+            });
+            
+            document.getElementById('previewReportBtn').addEventListener('click', () => {
+                if (!currentHorseId) return;
+                
+                const horse = labvetSystem.horses.find(h => h.id === currentHorseId);
+                if (!horse) return;
+                
+                const previewData = {
+                    horseId: currentHorseId,
+                    horseCode: horse.code,
+                    horseName: horse.name,
+                    sampleNumber: document.getElementById('sampleNumber').value,
+                    serialNumber: document.getElementById('serialNumber').value,
+                    number: 'PRÉ-VISUALIZAÇÃO',
+                    collectionDate: document.getElementById('collectionDate').value,
+                    receptionDate: document.getElementById('receptionDate').value,
+                    initialDate: document.getElementById('initialDate').value,
+                    finalDate: document.getElementById('finalDate').value,
+                    sealNumber: document.getElementById('sealNumber').value,
+                    result: document.getElementById('resultType').value,
+                    validityDate: document.getElementById('validityDate').value
+                };
+                
+                labvetSystem.viewReport({ id: 'preview', ...previewData, horseName: horse.name, vetName: horse.vetName, vetCrmv: horse.vetCrmv });
+            });
+            
+            document.getElementById('generatePdfBtn').addEventListener('click', () => {
+                if (!currentHorseId) return;
+                
+                const horse = labvetSystem.horses.find(h => h.id === currentHorseId);
+                if (!horse) return;
+                
+                const reportData = {
+                    id: 'temp-' + Date.now(),
+                    horseId: currentHorseId,
+                    horseCode: horse.code,
+                    horseName: horse.name,
+                    sampleNumber: document.getElementById('sampleNumber').value,
+                    serialNumber: document.getElementById('serialNumber').value,
+                    number: labvetSystem.generateReportNumber(),
+                    collectionDate: document.getElementById('collectionDate').value,
+                    receptionDate: document.getElementById('receptionDate').value,
+                    initialDate: document.getElementById('initialDate').value,
+                    finalDate: document.getElementById('finalDate').value,
+                    sealNumber: document.getElementById('sealNumber').value,
+                    diagnosisMethod: document.getElementById('diagnosisMethod').value,
+                    kitName: document.getElementById('kitName').value,
+                    kitManufacturer: document.getElementById('kitManufacturer').value,
+                    kitLot: document.getElementById('kitLot').value,
+                    kitExpiry: document.getElementById('kitExpiry').value,
+                    result: document.getElementById('resultType').value,
+                    vetName: horse.vetName || 'BEATRIZ CHIAPPETTA',
+                    vetCrmv: horse.vetCrmv || '11073/RJ',
+                    notes: document.getElementById('reportNotes').value,
+                    validityDate: document.getElementById('validityDate').value,
+                    emissionDate: new Date().toISOString().split('T')[0]
+                };
+                
+                labvetSystem.generateReportPdf(reportData);
             });
             
             document.getElementById('cancelReport').addEventListener('click', () => {
@@ -2202,6 +3157,15 @@
                 currentHorseId = null;
             });
             
+            // Modal de preview
+            document.getElementById('closePreviewModal').addEventListener('click', () => {
+                document.getElementById('previewModal').classList.remove('active');
+            });
+            
+            document.getElementById('closePreviewBtn').addEventListener('click', () => {
+                document.getElementById('previewModal').classList.remove('active');
+            });
+            
             // Fechar modais ao clicar fora
             document.querySelectorAll('.modal-overlay').forEach(modal => {
                 modal.addEventListener('click', (e) => {
@@ -2209,7 +3173,6 @@
                         modal.classList.remove('active');
                         currentHorseId = null;
                         currentAction = null;
-                        currentActionData = null;
                     }
                 });
             });
