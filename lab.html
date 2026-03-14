@@ -40,6 +40,110 @@
             padding-bottom: 50px;
         }
         
+        /* Tela de Boas-Vindas */
+        .welcome-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, var(--primary-dark), var(--primary));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            transition: opacity 0.8s ease;
+        }
+        
+        .welcome-screen.fade-out {
+            opacity: 0;
+            pointer-events: none;
+        }
+        
+        .welcome-container {
+            text-align: center;
+            max-width: 500px;
+            padding: 40px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            animation: fadeInUp 1s ease;
+        }
+        
+        .welcome-avatar {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            margin: 0 auto 25px;
+            border: 4px solid var(--secondary);
+            overflow: hidden;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+        }
+        
+        .welcome-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .welcome-title {
+            color: white;
+            font-size: 2.2rem;
+            margin-bottom: 10px;
+            font-weight: 600;
+            text-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
+        
+        .welcome-subtitle {
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 1.2rem;
+            margin-bottom: 30px;
+            font-weight: 400;
+        }
+        
+        .welcome-progress {
+            width: 100%;
+            height: 8px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+            overflow: hidden;
+            margin-top: 20px;
+        }
+        
+        .welcome-progress-bar {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(to right, var(--secondary), var(--secondary-light));
+            border-radius: 10px;
+            transition: width 3s linear;
+            box-shadow: 0 0 10px rgba(255, 154, 60, 0.5);
+        }
+        
+        .welcome-badge {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.15);
+            color: white;
+            padding: 5px 15px;
+            border-radius: 30px;
+            font-size: 0.85rem;
+            letter-spacing: 1px;
+            margin-bottom: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+        
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
         /* Header */
         .header {
             background: linear-gradient(to right, var(--primary-dark), var(--primary));
@@ -951,6 +1055,28 @@
     </style>
 </head>
 <body>
+    <!-- Tela de Boas-Vindas -->
+    <div class="welcome-screen" id="welcomeScreen">
+        <div class="welcome-container">
+            <span class="welcome-badge"><i class="fas fa-horse-head"></i> LabVet AIE</span>
+            
+            <div class="welcome-avatar">
+                <img src="perfil.jpg" alt="Dra. Andressa Alves">
+            </div>
+            
+            <h1 class="welcome-title">Bem-vinda,</h1>
+            <p class="welcome-subtitle">Dra. Andressa Alves</p>
+            
+            <div class="welcome-progress">
+                <div class="welcome-progress-bar" id="progressBar"></div>
+            </div>
+            
+            <p style="color: rgba(255,255,255,0.6); margin-top: 15px; font-size: 0.9rem;">
+                <i class="fas fa-syringe"></i> Carregando sistema automatizado de laudos...
+            </p>
+        </div>
+    </div>
+
     <!-- Header -->
     <header class="header">
         <div class="header-container">
@@ -967,7 +1093,6 @@
             <div class="user-area">
                 <div class="user-card">
                     <div class="user-avatar">
-                        <!-- Substituído o "A" pela foto de perfil -->
                         <img src="perfil.jpg" alt="Dra. Andressa Alves">
                     </div>
                     <div class="user-info">
@@ -2019,6 +2144,25 @@
         
         // Event Listeners
         document.addEventListener('DOMContentLoaded', () => {
+            // Lógica da tela de boas-vindas
+            const welcomeScreen = document.getElementById('welcomeScreen');
+            const progressBar = document.getElementById('progressBar');
+            
+            // Iniciar animação da barra de progresso
+            setTimeout(() => {
+                progressBar.style.width = '100%';
+            }, 100);
+            
+            // Remover tela de boas-vindas após 3 segundos
+            setTimeout(() => {
+                welcomeScreen.classList.add('fade-out');
+                
+                // Remover completamente após a transição
+                setTimeout(() => {
+                    welcomeScreen.style.display = 'none';
+                }, 800);
+            }, 3000);
+            
             // Navegação
             document.querySelectorAll('.nav-item').forEach(item => {
                 item.addEventListener('click', (e) => {
