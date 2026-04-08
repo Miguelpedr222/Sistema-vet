@@ -5,7 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>LabVet AIE - Sistema Automatizado de Laudos</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
     <style>
+        /* TODOS OS ESTILOS EXISTENTES PERMANECEM IGUAIS */
         :root {
             --primary: #1a5f7a;
             --primary-light: #2d8cba;
@@ -1052,6 +1057,77 @@
                 font-size: 1.4rem;
             }
         }
+
+        /* NOVOS ESTILOS ADICIONADOS */
+        .image-preview {
+            width: 120px;
+            height: 120px;
+            border-radius: 12px;
+            object-fit: cover;
+            border: 2px solid var(--primary);
+            margin-top: 10px;
+        }
+        
+        .chart-container {
+            background: white;
+            border-radius: var(--border-radius);
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: var(--box-shadow);
+        }
+        
+        .backup-actions {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+        
+        .badge-microchip {
+            background: #6c757d;
+            color: white;
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 0.7rem;
+            font-family: monospace;
+        }
+        
+        .qr-code {
+            text-align: center;
+            padding: 15px;
+            background: white;
+            border-radius: 8px;
+            margin-top: 15px;
+        }
+        
+        .report-header {
+            border-bottom: 2px solid var(--primary);
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .report-footer {
+            border-top: 1px solid #ddd;
+            padding-top: 15px;
+            margin-top: 20px;
+            font-size: 0.8rem;
+            text-align: center;
+            color: var(--gray);
+        }
+        
+        .signature-area {
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px dashed #ccc;
+            text-align: center;
+        }
+        
+        .btn-icon-only {
+            padding: 10px;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+        }
     </style>
 </head>
 <body>
@@ -1061,7 +1137,7 @@
             <span class="welcome-badge"><i class="fas fa-horse-head"></i> LabVet AIE</span>
             
             <div class="welcome-avatar">
-                <img src="perfil.jpg" alt="Dra. Andressa Alves">
+                <img src="https://via.placeholder.com/120/1a5f7a/ffffff?text=DR" alt="Dra. Andressa Alves">
             </div>
             
             <h1 class="welcome-title">Bem-vinda,</h1>
@@ -1093,7 +1169,7 @@
             <div class="user-area">
                 <div class="user-card">
                     <div class="user-avatar">
-                        <img src="perfil.jpg" alt="Dra. Andressa Alves">
+                        <img src="https://via.placeholder.com/45/1a5f7a/ffffff?text=AA" alt="Dra. Andressa Alves">
                     </div>
                     <div class="user-info">
                         <p>Dra. Andressa Alves</p>
@@ -1139,6 +1215,14 @@
                     <span>Agendamentos</span>
                     <span class="nav-badge" id="schedulesCount">0</span>
                 </a>
+                <a href="#" class="nav-item" data-content="relatorios">
+                    <i class="fas fa-chart-line"></i>
+                    <span>Relatórios</span>
+                </a>
+                <a href="#" class="nav-item" data-content="backup">
+                    <i class="fas fa-database"></i>
+                    <span>Backup</span>
+                </a>
                 <a href="#" class="nav-item" data-content="config">
                     <i class="fas fa-cogs"></i>
                     <span>Configurações</span>
@@ -1161,6 +1245,9 @@
                         </button>
                         <button class="btn btn-success" id="manualEmitBtn">
                             <i class="fas fa-plus"></i> Novo Laudo Manual
+                        </button>
+                        <button class="btn btn-warning" id="exportExcelBtn">
+                            <i class="fas fa-file-excel"></i> Exportar Excel
                         </button>
                     </div>
                 </div>
@@ -1206,6 +1293,21 @@
                             <p>Laudos Vencidos</p>
                         </div>
                     </div>
+                    
+                    <div class="stat-card purple">
+                        <div class="stat-icon purple">
+                            <i class="fas fa-chart-pie"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3 id="positiveRate">0%</h3>
+                            <p>Taxa de Positividade</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Gráficos -->
+                <div class="chart-container">
+                    <canvas id="reportsChart" width="400" height="200"></canvas>
                 </div>
                 
                 <!-- Próximos Vencimentos -->
@@ -1225,6 +1327,7 @@
                                     <th>Próximo Laudo</th>
                                     <th>Dias Restantes</th>
                                     <th>Status</th>
+                                    <th>Ações</th>
                                 </tr>
                             </thead>
                             <tbody id="dueSoonTable">
@@ -1235,7 +1338,7 @@
                 </div>
             </div>
             
-            <!-- Cadastro de Cavalo (oculto inicialmente) -->
+            <!-- Cadastro de Cavalo (melhorado) -->
             <div id="cadastro" class="form-container" style="display: none;">
                 <div class="form-header">
                     <i class="fas fa-horse" style="color: var(--primary); font-size: 1.5rem;"></i>
@@ -1245,6 +1348,12 @@
                 <form id="horseForm">
                     <div class="form-grid">
                         <div class="form-group">
+                            <label class="form-label">Foto do Cavalo</label>
+                            <input type="file" class="form-control" id="horsePhoto" accept="image/*">
+                            <img id="photoPreview" class="image-preview" style="display: none;">
+                        </div>
+                        
+                        <div class="form-group">
                             <label class="form-label">Código do Animal <span class="required">*</span></label>
                             <input type="text" class="form-control" id="horseCode" required placeholder="Ex: EQ-001">
                         </div>
@@ -1252,6 +1361,11 @@
                         <div class="form-group">
                             <label class="form-label">Nome do Animal <span class="required">*</span></label>
                             <input type="text" class="form-control" id="horseName" required placeholder="Ex: Estrela do Norte">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">Número do Microchip</label>
+                            <input type="text" class="form-control" id="microchip" placeholder="Ex: 900123000456789">
                         </div>
                         
                         <div class="form-group">
@@ -1283,6 +1397,16 @@
                         <div class="form-group">
                             <label class="form-label">Idade (anos)</label>
                             <input type="number" class="form-control" id="horseAge" min="0" max="30" placeholder="Ex: 5">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">Peso (kg)</label>
+                            <input type="number" class="form-control" id="horseWeight" step="10" placeholder="Ex: 450">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">Altura (mãos)</label>
+                            <input type="number" class="form-control" id="horseHeight" step="0.1" placeholder="Ex: 15.2">
                         </div>
                         
                         <div class="form-group">
@@ -1328,7 +1452,7 @@
                 </form>
             </div>
             
-            <!-- Lista de Cavalos Cadastrados (oculto inicialmente) -->
+            <!-- Lista de Cavalos Cadastrados -->
             <div id="cavalos" class="table-container" style="display: none;">
                 <div class="table-header">
                     <h3 class="table-title"><i class="fas fa-list"></i> Cavalos Cadastrados</h3>
@@ -1360,7 +1484,7 @@
                 </div>
             </div>
             
-            <!-- Laudos Emitidos (oculto inicialmente) -->
+            <!-- Laudos Emitidos -->
             <div id="laudos" class="table-container" style="display: none;">
                 <div class="table-header">
                     <h3 class="table-title"><i class="fas fa-file-medical"></i> Laudos Emitidos</h3>
@@ -1391,7 +1515,7 @@
                 </div>
             </div>
             
-            <!-- Agenda (oculto inicialmente) -->
+            <!-- Agenda -->
             <div id="agenda" class="table-container" style="display: none;">
                 <div class="table-header">
                     <h3 class="table-title"><i class="fas fa-calendar-alt"></i> Agenda de Laudos</h3>
@@ -1423,7 +1547,86 @@
                 </div>
             </div>
             
-            <!-- Configurações (oculto inicialmente) -->
+            <!-- Relatórios Estatísticos (NOVO) -->
+            <div id="relatorios" class="control-panel" style="display: none;">
+                <div class="panel-header">
+                    <div class="panel-title">
+                        <h2>Relatórios Estatísticos</h2>
+                        <p>Análise completa dos dados do laboratório</p>
+                    </div>
+                    <div class="panel-actions">
+                        <button class="btn btn-primary" id="printReportBtn">
+                            <i class="fas fa-print"></i> Imprimir Relatório
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="chart-container">
+                    <h3 style="margin-bottom: 15px;">Resultados por Mês</h3>
+                    <canvas id="monthlyChart" width="400" height="200"></canvas>
+                </div>
+                
+                <div class="stats-grid">
+                    <div class="stat-card blue">
+                        <div class="stat-icon blue">
+                            <i class="fas fa-calendar"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3 id="avgDaysBetween">0</h3>
+                            <p>Média dias entre laudos</p>
+                        </div>
+                    </div>
+                    
+                    <div class="stat-card green">
+                        <div class="stat-icon green">
+                            <i class="fas fa-chart-line"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3 id="mostCommonBreed">-</h3>
+                            <p>Raça mais comum</p>
+                        </div>
+                    </div>
+                    
+                    <div class="stat-card orange">
+                        <div class="stat-icon orange">
+                            <i class="fas fa-percent"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3 id="complianceRate">0%</h3>
+                            <p>Taxa de conformidade</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Backup (NOVO) -->
+            <div id="backup" class="form-container" style="display: none;">
+                <div class="form-header">
+                    <i class="fas fa-database" style="color: var(--primary); font-size: 1.5rem;"></i>
+                    <h3>Backup e Recuperação de Dados</h3>
+                </div>
+                
+                <div class="backup-actions">
+                    <button class="btn btn-primary" id="exportBackupBtn">
+                        <i class="fas fa-download"></i> Exportar Backup Completo
+                    </button>
+                    <button class="btn btn-warning" id="importBackupBtn">
+                        <i class="fas fa-upload"></i> Importar Backup
+                    </button>
+                    <button class="btn btn-danger" id="clearDataBtn">
+                        <i class="fas fa-trash"></i> Limpar Todos os Dados
+                    </button>
+                </div>
+                
+                <div style="margin-top: 30px; padding: 15px; background: #f8f9fa; border-radius: 8px;">
+                    <h4><i class="fas fa-info-circle"></i> Informações</h4>
+                    <p>• Os backups são salvos em formato JSON e podem ser importados posteriormente.</p>
+                    <p>• Recomenda-se fazer backup regularmente para evitar perda de dados.</p>
+                    <p>• O sistema salva automaticamente no localStorage do navegador.</p>
+                </div>
+            </div>
+            
+            <!-- Configurações -->
             <div id="config" class="form-container" style="display: none;">
                 <div class="form-header">
                     <i class="fas fa-cogs" style="color: var(--primary); font-size: 1.5rem;"></i>
@@ -1463,6 +1666,16 @@
                             <option value="true">Sim</option>
                             <option value="false">Não</option>
                         </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Nome do Laboratório</label>
+                        <input type="text" class="form-control" id="labName" value="LabVet AIE">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Responsável Técnico</label>
+                        <input type="text" class="form-control" id="techResponsible" value="Dra. Andressa Alves">
                     </div>
                 </div>
                 
@@ -1549,21 +1762,36 @@
                 <div class="modal-actions">
                     <button class="btn btn-secondary" id="cancelReport">Cancelar</button>
                     <button class="btn btn-success" id="generateReport">Emitir Laudo</button>
+                    <button class="btn btn-primary" id="generatePDFReport">Emitir e Gerar PDF</button>
                 </div>
             </div>
         </div>
     </div>
 
     <script>
-        // Sistema de Armazenamento
+        // Sistema de Armazenamento (MODIFICADO PARA GARANTIR PERSISTÊNCIA)
         class LabVetSystem {
             constructor() {
-                this.horses = JSON.parse(localStorage.getItem('labvet_horses')) || this.getDefaultHorses();
-                this.reports = JSON.parse(localStorage.getItem('labvet_reports')) || [];
-                this.settings = JSON.parse(localStorage.getItem('labvet_settings')) || this.getDefaultSettings();
+                // Carregar dados com fallback para dados padrão
+                this.horses = this.loadWithBackup('labvet_horses', this.getDefaultHorses());
+                this.reports = this.loadWithBackup('labvet_reports', []);
+                this.settings = this.loadWithBackup('labvet_settings', this.getDefaultSettings());
                 
                 // Inicializar dados
                 this.init();
+            }
+            
+            loadWithBackup(key, defaultValue) {
+                try {
+                    const data = localStorage.getItem(key);
+                    if (data) {
+                        return JSON.parse(data);
+                    }
+                    return defaultValue;
+                } catch (e) {
+                    console.error(`Erro ao carregar ${key}:`, e);
+                    return defaultValue;
+                }
             }
             
             getDefaultHorses() {
@@ -1576,6 +1804,9 @@
                         coat: "Alazã",
                         sex: "M",
                         age: 8,
+                        weight: 520,
+                        height: 16.2,
+                        microchip: "900123000456789",
                         owner: "Exército Brasileiro",
                         ownerDocument: "",
                         ownerAddress: "Vila Militar, Rio de Janeiro/RJ",
@@ -1585,7 +1816,8 @@
                         vetCrmv: "RJ-12345",
                         createdAt: new Date().toISOString(),
                         lastReport: "2023-10-17",
-                        nextReport: "2024-04-17"
+                        nextReport: "2024-04-17",
+                        photo: null
                     },
                     {
                         id: this.generateId(),
@@ -1595,6 +1827,9 @@
                         coat: "Baio",
                         sex: "M",
                         age: 7,
+                        weight: 480,
+                        height: 15.3,
+                        microchip: "900123000456790",
                         owner: "Exército Brasileiro",
                         ownerDocument: "",
                         ownerAddress: "Vila Militar, Rio de Janeiro/RJ",
@@ -1604,17 +1839,20 @@
                         vetCrmv: "RJ-12345",
                         createdAt: new Date().toISOString(),
                         lastReport: "2023-10-18",
-                        nextReport: "2024-04-18"
+                        nextReport: "2024-04-18",
+                        photo: null
                     }
                 ];
             }
             
             getDefaultSettings() {
                 return {
-                    defaultInterval: 6, // meses
+                    defaultInterval: 6,
                     advanceDays: 15,
                     notifyVet: true,
-                    notifyOwner: false
+                    notifyOwner: false,
+                    labName: "LabVet AIE",
+                    techResponsible: "Dra. Andressa Alves"
                 };
             }
             
@@ -1629,16 +1867,32 @@
             }
             
             saveData() {
-                localStorage.setItem('labvet_horses', JSON.stringify(this.horses));
-                localStorage.setItem('labvet_reports', JSON.stringify(this.reports));
-                localStorage.setItem('labvet_settings', JSON.stringify(this.settings));
+                try {
+                    localStorage.setItem('labvet_horses', JSON.stringify(this.horses));
+                    localStorage.setItem('labvet_reports', JSON.stringify(this.reports));
+                    localStorage.setItem('labvet_settings', JSON.stringify(this.settings));
+                    
+                    // Backup automático (salva uma cópia no sessionStorage como fallback)
+                    sessionStorage.setItem('labvet_horses_backup', JSON.stringify(this.horses));
+                    sessionStorage.setItem('labvet_reports_backup', JSON.stringify(this.reports));
+                } catch (e) {
+                    console.error('Erro ao salvar dados:', e);
+                    this.showErrorNotification('Erro ao salvar dados! Verifique o espaço disponível.');
+                }
+            }
+            
+            showErrorNotification(message) {
+                const notification = document.createElement('div');
+                notification.className = 'notification error';
+                notification.innerHTML = `<i class="fas fa-exclamation-circle"></i><span>${message}</span>`;
+                document.body.appendChild(notification);
+                setTimeout(() => notification.remove(), 5000);
             }
             
             updateCounts() {
                 document.getElementById('horsesCount').textContent = this.horses.length;
                 document.getElementById('reportsCount').textContent = this.reports.length;
                 
-                // Contar agendamentos pendentes
                 const today = new Date();
                 const nextMonth = new Date();
                 nextMonth.setDate(today.getDate() + 30);
@@ -1653,11 +1907,9 @@
             }
             
             updateDashboard() {
-                // Atualizar estatísticas
                 document.getElementById('totalHorses').textContent = this.horses.length;
                 document.getElementById('totalReports').textContent = this.reports.length;
                 
-                // Contar laudos vencidos
                 const today = new Date();
                 const overdueReports = this.horses.filter(horse => {
                     if (!horse.nextReport) return false;
@@ -1667,7 +1919,6 @@
                 
                 document.getElementById('overdueReports').textContent = overdueReports;
                 
-                // Contar agendamentos pendentes
                 const nextMonth = new Date();
                 nextMonth.setDate(today.getDate() + 30);
                 const pendingSchedules = this.horses.filter(horse => {
@@ -1678,12 +1929,61 @@
                 
                 document.getElementById('pendingSchedules').textContent = pendingSchedules;
                 
-                // Atualizar tabela de próximos vencimentos
+                // Calcular taxa de positividade
+                const positiveCount = this.reports.filter(r => r.result === 'POSITIVO').length;
+                const positiveRate = this.reports.length > 0 ? ((positiveCount / this.reports.length) * 100).toFixed(1) : 0;
+                document.getElementById('positiveRate').textContent = `${positiveRate}%`;
+                
                 this.updateDueSoonTable();
+                this.updateCharts();
+            }
+            
+            updateCharts() {
+                // Gráfico de laudos por mês
+                const months = {};
+                this.reports.forEach(report => {
+                    const date = new Date(report.emissionDate);
+                    const key = `${date.getFullYear()}-${date.getMonth() + 1}`;
+                    months[key] = (months[key] || 0) + 1;
+                });
+                
+                const sortedMonths = Object.keys(months).sort();
+                const chartData = {
+                    labels: sortedMonths.map(m => {
+                        const [year, month] = m.split('-');
+                        return `${month}/${year}`;
+                    }),
+                    datasets: [{
+                        label: 'Laudos Emitidos',
+                        data: sortedMonths.map(m => months[m]),
+                        backgroundColor: 'rgba(26, 95, 122, 0.6)',
+                        borderColor: '#1a5f7a',
+                        borderWidth: 2
+                    }]
+                };
+                
+                const ctx = document.getElementById('reportsChart')?.getContext('2d');
+                if (ctx && window.reportsChart) {
+                    window.reportsChart.destroy();
+                }
+                if (ctx) {
+                    window.reportsChart = new Chart(ctx, {
+                        type: 'bar',
+                        data: chartData,
+                        options: {
+                            responsive: true,
+                            plugins: {
+                                legend: { position: 'top' },
+                                title: { display: true, text: 'Laudos por Mês' }
+                            }
+                        }
+                    });
+                }
             }
             
             updateDueSoonTable() {
                 const tableBody = document.getElementById('dueSoonTable');
+                if (!tableBody) return;
                 tableBody.innerHTML = '';
                 
                 const today = new Date();
@@ -1717,6 +2017,13 @@
                         <td>${this.formatDate(horse.nextReport)}</td>
                         <td><strong style="color: ${daysRemaining <= 7 ? 'var(--warning)' : 'var(--success)'};">${daysRemaining} dias</strong></td>
                         <td><span class="status-badge ${statusClass}">${statusText}</span></td>
+                        <td>
+                            <div class="action-cell">
+                                <button class="action-btn btn-schedule" onclick="labvetSystem.emitReport('${horse.id}')" title="Emitir Laudo">
+                                    <i class="fas fa-file-medical"></i>
+                                </button>
+                            </div>
+                        </td>
                     `;
                     tableBody.appendChild(row);
                 });
@@ -1724,6 +2031,7 @@
             
             updateHorsesTable(filter = '') {
                 const tableBody = document.getElementById('horsesTable');
+                if (!tableBody) return;
                 tableBody.innerHTML = '';
                 
                 let filteredHorses = this.horses;
@@ -1758,6 +2066,9 @@
                                 <button class="action-btn btn-schedule" onclick="labvetSystem.scheduleReport('${horse.id}')" title="Agendar Laudo">
                                     <i class="fas fa-calendar-plus"></i>
                                 </button>
+                                <button class="action-btn btn-delete" onclick="labvetSystem.deleteHorseConfirm('${horse.id}')" title="Excluir">
+                                    <i class="fas fa-trash"></i>
+                                </button>
                             </div>
                         </td>
                     `;
@@ -1767,6 +2078,7 @@
             
             updateReportsTable(filter = '') {
                 const tableBody = document.getElementById('reportsTable');
+                if (!tableBody) return;
                 tableBody.innerHTML = '';
                 
                 let filteredReports = this.reports;
@@ -1779,11 +2091,9 @@
                     );
                 }
                 
-                // Ordenar por data (mais recente primeiro)
                 filteredReports.sort((a, b) => new Date(b.emissionDate) - new Date(a.emissionDate));
                 
                 filteredReports.forEach(report => {
-                    const horse = this.horses.find(h => h.id === report.horseId);
                     const row = document.createElement('tr');
                     row.innerHTML = `
                         <td>${report.number}</td>
@@ -1798,8 +2108,8 @@
                                 <button class="action-btn btn-view" onclick="labvetSystem.viewReport('${report.id}')" title="Visualizar">
                                     <i class="fas fa-eye"></i>
                                 </button>
-                                <button class="action-btn btn-edit" onclick="labvetSystem.editReport('${report.id}')" title="Editar">
-                                    <i class="fas fa-edit"></i>
+                                <button class="action-btn btn-primary" onclick="labvetSystem.generatePDF('${report.id}')" title="Gerar PDF">
+                                    <i class="fas fa-file-pdf"></i>
                                 </button>
                             </div>
                         </td>
@@ -1810,6 +2120,7 @@
             
             updateScheduleTable() {
                 const tableBody = document.getElementById('scheduleTable');
+                if (!tableBody) return;
                 tableBody.innerHTML = '';
                 
                 const today = new Date();
@@ -1859,10 +2170,11 @@
                 });
             }
             
-            addHorse(horseData) {
+            addHorse(horseData, photoBase64 = null) {
                 const horse = {
                     id: this.generateId(),
                     ...horseData,
+                    photo: photoBase64,
                     createdAt: new Date().toISOString(),
                     lastReport: null,
                     nextReport: null
@@ -1872,6 +2184,7 @@
                 this.saveData();
                 this.updateCounts();
                 this.updateDashboard();
+                this.updateHorsesTable();
                 
                 return horse;
             }
@@ -1891,13 +2204,25 @@
             deleteHorse(id) {
                 const index = this.horses.findIndex(h => h.id === id);
                 if (index !== -1) {
+                    const horseName = this.horses[index].name;
                     this.horses.splice(index, 1);
                     this.saveData();
                     this.updateCounts();
                     this.updateDashboard();
+                    this.updateHorsesTable();
+                    showNotification(`Cavalo ${horseName} removido com sucesso`, 'success');
                     return true;
                 }
                 return false;
+            }
+            
+            deleteHorseConfirm(id) {
+                const horse = this.horses.find(h => h.id === id);
+                if (horse) {
+                    showModal('Confirmar Exclusão', `Tem certeza que deseja excluir o cavalo <strong>${horse.name}</strong>? Esta ação não pode ser desfeita.`, 'danger');
+                    currentAction = 'deleteHorse';
+                    currentActionData = { id };
+                }
             }
             
             addReport(reportData) {
@@ -1909,12 +2234,10 @@
                 
                 this.reports.push(report);
                 
-                // Atualizar datas do cavalo
                 const horseIndex = this.horses.findIndex(h => h.id === report.horseId);
                 if (horseIndex !== -1) {
                     this.horses[horseIndex].lastReport = report.emissionDate;
                     
-                    // Calcular próxima data (baseado nas configurações)
                     const nextDate = new Date(report.emissionDate);
                     nextDate.setMonth(nextDate.getMonth() + this.settings.defaultInterval);
                     this.horses[horseIndex].nextReport = nextDate.toISOString().split('T')[0];
@@ -1923,6 +2246,7 @@
                 this.saveData();
                 this.updateCounts();
                 this.updateDashboard();
+                this.updateReportsTable();
                 
                 return report;
             }
@@ -1946,98 +2270,93 @@
                 return `LV-${year}${month}-${count.toString().padStart(3, '0')}`;
             }
             
-            // Métodos para UI
-            viewHorse(id) {
-                const horse = this.horses.find(h => h.id === id);
-                if (!horse) return;
+            async generatePDF(reportId) {
+                const report = this.reports.find(r => r.id === reportId);
+                if (!report) {
+                    showNotification('Laudo não encontrado', 'error');
+                    return;
+                }
                 
-                // Mostrar informações do cavalo
-                showNotification(`Visualizando: ${horse.name} (${horse.code})`, 'info');
+                const horse = this.horses.find(h => h.id === report.horseId);
+                if (!horse) {
+                    showNotification('Cavalo não encontrado', 'error');
+                    return;
+                }
                 
-                // Aqui você poderia abrir um modal com todas as informações
-                const modalText = `
-                    <strong>Código:</strong> ${horse.code}<br>
-                    <strong>Nome:</strong> ${horse.name}<br>
-                    <strong>Raça:</strong> ${horse.breed || '-'}<br>
-                    <strong>Pelagem:</strong> ${horse.coat || '-'}<br>
-                    <strong>Sexo:</strong> ${horse.sex === 'M' ? 'Macho' : 'Fêmea'}<br>
-                    <strong>Idade:</strong> ${horse.age || '-'} anos<br>
-                    <strong>Proprietário:</strong> ${horse.owner}<br>
-                    <strong>Telefone:</strong> ${horse.ownerPhone || '-'}<br>
-                    <strong>Último laudo:</strong> ${horse.lastReport ? this.formatDate(horse.lastReport) : 'Nunca'}<br>
-                    <strong>Próximo laudo:</strong> ${horse.nextReport ? this.formatDate(horse.nextReport) : 'Não agendado'}
-                `;
+                // Criar elemento temporário para o PDF
+                const pdfContent = document.createElement('div');
+                pdfContent.style.padding = '40px';
+                pdfContent.style.fontFamily = 'Arial, sans-serif';
+                pdfContent.style.backgroundColor = 'white';
+                pdfContent.style.width = '800px';
                 
-                showModal('Informações do Cavalo', modalText, 'info');
-            }
-            
-            editHorse(id) {
-                const horse = this.horses.find(h => h.id === id);
-                if (!horse) return;
-                
-                // Preencher formulário de edição
-                showNotification(`Editando: ${horse.name}`, 'info');
-                
-                // Aqui você poderia implementar a edição
-                // Por simplicidade, vamos apenas mostrar um modal
-                showModal('Editar Cavalo', 'Funcionalidade de edição em desenvolvimento.', 'warning');
-            }
-            
-            scheduleReport(id) {
-                currentHorseId = id;
-                const horse = this.horses.find(h => h.id === id);
-                if (!horse) return;
-                
-                // Preencher modal de emissão de laudo
-                document.getElementById('horseModalName').textContent = horse.name;
-                document.getElementById('collectionDate').value = new Date().toISOString().split('T')[0];
-                document.getElementById('resultDate').value = new Date().toISOString().split('T')[0];
-                
-                // Preencher informações do animal
-                document.getElementById('horseInfo').innerHTML = `
-                    <div>
-                        <strong>Código:</strong> ${horse.code}<br>
-                        <strong>Raça:</strong> ${horse.breed || '-'}<br>
-                        <strong>Idade:</strong> ${horse.age || '-'} anos
+                pdfContent.innerHTML = `
+                    <div style="text-align: center; margin-bottom: 30px;">
+                        <h1 style="color: #1a5f7a;">${this.settings.labName || 'LabVet AIE'}</h1>
+                        <h2 style="color: #ff9a3c;">LAUDO VETERINÁRIO</h2>
+                        <p>Sistema Automatizado de Laudos - IA Generativa</p>
                     </div>
-                    <div>
-                        <strong>Proprietário:</strong> ${horse.owner}<br>
-                        <strong>Pelagem:</strong> ${horse.coat || '-'}<br>
-                        <strong>Sexo:</strong> ${horse.sex === 'M' ? 'Macho' : 'Fêmea'}
+                    
+                    <div style="border: 1px solid #ddd; padding: 20px; margin-bottom: 20px;">
+                        <h3 style="color: #1a5f7a; margin-bottom: 15px;">Dados do Animal</h3>
+                        <table style="width: 100%; border-collapse: collapse;">
+                            <tr><td style="padding: 8px; border-bottom: 1px solid #eee;"><strong>Código:</strong></td><td style="padding: 8px; border-bottom: 1px solid #eee;">${horse.code}</td></tr>
+                            <tr><td style="padding: 8px; border-bottom: 1px solid #eee;"><strong>Nome:</strong></td><td style="padding: 8px; border-bottom: 1px solid #eee;">${horse.name}</td></tr>
+                            <tr><td style="padding: 8px; border-bottom: 1px solid #eee;"><strong>Raça:</strong></td><td style="padding: 8px; border-bottom: 1px solid #eee;">${horse.breed || '-'}</td></tr>
+                            <tr><td style="padding: 8px; border-bottom: 1px solid #eee;"><strong>Pelagem:</strong></td><td style="padding: 8px; border-bottom: 1px solid #eee;">${horse.coat || '-'}</td></tr>
+                            <tr><td style="padding: 8px; border-bottom: 1px solid #eee;"><strong>Sexo:</strong></td><td style="padding: 8px; border-bottom: 1px solid #eee;">${horse.sex === 'M' ? 'Macho' : 'Fêmea'}</td></tr>
+                            <tr><td style="padding: 8px; border-bottom: 1px solid #eee;"><strong>Idade:</strong></td><td style="padding: 8px; border-bottom: 1px solid #eee;">${horse.age || '-'} anos</td></tr>
+                            ${horse.microchip ? `<tr><td style="padding: 8px; border-bottom: 1px solid #eee;"><strong>Microchip:</strong></td><td style="padding: 8px; border-bottom: 1px solid #eee;">${horse.microchip}</td></tr>` : ''}
+                            <tr><td style="padding: 8px; border-bottom: 1px solid #eee;"><strong>Proprietário:</strong></td><td style="padding: 8px; border-bottom: 1px solid #eee;">${horse.owner}</td></tr>
+                        </table>
+                    </div>
+                    
+                    <div style="border: 1px solid #ddd; padding: 20px; margin-bottom: 20px;">
+                        <h3 style="color: #1a5f7a; margin-bottom: 15px;">Resultados Laboratoriais</h3>
+                        <table style="width: 100%; border-collapse: collapse;">
+                            <tr><td style="padding: 8px; border-bottom: 1px solid #eee;"><strong>Nº do Laudo:</strong></td><td style="padding: 8px; border-bottom: 1px solid #eee;">${report.number}</td></tr>
+                            <tr><td style="padding: 8px; border-bottom: 1px solid #eee;"><strong>Data da Coleta:</strong></td><td style="padding: 8px; border-bottom: 1px solid #eee;">${this.formatDate(report.collectionDate)}</td></tr>
+                            <tr><td style="padding: 8px; border-bottom: 1px solid #eee;"><strong>Data do Resultado:</strong></td><td style="padding: 8px; border-bottom: 1px solid #eee;">${this.formatDate(report.resultDate)}</td></tr>
+                            <tr><td style="padding: 8px; border-bottom: 1px solid #eee;"><strong>Método:</strong></td><td style="padding: 8px; border-bottom: 1px solid #eee;">${report.diagnosisMethod}</td></tr>
+                            <tr><td style="padding: 8px; border-bottom: 1px solid #eee;"><strong>Resultado:</strong></td><td style="padding: 8px; border-bottom: 1px solid #eee;"><span style="background: ${report.result === 'NEGATIVO' ? '#d4efdf' : '#fadbd8'}; padding: 5px 15px; border-radius: 20px; font-weight: bold;">${report.result}</span></td></tr>
+                            <tr><td style="padding: 8px; border-bottom: 1px solid #eee;"><strong>Validade:</strong></td><td style="padding: 8px; border-bottom: 1px solid #eee;">${this.formatDate(report.validityDate)}</td></tr>
+                        </table>
+                        ${report.notes ? `<div style="margin-top: 15px;"><strong>Observações:</strong><br>${report.notes}</div>` : ''}
+                    </div>
+                    
+                    <div class="signature-area" style="margin-top: 30px; padding-top: 20px; border-top: 1px dashed #ccc; text-align: center;">
+                        <p>_________________________________________</p>
+                        <p><strong>${report.vetName || this.settings.techResponsible}</strong></p>
+                        <p>CRMV: ${report.vetCrmv || '-'}</p>
+                        <p style="font-size: 0.8rem; color: #666;">Responsável Técnico</p>
+                    </div>
+                    
+                    <div style="margin-top: 20px; text-align: center; font-size: 0.7rem; color: #999;">
+                        <p>Documento emitido eletronicamente por ${this.settings.labName || 'LabVet AIE'} em ${new Date().toLocaleDateString('pt-BR')}</p>
+                        <p>Validação automática - Sistema de Laudos Inteligente</p>
                     </div>
                 `;
                 
-                // Mostrar modal
-                document.getElementById('reportModal').classList.add('active');
-            }
-            
-            emitReport(id) {
-                this.scheduleReport(id);
-            }
-            
-            viewReport(id) {
-                const report = this.reports.find(r => r.id === id);
-                if (!report) return;
+                document.body.appendChild(pdfContent);
                 
-                const modalText = `
-                    <strong>Número do Laudo:</strong> ${report.number}<br>
-                    <strong>Animal:</strong> ${report.horseName} (${report.horseCode})<br>
-                    <strong>Data da Coleta:</strong> ${this.formatDate(report.collectionDate)}<br>
-                    <strong>Data do Resultado:</strong> ${this.formatDate(report.resultDate)}<br>
-                    <strong>Método:</strong> ${report.diagnosisMethod}<br>
-                    <strong>Resultado:</strong> <span class="${report.result === 'NEGATIVO' ? 'status-negative' : 'status-positive'}">${report.result}</span><br>
-                    <strong>Validade:</strong> ${this.formatDate(report.validityDate)}<br>
-                    <strong>Observações:</strong> ${report.notes || 'Nenhuma'}
-                `;
-                
-                showModal(`Laudo ${report.number}`, modalText, 'info');
+                try {
+                    const { jsPDF } = window.jspdf;
+                    const canvas = await html2canvas(pdfContent, { scale: 2 });
+                    const imgData = canvas.toDataURL('image/png');
+                    const pdf = new jsPDF('p', 'mm', 'a4');
+                    const imgWidth = 210;
+                    const imgHeight = (canvas.height * imgWidth) / canvas.width;
+                    pdf.addImage(imgData, 'PNG', 0, 0, imgWidth, imgHeight);
+                    pdf.save(`Laudo_${report.number}_${horse.name}.pdf`);
+                    showNotification(`PDF gerado: Laudo ${report.number}`, 'success');
+                } catch (error) {
+                    console.error('Erro ao gerar PDF:', error);
+                    showNotification('Erro ao gerar PDF. Tente novamente.', 'error');
+                } finally {
+                    document.body.removeChild(pdfContent);
+                }
             }
             
-            editReport(id) {
-                showNotification('Funcionalidade de edição de laudo em desenvolvimento', 'info');
-            }
-            
-            // Emissão automática
             autoEmitReports() {
                 const today = new Date();
                 const nextMonth = new Date();
@@ -2060,8 +2379,8 @@
                         resultDate: new Date().toISOString().split('T')[0],
                         diagnosisMethod: 'ELISA',
                         result: 'NEGATIVO',
-                        vetName: horse.vetName || 'Dra. Andressa Alves',
-                        vetCrmv: horse.vetCrmv || 'RJ-12345',
+                        vetName: horse.vetName || this.settings.techResponsible,
+                        vetCrmv: horse.vetCrmv || '-',
                         notes: 'Laudo emitido automaticamente pelo sistema.',
                         validityDate: (() => {
                             const date = new Date();
@@ -2077,13 +2396,11 @@
                 return count;
             }
             
-            // Agendar todos os pendentes
             scheduleAllPending() {
                 const today = new Date();
                 
                 this.horses.forEach(horse => {
                     if (!horse.nextReport) {
-                        // Se nunca teve laudo, agendar para daqui a 15 dias
                         const nextDate = new Date();
                         nextDate.setDate(today.getDate() + this.settings.advanceDays);
                         horse.nextReport = nextDate.toISOString().split('T')[0];
@@ -2093,17 +2410,291 @@
                 this.saveData();
                 this.updateDashboard();
             }
+            
+            exportToExcel() {
+                const data = this.horses.map(horse => ({
+                    'Código': horse.code,
+                    'Nome': horse.name,
+                    'Raça': horse.breed || '-',
+                    'Pelagem': horse.coat || '-',
+                    'Sexo': horse.sex === 'M' ? 'Macho' : 'Fêmea',
+                    'Idade': horse.age || '-',
+                    'Proprietário': horse.owner,
+                    'Telefone': horse.ownerPhone || '-',
+                    'Último Laudo': horse.lastReport ? this.formatDate(horse.lastReport) : 'Nunca',
+                    'Próximo Laudo': horse.nextReport ? this.formatDate(horse.nextReport) : 'Não agendado',
+                    'Microchip': horse.microchip || '-'
+                }));
+                
+                const ws = XLSX.utils.json_to_sheet(data);
+                const wb = XLSX.utils.book_new();
+                XLSX.utils.book_append_sheet(wb, ws, 'Cavalos');
+                XLSX.writeFile(wb, `LabVet_Cavalos_${new Date().toISOString().split('T')[0]}.xlsx`);
+                showNotification('Arquivo Excel gerado com sucesso!', 'success');
+            }
+            
+            exportBackup() {
+                const backup = {
+                    horses: this.horses,
+                    reports: this.reports,
+                    settings: this.settings,
+                    exportDate: new Date().toISOString()
+                };
+                
+                const dataStr = JSON.stringify(backup, null, 2);
+                const blob = new Blob([dataStr], { type: 'application/json' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `labvet_backup_${new Date().toISOString().split('T')[0]}.json`;
+                a.click();
+                URL.revokeObjectURL(url);
+                showNotification('Backup exportado com sucesso!', 'success');
+            }
+            
+            importBackup(file) {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    try {
+                        const backup = JSON.parse(e.target.result);
+                        if (backup.horses) this.horses = backup.horses;
+                        if (backup.reports) this.reports = backup.reports;
+                        if (backup.settings) this.settings = backup.settings;
+                        this.saveData();
+                        this.updateCounts();
+                        this.updateDashboard();
+                        this.updateHorsesTable();
+                        this.updateReportsTable();
+                        this.updateScheduleTable();
+                        showNotification('Backup importado com sucesso!', 'success');
+                    } catch (error) {
+                        showNotification('Erro ao importar backup. Arquivo inválido.', 'error');
+                    }
+                };
+                reader.readAsText(file);
+            }
+            
+            clearAllData() {
+                this.horses = [];
+                this.reports = [];
+                this.saveData();
+                this.updateCounts();
+                this.updateDashboard();
+                this.updateHorsesTable();
+                this.updateReportsTable();
+                this.updateScheduleTable();
+                showNotification('Todos os dados foram removidos!', 'warning');
+            }
+            
+            // Métodos para UI
+            viewHorse(id) {
+                const horse = this.horses.find(h => h.id === id);
+                if (!horse) return;
+                
+                const modalText = `
+                    <div style="display: flex; gap: 20px;">
+                        ${horse.photo ? `<img src="${horse.photo}" style="width: 100px; height: 100px; border-radius: 10px; object-fit: cover;">` : ''}
+                        <div style="flex: 1;">
+                            <p><strong>Código:</strong> ${horse.code}</p>
+                            <p><strong>Nome:</strong> ${horse.name}</p>
+                            <p><strong>Raça:</strong> ${horse.breed || '-'}</p>
+                            <p><strong>Pelagem:</strong> ${horse.coat || '-'}</p>
+                            <p><strong>Sexo:</strong> ${horse.sex === 'M' ? 'Macho' : 'Fêmea'}</p>
+                            <p><strong>Idade:</strong> ${horse.age || '-'} anos</p>
+                            ${horse.weight ? `<p><strong>Peso:</strong> ${horse.weight} kg</p>` : ''}
+                            ${horse.height ? `<p><strong>Altura:</strong> ${horse.height} mãos</p>` : ''}
+                            ${horse.microchip ? `<p><strong>Microchip:</strong> <span class="badge-microchip">${horse.microchip}</span></p>` : ''}
+                            <p><strong>Proprietário:</strong> ${horse.owner}</p>
+                            <p><strong>Telefone:</strong> ${horse.ownerPhone || '-'}</p>
+                            <p><strong>Último laudo:</strong> ${horse.lastReport ? this.formatDate(horse.lastReport) : 'Nunca'}</p>
+                            <p><strong>Próximo laudo:</strong> ${horse.nextReport ? this.formatDate(horse.nextReport) : 'Não agendado'}</p>
+                        </div>
+                    </div>
+                `;
+                
+                showModal('Informações do Cavalo', modalText, 'info');
+            }
+            
+            editHorse(id) {
+                const horse = this.horses.find(h => h.id === id);
+                if (!horse) return;
+                
+                // Preencher formulário de edição (simplificado)
+                showNotification(`Editando: ${horse.name}`, 'info');
+                showModal('Editar Cavalo', 'Funcionalidade de edição em desenvolvimento. Para editar, exclua e recadastre.', 'warning');
+            }
+            
+            scheduleReport(id) {
+                currentHorseId = id;
+                const horse = this.horses.find(h => h.id === id);
+                if (!horse) return;
+                
+                document.getElementById('horseModalName').textContent = horse.name;
+                document.getElementById('collectionDate').value = new Date().toISOString().split('T')[0];
+                document.getElementById('resultDate').value = new Date().toISOString().split('T')[0];
+                
+                document.getElementById('horseInfo').innerHTML = `
+                    <div>
+                        <strong>Código:</strong> ${horse.code}<br>
+                        <strong>Raça:</strong> ${horse.breed || '-'}<br>
+                        <strong>Idade:</strong> ${horse.age || '-'} anos
+                        ${horse.microchip ? `<br><strong>Microchip:</strong> ${horse.microchip}` : ''}
+                    </div>
+                    <div>
+                        <strong>Proprietário:</strong> ${horse.owner}<br>
+                        <strong>Pelagem:</strong> ${horse.coat || '-'}<br>
+                        <strong>Sexo:</strong> ${horse.sex === 'M' ? 'Macho' : 'Fêmea'}
+                    </div>
+                `;
+                
+                document.getElementById('reportModal').classList.add('active');
+            }
+            
+            emitReport(id) {
+                this.scheduleReport(id);
+            }
+            
+            viewReport(id) {
+                const report = this.reports.find(r => r.id === id);
+                if (!report) return;
+                
+                const horse = this.horses.find(h => h.id === report.horseId);
+                
+                const modalText = `
+                    <strong>Número do Laudo:</strong> ${report.number}<br>
+                    <strong>Animal:</strong> ${report.horseName} (${report.horseCode})<br>
+                    <strong>Data da Coleta:</strong> ${this.formatDate(report.collectionDate)}<br>
+                    <strong>Data do Resultado:</strong> ${this.formatDate(report.resultDate)}<br>
+                    <strong>Método:</strong> ${report.diagnosisMethod}<br>
+                    <strong>Resultado:</strong> <span class="${report.result === 'NEGATIVO' ? 'status-negative' : 'status-positive'}" style="padding: 3px 10px; border-radius: 15px;">${report.result}</span><br>
+                    <strong>Validade:</strong> ${this.formatDate(report.validityDate)}<br>
+                    <strong>Veterinário:</strong> ${report.vetName || '-'}<br>
+                    <strong>Observações:</strong> ${report.notes || 'Nenhuma'}
+                `;
+                
+                showModal(`Laudo ${report.number}`, modalText, 'info');
+            }
+            
+            generateReportAndPDF() {
+                if (!currentHorseId) return;
+                
+                const horse = this.horses.find(h => h.id === currentHorseId);
+                if (!horse) return;
+                
+                const reportData = {
+                    horseId: currentHorseId,
+                    horseCode: horse.code,
+                    horseName: horse.name,
+                    number: this.generateReportNumber(),
+                    collectionDate: document.getElementById('collectionDate').value,
+                    resultDate: document.getElementById('resultDate').value,
+                    diagnosisMethod: document.getElementById('diagnosisMethod').value,
+                    result: document.getElementById('resultType').value,
+                    vetName: horse.vetName || this.settings.techResponsible,
+                    vetCrmv: horse.vetCrmv || '-',
+                    notes: document.getElementById('reportNotes').value,
+                    validityDate: (() => {
+                        const date = new Date(document.getElementById('resultDate').value);
+                        date.setMonth(date.getMonth() + this.settings.defaultInterval);
+                        return date.toISOString().split('T')[0];
+                    })()
+                };
+                
+                const newReport = this.addReport(reportData);
+                showNotification(`Laudo ${reportData.number} emitido para ${horse.name}`, 'success');
+                
+                document.getElementById('reportModal').classList.remove('active');
+                
+                // Gerar PDF automaticamente
+                setTimeout(() => {
+                    this.generatePDF(newReport.id);
+                }, 500);
+                
+                currentHorseId = null;
+            }
+            
+            updateRelatorios() {
+                // Calcular média de dias entre laudos
+                let totalDays = 0;
+                let count = 0;
+                for (let i = 1; i < this.reports.length; i++) {
+                    const prev = new Date(this.reports[i-1].emissionDate);
+                    const curr = new Date(this.reports[i].emissionDate);
+                    const days = Math.abs((curr - prev) / (1000 * 60 * 60 * 24));
+                    if (days > 0 && days < 365) {
+                        totalDays += days;
+                        count++;
+                    }
+                }
+                const avgDays = count > 0 ? Math.round(totalDays / count) : 0;
+                document.getElementById('avgDaysBetween').textContent = avgDays;
+                
+                // Raça mais comum
+                const breeds = {};
+                this.horses.forEach(horse => {
+                    if (horse.breed) {
+                        breeds[horse.breed] = (breeds[horse.breed] || 0) + 1;
+                    }
+                });
+                let mostCommon = '-';
+                let maxCount = 0;
+                for (const [breed, countB] of Object.entries(breeds)) {
+                    if (countB > maxCount) {
+                        maxCount = countB;
+                        mostCommon = breed;
+                    }
+                }
+                document.getElementById('mostCommonBreed').textContent = mostCommon;
+                
+                // Taxa de conformidade (laudos em dia)
+                const today = new Date();
+                const onTime = this.horses.filter(horse => {
+                    if (!horse.nextReport) return true;
+                    return new Date(horse.nextReport) >= today;
+                }).length;
+                const compliance = this.horses.length > 0 ? ((onTime / this.horses.length) * 100).toFixed(1) : 100;
+                document.getElementById('complianceRate').textContent = `${compliance}%`;
+                
+                // Gráfico mensal
+                const months = {};
+                this.reports.forEach(report => {
+                    const date = new Date(report.emissionDate);
+                    const key = `${date.getFullYear()}-${date.getMonth() + 1}`;
+                    months[key] = (months[key] || 0) + 1;
+                });
+                
+                const sortedMonths = Object.keys(months).sort();
+                const ctx = document.getElementById('monthlyChart')?.getContext('2d');
+                if (ctx && window.monthlyChart) window.monthlyChart.destroy();
+                if (ctx) {
+                    window.monthlyChart = new Chart(ctx, {
+                        type: 'line',
+                        data: {
+                            labels: sortedMonths.map(m => {
+                                const [year, month] = m.split('-');
+                                return `${month}/${year}`;
+                            }),
+                            datasets: [{
+                                label: 'Laudos por Mês',
+                                data: sortedMonths.map(m => months[m]),
+                                borderColor: '#ff9a3c',
+                                backgroundColor: 'rgba(255, 154, 60, 0.1)',
+                                tension: 0.4,
+                                fill: true
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            plugins: {
+                                legend: { position: 'top' }
+                            }
+                        }
+                    });
+                }
+            }
         }
         
-        // Inicializar sistema
-        const labvetSystem = new LabVetSystem();
-        
-        // Variáveis globais
-        let currentHorseId = null;
-        let currentAction = null;
-        let currentActionData = null;
-        
-        // Funções de UI
+        // Funções globais de UI
         function showNotification(message, type = 'info') {
             const notification = document.createElement('div');
             notification.className = `notification ${type}`;
@@ -2116,9 +2707,7 @@
             
             setTimeout(() => {
                 notification.style.animation = 'slideOut 0.3s ease-in';
-                setTimeout(() => {
-                    document.body.removeChild(notification);
-                }, 300);
+                setTimeout(() => notification.remove(), 300);
             }, 5000);
         }
         
@@ -2131,7 +2720,6 @@
             modalTitle.textContent = title;
             modalText.innerHTML = content;
             
-            // Definir ícone baseado no tipo
             const iconClass = type === 'warning' ? 'fa-exclamation-triangle' : 
                              type === 'danger' ? 'fa-times-circle' : 
                              type === 'success' ? 'fa-check-circle' : 'fa-info-circle';
@@ -2142,37 +2730,33 @@
             modal.classList.add('active');
         }
         
+        // Inicializar sistema
+        const labvetSystem = new LabVetSystem();
+        
+        // Variáveis globais
+        let currentHorseId = null;
+        let currentAction = null;
+        let currentActionData = null;
+        
         // Event Listeners
         document.addEventListener('DOMContentLoaded', () => {
-            // Lógica da tela de boas-vindas
+            // Tela de boas-vindas
             const welcomeScreen = document.getElementById('welcomeScreen');
             const progressBar = document.getElementById('progressBar');
             
-            // Iniciar animação da barra de progresso
-            setTimeout(() => {
-                progressBar.style.width = '100%';
-            }, 100);
-            
-            // Remover tela de boas-vindas após 3 segundos
+            setTimeout(() => { progressBar.style.width = '100%'; }, 100);
             setTimeout(() => {
                 welcomeScreen.classList.add('fade-out');
-                
-                // Remover completamente após a transição
-                setTimeout(() => {
-                    welcomeScreen.style.display = 'none';
-                }, 800);
+                setTimeout(() => { welcomeScreen.style.display = 'none'; }, 800);
             }, 3000);
             
             // Navegação
             document.querySelectorAll('.nav-item').forEach(item => {
                 item.addEventListener('click', (e) => {
                     e.preventDefault();
-                    
-                    // Atualizar navegação
                     document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
                     item.classList.add('active');
                     
-                    // Mostrar conteúdo correspondente
                     const contentType = item.getAttribute('data-content');
                     document.querySelectorAll('.content-area > div').forEach(div => {
                         div.style.display = 'none';
@@ -2182,19 +2766,17 @@
                     if (targetDiv) {
                         targetDiv.style.display = 'block';
                         
-                        // Atualizar dados da seção
-                        if (contentType === 'cavalos') {
-                            labvetSystem.updateHorsesTable();
-                        } else if (contentType === 'laudos') {
-                            labvetSystem.updateReportsTable();
-                        } else if (contentType === 'agenda') {
-                            labvetSystem.updateScheduleTable();
-                        } else if (contentType === 'config') {
-                            // Carregar configurações
+                        if (contentType === 'cavalos') labvetSystem.updateHorsesTable();
+                        else if (contentType === 'laudos') labvetSystem.updateReportsTable();
+                        else if (contentType === 'agenda') labvetSystem.updateScheduleTable();
+                        else if (contentType === 'relatorios') labvetSystem.updateRelatorios();
+                        else if (contentType === 'config') {
                             document.getElementById('defaultInterval').value = labvetSystem.settings.defaultInterval;
                             document.getElementById('advanceDays').value = labvetSystem.settings.advanceDays;
                             document.getElementById('notifyVet').value = labvetSystem.settings.notifyVet;
                             document.getElementById('notifyOwner').value = labvetSystem.settings.notifyOwner;
+                            document.getElementById('labName').value = labvetSystem.settings.labName || 'LabVet AIE';
+                            document.getElementById('techResponsible').value = labvetSystem.settings.techResponsible || 'Dra. Andressa Alves';
                         }
                     }
                 });
@@ -2213,11 +2795,9 @@
                 labvetSystem.updateDashboard();
             });
             
-            // Novo laudo manual
-            document.getElementById('manualEmitBtn').addEventListener('click', () => {
-                showNotification('Selecione um cavalo na lista para emitir laudo manual', 'info');
-                // Navegar para cavalos cadastrados
-                document.querySelector('[data-content="cavalos"]').click();
+            // Exportar Excel
+            document.getElementById('exportExcelBtn').addEventListener('click', () => {
+                labvetSystem.exportToExcel();
             });
             
             // Agendar todos pendentes
@@ -2232,24 +2812,34 @@
                 labvetSystem.settings.advanceDays = parseInt(document.getElementById('advanceDays').value);
                 labvetSystem.settings.notifyVet = document.getElementById('notifyVet').value === 'true';
                 labvetSystem.settings.notifyOwner = document.getElementById('notifyOwner').value === 'true';
+                labvetSystem.settings.labName = document.getElementById('labName').value;
+                labvetSystem.settings.techResponsible = document.getElementById('techResponsible').value;
                 
                 labvetSystem.saveData();
                 showNotification('Configurações salvas com sucesso', 'success');
             });
             
-            // Busca em cavalos
-            document.getElementById('searchHorse').addEventListener('input', (e) => {
+            // Buscas
+            document.getElementById('searchHorse')?.addEventListener('input', (e) => {
                 labvetSystem.updateHorsesTable(e.target.value);
             });
-            
-            // Busca em laudos
-            document.getElementById('searchReport').addEventListener('input', (e) => {
+            document.getElementById('searchReport')?.addEventListener('input', (e) => {
                 labvetSystem.updateReportsTable(e.target.value);
             });
             
-            // Formulário de cadastro de cavalo
-            document.getElementById('horseForm').addEventListener('submit', (e) => {
+            // Formulário de cadastro com foto
+            document.getElementById('horseForm').addEventListener('submit', async (e) => {
                 e.preventDefault();
+                
+                let photoBase64 = null;
+                const photoFile = document.getElementById('horsePhoto').files[0];
+                if (photoFile) {
+                    photoBase64 = await new Promise((resolve) => {
+                        const reader = new FileReader();
+                        reader.onloadend = () => resolve(reader.result);
+                        reader.readAsDataURL(photoFile);
+                    });
+                }
                 
                 const horseData = {
                     code: document.getElementById('horseCode').value,
@@ -2258,6 +2848,9 @@
                     coat: document.getElementById('horseCoat').value,
                     sex: document.getElementById('horseSex').value,
                     age: parseInt(document.getElementById('horseAge').value) || null,
+                    weight: parseInt(document.getElementById('horseWeight').value) || null,
+                    height: parseFloat(document.getElementById('horseHeight').value) || null,
+                    microchip: document.getElementById('microchip').value || null,
                     owner: document.getElementById('horseOwner').value,
                     ownerDocument: document.getElementById('ownerDocument').value,
                     ownerAddress: document.getElementById('ownerAddress').value,
@@ -2267,14 +2860,24 @@
                     vetCrmv: document.getElementById('vetCrmv').value
                 };
                 
-                labvetSystem.addHorse(horseData);
+                labvetSystem.addHorse(horseData, photoBase64);
                 showNotification(`Cavalo ${horseData.name} cadastrado com sucesso!`, 'success');
-                
-                // Limpar formulário
                 e.target.reset();
-                
-                // Atualizar lista
-                labvetSystem.updateHorsesTable();
+                document.getElementById('photoPreview').style.display = 'none';
+            });
+            
+            // Preview da foto
+            document.getElementById('horsePhoto')?.addEventListener('change', (e) => {
+                const file = e.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = (event) => {
+                        const preview = document.getElementById('photoPreview');
+                        preview.src = event.target.result;
+                        preview.style.display = 'block';
+                    };
+                    reader.readAsDataURL(file);
+                }
             });
             
             // Modal de confirmação
@@ -2283,9 +2886,11 @@
                 
                 if (currentAction === 'logout') {
                     showNotification('Sessão encerrada. Recarregando sistema...', 'info');
-                    setTimeout(() => {
-                        location.reload();
-                    }, 1500);
+                    setTimeout(() => location.reload(), 1500);
+                } else if (currentAction === 'deleteHorse' && currentActionData) {
+                    labvetSystem.deleteHorse(currentActionData.id);
+                } else if (currentAction === 'clearData') {
+                    labvetSystem.clearAllData();
                 }
                 
                 modal.classList.remove('active');
@@ -2321,8 +2926,8 @@
                     resultDate: document.getElementById('resultDate').value,
                     diagnosisMethod: document.getElementById('diagnosisMethod').value,
                     result: document.getElementById('resultType').value,
-                    vetName: horse.vetName || 'Dra. Andressa Alves',
-                    vetCrmv: horse.vetCrmv || 'RJ-12345',
+                    vetName: horse.vetName || labvetSystem.settings.techResponsible,
+                    vetCrmv: horse.vetCrmv || '-',
                     notes: document.getElementById('reportNotes').value,
                     validityDate: (() => {
                         const date = new Date(document.getElementById('resultDate').value);
@@ -2338,6 +2943,10 @@
                 currentHorseId = null;
             });
             
+            document.getElementById('generatePDFReport').addEventListener('click', () => {
+                labvetSystem.generateReportAndPDF();
+            });
+            
             document.getElementById('cancelReport').addEventListener('click', () => {
                 document.getElementById('reportModal').classList.remove('active');
                 currentHorseId = null;
@@ -2346,6 +2955,33 @@
             document.getElementById('closeReportModal').addEventListener('click', () => {
                 document.getElementById('reportModal').classList.remove('active');
                 currentHorseId = null;
+            });
+            
+            // Backup
+            document.getElementById('exportBackupBtn')?.addEventListener('click', () => {
+                labvetSystem.exportBackup();
+            });
+            
+            document.getElementById('importBackupBtn')?.addEventListener('click', () => {
+                const input = document.createElement('input');
+                input.type = 'file';
+                input.accept = '.json';
+                input.onchange = (e) => {
+                    if (e.target.files[0]) {
+                        labvetSystem.importBackup(e.target.files[0]);
+                    }
+                };
+                input.click();
+            });
+            
+            document.getElementById('clearDataBtn')?.addEventListener('click', () => {
+                showModal('Limpar Dados', 'ATENÇÃO: Isso irá remover TODOS os cavalos e laudos cadastrados. Esta ação não pode ser desfeita. Tem certeza?', 'danger');
+                currentAction = 'clearData';
+            });
+            
+            // Imprimir relatório
+            document.getElementById('printReportBtn')?.addEventListener('click', () => {
+                window.print();
             });
             
             // Fechar modais ao clicar fora
@@ -2360,25 +2996,11 @@
                 });
             });
             
-            // Inicializar dados na UI
+            // Inicializar tabelas
             labvetSystem.updateDashboard();
             labvetSystem.updateHorsesTable();
             labvetSystem.updateReportsTable();
             labvetSystem.updateScheduleTable();
-            
-            // Adicionar estilo CSS para animações
-            const style = document.createElement('style');
-            style.textContent = `
-                @keyframes slideIn {
-                    from { transform: translateX(100%); opacity: 0; }
-                    to { transform: translateX(0); opacity: 1; }
-                }
-                @keyframes slideOut {
-                    from { transform: translateX(0); opacity: 1; }
-                    to { transform: translateX(100%); opacity: 0; }
-                }
-            `;
-            document.head.appendChild(style);
         });
     </script>
 </body>
